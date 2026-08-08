@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "name": "shared-instances-timeline-static-light",
+  "graphicsMode": 4,
+  "axisConvention": "world-z-up",
+  "meshSourceSharing": true,
+  "camera": {
+    "id": "camera",
+    "mode": "fixed",
+    "position": [0, 0, 8],
+    "rotation": [0, 0, 0]
+  },
+  "meshes": [
+    {
+      "id": "shared-cube",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "faceOverrides": {
+        "0": {
+          "solidColor": 7,
+          "shading": false
+        }
+      }
+    }
+  ],
+  "lights": [
+    {
+      "id": "static-key",
+      "type": "static",
+      "position": [-52, 12, 58],
+      "intensity": 10
+    }
+  ],
+  "objects": [
+    {
+      "id": "blue-near",
+      "mesh": "shared-cube",
+      "position": [-24, 112, 8],
+      "rotation": [12, 8, 0],
+      "angularVelocity": [0, 0, 0],
+      "scale": 0.55,
+      "visible": true,
+      "materialOverride": "blue",
+      "reflectivityOverride": "mirror",
+      "colorOverride": 6
+    },
+    {
+      "id": "red-far",
+      "mesh": "shared-cube",
+      "position": [24, 148, 8],
+      "rotation": [20, 12, 0],
+      "angularVelocity": [0, 0, 0],
+      "scale": 0.55,
+      "visible": true,
+      "materialOverride": "red",
+      "reflectivityOverride": "satin",
+      "colorOverride": 2
+    }
+  ],
+  "timeline": {
+    "tickRate": 50,
+    "resetKey": "SPACE",
+    "initialState": "approach",
+    "states": [
+      {
+        "id": "approach",
+        "duration": 100,
+        "next": "return",
+        "instances": {
+          "blue-near": {
+            "visible": true,
+            "positionVelocity": [0.08, 0, 0],
+            "rotationVelocity": [0, 0, 0.08],
+            "materialOverride": "blue",
+            "reflectivityOverride": "mirror",
+            "colorOverride": 6
+          },
+          "red-far": {
+            "visible": true,
+            "positionVelocity": [-0.08, 0, 0],
+            "rotationVelocity": [0, 0, -0.08],
+            "materialOverride": "red",
+            "reflectivityOverride": "satin",
+            "colorOverride": 2
+          }
+        }
+      },
+      {
+        "id": "return",
+        "duration": 100,
+        "next": "approach",
+        "loop": true,
+        "instances": {
+          "blue-near": {
+            "visible": true,
+            "position": [-16, 112, 8],
+            "rotation": [12, 8, 8],
+            "scale": 0.55,
+            "positionVelocity": [-0.08, 0, 0],
+            "rotationVelocity": [0, 0, -0.08]
+          },
+          "red-far": {
+            "visible": true,
+            "position": [16, 148, 8],
+            "rotation": [20, 12, 248],
+            "scale": 0.55,
+            "positionVelocity": [0.08, 0, 0],
+            "rotationVelocity": [0, 0, 0.08]
+          }
+        }
+      }
+    ]
+  },
+  "world": {
+    "backgroundColor": 0,
+    "grounds": []
+  },
+  "contract": {
+    "version": 1,
+    "worldSpace": "world-z-up",
+    "objectSpace": "aligned-world",
+    "viewportProfile": "normal",
+    "ground": false
+  }
+}

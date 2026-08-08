@@ -1,0 +1,71 @@
+{
+  "schema": 1,
+  "name": "mode5-solid-color-outline",
+  "graphicsMode": 5,
+  "axisConvention": "world-z-up",
+  "meshSourceSharing": true,
+  "camera": {
+    "id": "camera",
+    "mode": "fixed",
+    "position": [0, 0, 8],
+    "rotation": [0, 0, 0]
+  },
+  "meshes": [
+    {
+      "id": "outlined-cube",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "faceOverrides": {
+        "0": {
+          "solidColor": 7,
+          "shading": false
+        }
+      }
+    }
+  ],
+  "lights": [
+    {
+      "id": "static-key",
+      "type": "static",
+      "position": [-52, 12, 58],
+      "intensity": 10
+    }
+  ],
+  "objects": [
+    {
+      "id": "blue-front",
+      "mesh": "outlined-cube",
+      "position": [-22, 110, 8],
+      "rotation": [18, 20, 0],
+      "angularVelocity": [0.05, 0.07, 0.09],
+      "scale": 0.58,
+      "visible": true,
+      "materialOverride": "blue",
+      "reflectivityOverride": "mirror"
+    },
+    {
+      "id": "red-back",
+      "mesh": "outlined-cube",
+      "position": [22, 146, 8],
+      "rotation": [22, 14, 0],
+      "angularVelocity": [-0.04, 0.06, -0.08],
+      "scale": 0.58,
+      "visible": true,
+      "materialOverride": "red",
+      "reflectivityOverride": "satin"
+    }
+  ],
+  "world": {
+    "backgroundColor": 0,
+    "grounds": []
+  },
+  "contract": {
+    "version": 1,
+    "worldSpace": "world-z-up",
+    "objectSpace": "aligned-world",
+    "viewportProfile": "normal",
+    "ground": false
+  }
+}

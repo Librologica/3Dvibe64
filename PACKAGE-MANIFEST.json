@@ -1,0 +1,102 @@
+{
+  "schema": 1,
+  "package": {
+    "name": "3Dvibe64",
+    "displayName": "3Dvibe64 1.1.0",
+    "version": "1.1.0",
+    "distribution": "source-sdk",
+    "permanentFiles": 44,
+    "precompiledPrograms": false,
+    "author": "librologica.digital",
+    "softwareLicense": "PolyForm-Noncommercial-1.0.0",
+    "documentationLicense": "CC-BY-NC-4.0"
+  },
+  "builder": {
+    "path": "work/build-3Dvibe64.ps1",
+    "sha256": "A397C80455AF3D0AC0793FC65449B0E0BEB7359E6C2484244866874AFBA98AAB"
+  },
+  "examples": [
+    "examples/wire-two-color-multimaterial.json",
+    "examples/basic-solid-reference.json",
+    "examples/mode4-walkfull-reference.json",
+    "examples/static-satin-material-reference.json",
+    "examples/dynamic-reflective-material-reference.json",
+    "examples/shared-instances-timeline-static-light.json",
+    "examples/mode5-solid-color-outline.json",
+    "examples/ground-plane-near-clip.json"
+  ],
+  "renderer": {
+    "graphicsModes": [1, 2, 3, 4, 5],
+    "cameraModes": ["fixed", "walkLite", "walkFull"],
+    "viewports": ["normal", "small"],
+    "layouts": ["stable", "high-basic-v2"],
+    "groundModes": ["simple", "plane"],
+    "nearProfiles": {
+      "option": "Mode4NearProfile",
+      "modes": [3, 4, 5],
+      "values": ["default", "late", "clip"]
+    },
+    "faceCullProfiles": {
+      "modes": [4, 5],
+      "values": ["default", "stable"]
+    }
+  },
+  "sharedScenes": {
+    "optIn": "meshSourceSharing",
+    "supportedModes": [4, 5],
+    "sourceGeometryShared": true,
+    "runtimeBuffersPerInstance": true,
+    "globalPainterOrder": true,
+    "instanceOverrides": ["materialOverride", "reflectivityOverride", "colorOverride"],
+    "sourceFaceOverrides": ["solidColor", "shading"],
+    "staticLight": "light.type=static",
+    "timeline": {"tickRate": 50, "resetKey": "SPACE"}
+  },
+  "referenceBuilds": [
+    {"label":"mode1-wire-reference","scene":"examples/basic-solid-reference.json","sha256":"7DF36E222E84D60A13D297403DAE6FB063B21C0F231BE834D18AE2C7DFBD3AEF"},
+    {"label":"mode2-hidden-wire-reference","scene":"examples/basic-solid-reference.json","sha256":"432CA864F0B85EDDFFC5C606D605A15920581192E372B528F7313144C8338765"},
+    {"label":"mode3-static-solid-reference","scene":"examples/basic-solid-reference.json","sha256":"1D2AD6E34C9DD995D272B813F900FDA33BD5DA2BB0C1C88AFDD51333B824CC9D"},
+    {"label":"mode4-dynamic-solid-normal-reference","scene":"examples/basic-solid-reference.json","sha256":"5DBF0FE622E5BE92153CFE84AB2276346B823E0E224FE80E35E24A7757E0DEF1"},
+    {"label":"mode4-dynamic-solid-small-reference","scene":"examples/basic-solid-reference.json","sha256":"3B53B40FE4545EBA5511B658F40A33ADB5F2EE5445D9E2DE7DAD8DE981101EE3"},
+    {"label":"mode4-walkLite-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"214F985FDC3DA6A304129943058B40C694EAE7F3B4A9B6A228DA7025CF516667"},
+    {"label":"mode4-walkFull-auto-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"2729DBB2D928DF62C3A1A95328F4FBCEF4D554D21F3D4C5821105A16C230F1A1"},
+    {"label":"mode4-walkFull-PAL-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"70C9279CB8A3742BA8F24FAFAA1BD08C866A63A700EED8A17C5475D655BA1B74"},
+    {"label":"mode4-walkFull-NTSC-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"8C9C7B1608ABC3F9E5F4F852AA1D914CD4C4ADD78E2E8B5572C097B8C195F09C"},
+    {"label":"mode4-satin-material-reference","scene":"examples/static-satin-material-reference.json","sha256":"F1F5B71987F45BCB13EBBB0C37FAC93C455E18E70418CC472F0D2E4163D2824E"},
+    {"label":"mode4-reflective-material-reference","scene":"examples/dynamic-reflective-material-reference.json","sha256":"8F63311813E323FADF240AACFF07376720676D112E922AC7F95FE26329CF16A2"}
+  ],
+  "twoColorWireReferences": [
+    {"label":"mode1-two-color-wire-reference","scene":"examples/wire-two-color-multimaterial.json","sha256":"C81F5C79825DDC01171EB84EB2FE1C8A90C356AC9EFCDFD480A40EC56D35B90F"},
+    {"label":"mode2-two-color-hidden-wire-reference","scene":"examples/wire-two-color-multimaterial.json","sha256":"2B5598C68758D269DF739E2D944DAE53091DC5B1B99D183FDD17E0F1F3DC250D"}
+  ],
+  "geometryValidation": {
+    "pointFixedMin": "Camera-plane culling requires three non-collinear vertices in face 0"
+  },
+  "runtimeFramebufferRegression": {
+    "frames": 32,
+    "modes": [4, 5],
+    "signature": "SHA-256 of symbolic bitmap/screen RAM plus VIC layout and color configuration",
+    "mode4": "40832038ECC0F8615BEF3F6B51ED2CE1ADC0C584E19DE871A353A926A8B7C8BB",
+    "mode5": "B9D482F56D5051C8B32F82ECF1E78AEA71C2CBC1C63FB141393FA0DFEA7DFC79"
+  },
+  "runtimeGroundRollFramebufferRegression": {
+    "frames": 32,
+    "modes": [3, 4, 5],
+    "rolls": [0, 32, 64, 224],
+    "signature": "SHA-256 of symbolic bitmap, screen RAM, color RAM, VIC layout and colors",
+    "signatures": {
+      "mode3-roll0": "F5B4F305F0782D1140618E9FA1273559EF5EE3E2BABBF0A7FF13C3411FB7436F",
+      "mode3-roll32": "E05B1124A1788637C15C070420D1A2CD4189B463E038FCAF250B8ED8EB18036C",
+      "mode3-roll64": "8D8F01EAB635F1FC7F5DB780D90F779D94136DE541CE502EC908C620E2A36DD0",
+      "mode3-roll224": "A7BB81309B574612A9D5239FC6BDB95593879466608E814397D14E35A56CC29A",
+      "mode4-roll0": "4EB770CA4A276A342E5F08E7764E5E8D9EBC68551F075A0126FD4DECC148EA25",
+      "mode4-roll32": "00133E33FE38A9DB0EBAD117A71DF67EFCD81C384352CBF3689E24CB759B4A38",
+      "mode4-roll64": "21CD9D3B11564FB2A1D6F0431AC9F042798523725A155AEB2AB3AFF8F3754866",
+      "mode4-roll224": "290883B35998F75A56DF1315CB35D634BBA19C915D8AB6AD141977BFDD1CD41C",
+      "mode5-roll0": "64E0DC7EDFDE6ADB9EE98652820F8C32F87C471D5FEFC539FB319834C832C358",
+      "mode5-roll32": "B5E9495ACD5185E0173EB68962D135EE1BAED5D84FAB47992D048B7AACBD011A",
+      "mode5-roll64": "1FCE7776D5181E7909F56AD36B1A1422AB2FBEC3C443BB6D4D2F2D246DD07FBC",
+      "mode5-roll224": "1E3510D4EECE51EC3205155FFC64AA09AF04A98DE0B0B404D3FC75EF68686561"
+    }
+  }
+}
