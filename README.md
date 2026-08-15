@@ -1,6 +1,6 @@
-# 3Dvibe64 1.1.0
+# 3Dvibe64 1.1.1
 
-3Dvibe64 1.1.0 is a source SDK for creating specialized Commodore 64 3D programs
+3Dvibe64 1.1.1 is a source SDK for creating specialized Commodore 64 3D programs
 from JSON scenes. It includes the frozen PowerShell builder, engine code generation,
 technical documentation, generic executable JSON references, and reproducibility
 contracts. It deliberately ships with no precompiled PRG and no diagnostic artifacts.
@@ -54,8 +54,20 @@ authors' licenses; they are not included in this distribution.
 ## Renderer overview
 
 GraphicsMode 1–5 are available. Cameras support `fixed`, `walkLite`, and `walkFull`;
-viewports are `normal` (160×100) and `small` (128×80). `stable` is the compact layout;
-`high-basic-v2` supports larger or more complex scenes.
+viewports are `normal` and `small`. With the DEV7 text split compiled in (the default),
+three character rows are reserved above the 3D body: `normal` renders a 160×88 body
+at Y=12, while `small` renders 128×80 at Y=12. `-NoFpsOverlay` removes the split and
+restores the legacy 160×100 normal viewport (the 128×80 small viewport is centered).
+`stable` is the compact layout; `high-basic-v2` supports larger or more complex scenes.
+
+`-HeaderText "..."` embeds up to 40 characters in the shared text header. Supported
+glyphs are space, digits, dot, and `S C R I T A D E M P O`; unsupported characters
+become spaces. The FPS display occupies the first four cells of the middle header
+row and takes precedence there. `F` toggles the complete text header; use
+`-FpsOverlayOnStart` to show it at startup. Screen A and Screen B keep independent
+same-bank header/charset copies, and material application preserves the first 120
+Screen RAM bytes (`TEXT_HEADER_SCREEN_BYTES=120`). `-FpsCounterOnly` retains sampling
+without the visual split.
 
 Modes 3–5 support `-Mode4NearProfile default|late|clip`. `default` keeps the 8-WU
 reject and projection divisor; `late` accepts depth 1 with a divisor minimum of 2 and
@@ -79,7 +91,7 @@ sinusoidal-easing language.
 
 ## Public release contract
 
-The 1.1.0 contract requires version `1.1.0`, the immutable builder hash, 44 permanent
+The 1.1.1 contract requires version `1.1.1`, the immutable builder hash, 45 permanent
 source files, no permanent `.prg`, a valid manifest, generic examples, and reference
 build hashes generated outside the package. Invalid point-only or collinear faces are
 rejected by the builder as malformed geometry. It also runs frozen Ground-crossing

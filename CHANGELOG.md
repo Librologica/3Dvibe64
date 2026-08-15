@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.1 — 2026-08-15
+
+Consolidates the validated DEV7 same-bank split-screen path into the canonical
+builder. The optional text display reserves three character rows above the 3D
+body, supports a compact Generic Text string on both Screen RAM buffers, and
+keeps the FPS counter double-buffered. Material application preserves the first
+120 screen bytes; the final raster switch uses `$4A`/`$4B` timing. The DEV7.1
+mapping correction adds `$FF` termination and the correct compact indices for
+the supported Generic Text glyphs. Builds made with `-NoFpsOverlay` retain the
+1.1.0 binaries byte for byte. Non-engine development material is excluded.
+
 ## 1.1.0 — 2026-08-08
 
 Prepares 3Dvibe64 for public source distribution on GitHub without changing the

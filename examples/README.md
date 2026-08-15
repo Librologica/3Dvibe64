@@ -1,6 +1,6 @@
 # Public JSON reference scenes
 
-These files are executable documentation for the public 3Dvibe64 1.0 builder. They
+These files are executable documentation for the public 3Dvibe64 1.1.1 builder. They
 are generic technical references, not distributed productions. The package includes
 no PRG; run commands in a disposable working copy if you want the source tree to
 remain artifact-free.
@@ -20,7 +20,12 @@ $build = '.\work\build-3Dvibe64.ps1'
 & $build -SceneFile .\examples\basic-solid-reference.json -GraphicsMode 2 -CameraMode fixed -CameraViewport normal -Quality balanced -Projection table -MemoryLayout stable -SkipCmdUpdate
 & $build -SceneFile .\examples\basic-solid-reference.json -GraphicsMode 3 -CameraMode fixed -CameraViewport normal -Quality balanced -Projection table -MemoryLayout stable -SkipCmdUpdate
 & $build -SceneFile .\examples\basic-solid-reference.json -GraphicsMode 4 -CameraMode fixed -CameraViewport normal -Quality balanced -Projection table -MemoryLayout stable -SkipCmdUpdate
+& $build -SceneFile .\examples\basic-solid-reference.json -GraphicsMode 4 -CameraMode fixed -CameraViewport normal -Quality balanced -Projection table -MemoryLayout stable -HeaderText "SCRITTA DI ESEMPIO" -FpsOverlayOnStart -SkipCmdUpdate
 ```
+
+The last command exercises the DEV7/DEV7.1 same-bank Generic Text and FPS header.
+The 3D body is 160×88 while the split is compiled in; add `-NoFpsOverlay` for the
+byte-compatible 1.1.0 bitmap-only path and legacy 160×100 normal viewport.
 
 ## Dynamic camera and materials
 

@@ -196,7 +196,7 @@ La sequenza parte da `start`. A seconda della build inizializza:
 - tabelle e buffer dirty;
 - materiali e luce;
 - camera fissa o stato `explorer_*` delle camere mobili;
-- eventuale overlay FPS e IRQ associato.
+- eventuale split Generic Text/FPS e IRQ associato.
 
 Il controllo passa quindi a `main_loop`.
 
@@ -223,6 +223,12 @@ Il ritmo logico della simulazione è 50 ST al secondo sia su PAL sia su NTSC. La
 `render_frame_begin` prepara il back buffer, lo stato dirty e le cache per il nuovo frame. `render_world_background` gestisce fondo e Ground quando presenti. `render_scene_renderer` entra nella pipeline scelta dal GraphicsMode. `render_frame_end` completa il frame e rende presentabile il buffer.
 
 Per misurazioni o breakpoint stabili, `render_frame_begin` e `render_frame_end` sono punti migliori di una routine interna molto specializzata.
+
+### 7.4 Split testuale same-bank DEV7
+
+Quando l’overlay visivo è compilato, ogni bank VIC-II possiede la propria Screen RAM e il proprio charset compatto. L’IRQ mostra tre righe di caratteri, passa al fast path bitmap a `TEXT_BITMAP_IRQ_RASTER=$4A` e avvia il body a `TEXT_BODY_FIRST_RASTER=$4B`. `TEXT_HEADER_CELL_ROWS=3` e `TEXT_HEADER_SCREEN_BYTES=120` sono un contratto pubblico di memoria: `apply_active_material` deve iniziare dopo il byte 119 in entrambi gli screen buffer.
+
+Il body 3D normal misura quindi 160×88 a Y=12; small misura 128×80 a Y=12. `-NoFpsOverlay` compila il percorso solo bitmap 1.1.0 invariato. Generic Text usa una stringa compatta terminata da `$FF`; zero è un glifo spazio valido. Le cifre FPS e Generic Text vengono scritti in entrambe le Screen RAM, senza copiare dalla bank visualizzata all’altra.
 
 ## 8. Pipeline 3D
 
@@ -592,6 +598,7 @@ python .\scripts\test_camera_move_step.py
 python .\scripts\test_mobile_yq2.py
 python .\scripts\test_object_depth_domain.py
 python .\scripts\test_world_metrics.py
+python .\scripts\test_dev7_text_split.py
 python .\scripts\test_release_contract.py
 ```
 

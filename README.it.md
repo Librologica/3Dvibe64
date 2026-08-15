@@ -1,6 +1,6 @@
-# 3Dvibe64 1.1.0
+# 3Dvibe64 1.1.1
 
-Questo pacchetto pubblico 1.1.0 è un SDK sorgente: contiene builder congelato,
+Questo pacchetto pubblico 1.1.1 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni
@@ -116,7 +116,15 @@ Il costo dell’outline è misurabile. L’audit prestazionale pre-1.0 non ha pr
 
 Le build dense nel layout stable restano soggette al limite esistente del video buffer a `$5C00`. Il toro ufficiale Mode 5 entra con overlay FPS attivo; la scena di stress completa del near-plane usa il layout esistente `high-basic-v2`.
 
-Mode 4 usa X LegacyDirect, builder XY-Q2, trace Y integrale e frazionario, divisore 11×8, fast pixel convert, inline bounds, Mode4ShadeStepLimit e somma signed saturata del vettore luce. La viewport `normal` è predefinita e misura 160×100 pixel; `small` resta selezionabile esplicitamente e misura 128×80 pixel.
+Mode 4 usa X LegacyDirect, builder XY-Q2, trace Y integrale e frazionario, divisore 11×8, fast pixel convert, inline bounds, Mode4ShadeStepLimit e somma signed saturata del vettore luce. Con lo split testuale DEV7 predefinito, `normal` renderizza un body 160×88 a Y low-resolution 12 e `small` un body 128×80 a Y=12. `-NoFpsOverlay` rimuove lo split e ripristina il body storico 160×100; small resta 128×80 e viene centrata.
+
+### Header Generic Text e FPS
+
+Lo split same-bank DEV7 riserva tre righe di caratteri (`TEXT_HEADER_SCREEN_BYTES=120`) sopra il body 3D. `-HeaderText "..."` scrive fino a 40 caratteri nella riga centrale di Screen A e Screen B. Il charset compatto supporta spazio, cifre, punto e `S C R I T A D E M P O`; i caratteri non supportati diventano spazi. Il terminatore `$FF` DEV7.1 permette spazi interni alla stringa e corregge il mapping alfabetico compatto.
+
+Il contatore FPS usa le celle 0–3 della stessa riga e ha precedenza. `F` commuta l’intero header, Generic Text compreso; `-FpsOverlayOnStart` lo mostra dall’avvio. `-FpsCounterOnly` conserva il campionamento senza split visivo, mentre `-NoFpsOverlay` rimuove split e tasto FPS. Ogni bank video mantiene la propria Screen RAM e il proprio charset; i cambi materiale proteggono i 120 byte riservati. L’aggiunta di Generic Text emette il font compatto completo da 184 byte e può richiedere `high-basic-v2` in una build `stable` molto densa.
+
+Limitazione nota: con timing stock può restare un singolo pixel fisico sul margine destro, in corrispondenza della transizione raster fra header e body. La regressione 1.1.1 ha osservato un pixel stabile, senza corruzione della scena, crash, propagazione o divergenza A/B. Il timing validato `$4A`/`$4B` viene mantenuto intenzionalmente; usare `-NoFpsOverlay` quando serve un frame privo dello split.
 
 ### Temporal Scanline Mode sperimentale (`H`)
 
@@ -161,7 +169,7 @@ Il VIC-II accetta legalmente tutti gli indici colore 0-15, incluso il nero, e an
 - `N` / `M`: roll
 - `R`: con `-ControlRotation` sospende o riprende la rotazione della mesh; nelle build di riflettività interattiva va riservato a `-ControlReflectivity`
 - `L`: controllo luce, dove supportato dalla scena
-- `F`: overlay FPS
+- `F`: header completo Generic Text/FPS
 - `H`: Temporal Scanline Mode, soltanto in GraphicsMode 4 e 5
 
 Se `-ControlRotation` e `-ControlReflectivity` vengono forzati insieme, entrambi gli handler leggono `R`: quello della rotazione viene eseguito per primo e quello della riflettività subito dopo. Non è una configurazione a proprietario unico; per assegnare `R` alla riflettività si deve omettere `-ControlRotation`.
@@ -182,6 +190,8 @@ Se `-ControlRotation` e `-ControlReflectivity` vengono forzati insieme, entrambi
 | `-ControlReflectivity` | switch | off; assegna `R` al ciclo riflettività quando `ControlRotation` non è attivo |
 | `-FpsOverlay` | switch | il sistema overlay è incluso per default e commutato con `F`; selettore esplicito di compatibilità |
 | `-FpsOverlayOnStart` | switch | off; mostra dall'avvio l'overlay incluso |
+| `-HeaderText` | stringa | vuota; fino a 40 caratteri del charset compatto nella riga centrale dell’header |
+| `-FpsCounterOnly` | switch | off; mantiene il campionamento FPS senza split visivo né tasto `F` |
 | `-NoFpsOverlay` | switch | off; rimuove overlay e tasto FPS, in conflitto con i due switch overlay |
 | `-NoCameraRuntimeControls` | switch | off; compila una camera mobile senza input camera runtime |
 | `-StaticPose` | switch | off; impedisce gli aggiornamenti automatici degli angoli mesh |

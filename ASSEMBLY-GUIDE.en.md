@@ -196,7 +196,7 @@ Execution starts at `start`. Depending on the build, it initializes:
 - tables and dirty buffers;
 - materials and light;
 - the fixed camera or mobile-camera `explorer_*` state;
-- optional FPS overlay and its IRQ.
+- optional Generic Text/FPS split and its IRQ.
 
 Control then enters `main_loop`.
 
@@ -223,6 +223,12 @@ Logical simulation runs at 50 ST per second on both PAL and NTSC. Video presenta
 `render_frame_begin` prepares the back buffer, dirty state, and caches. `render_world_background` handles the background and Ground when enabled. `render_scene_renderer` enters the pipeline selected by GraphicsMode. `render_frame_end` completes the frame and makes the buffer presentable.
 
 For stable profiling or breakpoints, `render_frame_begin` and `render_frame_end` are better anchors than a highly specialized internal routine.
+
+### 7.4 DEV7 same-bank text split
+
+With the visual overlay compiled in, each VIC-II bank owns its Screen RAM and compact charset. The IRQ shows three character rows, switches to the bitmap fast path at `TEXT_BITMAP_IRQ_RASTER=$4A`, and starts the body at `TEXT_BODY_FIRST_RASTER=$4B`. `TEXT_HEADER_CELL_ROWS=3` and `TEXT_HEADER_SCREEN_BYTES=120` are a public memory contract: `apply_active_material` must begin after byte 119 in both screen buffers.
+
+The normal 3D body is therefore 160×88 at Y=12; small is 128×80 at Y=12. `-NoFpsOverlay` compiles the unchanged 1.1.0 bitmap-only path. Generic Text uses a `$FF`-terminated compact string; zero is a valid space glyph. The FPS digits and Generic Text are written to both Screen RAM buffers, not copied from one displayed bank to the other.
 
 ## 8. The 3D pipeline
 
@@ -592,6 +598,7 @@ python .\scripts\test_camera_move_step.py
 python .\scripts\test_mobile_yq2.py
 python .\scripts\test_object_depth_domain.py
 python .\scripts\test_world_metrics.py
+python .\scripts\test_dev7_text_split.py
 python .\scripts\test_release_contract.py
 ```
 

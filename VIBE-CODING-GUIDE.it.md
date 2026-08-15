@@ -694,13 +694,13 @@ Nel JSON o nel contratto della scena il campo può essere indicato come `viewpor
 
 #### normal
 
-`normal` è la viewport predefinita. Misura 160×100 pixel low-resolution.
+`normal` è la viewport predefinita. Con lo split Generic Text/FPS compilato offre un body 3D 160×88 a Y=12; `-NoFpsOverlay` ripristina il body storico 160×100.
 
 È la scelta più leggibile e normalmente il punto di partenza. Va usata quando la scena entra nei limiti di memoria e mantiene una velocità adeguata.
 
 #### small
 
-`small` misura 128×80 pixel low-resolution.
+`small` misura 128×80 pixel low-resolution. Con lo split testuale parte da Y=12; senza split è centrata a Y=10.
 
 Comporta:
 
@@ -2042,15 +2042,18 @@ Prima di abilitare più controlli contemporaneamente, chiedere a Codex di verifi
 - presenza reale dell’handler nel codice generato;
 - indicazioni degli esempi ufficiali.
 
-### Overlay FPS
+### Generic Text e overlay FPS
 
-Il sistema overlay può essere incluso e commutato con `F`.
+DEV7 usa uno split same-bank con tre righe testuali sopra il body bitmap. `-HeaderText "..."` incorpora al massimo 40 caratteri del charset compatto in entrambe le bank video. Sono supportati spazio, cifre, punto e `S C R I T A D E M P O`; l’input non supportato diventa uno spazio. Il contatore FPS occupa le prime quattro celle della riga centrale. Il terminatore `$FF` è essenziale perché zero è il glifo spazio valido.
+
+L’intero header può essere incluso e commutato con `F`.
 
 - `-FpsOverlayOnStart` lo mostra fin dall’avvio;
 - `-FpsOverlay` mantiene il selettore previsto dal contratto;
+- `-FpsCounterOnly` conserva il campionamento senza header visivo;
 - `-NoFpsOverlay` rimuove overlay e tasto FPS.
 
-Gli switch overlay non devono essere combinati in modo incompatibile.
+Gli switch overlay non devono essere combinati in modo incompatibile. Una build densa con Generic Text può richiedere `high-basic-v2`, perché viene emesso il font compatto completo da 184 byte.
 
 ### Temporal Scanline Mode
 

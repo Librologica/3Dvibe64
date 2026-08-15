@@ -9,6 +9,8 @@ param(
 
  [string]$SceneFile = "",
 
+ [string]$HeaderText = "",
+
  [ValidateSet("auto", "pal", "ntsc")]
  [string]$VideoStandard = "auto",
 
@@ -343,26 +345,38 @@ if ($StableFaceCullRequested -and $FaceRenderMode -eq "force") {
 $StableFaceCullProfileFlag = if ($StableFaceCullRequested) { 1 } else { 0 }
 $CameraSpaceFaceCullSupportFlag = if ($CameraPlaneClipProfileFlag -ne 0 -or $StableFaceCullProfileFlag -ne 0) { 1 } else { 0 }
 
-# The physical VIC-II bitmap remains 160x100 lowres. The small profile renders a
-# 128x80 logical camera viewport into a centered physical window.
+# The physical VIC-II bitmap remains 160x100 lowres. When the DEV7 split-screen
+# layer is compiled, the normal camera body starts below its three text rows.
+# The small profile keeps its 128x80 geometry and is shifted down just enough
+# to keep every rendered row out of the text header.
+$TextHeaderCellRows = 3
+$TextHeaderScreenBytes = $TextHeaderCellRows * 40
+$TextHeaderLogicalHeight = $TextHeaderCellRows * 4
+$TextSplitEnableFlag = if ($NoFpsOverlay.IsPresent -or $FpsCounterOnly.IsPresent) { 0 } else { 1 }
 $CameraViewportKey = $CameraViewport.Trim().ToLowerInvariant()
 $EngineCameraViewportConfigurableFlag = 1
 $EngineCameraViewportSmallFlag = if ($CameraViewportKey -eq "small") { 1 } else { 0 }
 $EngineCameraViewportAllModesFlag = $EngineCameraViewportConfigurableFlag
 $EngineCameraViewportProjectionScaledFlag = $EngineCameraViewportSmallFlag
-$EngineCameraViewportClearLimitedFlag = $EngineCameraViewportSmallFlag
+$EngineCameraViewportClearLimitedFlag = if ($EngineCameraViewportSmallFlag -ne 0 -or $TextSplitEnableFlag -ne 0) { 1 } else { 0 }
 $EngineCameraViewportGroundLimitedFlag = $EngineCameraViewportSmallFlag
 $CameraViewportPhysicalWidth = 160
 $CameraViewportPhysicalHeight = 100
 $CameraViewportWidth = if ($EngineCameraViewportSmallFlag -ne 0) { 128 } else { 160 }
-$CameraViewportHeight = if ($EngineCameraViewportSmallFlag -ne 0) { 80 } else { 100 }
+$CameraViewportHeight = if ($EngineCameraViewportSmallFlag -ne 0) { 80 } elseif ($TextSplitEnableFlag -ne 0) { 88 } else { 100 }
 $CameraViewportOriginX = [int](($CameraViewportPhysicalWidth - $CameraViewportWidth) / 2)
-$CameraViewportOriginY = [int](($CameraViewportPhysicalHeight - $CameraViewportHeight) / 2)
+$CameraViewportOriginY = if ($EngineCameraViewportSmallFlag -ne 0) {
+ [Math]::Max($TextHeaderLogicalHeight * $TextSplitEnableFlag, [int](($CameraViewportPhysicalHeight - $CameraViewportHeight) / 2))
+} elseif ($TextSplitEnableFlag -ne 0) {
+ $TextHeaderLogicalHeight
+} else {
+ 0
+}
 $CameraViewportCenterX = [int]($CameraViewportWidth / 2)
 $CameraViewportCenterY = [int]($CameraViewportHeight / 2)
 $CameraViewportFocal = if ($EngineCameraViewportSmallFlag -ne 0) { 136 } else { 170 }
 $CameraViewportFrustumXNear = if ($EngineCameraViewportSmallFlag -ne 0) { 32 } else { 40 }
-$CameraViewportFrustumYNear = if ($EngineCameraViewportSmallFlag -ne 0) { 20 } else { 25 }
+$CameraViewportFrustumYNear = if ($EngineCameraViewportSmallFlag -ne 0) { 20 } elseif ($TextSplitEnableFlag -ne 0) { 22 } else { 25 }
 $CameraViewportFrustumFocal = [int]($CameraViewportFocal / 2)
 $ExplorerMoveStep = if ($DiagnosticHalfCameraRates.IsPresent) { 64 } else { 127 }
 $ExplorerYawPitchTickDiv = if ($DiagnosticHalfCameraRates.IsPresent) { 8 } else { 4 }
@@ -1511,42 +1525,38 @@ $ScreenBBase = if ($HighBasicV2LayoutFlag -ne 0) { 0x0400 } else { 0x8C00 }
 $RuntimeBufferLimit = if ($HighBasicV2LayoutFlag -ne 0) { 0xA000 } else { $ScreenBBase }
 $VicBankBBits = if ($HighBasicV2LayoutFlag -ne 0) { 0x03 } else { 0x01 }
 $VicD018B = if ($HighBasicV2LayoutFlag -ne 0) { 0x18 } else { 0x38 }
-# the FPS counter and the visible overlay are separate build features.
-# High-basic-v2 overlays use RAM under I/O for both their charset and screen:
-# charset $D000-$D7FF, screen $D800-$DBFF.
-# This removes the historical $C800/$CC00 collision points while preserving the
-# canonical -NoFpsOverlay build byte-for-byte. The F key remains an overlay-only
-# runtime toggle; -FpsCounterOnly emits the sampler without text, charset or split IRQ.
+# The FPS counter and the visible overlay are separate build features. DEV7
+# renders the text header with each bitmap buffer's own Screen RAM and with a
+# compact charset stored at the start of that same buffer's bitmap. This keeps
+# both stable and high-basic-v2 inside their native VIC-II banks. The canonical
+# -NoFpsOverlay build remains byte-for-byte unchanged. The F key remains an
+# overlay-only runtime toggle; -FpsCounterOnly emits the sampler without text,
+# charset or split IRQ.
 $FpsTextReservedSize = 0x0400
 $FpsCharsetReservedSize = 0x0800
-$FpsTextClearCells = 0x80
+$FpsTextClearCells = $TextHeaderScreenBytes
 
 function Update-FpsMemoryLayout(
  [int]$OverlayEnable,
  [int]$HighBasicEnable,
  [string]$GraphicsModeValue
 ) {
- $modeKey = $GraphicsModeValue.Trim().ToLowerInvariant()
- $mode3 = if ($modeKey -eq "3" -or $modeKey -eq "flat-static") { 1 } else { 0 }
- $underIo = if ($OverlayEnable -ne 0 -and $HighBasicEnable -ne 0) { 1 } else { 0 }
-
- if ($underIo -ne 0) {
- $script:FpsTextBase = 0xD800
- $script:FpsCharsetBase = 0xD000
- $script:FpsTextD018 = 0x64
+ if ($OverlayEnable -ne 0) {
+  $script:FpsTextBase = 0x5C00
+  $script:FpsCharsetBase = 0x6000
+  $script:FpsTextD018 = 0x78
  } else {
- $script:FpsTextBase = if ($HighBasicEnable -ne 0) { 0xCC00 } else { 0xC000 }
- $script:FpsCharsetBase = 0xC800
- $script:FpsTextD018 = if ($HighBasicEnable -ne 0) { 0x32 } else { 0x02 }
+  $script:FpsTextBase = if ($HighBasicEnable -ne 0) { 0xCC00 } else { 0xC000 }
+  $script:FpsCharsetBase = 0xC800
+  $script:FpsTextD018 = if ($HighBasicEnable -ne 0) { 0x32 } else { 0x02 }
  }
-
- $script:FpsOverlayUnderIoLayoutFlag = $underIo
- $script:FpsTextUnderIoFlag = $underIo
- $script:FpsCharsetUnderIoFlag = $underIo
- $script:FpsTextRelocationD800Flag = $underIo
- $script:FpsCharsetRelocationD000Flag = $underIo
- $script:FpsCharsetRelocationFlag = $underIo
- $script:Mode3FpsCharsetRelocationFlag = if ($underIo -ne 0 -and $mode3 -ne 0) { 1 } else { 0 }
+ $script:FpsOverlayUnderIoLayoutFlag = 0
+ $script:FpsTextUnderIoFlag = 0
+ $script:FpsCharsetUnderIoFlag = 0
+ $script:FpsTextRelocationD800Flag = 0
+ $script:FpsCharsetRelocationD000Flag = 0
+ $script:FpsCharsetRelocationFlag = 0
+ $script:Mode3FpsCharsetRelocationFlag = 0
 }
 
 function Test-AddressRangeOverlap([int]$StartA, [int]$EndA, [int]$StartB, [int]$EndB) {
@@ -1556,39 +1566,35 @@ function Test-AddressRangeOverlap([int]$StartA, [int]$EndA, [int]$StartB, [int]$
 function Assert-FpsMemoryContract([int]$OverlayEnable) {
  if ($OverlayEnable -eq 0) { return }
 
- if (($FpsTextBase -band 0x03ff) -ne 0) {
- throw ("FPS screen base must be 1 KiB aligned: {0:X4}" -f $FpsTextBase)
+ $pairs = @(
+  [ordered]@{ Name = "A"; Screen = 0x5C00; Charset = 0x6000; D018 = 0x78 },
+  [ordered]@{ Name = "B"; Screen = $ScreenBBase; Charset = $BitmapBBase; D018 = $VicD018B }
+ )
+ foreach ($pair in $pairs) {
+  if (($pair.Screen -band 0x03ff) -ne 0) {
+   throw ("Split-screen buffer {0} Screen RAM must be 1 KiB aligned: {1:X4}" -f $pair.Name, $pair.Screen)
+  }
+  if (($pair.Charset -band 0x07ff) -ne 0) {
+   throw ("Split-screen buffer {0} charset must be 2 KiB aligned: {1:X4}" -f $pair.Name, $pair.Charset)
+  }
+  $textEnd = $pair.Screen + $FpsTextReservedSize - 1
+  $charsetEnd = $pair.Charset + $FpsCharsetReservedSize - 1
+  if (Test-AddressRangeOverlap $pair.Screen $textEnd $pair.Charset $charsetEnd) {
+   throw ("Split-screen buffer {0} screen/charset ranges overlap" -f $pair.Name)
+  }
+  $bank = $pair.Screen -band 0xC000
+  if (($pair.Charset -band 0xC000) -ne $bank) {
+   throw ("Split-screen buffer {0} screen and charset must share a VIC-II bank" -f $pair.Name)
+  }
+  $screenIndex = [int](($pair.Screen - $bank) / 0x0400)
+  $charsetIndex = [int](($pair.Charset - $bank) / 0x0800)
+  $expectedD018 = (($screenIndex -band 0x0f) -shl 4) -bor (($charsetIndex -band 0x07) -shl 1)
+  if ($expectedD018 -ne $pair.D018) {
+   throw ("Split-screen buffer {0} D018 mismatch: expected {1:X2}, configured {2:X2}" -f $pair.Name, $expectedD018, $pair.D018)
+  }
  }
- if (($FpsCharsetBase -band 0x07ff) -ne 0) {
- throw ("FPS charset base must be 2 KiB aligned: {0:X4}" -f $FpsCharsetBase)
- }
-
- $textEnd = $FpsTextBase + $FpsTextReservedSize - 1
- $charsetEnd = $FpsCharsetBase + $FpsCharsetReservedSize - 1
- if (Test-AddressRangeOverlap $FpsTextBase $textEnd $FpsCharsetBase $charsetEnd) {
- throw ("FPS screen/charset ranges overlap: screen={0:X4}-{1:X4}, charset={2:X4}-{3:X4}" -f $FpsTextBase, $textEnd, $FpsCharsetBase, $charsetEnd)
- }
-
- $textBank = $FpsTextBase -band 0xC000
- $charsetBank = $FpsCharsetBase -band 0xC000
- if ($textBank -ne $charsetBank) {
- throw ("FPS screen and charset must share a VIC-II bank: screen={0:X4}, charset={1:X4}" -f $FpsTextBase, $FpsCharsetBase)
- }
-
- $screenIndex = [int](($FpsTextBase - $textBank) / 0x0400)
- $charsetIndex = [int](($FpsCharsetBase - $charsetBank) / 0x0800)
- $expectedD018 = (($screenIndex -band 0x0f) -shl 4) -bor (($charsetIndex -band 0x07) -shl 1)
- if ($expectedD018 -ne $FpsTextD018) {
- throw ("FPS D018 mismatch: expected {0:X2}, configured {1:X2}" -f $expectedD018, $FpsTextD018)
- }
-
- if ($FpsOverlayUnderIoLayoutFlag -ne 0) {
- if ($FpsCharsetBase -ne 0xD000 -or $charsetEnd -ne 0xD7FF -or $FpsTextBase -ne 0xD800 -or $textEnd -ne 0xDBFF) {
- throw "High-basic-v2 FPS overlay must use charset D000-D7FF and screen D800-DBFF"
- }
- if ($FpsCharsetUnderIoFlag -eq 0 -or $FpsTextUnderIoFlag -eq 0) {
- throw "RAM-under-I/O FPS layout requires both text and charset banking markers"
- }
+ if ($TextHeaderScreenBytes -ne 120) {
+  throw "Split-screen header contract requires exactly 120 Screen RAM bytes"
  }
 }
 
@@ -1643,19 +1649,54 @@ for ($b = 0; $b -lt 40; $b++) {
 }
 
 $fpsFontBytes = @(
- 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
- 0x3C,0x66,0x6E,0x76,0x66,0x66,0x3C,0x00,
- 0x18,0x38,0x18,0x18,0x18,0x18,0x7E,0x00,
- 0x3C,0x66,0x06,0x0C,0x18,0x30,0x7E,0x00,
- 0x7E,0x0C,0x18,0x0C,0x06,0x66,0x3C,0x00,
- 0x0C,0x1C,0x3C,0x6C,0x7E,0x0C,0x0C,0x00,
- 0x7E,0x60,0x7C,0x06,0x06,0x66,0x3C,0x00,
- 0x1C,0x30,0x60,0x7C,0x66,0x66,0x3C,0x00,
- 0x7E,0x06,0x0C,0x18,0x30,0x30,0x30,0x00,
- 0x3C,0x66,0x66,0x3C,0x66,0x66,0x3C,0x00,
- 0x3C,0x66,0x66,0x3E,0x06,0x0C,0x38,0x00,
- 0x00,0x00,0x00,0x00,0x00,0x18,0x18,0x00
+ 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00, # 0: space
+ 0x3C,0x66,0x6E,0x76,0x66,0x66,0x3C,0x00, # 1: 0
+ 0x18,0x38,0x18,0x18,0x18,0x18,0x7E,0x00, # 2: 1
+ 0x3C,0x66,0x06,0x0C,0x18,0x30,0x7E,0x00, # 3: 2
+ 0x7E,0x0C,0x18,0x0C,0x06,0x66,0x3C,0x00, # 4: 3
+ 0x0C,0x1C,0x3C,0x6C,0x7E,0x0C,0x0C,0x00, # 5: 4
+ 0x7E,0x60,0x7C,0x06,0x06,0x66,0x3C,0x00, # 6: 5
+ 0x1C,0x30,0x60,0x7C,0x66,0x66,0x3C,0x00, # 7: 6
+ 0x7E,0x06,0x0C,0x18,0x30,0x30,0x30,0x00, # 8: 7
+ 0x3C,0x66,0x66,0x3C,0x66,0x66,0x3C,0x00, # 9: 8
+ 0x3C,0x66,0x66,0x3E,0x06,0x0C,0x38,0x00, # 10: 9
+ 0x00,0x00,0x00,0x00,0x00,0x18,0x18,0x00, # 11: .
+ 0x3C,0x66,0x60,0x3C,0x06,0x66,0x3C,0x00, # 12: S
+ 0x3C,0x66,0x60,0x60,0x60,0x66,0x3C,0x00, # 13: C
+ 0x7C,0x66,0x66,0x7C,0x68,0x64,0x66,0x00, # 14: R
+ 0x3C,0x18,0x18,0x18,0x18,0x18,0x3C,0x00, # 15: I
+ 0x7E,0x18,0x18,0x18,0x18,0x18,0x18,0x00, # 16: T
+ 0x18,0x3C,0x66,0x66,0x7E,0x66,0x66,0x00, # 17: A
+ 0x78,0x6C,0x66,0x66,0x66,0x6C,0x78,0x00, # 18: D
+ 0x7E,0x60,0x60,0x7C,0x60,0x60,0x7E,0x00, # 19: E
+ 0x63,0x77,0x7F,0x6B,0x63,0x63,0x63,0x00, # 20: M
+ 0x7C,0x66,0x66,0x7C,0x60,0x60,0x60,0x00, # 21: P
+ 0x3C,0x66,0x66,0x66,0x66,0x66,0x3C,0x00  # 22: O
 )
+
+# DEV7.1 compact Generic Text mapping. Unsupported characters deliberately
+# become spaces; $FF, not character code zero, terminates the generated text.
+$headerGlyphMap = @{
+ ' ' = 0; '0' = 1; '1' = 2; '2' = 3; '3' = 4; '4' = 5; '5' = 6; '6' = 7; '7' = 8; '8' = 9; '9' = 10; '.' = 11;
+ 'S' = 12; 'C' = 13; 'R' = 14; 'I' = 15; 'T' = 16; 'A' = 17; 'D' = 18; 'E' = 19; 'M' = 20; 'P' = 21; 'O' = 22
+}
+$headerBytes = @()
+if ($HeaderText.Length -gt 40) {
+ throw "HeaderText supports at most 40 characters"
+}
+foreach ($character in $HeaderText.ToUpperInvariant().ToCharArray()) {
+ $key = [string]$character
+ if ($headerGlyphMap.ContainsKey($key)) {
+  $headerBytes += [int]$headerGlyphMap[$key]
+ } else {
+  $headerBytes += 0
+ }
+}
+$headerBytes += 0xFF
+$headerBytesStr = ($headerBytes | ForEach-Object { ByteHex $_ }) -join ","
+$headerOffset = if ($HeaderText.Length -gt 0 -and $HeaderText.Length -lt 40) { [int][Math]::Floor((40 - $HeaderText.Length) / 2) } else { 0 }
+$fpsFontByteCount = if ($HeaderText.Length -eq 0) { 0x60 } else { $fpsFontBytes.Count }
+$fpsFontBytesEmitted = [int[]]$fpsFontBytes[0..($fpsFontByteCount - 1)]
 
 $QualityProfiles = @{
  turbo = @{ MinFaceArea = 14; ScreenMinSpan = 4; PatternMinSpan = 8 }
@@ -9122,7 +9163,12 @@ EXPLORER_PROJ_X_POS_MAX = PROJ_CENTER_X
 EXPLORER_PROJ_Y_NEG_MIN = $100 - PROJ_CENTER_Y + 1
 EXPLORER_PROJ_Y_POS_MAX = PROJ_CENTER_Y + 1
 TEXT_SPLIT_RASTER = $50
-TEXT_BITMAP_RASTER = $48
+TEXT_HEADER_CELL_ROWS = 3
+TEXT_HEADER_SCREEN_BYTES = TEXT_HEADER_CELL_ROWS * 40 ; 120 bytes ($78)
+TEXT_BODY_FIRST_RASTER = $4B
+TEXT_BITMAP_IRQ_RASTER = $4A
+TEXT_HEADER_OFFSET = $00
+FPS_FONT_BYTE_COUNT = $B8
 FPS_TEXT_BASE = $c000
 FPS_TEXT_D018 = $02
 FPS_TEXT_UNDER_IO = $00
@@ -10042,7 +10088,7 @@ ri_overlay_hidden_counter_done:
  jmp $ea81
 ri_overlay_enabled:
  lda irq_phase
- bne ri_bitmap_phase
+ bne ri_bitmap_phase_fast
 ri_text_phase:
  jsr set_text_header_mode
  inc fps_vblank_count
@@ -10063,13 +10109,20 @@ ri_text_phase:
  lda #$01
  sta fps_second_flag
 ri_text_counter_done:
- lda #TEXT_BITMAP_RASTER
+ lda #TEXT_BITMAP_IRQ_RASTER
  sta $d012
  lda #$01
  sta irq_phase
  jmp $ea81
-ri_bitmap_phase:
- jsr set_bitmap_body_mode
+
+ri_bitmap_phase_fast:
+ lda #$18
+ sta $d016
+ lda #$3b
+ sta $d011
+ lda #WORLD_BACKGROUND_COLOR
+ sta $d020
+ sta $d021
  lda #$00
  sta $d012
  sta irq_phase
@@ -10184,52 +10237,81 @@ ifo_samples:
 
 .if FPS_OVERLAY_ENABLE != 0
 init_fps_charset:
-.if FPS_CHARSET_UNDER_IO != 0
- ; The VIC-II reads RAM under I/O. The CPU banks I/O out only while
- ; copying the compact 12-character FPS font into the $D000 region.
- lda $01
- pha
- lda #$34
- sta $01
-.endif
  ldx #$00
 ifc_loop:
  lda fps_font_bytes,x
- sta FPS_CHARSET_BASE,x
+ sta $6000,x
+ sta BITMAP_B_BASE,x
  inx
- cpx #$60
+ cpx #FPS_FONT_BYTE_COUNT
  bne ifc_loop
-.if FPS_CHARSET_UNDER_IO != 0
- pla
- sta $01
-.endif
  rts
 
 init_fps_text:
-.if FPS_TEXT_UNDER_IO != 0
- ; $D800-$DBFF is underlying RAM while I/O is banked out. Color RAM
- ; remains a separate physical store and is left untouched here.
- lda $01
- pha
- lda #$34
- sta $01
-.endif
  ldx #$00
- lda #FPS_TEXT_BLANK
+ lda #$00
 ift_clear_screen:
- sta FPS_TEXT_BASE,x
+ sta $5c00,x
+ sta SCREEN_B_BASE,x
  inx
- cpx #FPS_TEXT_CLEAR_CELLS
+ cpx #TEXT_HEADER_SCREEN_BYTES
  bne ift_clear_screen
-.if FPS_TEXT_UNDER_IO != 0
- pla
- sta $01
-.endif
- ; Color RAM is global across both bitmap buffers. Do not clear a broad
- ; range here; fps_update_digits touches only the six visible glyph cells.
+
+ ldx #$00
+ift_write_string:
+ lda text_header_string,x
+ cmp #$ff
+ beq ift_write_done
+ sta $5c28+TEXT_HEADER_OFFSET,x
+ sta SCREEN_B_BASE+$0028+TEXT_HEADER_OFFSET,x
+ lda #$01
+ sta $d828+TEXT_HEADER_OFFSET,x
+ inx
+ cpx #40
+ bne ift_write_string
+ift_write_done:
  rts
 .endif
 
+.if FPS_OVERLAY_ENABLE != 0
+set_text_header_mode:
+ lda #$00
+ sta $d020
+ sta $d021
+ lda drawbuf
+ beq sth_show_b
+sth_show_a:
+ lda $dd00
+ and #$fc
+ ora #$02
+ sta $dd00
+ lda #$78
+ sta $d018
+ jmp sth_common
+sth_show_b:
+ lda $dd00
+ and #$fc
+ ora #VIC_BANK_B_BITS
+ sta $dd00
+ lda #VIC_D018_B
+ sta $d018
+sth_common:
+ lda #$08
+ sta $d016
+ lda #$1b
+ sta $d011
+ rts
+
+set_bitmap_body_mode:
+ lda #WORLD_BACKGROUND_COLOR
+ sta $d020
+ sta $d021
+ lda #$18
+ sta $d016
+ lda #$3b
+ sta $d011
+ rts
+.else
 set_text_header_mode:
  lda #$00
  sta $d020
@@ -10271,6 +10353,7 @@ sbb_show_b:
  lda #VIC_D018_B
  sta $d018
  rts
+.endif
 
 fps_frame_done:
 .if FPS_COUNTER_ENABLE = 0
@@ -10388,27 +10471,18 @@ fud_div10_done:
  clc
  adc #$01
  sta fps_digit_ones
-.if FPS_TEXT_UNDER_IO != 0
- php
- sei
- lda $01
- pha
- lda #$34
- sta $01
-.endif
  lda fps_digit_tens
- sta FPS_TEXT_BASE+$0028
+ sta $5c28
+ sta SCREEN_B_BASE+$0028
  lda fps_digit_ones
- sta FPS_TEXT_BASE+$0029
+ sta $5c29
+ sta SCREEN_B_BASE+$0029
  lda #$0b
- sta FPS_TEXT_BASE+$002a
+ sta $5c2a
+ sta SCREEN_B_BASE+$002a
  lda fps_digit_frac
- sta FPS_TEXT_BASE+$002b
-.if FPS_TEXT_UNDER_IO != 0
- pla
- sta $01
- plp
-.endif
+ sta $5c2b
+ sta SCREEN_B_BASE+$002b
  lda #$01
  sta $d828
  sta $d829
@@ -11239,6 +11313,9 @@ smk_found:
 .endif
  rts
 
+; DEV7 split-screen ownership contract:
+; Header Screen RAM ($000-$077 / 120 bytes) belongs to the text layer.
+; Body Screen RAM   ($078-$3E7 / 880 bytes) belongs to the material system.
 apply_active_material:
  lda active_reflect_offset
  sta material_reflect_offset_cur
@@ -11249,6 +11326,42 @@ apply_active_material:
  sta t1
  lda material_color_bytes,y
  sta t2
+.if FPS_OVERLAY_ENABLE != 0
+ ldx #TEXT_HEADER_SCREEN_BYTES
+aam_screen_page0:
+ lda t1
+ sta $5c00,x
+ sta SCREEN_B_BASE,x
+ lda t2
+ sta $d800,x
+ inx
+ bne aam_screen_page0
+
+ ldx #$00
+aam_screen_pages12:
+ lda t1
+ sta $5d00,x
+ sta $5e00,x
+ sta SCREEN_B_BASE+$0100,x
+ sta SCREEN_B_BASE+$0200,x
+ lda t2
+ sta $d900,x
+ sta $da00,x
+ inx
+ bne aam_screen_pages12
+
+ ldx #$00
+aam_screen_tail:
+ lda t1
+ sta $5f00,x
+ sta SCREEN_B_BASE+$0300,x
+ lda t2
+ sta $db00,x
+ inx
+ cpx #$e8
+ bne aam_screen_tail
+ rts
+.else
  ldx #$00
 aam_screen:
  lda t1
@@ -11268,6 +11381,7 @@ aam_screen:
  inx
  bne aam_screen
  rts
+.endif
 
 .if FACE_SOLID_COLOR_ENABLE != 0
 load_face_solid_color_y:
@@ -31876,6 +31990,7 @@ fps_overlay_visible: .byte FPS_OVERLAY_ON_START
 fps_digit_tens: .byte 1
 fps_digit_ones: .byte 1
 fps_digit_frac: .byte 1
+text_header_string: .byte TEXT_HEADER_STRING_BYTES
 .endif
 
 .if CAMERA_MOVABLE != 0 || WORLD_GROUND_ENABLE != 0
@@ -34590,6 +34705,9 @@ $asm = $asm.Replace('FPS_CHARSET_UNDER_IO = $00', ('FPS_CHARSET_UNDER_IO = ' + (
 # unanchored Replace() rewrote those longer lines before their specific values.
 $asm = $asm.Replace("`nFPS_CHARSET_RELOCATED_D000 = `$00", ("`nFPS_CHARSET_RELOCATED_D000 = " + (ByteHex $FpsCharsetRelocationD000Flag)))
 $asm = $asm.Replace('ENGINE_MODE3_FPS_CHARSET_RELOCATED_D000 = $00', ('ENGINE_MODE3_FPS_CHARSET_RELOCATED_D000 = ' + (ByteHex $Mode3FpsCharsetRelocationFlag)))
+$asm = $asm.Replace('TEXT_HEADER_OFFSET = $00', ('TEXT_HEADER_OFFSET = ' + (ByteHex $headerOffset)))
+$asm = $asm.Replace('FPS_FONT_BYTE_COUNT = $B8', ('FPS_FONT_BYTE_COUNT = ' + (ByteHex $fpsFontByteCount)))
+$asm = $asm.Replace('TEXT_HEADER_STRING_BYTES', $headerBytesStr)
 $asm = $asm.Replace('MESH_COUNT = $01', ('MESH_COUNT = ' + (ByteHex $MeshCount)))
 $asm = $asm.Replace('SCENE_OBJECT_COUNT = $00', ('SCENE_OBJECT_COUNT = ' + (ByteHex $SceneObjectCount)))
 $asm = $asm.Replace('OBJECT_MODEL_CONTRACT_VERSION = $01', ('OBJECT_MODEL_CONTRACT_VERSION = ' + (ByteHex $ObjectModelContractVersion)))
@@ -35630,7 +35748,27 @@ if ($TrackDirtySpansFlag -ne 0) {
  $asm += Add-Bytes "byteoffhi" $byteoffhi
 }
 if ($FpsOverlayEnableFlag -ne 0) {
- $asm += Add-Bytes "fps_font_bytes" $fpsFontBytes
+ if ($HighBasicV2LayoutFlag -ne 0 -and $GraphicsModeNumber -ne 1) {
+  # Modes 2-5 leave the last page below bitmap A unused.  Keep the compact
+  # split-screen charset there so the high code/data segment remains below
+  # the I/O window.  Mode 1 already uses this page and retains the canonical
+  # in-segment placement.
+  $asm += @'
+fps_font_return = *
+* = $1f00
+
+'@
+  $asm += Add-Bytes "fps_font_bytes" $fpsFontBytesEmitted
+  $asm += @'
+.if * > $2000
+ .error "High-basic-v2 compact text charset overlaps bitmap A"
+.endif
+* = fps_font_return
+
+'@
+ } else {
+  $asm += Add-Bytes "fps_font_bytes" $fpsFontBytesEmitted
+ }
 }
 if ($ExplorerMatrixFoldFlag -ne 0) {
  $asm += @'
@@ -36605,16 +36743,10 @@ if ($Mode3HighBasicFullRasterRelocationFlag -ne 0) {
  }
 }
 
-if ($FpsOverlayEnableFlag -ne 0) {
- $fpsTextEnd = $FpsTextBase + $FpsTextReservedSize - 1
- $fpsCharsetEnd = $FpsCharsetBase + $FpsCharsetReservedSize - 1
- if (Test-AddressRangeOverlap $load $lastLoaded $FpsTextBase $fpsTextEnd) {
- throw ("PRG overlaps FPS screen RAM: PRG={0:X4}-{1:X4}, FPS screen={2:X4}-{3:X4}." -f $load, $lastLoaded, $FpsTextBase, $fpsTextEnd)
- }
- if (Test-AddressRangeOverlap $load $lastLoaded $FpsCharsetBase $fpsCharsetEnd) {
- throw ("PRG overlaps FPS charset RAM: PRG={0:X4}-{1:X4}, FPS charset={2:X4}-{3:X4}." -f $load, $lastLoaded, $FpsCharsetBase, $fpsCharsetEnd)
- }
-}
+# In DEV7 the header screen and compact charset intentionally live inside the
+# two engine video buffers. The layout-specific segment checks below, together
+# with Assert-FpsMemoryContract, replace the old external-overlay PRG overlap
+# test.
 
 if ($HighBasicV2LayoutFlag -eq 0) {
  if ($lowSegmentEnd -gt 0x5C00) {
