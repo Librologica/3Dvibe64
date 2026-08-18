@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.1.2 — 2026-08-18
+
+Fixes runtime `F` toggling for the DEV7 Generic Text/FPS split. Bitmap-only frames
+now select the VIC bank, Screen RAM and bitmap pointer from the displayed buffer;
+the compact charset is cleared and rebuilt using a length derived from the emitted
+glyph count, eliminating raw glyph pixels without a fixed 96-byte assumption. `F`
+remains backward-compatible and toggles the complete Generic Text/FPS header.
+
+Shared Mode 4/5 instances now keep the draw-time material path whenever an
+instance uses `materialOverride`, so different shared instances retain their
+documented material families in the actual framebuffer. The equivalent
+`reflectivityOverride` path is retained independently. Runtime framebuffer
+coverage now checks red/green/blue shared cubes in both Mode 4 and Mode 5; no
+projection, clipping, culling or raster-timing changes are included.
+
+High-basic-v2 builds with mobile cameras now structurally relocate the contiguous
+Camera Control & Navigation block to the relocated segment ($9B80), preventing
+low-segment overflow in dense WalkFull configurations while preserving full runtime
+margins and zero per-frame cycle overhead.
+
 ## 1.1.1 — 2026-08-15
 
 Consolidates the validated DEV7 same-bank split-screen path into the canonical

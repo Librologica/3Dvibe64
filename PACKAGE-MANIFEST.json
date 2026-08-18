@@ -2,8 +2,8 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.1.1",
-    "version": "1.1.1",
+    "displayName": "3Dvibe64 1.1.2",
+    "version": "1.1.2",
     "distribution": "source-sdk",
     "permanentFiles": 45,
     "precompiledPrograms": false,
@@ -13,7 +13,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "FE1B51C2957638CCB31ABF6FAB54C456FDF0D1F839183DA4AEAFA2A642596C2D"
+    "sha256": "8B16C2CB523403516B8AE667A7E1DEB21997BD03084ED6705F51F021D816997E"
   },
   "examples": [
     "examples/wire-two-color-multimaterial.json",
@@ -62,21 +62,25 @@
     "headerTextOption": "HeaderText",
     "headerTextMaxCharacters": 40,
     "terminator": 255,
+    "runtimeToggle": "complete-header",
+    "fpsOnlyCharsetBytes": 96,
+    "genericTextCharsetBytes": 184,
+    "charsetLengthDerivedFromGlyphCount": true,
     "fpsDoubleBuffered": true,
     "sameBank": true
   },
   "referenceBuilds": [
-    {"label":"mode1-wire-reference","scene":"examples/basic-solid-reference.json","sha256":"8E3EE1695E804BB5EFC540EE086C2C42A176D731CA995D21893A9F4565108643"},
-    {"label":"mode2-hidden-wire-reference","scene":"examples/basic-solid-reference.json","sha256":"6D3AC3688CB25FC5F8B0E201E33031408FB2891A036C8C50B13A6F362B60E5B6"},
-    {"label":"mode3-static-solid-reference","scene":"examples/basic-solid-reference.json","sha256":"75B97D3D60A26CAD9E8991E5C25B500EAFC77DF883CA57CB08E83638B0E8AF20"},
-    {"label":"mode4-dynamic-solid-normal-reference","scene":"examples/basic-solid-reference.json","sha256":"FA6EACA9DE6EC7F69DAA5D78400AC8EB0D95F8A07B865FF3110CBAC6B4120247"},
-    {"label":"mode4-dynamic-solid-small-reference","scene":"examples/basic-solid-reference.json","sha256":"AEDE88BAF39B34F675E0D134E6C2AFDBD8DACCC731206794CEC929E7CF346D1E"},
-    {"label":"mode4-walkLite-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"1E1C1629C7B9BF88E73625A97EFA8F2DBD48BB33ADB3361376B451576379E060"},
-    {"label":"mode4-walkFull-auto-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"041A5A0897377FC050091420A614D9EDD0D599ADE0B76BE46EE76FCED5972553"},
-    {"label":"mode4-walkFull-PAL-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"01EE55B13EE2692092264C4721AD03FDFF49868B193A8073C2673CC53B914DFC"},
-    {"label":"mode4-walkFull-NTSC-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"6CE7F54AAA59861B11CE0055759DC3CFF530E634E1EB3FE0BC7B9CBC6BADF4B5"},
-    {"label":"mode4-satin-material-reference","scene":"examples/static-satin-material-reference.json","sha256":"03D9EEC20E392FC0760EA0FD553D1F2DB7DE14087355C762DDA629E40CB0BF19"},
-    {"label":"mode4-reflective-material-reference","scene":"examples/dynamic-reflective-material-reference.json","sha256":"8C4D490201BA6F2707765BC9F294294922357020EC11CABB1B47CC608C6A293D"}
+    {"label":"mode1-wire-reference","scene":"examples/basic-solid-reference.json","sha256":"D6091440121F8F8ABA3086D72551E2C886469E4F38E00388A844D76222AC2682"},
+    {"label":"mode2-hidden-wire-reference","scene":"examples/basic-solid-reference.json","sha256":"726C32CBDB26EE0030F20043CA10FAA265DF5114E99EC1D0E29127DF4B336880"},
+    {"label":"mode3-static-solid-reference","scene":"examples/basic-solid-reference.json","sha256":"459CB92DEDCC59A42AC25463602188C7638DE7BEE965CBA91A3BE4419590F6B2"},
+    {"label":"mode4-dynamic-solid-normal-reference","scene":"examples/basic-solid-reference.json","sha256":"27B4EDCD3ACC2FA35F2227B6972BAFEB8C402966ED0EE353ACBEBED3F29775CF"},
+    {"label":"mode4-dynamic-solid-small-reference","scene":"examples/basic-solid-reference.json","sha256":"D25ED041E53B2C19B9F3E2B46B6C110CE3B90670B52A8888BCD1599879274C8A"},
+    {"label":"mode4-walkLite-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"CE534BBEB406F7428B0012F7BF0A5B2EAE2312323203E2058DAF9E80D4EE6434"},
+    {"label":"mode4-walkFull-auto-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"2A794961A62FF2ABF2CB32AFC0D7CEF01E6149D1D224E0873F515C600064AE07"},
+    {"label":"mode4-walkFull-PAL-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"F22CC753350F594BC9497412121072DC2237E4BC332AD48E3B1DB2A0E5F89FE7"},
+    {"label":"mode4-walkFull-NTSC-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"36DC6F6F76347120311221BB018F5889A0AF409059CA568546FDBF78985237DD"},
+    {"label":"mode4-satin-material-reference","scene":"examples/static-satin-material-reference.json","sha256":"20D8B6889BD39E731EF584477C1E369351B2D44E9977B3856CEAD2CEAA087EA6"},
+    {"label":"mode4-reflective-material-reference","scene":"examples/dynamic-reflective-material-reference.json","sha256":"6AEEB2A738857F4359CA6A329267E2D4B5933E0BBAA15750ABEB214F361B13A5"}
   ],
   "twoColorWireReferences": [
     {"label":"mode1-two-color-wire-reference","scene":"examples/wire-two-color-multimaterial.json","sha256":"C81F5C79825DDC01171EB84EB2FE1C8A90C356AC9EFCDFD480A40EC56D35B90F"},

@@ -1,0 +1,39 @@
+# Generated 3Dvibe64 build outputs
+/work/3Dvibe64.asm
+/work/3Dvibe64.prg
+/work/*.lst
+/work/*.lbl
+/work/*.map
+/work/*.log
+/work/*.trace
+/work/*.vice
+/work/*.png
+/work/*.bmp
+/work/*.gif
+/work/*.cmd
+
+# Locally installed external tools
+/work/tools/
+
+# Keep the empty build directory, ignore its generated contents
+/work/build/*
+!/work/build/.gitkeep
+
+# Python caches and test artifacts
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.coverage
+
+# Editors and operating systems
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Local archives and temporary files
+*.zip
+*.tmp
+*.bak
+*~

@@ -230,6 +230,8 @@ With the visual overlay compiled in, each VIC-II bank owns its Screen RAM and co
 
 The normal 3D body is therefore 160×88 at Y=12; small is 128×80 at Y=12. `-NoFpsOverlay` compiles the unchanged 1.1.0 bitmap-only path. Generic Text uses a `$FF`-terminated compact string; zero is a valid space glyph. The FPS digits and Generic Text are written to both Screen RAM buffers, not copied from one displayed bank to the other.
 
+At runtime, `F` toggles this complete split, not only the numeric FPS cells. The OFF path still selects VIC bank, Screen RAM and bitmap from `drawbuf`. `TEXT_CHARSET_BYTES` is derived from `TEXT_CHARSET_GLYPH_COUNT`: it is 96 for the FPS-only charset and 184 when Generic Text is emitted. The safe toggle path clears exactly that bitmap prefix while hidden and restores it before re-enabling the text IRQ; `$4A`/`$4B` timing is unchanged.
+
 ## 8. The 3D pipeline
 
 The conceptual pipeline is:

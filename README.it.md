@@ -1,6 +1,6 @@
-# 3Dvibe64 1.1.1
+# 3Dvibe64 1.1.2
 
-Questo pacchetto pubblico 1.1.1 è un SDK sorgente: contiene builder congelato,
+Questo pacchetto pubblico 1.1.2 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni
@@ -123,6 +123,10 @@ Mode 4 usa X LegacyDirect, builder XY-Q2, trace Y integrale e frazionario, divis
 Lo split same-bank DEV7 riserva tre righe di caratteri (`TEXT_HEADER_SCREEN_BYTES=120`) sopra il body 3D. `-HeaderText "..."` scrive fino a 40 caratteri nella riga centrale di Screen A e Screen B. Il charset compatto supporta spazio, cifre, punto e `S C R I T A D E M P O`; i caratteri non supportati diventano spazi. Il terminatore `$FF` DEV7.1 permette spazi interni alla stringa e corregge il mapping alfabetico compatto.
 
 Il contatore FPS usa le celle 0–3 della stessa riga e ha precedenza. `F` commuta l’intero header, Generic Text compreso; `-FpsOverlayOnStart` lo mostra dall’avvio. `-FpsCounterOnly` conserva il campionamento senza split visivo, mentre `-NoFpsOverlay` rimuove split e tasto FPS. Ogni bank video mantiene la propria Screen RAM e il proprio charset; i cambi materiale proteggono i 120 byte riservati. L’aggiunta di Generic Text emette il font compatto completo da 184 byte e può richiedere `high-basic-v2` in una build `stable` molto densa.
+
+`F` non nasconde separatamente le sole quattro celle FPS: commuta tutto lo split Generic Text/FPS. Quando è nascosto, il renderer continua il double buffering e seleziona `$DD00`/`$D018` in base al buffer realmente mostrato. Il builder deriva la dimensione del charset compatto dal numero di glifi generati (96 byte per i soli FPS, 184 byte con Generic Text), pulisce esattamente quell’intervallo allo spegnimento e lo ricostruisce prima della riattivazione.
+
+Con `meshSourceSharing`, il materiale per istanza si indica con `materialOverride` (analogamente `reflectivityOverride`/`colorOverride`). `material` o `materialFamily` senza suffisso non è un override dell’istanza shared. Un override del materiale non richiede anche un override della riflettività; la 1.1.2 corregge inoltre questa configurazione shared con solo materiale.
 
 Limitazione nota: con timing stock può restare un singolo pixel fisico sul margine destro, in corrispondenza della transizione raster fra header e body. La regressione 1.1.1 ha osservato un pixel stabile, senza corruzione della scena, crash, propagazione o divergenza A/B. Il timing validato `$4A`/`$4B` viene mantenuto intenzionalmente; usare `-NoFpsOverlay` quando serve un frame privo dello split.
 

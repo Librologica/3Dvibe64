@@ -230,6 +230,8 @@ Quando l’overlay visivo è compilato, ogni bank VIC-II possiede la propria Scr
 
 Il body 3D normal misura quindi 160×88 a Y=12; small misura 128×80 a Y=12. `-NoFpsOverlay` compila il percorso solo bitmap 1.1.0 invariato. Generic Text usa una stringa compatta terminata da `$FF`; zero è un glifo spazio valido. Le cifre FPS e Generic Text vengono scritti in entrambe le Screen RAM, senza copiare dalla bank visualizzata all’altra.
 
+A runtime, `F` commuta l’intero split, non le sole celle numeriche FPS. Il percorso OFF continua a scegliere bank VIC, Screen RAM e bitmap da `drawbuf`. `TEXT_CHARSET_BYTES` deriva da `TEXT_CHARSET_GLYPH_COUNT`: vale 96 per il charset dei soli FPS e 184 quando è emesso Generic Text. Il toggle sicuro pulisce esattamente quel prefisso bitmap quando lo split è nascosto e lo ripristina prima di riattivare l’IRQ testuale; il timing `$4A`/`$4B` resta invariato.
+
 ## 8. Pipeline 3D
 
 La pipeline concettuale è:

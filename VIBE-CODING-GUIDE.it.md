@@ -1444,6 +1444,8 @@ Nel percorso shared:
 - non sono ammesse mappe `faceOverrides` differenti per ciascuna istanza della stessa sorgente;
 - `materialOverride`, `reflectivityOverride` e `colorOverride` possono invece essere applicati all’istanza.
 
+Per le istanze shared usare letteralmente i nomi `...Override`. `material` o `materialFamily` senza suffisso non è un override dell’istanza in questo percorso. `materialOverride` può essere usato da solo e non richiede un corrispondente `reflectivityOverride`.
+
 La condivisione riduce la duplicazione della geometria sorgente, ma non elimina il costo dei buffer runtime di ogni istanza. Una scena con molte copie può quindi esaurire comunque la memoria. Gli indici a un byte impongono limiti teorici di 255 per varie categorie, ma i limiti pratici sono generalmente inferiori.
 
 ## 19. Timeline dichiarativa
@@ -2046,7 +2048,7 @@ Prima di abilitare più controlli contemporaneamente, chiedere a Codex di verifi
 
 DEV7 usa uno split same-bank con tre righe testuali sopra il body bitmap. `-HeaderText "..."` incorpora al massimo 40 caratteri del charset compatto in entrambe le bank video. Sono supportati spazio, cifre, punto e `S C R I T A D E M P O`; l’input non supportato diventa uno spazio. Il contatore FPS occupa le prime quattro celle della riga centrale. Il terminatore `$FF` è essenziale perché zero è il glifo spazio valido.
 
-L’intero header può essere incluso e commutato con `F`.
+L’intero header può essere incluso e commutato con `F`; non esiste uno stato runtime separato che nasconda soltanto le cifre FPS lasciando visibile Generic Text. La versione 1.1.2 mantiene attivo il double buffering mentre lo split è nascosto, pulisce l’intervallo charset compatto generato da 96 o 184 byte e lo ricostruisce prima di mostrare nuovamente l’header.
 
 - `-FpsOverlayOnStart` lo mostra fin dall’avvio;
 - `-FpsOverlay` mantiene il selettore previsto dal contratto;

@@ -1442,6 +1442,8 @@ In the shared path:
 - different `faceOverrides` maps are not allowed for separate instances of the same source;
 - `materialOverride`, `reflectivityOverride`, and `colorOverride` can instead be applied to an instance.
 
+Use the `...Override` names literally for shared instances. Plain `material` or `materialFamily` is not an instance override in this path. `materialOverride` can be used by itself; no matching `reflectivityOverride` is required.
+
 Sharing reduces duplication of source geometry, but it does not eliminate the cost of each instance’s runtime buffers. A scene containing many copies can therefore still exhaust memory. One-byte indices impose theoretical limits of 255 in several categories, but practical limits are generally lower.
 
 ## 19. Declarative Timeline
@@ -2044,7 +2046,7 @@ Before enabling multiple controls at the same time, ask Codex to verify:
 
 DEV7 uses a same-bank split with three text rows above the bitmap body. `-HeaderText "..."` embeds at most 40 compact-charset characters in both video banks. Supported characters are space, digits, dot, and `S C R I T A D E M P O`; unsupported input becomes a space. The FPS counter owns the first four cells of the middle row. The `$FF` terminator is significant because zero is the valid space glyph.
 
-The complete header can be included and toggled with `F`.
+The complete header can be included and toggled with `F`; there is no separate runtime state that hides only the FPS digits while keeping Generic Text visible. Version 1.1.2 keeps double buffering active while the split is hidden, clears the generated 96- or 184-byte compact charset range, and rebuilds it before the header is shown again.
 
 - `-FpsOverlayOnStart` displays it from startup;
 - `-FpsOverlay` retains the selector defined by the contract;

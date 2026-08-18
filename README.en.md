@@ -1,6 +1,6 @@
-# 3Dvibe64 1.1.1
+# 3Dvibe64 1.1.2
 
-This public 1.1.1 package is a source SDK: it contains the frozen builder,
+This public 1.1.2 package is a source SDK: it contains the frozen builder,
 documentation, JSON reference scenes, and contracts, but no precompiled PRG or
 diagnostic artifact. Build examples locally, preferably in a disposable working copy.
 The examples are executable API documentation, not bundled productions.
@@ -122,6 +122,10 @@ Mode 4 uses X LegacyDirect and the XY-Q2 builder, integral and fractional Y trac
 The same-bank DEV7 split reserves three character rows (`TEXT_HEADER_SCREEN_BYTES=120`) above the 3D body. `-HeaderText "..."` writes up to 40 characters to the middle row of both Screen A and Screen B. The compact charset supports space, digits, dot, and `S C R I T A D E M P O`; unsupported characters are rendered as spaces. The DEV7.1 `$FF` terminator allows spaces inside the string and fixes the compact alphabet mapping.
 
 The FPS counter uses cells 0–3 of that middle row and takes precedence there. `F` toggles the complete header, including Generic Text; `-FpsOverlayOnStart` starts it visible. `-FpsCounterOnly` retains the sampler without the visual split, while `-NoFpsOverlay` removes both split and FPS key. Both video banks keep their own Screen RAM and charset, and material changes preserve the reserved 120-byte header. Adding Generic Text emits the complete 184-byte compact font and can make a dense `stable` build require `high-basic-v2`.
+
+`F` does not independently hide the four FPS cells: it switches the complete Generic Text/FPS split. While hidden, the renderer continues double-buffering and selects `$DD00`/`$D018` from the buffer actually displayed. The builder derives the compact charset length from its generated glyph count (96 bytes for FPS-only, 184 bytes when Generic Text is present), clears precisely that range when hiding the split, and reconstructs it before showing the split again.
+
+With `meshSourceSharing`, per-instance material selection is expressed by `materialOverride` (and likewise `reflectivityOverride`/`colorOverride`). Plain `material` or `materialFamily` is not a shared-instance override. A material override does not require a reflectivity override; 1.1.2 also fixes that material-only shared configuration.
 
 Known limitation: on stock timing, an isolated physical pixel can remain at the far-right edge on the header/body raster transition. The 1.1.1 regression observed one stable pixel with no scene corruption, crash, propagation, or A/B mismatch. The validated `$4A`/`$4B` timing is intentionally retained; use `-NoFpsOverlay` when a completely split-free frame is required.
 
