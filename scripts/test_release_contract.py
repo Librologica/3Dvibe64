@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained public 3Dvibe64 1.1.1 source-SDK contract."""
+"""Self-contained public 3Dvibe64 1.1.2 source-SDK contract."""
 from __future__ import annotations
 
 import hashlib
@@ -15,8 +15,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.1.1"
-BUILDER_SHA256 = "FE1B51C2957638CCB31ABF6FAB54C456FDF0D1F839183DA4AEAFA2A642596C2D"
+VERSION = "1.1.2"
+BUILDER_SHA256 = "8B16C2CB523403516B8AE667A7E1DEB21997BD03084ED6705F51F021D816997E"
 PERMANENT_FILE_COUNT = 45
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
@@ -88,18 +88,35 @@ GROUND_ROLL_FRAMEBUFFER_SCENE = {
     "contract": {"version": 1, "worldSpace": "world-z-up", "objectSpace": "aligned-world", "viewportProfile": "normal", "ground": True},
 }
 
+SHARED_RGB_FRAMEBUFFER_SCENE = {
+    "schema": 1,
+    "name": "shared_rgb_material_override_framebuffer_contract",
+    "graphicsMode": 4,
+    "meshSourceSharing": True,
+    "axisConvention": "world-z-up",
+    "world": {"backgroundColor": 0, "grounds": []},
+    "camera": {"id": "camera", "mode": "fixed", "position": [0, -60, 0], "rotation": [0, 0, 0]},
+    "lights": [{"id": "key", "type": "static", "position": [-40, -20, 60], "intensity": 10}],
+    "meshes": [{"id": "shared_cube", "type": "mesh", "geometry": "solid", "materialProfile": "single", "builtin": "cube"}],
+    "objects": [
+        {"id": "red_cube", "mesh": "shared_cube", "position": [-50, 120, 0], "rotation": [18, 22, 0], "scale": 0.55, "visible": True, "materialOverride": "red"},
+        {"id": "green_cube", "mesh": "shared_cube", "position": [0, 120, 0], "rotation": [18, 22, 0], "scale": 0.55, "visible": True, "materialOverride": "green"},
+        {"id": "blue_cube", "mesh": "shared_cube", "position": [50, 120, 0], "rotation": [18, 22, 0], "scale": 0.55, "visible": True, "materialOverride": "blue"},
+    ],
+}
+
 REFERENCE_BUILDS = (
-    ("mode1-wire-reference", "examples/basic-solid-reference.json", "8E3EE1695E804BB5EFC540EE086C2C42A176D731CA995D21893A9F4565108643", ("-GraphicsMode", "1", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
-    ("mode2-hidden-wire-reference", "examples/basic-solid-reference.json", "6D3AC3688CB25FC5F8B0E201E33031408FB2891A036C8C50B13A6F362B60E5B6", ("-GraphicsMode", "2", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
-    ("mode3-static-solid-reference", "examples/basic-solid-reference.json", "75B97D3D60A26CAD9E8991E5C25B500EAFC77DF883CA57CB08E83638B0E8AF20", ("-GraphicsMode", "3", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
-    ("mode4-dynamic-solid-normal-reference", "examples/basic-solid-reference.json", "FA6EACA9DE6EC7F69DAA5D78400AC8EB0D95F8A07B865FF3110CBAC6B4120247", ("-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
-    ("mode4-dynamic-solid-small-reference", "examples/basic-solid-reference.json", "AEDE88BAF39B34F675E0D134E6C2AFDBD8DACCC731206794CEC929E7CF346D1E", ("-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "small", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
-    ("mode4-walkLite-reference", "examples/mode4-walkfull-reference.json", "1E1C1629C7B9BF88E73625A97EFA8F2DBD48BB33ADB3361376B451576379E060", ("-GraphicsMode", "4", "-CameraMode", "walkLite", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
-    ("mode4-walkFull-auto-reference", "examples/mode4-walkfull-reference.json", "041A5A0897377FC050091420A614D9EDD0D599ADE0B76BE46EE76FCED5972553", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-VideoStandard", "auto")),
-    ("mode4-walkFull-PAL-reference", "examples/mode4-walkfull-reference.json", "01EE55B13EE2692092264C4721AD03FDFF49868B193A8073C2673CC53B914DFC", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-VideoStandard", "pal")),
-    ("mode4-walkFull-NTSC-reference", "examples/mode4-walkfull-reference.json", "6CE7F54AAA59861B11CE0055759DC3CFF530E634E1EB3FE0BC7B9CBC6BADF4B5", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-VideoStandard", "ntsc")),
-    ("mode4-satin-material-reference", "examples/static-satin-material-reference.json", "03D9EEC20E392FC0760EA0FD553D1F2DB7DE14087355C762DDA629E40CB0BF19", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
-    ("mode4-reflective-material-reference", "examples/dynamic-reflective-material-reference.json", "8C4D490201BA6F2707765BC9F294294922357020EC11CABB1B47CC608C6A293D", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
+    ("mode1-wire-reference", "examples/basic-solid-reference.json", "D6091440121F8F8ABA3086D72551E2C886469E4F38E00388A844D76222AC2682", ("-GraphicsMode", "1", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
+    ("mode2-hidden-wire-reference", "examples/basic-solid-reference.json", "726C32CBDB26EE0030F20043CA10FAA265DF5114E99EC1D0E29127DF4B336880", ("-GraphicsMode", "2", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
+    ("mode3-static-solid-reference", "examples/basic-solid-reference.json", "459CB92DEDCC59A42AC25463602188C7638DE7BEE965CBA91A3BE4419590F6B2", ("-GraphicsMode", "3", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
+    ("mode4-dynamic-solid-normal-reference", "examples/basic-solid-reference.json", "27B4EDCD3ACC2FA35F2227B6972BAFEB8C402966ED0EE353ACBEBED3F29775CF", ("-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
+    ("mode4-dynamic-solid-small-reference", "examples/basic-solid-reference.json", "D25ED041E53B2C19B9F3E2B46B6C110CE3B90670B52A8888BCD1599879274C8A", ("-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "small", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
+    ("mode4-walkLite-reference", "examples/mode4-walkfull-reference.json", "CE534BBEB406F7428B0012F7BF0A5B2EAE2312323203E2058DAF9E80D4EE6434", ("-GraphicsMode", "4", "-CameraMode", "walkLite", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
+    ("mode4-walkFull-auto-reference", "examples/mode4-walkfull-reference.json", "2A794961A62FF2ABF2CB32AFC0D7CEF01E6149D1D224E0873F515C600064AE07", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-VideoStandard", "auto")),
+    ("mode4-walkFull-PAL-reference", "examples/mode4-walkfull-reference.json", "F22CC753350F594BC9497412121072DC2237E4BC332AD48E3B1DB2A0E5F89FE7", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-VideoStandard", "pal")),
+    ("mode4-walkFull-NTSC-reference", "examples/mode4-walkfull-reference.json", "36DC6F6F76347120311221BB018F5889A0AF409059CA568546FDBF78985237DD", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-VideoStandard", "ntsc")),
+    ("mode4-satin-material-reference", "examples/static-satin-material-reference.json", "20D8B6889BD39E731EF584477C1E369351B2D44E9977B3856CEAD2CEAA087EA6", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
+    ("mode4-reflective-material-reference", "examples/dynamic-reflective-material-reference.json", "6AEEB2A738857F4359CA6A329267E2D4B5933E0BBAA15750ABEB214F361B13A5", ("-GraphicsMode", "4", "-CameraMode", "walkFull", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable")),
 )
 
 TWO_COLOR_BUILDS = (
@@ -181,7 +198,7 @@ def check_builder_and_package() -> None:
     assert sha256(builder) == BUILDER_SHA256, "builder hash changed"
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
-        "name": "3Dvibe64", "displayName": "3Dvibe64 1.1.1", "version": VERSION,
+        "name": "3Dvibe64", "displayName": "3Dvibe64 1.1.2", "version": VERSION,
         "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT,
         "precompiledPrograms": False,
         "author": "librologica.digital",
@@ -200,7 +217,10 @@ def check_builder_and_package() -> None:
         "normalBody": {"width": 160, "height": 88, "originY": 12},
         "smallBody": {"width": 128, "height": 80, "originY": 12},
         "headerTextOption": "HeaderText", "headerTextMaxCharacters": 40,
-        "terminator": 255, "fpsDoubleBuffered": True, "sameBank": True,
+        "terminator": 255, "runtimeToggle": "complete-header",
+        "fpsOnlyCharsetBytes": 96, "genericTextCharsetBytes": 184,
+        "charsetLengthDerivedFromGlyphCount": True,
+        "fpsDoubleBuffered": True, "sameBank": True,
     }
     framebuffer = manifest["runtimeFramebufferRegression"]
     assert framebuffer["frames"] == 32 and framebuffer["modes"] == [4, 5]
@@ -223,7 +243,8 @@ def check_builder_and_package() -> None:
         "Camera-plane culling requires three non-collinear vertices in face $faceIndex",
         'TEXT_HEADER_CELL_ROWS = 3', 'TEXT_HEADER_SCREEN_BYTES = TEXT_HEADER_CELL_ROWS * 40',
         'TEXT_BODY_FIRST_RASTER = $4B', 'TEXT_BITMAP_IRQ_RASTER = $4A',
-        '[string]$HeaderText = ""', 'FPS_FONT_BYTE_COUNT = $B8',
+        '[string]$HeaderText = ""', 'TEXT_CHARSET_GLYPH_COUNT = $17',
+        'TEXT_CHARSET_BYTES = TEXT_CHARSET_GLYPH_COUNT * 8',
     ):
         assert token in source, f"builder contract missing: {token}"
 
@@ -231,7 +252,7 @@ def check_builder_and_package() -> None:
 def check_documentation() -> None:
     assert (ROOT / "VERSION").read_text(encoding="utf-8-sig").strip() == VERSION
     main = (ROOT / "README.md").read_text(encoding="utf-8-sig")
-    assert main.startswith("# 3Dvibe64 1.1.1\n")
+    assert main.startswith("# 3Dvibe64 1.1.2\n")
     for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1–5", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile"):
         assert token in main, f"README.md does not document {token}"
     for token in ("HeaderText", "160×88", "TEXT_HEADER_SCREEN_BYTES"):
@@ -494,6 +515,89 @@ def check_ground_roll_framebuffer_runtime() -> None:
             assert actual == expected, f"{tag} framebuffer: {actual} != {expected}"
 
 
+def multicolor_region_counts(memory: memoryview, bitmap_base: int, screen_base: int, col_first: int, col_end: int) -> dict[int, int]:
+    counts: dict[int, int] = {}
+    for row in range(25):
+        for col in range(col_first, col_end):
+            cell = row * 40 + col
+            screen = memory[screen_base + cell]
+            color = memory[0xD800 + cell] & 0x0F
+            for scanline in range(8):
+                packed = memory[bitmap_base + row * 320 + col * 8 + scanline]
+                for shift in (6, 4, 2, 0):
+                    slot = (packed >> shift) & 0x03
+                    if slot == 0:
+                        continue
+                    pigment = (screen >> 4) if slot == 1 else ((screen & 0x0F) if slot == 2 else color)
+                    counts[pigment] = counts.get(pigment, 0) + 1
+    return counts
+
+
+def check_shared_rgb_framebuffer_runtime() -> None:
+    tass = resolve_executable(("TASS64_EXE", "TASS64_PATH"), ("64tass.exe", "64tass"))
+    vice = resolve_executable(("VICE_X64SC", "VICE_EXE"), ("x64sc.exe", "x64sc"))
+    with tempfile.TemporaryDirectory(prefix="3dvibe64-1.1.2-shared-rgb-") as temporary:
+        sandbox = Path(temporary) / "sdk"
+        shutil.copytree(ROOT, sandbox)
+        scene_path = sandbox / "validation" / "shared-rgb-framebuffer.json"
+        write_json(scene_path, SHARED_RGB_FRAMEBUFFER_SCENE)
+        for mode in (4, 5):
+            clean_generated(sandbox)
+            build(sandbox, str(scene_path.relative_to(sandbox)), (
+                "-GraphicsMode", str(mode), "-CameraMode", "fixed", "-CameraViewport", "normal",
+                "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable",
+                "-FaceCullProfile", "stable", "-NoFpsOverlay",
+            ))
+            asm_path = sandbox / "work" / "3Dvibe64.asm"
+            asm = asm_path.read_text(encoding="utf-8", errors="replace")
+            assert "FACE_MATERIAL_ACTIVE_ONLY = $00" in asm
+            assert "object_material_override:\n .byte $02,$03,$04" in asm
+            prg_path = sandbox / "work" / "3Dvibe64.prg"
+            labeled_prg = sandbox / "validation" / f"shared-rgb-mode{mode}.prg"
+            label_path = sandbox / "validation" / f"shared-rgb-mode{mode}.vice.labels"
+            assembled = subprocess.run(
+                [str(tass), "-a", "-B", "-o", str(labeled_prg), f"--labels={label_path}", "--vice-labels-numeric", str(asm_path)],
+                cwd=sandbox, text=True, capture_output=True, check=False,
+            )
+            assert assembled.returncode == 0, assembled.stdout + assembled.stderr
+            assert sha256(labeled_prg) == sha256(prg_path), f"shared RGB Mode {mode}: labeled reassembly changed PRG"
+
+            snapshot_path = sandbox / "validation" / f"shared-rgb-mode{mode}.vsf"
+            monitor_path = sandbox / "validation" / f"shared-rgb-mode{mode}.mon"
+            monitor_path.write_text(
+                f'load_labels "{label_path.resolve().as_posix()}"\n'
+                "trace .render_frame_end\n"
+                "ignore 1 31\n"
+                f'command 1 "dump \\\"{snapshot_path.resolve().as_posix()}\\\""\n'
+                "x\n",
+                encoding="ascii",
+            )
+            run = subprocess.run(
+                [str(vice), "-default", "+confirmonexit", "-console", "-warp", "-VICIIfilter", "0", "-autostartprgmode", "1", "-initbreak", "ready", "-moncommands", str(monitor_path), "-limitcycles", "60000000", str(labeled_prg)],
+                cwd=sandbox, text=True, capture_output=True, check=False, timeout=180,
+            )
+            assert snapshot_path.is_file(), (
+                f"shared RGB Mode {mode}: render_frame_end was not reached 32 times; "
+                f"VICE exit={run.returncode}\n{run.stdout}\n{run.stderr}"
+            )
+            assert run.returncode in (0, 1), f"shared RGB Mode {mode}: VICE exit={run.returncode}\n{run.stdout}\n{run.stderr}"
+            symbols = read_vice_labels(label_path)
+            memory = read_c64_ram(snapshot_path)
+            candidates = []
+            for bitmap_base, screen_base in ((0x6000, 0x5C00), (symbols["BITMAP_B_BASE"], symbols["SCREEN_B_BASE"])):
+                regions = (
+                    multicolor_region_counts(memory, bitmap_base, screen_base, 0, 14),
+                    multicolor_region_counts(memory, bitmap_base, screen_base, 14, 26),
+                    multicolor_region_counts(memory, bitmap_base, screen_base, 26, 40),
+                )
+                score = sum(regions[index].get(pigment, 0) for index, pigment in enumerate((2, 5, 6)))
+                candidates.append((score, regions))
+            _, regions = max(candidates, key=lambda item: item[0])
+            for label, counts, expected in zip(("red", "green", "blue"), regions, (2, 5, 6)):
+                assert counts.get(expected, 0) >= 500, f"shared RGB Mode {mode} {label}: {counts}"
+                assert max(counts, key=counts.get) == expected, f"shared RGB Mode {mode} {label} is not dominant: {counts}"
+
+
 def check_reference_builds() -> None:
     with tempfile.TemporaryDirectory(prefix="3dvibe64-1.0-contract-") as temporary:
         sandbox = Path(temporary) / "sdk"
@@ -545,6 +649,38 @@ def check_schema_and_failure_contracts() -> None:
         result_text = " ".join((result.stdout + result.stderr).split())
         assert "per-instance object faceOverrides are not supported by the shared-source path" in result_text, result_text
 
+        # Per-instance material overrides must keep the draw-time material path.
+        shared_material_only = read_json(sandbox, "examples/shared-instances-timeline-static-light.json")
+        shared_material_only.pop("timeline", None)
+        shared_material_only["meshes"][0].pop("faceOverrides", None)
+        for instance in shared_material_only["objects"]:
+            instance.pop("reflectivityOverride", None)
+            instance.pop("colorOverride", None)
+        material_only_path = sandbox / "validation" / "shared-material-only.json"
+        write_json(material_only_path, shared_material_only)
+        build(sandbox, str(material_only_path.relative_to(sandbox)), ("-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-FaceCullProfile", "stable", "-NoFpsOverlay"))
+        shared_asm = (sandbox / "work" / "3Dvibe64.asm").read_text(encoding="utf-8", errors="replace")
+        assert "FACE_MATERIAL_ACTIVE_ONLY = $00" in shared_asm
+        assert "SCENE_INSTANCE_MATERIAL_ALL_PINNED = $01" in shared_asm
+        assert "object_material_override:" in shared_asm
+
+        # Reflectivity-only shared instances use the same draw-time loader but
+        # keep the active/global material optimization.
+        shared_reflect_only = read_json(sandbox, "examples/shared-instances-timeline-static-light.json")
+        shared_reflect_only.pop("timeline", None)
+        shared_reflect_only["meshes"][0].pop("faceOverrides", None)
+        for instance in shared_reflect_only["objects"]:
+            instance.pop("materialOverride", None)
+            instance.pop("colorOverride", None)
+        reflect_only_path = sandbox / "validation" / "shared-reflect-only.json"
+        write_json(reflect_only_path, shared_reflect_only)
+        build(sandbox, str(reflect_only_path.relative_to(sandbox)), ("-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-FaceCullProfile", "stable", "-NoFpsOverlay"))
+        shared_asm = (sandbox / "work" / "3Dvibe64.asm").read_text(encoding="utf-8", errors="replace")
+        assert "FACE_MATERIAL_ACTIVE_ONLY = $01" in shared_asm
+        assert "FACE_REFLECTIVITY_ACTIVE_ONLY = $00" in shared_asm
+        assert "SCENE_INSTANCE_REFLECT_ALL_PINNED = $01" in shared_asm
+        assert "object_reflectivity_override:" in shared_asm and "lfm_fixed:" in shared_asm
+
         point = dict(basic)
         point["meshes"] = [{"id": "point", "type": "mesh", "geometry": "solid", "materialProfile": "single", "vertices": [[0, 0, 0], [1, 0, 0], [2, 0, 0]], "faces": [[0, 1, 2]]}]
         point["objects"] = [{"id": "point", "mesh": "point", "position": [0, 100, 0], "rotation": [0, 0, 0], "scale": 1, "visible": True, "geometry": "solid", "materialProfile": "single", "material": "gray", "reflectivity": "satin"}]
@@ -573,10 +709,11 @@ def main() -> None:
     check_documentation()
     check_reference_builds()
     check_schema_and_failure_contracts()
+    check_shared_rgb_framebuffer_runtime()
     check_ground_framebuffer_runtime()
     check_ground_roll_framebuffer_runtime()
     check_clean_tree()
-    print("PUBLIC_1_1_1_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 groundRoll=12/12 sharing=pass pointFixedMin=expected-error dev7TextSplit=separate files=45 builder=exact manifest=exact tree=clean")
+    print("PUBLIC_1_1_2_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass pointFixedMin=expected-error dev7TextSplit=separate files=45 builder=exact manifest=exact tree=clean")
 
 
 if __name__ == "__main__":

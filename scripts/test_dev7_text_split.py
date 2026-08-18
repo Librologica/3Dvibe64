@@ -85,7 +85,9 @@ def static_contract(asm: str) -> None:
         "TEXT_BITMAP_IRQ_RASTER = $4A",
         "CAMERA_VIEWPORT_HEIGHT = $58",
         "CAMERA_VIEWPORT_ORIGIN_Y = $0C",
-        "FPS_FONT_BYTE_COUNT = $B8",
+        "TEXT_CHARSET_GLYPH_COUNT = $17",
+        "TEXT_CHARSET_BYTES = TEXT_CHARSET_GLYPH_COUNT * 8",
+        "FPS_FONT_BYTE_COUNT = TEXT_CHARSET_BYTES",
     ):
         assert token in asm, token
     match = re.search(r"(?m)^text_header_string:\s*\.byte\s+([^\r\n]+)$", asm)
@@ -96,6 +98,13 @@ def static_contract(asm: str) -> None:
     assert "ldx #TEXT_HEADER_SCREEN_BYTES" in material
     assert "sta $5c00,x" in material and "sta SCREEN_B_BASE,x" in material
     assert "cpx #$e8" in material
+    bitmap_mode = asm[asm.index("set_bitmap_body_mode:") : asm.index("fps_frame_done:")]
+    assert "lda drawbuf" in bitmap_mode
+    assert "ora #VIC_BANK_B_BITS" in bitmap_mode and "lda #VIC_D018_B" in bitmap_mode
+    toggle = asm[asm.index("poll_fps_key:") : asm.index("scan_fps_key:")]
+    assert "jsr wait_text_charset_safe" in toggle
+    assert "jsr update_text_charset" in toggle
+    assert "jsr switch_frame_barrier" not in toggle
 
 
 def run_vice(vice: Path, tass: Path, sandbox: Path, video: str) -> None:
@@ -186,7 +195,7 @@ def layout_contract(sandbox: Path) -> None:
 def main() -> None:
     tass = resolve_executable(("TASS64_EXE", "TASS64_PATH"), ("64tass.exe", "64tass"))
     vice = resolve_executable(("VICE_X64SC", "VICE_EXE"), ("x64sc.exe", "x64sc"))
-    with tempfile.TemporaryDirectory(prefix="3dvibe64-1.1.1-dev7-") as temporary:
+    with tempfile.TemporaryDirectory(prefix="3dvibe64-1.1.2-dev7-") as temporary:
         sandbox = Path(temporary) / "sdk"
         shutil.copytree(ROOT, sandbox)
         layout_contract(sandbox)
