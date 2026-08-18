@@ -1529,9 +1529,9 @@ $VicD018B = if ($HighBasicV2LayoutFlag -ne 0) { 0x18 } else { 0x38 }
 # renders the text header with each bitmap buffer's own Screen RAM and with a
 # compact charset stored at the start of that same buffer's bitmap. This keeps
 # both stable and high-basic-v2 inside their native VIC-II banks. The canonical
-# -NoFpsOverlay build remains byte-for-byte unchanged. The F key remains an
-# overlay-only runtime toggle; -FpsCounterOnly emits the sampler without text,
-# charset or split IRQ.
+# -NoFpsOverlay build remains byte-for-byte unchanged. The F key toggles the
+# complete text split (Generic Text included); -FpsCounterOnly emits the sampler
+# without text, charset or split IRQ.
 $FpsTextReservedSize = 0x0400
 $FpsCharsetReservedSize = 0x0800
 $FpsTextClearCells = $TextHeaderScreenBytes
@@ -1695,7 +1695,9 @@ foreach ($character in $HeaderText.ToUpperInvariant().ToCharArray()) {
 $headerBytes += 0xFF
 $headerBytesStr = ($headerBytes | ForEach-Object { ByteHex $_ }) -join ","
 $headerOffset = if ($HeaderText.Length -gt 0 -and $HeaderText.Length -lt 40) { [int][Math]::Floor((40 - $HeaderText.Length) / 2) } else { 0 }
-$fpsFontByteCount = if ($HeaderText.Length -eq 0) { 0x60 } else { $fpsFontBytes.Count }
+$textCharsetGlyphCount = if ($HeaderText.Length -eq 0) { 12 } else { [int]($fpsFontBytes.Count / 8) }
+$textCharsetByteCount = $textCharsetGlyphCount * 8
+$fpsFontByteCount = $textCharsetByteCount
 $fpsFontBytesEmitted = [int[]]$fpsFontBytes[0..($fpsFontByteCount - 1)]
 
 $QualityProfiles = @{
@@ -7443,6 +7445,12 @@ $FaceSolidColorRequestedFlag = if (Test-AllByteEqual $faceSolidColor 0xff) { 0 }
 $FaceSolidColorFlag = if ($FaceSolidColorRequestedFlag -ne 0 -and $GraphicsModeNumber -ge 1 -and $GraphicsModeNumber -le 5) { 1 } else { 0 }
 $FaceReflectivityActiveOnlyFlag = if (Test-AllByteEqual $faceReflectivity 0xff) { 1 } else { 0 }
 $FaceMaterialActiveOnlyFlag = if (Test-AllByteEqual $faceMaterial 0xff) { 1 } else { 0 }
+if ($MeshSourceSharingRuntimeFlag -ne 0) {
+ $sharedInstanceMaterialOverride = (-not (Test-AllByteEqual $objectMaterialOverride 0xff)) -or ($SceneTimelineFlag -ne 0 -and -not (Test-AllByteEqual ([int[]]$SceneTimelineCompiled.Material) 0xff))
+ $sharedInstanceReflectivityOverride = (-not (Test-AllByteEqual $objectReflectivityOverride 0xff)) -or ($SceneTimelineFlag -ne 0 -and -not (Test-AllByteEqual ([int[]]$SceneTimelineCompiled.Reflect) 0xff))
+ if ($sharedInstanceMaterialOverride) { $FaceMaterialActiveOnlyFlag = 0 }
+ if ($sharedInstanceReflectivityOverride) { $FaceReflectivityActiveOnlyFlag = 0 }
+}
 $SceneFaceMaterialTableActiveFlag = if ($FaceMaterialActiveOnlyFlag -eq 0) { 1 } else { 0 }
 $SceneFaceSolidColorTableRequestedFlag = $FaceSolidColorRequestedFlag
 $WireTwoColorMultimaterialRequestedFlag = if (
@@ -9167,8 +9175,11 @@ TEXT_HEADER_CELL_ROWS = 3
 TEXT_HEADER_SCREEN_BYTES = TEXT_HEADER_CELL_ROWS * 40 ; 120 bytes ($78)
 TEXT_BODY_FIRST_RASTER = $4B
 TEXT_BITMAP_IRQ_RASTER = $4A
+TEXT_CHARSET_UPDATE_RASTER = $80
 TEXT_HEADER_OFFSET = $00
-FPS_FONT_BYTE_COUNT = $B8
+TEXT_CHARSET_GLYPH_COUNT = $17
+TEXT_CHARSET_BYTES = TEXT_CHARSET_GLYPH_COUNT * 8
+FPS_FONT_BYTE_COUNT = TEXT_CHARSET_BYTES ; historical compatibility alias
 FPS_TEXT_BASE = $c000
 FPS_TEXT_D018 = $02
 FPS_TEXT_UNDER_IO = $00
@@ -10017,6 +10028,19 @@ usd_done:
  rts
 .endif
 
+.if FPS_OVERLAY_ENABLE != 0
+wait_text_charset_safe:
+ ldx #TEXT_CHARSET_UPDATE_RASTER
+ bne wait_raster_value
+wait_raster:
+ ldx #$f0
+wait_raster_value:
+wr1: cpx $d012
+ bne wr1
+wr2: cpx $d012
+ beq wr2
+ rts
+.else
 wait_raster:
 wr1: lda $d012
  cmp #$f0
@@ -10025,6 +10049,7 @@ wr2: lda $d012
  cmp #$f0
  beq wr2
  rts
+.endif
 
 init_irq:
  lda #$7f
@@ -10202,7 +10227,7 @@ dvs_detected_ntsc:
 
 init_fps_overlay:
 .if FPS_OVERLAY_ENABLE != 0
- jsr init_fps_charset
+ jsr update_text_charset
  jsr init_fps_text
 .endif
  lda #$00
@@ -10236,15 +10261,22 @@ ifo_samples:
  jmp fps_update_digits
 
 .if FPS_OVERLAY_ENABLE != 0
-init_fps_charset:
+init_fps_charset = update_text_charset ; historical compatibility alias
+update_text_charset:
  ldx #$00
-ifc_loop:
+utc_loop:
+ lda text_split_visible
+ beq utc_zero
  lda fps_font_bytes,x
+ bne utc_store
+utc_zero:
+ lda #$00
+utc_store:
  sta $6000,x
  sta BITMAP_B_BASE,x
  inx
- cpx #FPS_FONT_BYTE_COUNT
- bne ifc_loop
+ cpx #TEXT_CHARSET_BYTES
+ bne utc_loop
  rts
 
 init_fps_text:
@@ -10278,24 +10310,7 @@ set_text_header_mode:
  lda #$00
  sta $d020
  sta $d021
- lda drawbuf
- beq sth_show_b
-sth_show_a:
- lda $dd00
- and #$fc
- ora #$02
- sta $dd00
- lda #$78
- sta $d018
- jmp sth_common
-sth_show_b:
- lda $dd00
- and #$fc
- ora #VIC_BANK_B_BITS
- sta $dd00
- lda #VIC_D018_B
- sta $d018
-sth_common:
+ jsr select_bitmap_buffer
  lda #$08
  sta $d016
  lda #$1b
@@ -10310,6 +10325,26 @@ set_bitmap_body_mode:
  sta $d016
  lda #$3b
  sta $d011
+ jmp select_bitmap_buffer
+
+select_bitmap_buffer:
+ lda drawbuf
+ beq sbb_show_b
+sbb_show_a:
+ lda $dd00
+ and #$fc
+ ora #$02
+ sta $dd00
+ lda #$78
+ sta $d018
+ rts
+sbb_show_b:
+ lda $dd00
+ and #$fc
+ ora #VIC_BANK_B_BITS
+ sta $dd00
+ lda #VIC_D018_B
+ sta $d018
  rts
 .else
 set_text_header_mode:
@@ -10927,15 +10962,16 @@ poll_fps_key:
  beq pfk_released
  lda fps_latch
  bne pfk_done
- lda fps_overlay_visible
- eor #$01
- sta fps_overlay_visible
  lda #$01
  sta fps_latch
+ jsr wait_text_charset_safe
+ lda text_split_visible
+ eor #$01
+ sta text_split_visible
+ jsr update_text_charset
  lda #$00
  sta irq_phase
  jsr fps_update_digits
- jsr switch_frame_barrier
  jmp pfk_done
 pfk_released:
  lda #$00
@@ -11457,8 +11493,8 @@ load_face_reflectivity_y:
  cmp #$ff
  bne lfr_done
  lda active_reflect_offset
-lfr_done:
 .endif
+lfr_done:
 .endif
  sta material_reflect_offset_cur
  rts
@@ -11510,8 +11546,8 @@ load_face_material:
  cmp #$ff
  bne lfm_fixed
  lda active_material
-lfm_fixed:
 .endif
+lfm_fixed:
 .endif
  clc
  adc material_reflect_offset_cur
@@ -12896,6 +12932,14 @@ load_projection_geometric_divisor:
  jmp clamp_projection_geometric_divisor_p1
 
 .if CAMERA_MOVABLE != 0
+.if MEMORY_LAYOUT_HIGH_BASIC_V2 != 0 && MODE3_HIGH_BASIC_FULL_RASTER_RELOCATE != 0 && FPS_OVERLAY_ENABLE != 0
+explorer_camera_low_return = *
+* = $9b80
+.if * < $9000 || * >= $a000
+ .error "Relocated camera start address out of range ($9000..$9FFF)"
+.endif
+explorer_camera_relocated_start = *
+.endif
 explorer_init_camera:
  lda #EXPLORER_CAMERA_X_LO
  sta explorer_cam_x_lo
@@ -13554,6 +13598,14 @@ explorer_negate_a:
  clc
  adc #$01
  rts
+
+.if MEMORY_LAYOUT_HIGH_BASIC_V2 != 0 && CAMERA_MOVABLE != 0 && MODE3_HIGH_BASIC_FULL_RASTER_RELOCATE != 0 && FPS_OVERLAY_ENABLE != 0
+explorer_camera_relocated_end = *
+.if explorer_camera_relocated_end > $a000
+ .error "Relocated camera block exceeds $A000"
+.endif
+* = explorer_camera_low_return
+.endif
 
 explorer_sub_cam_x:
  sta p1lo
@@ -29598,6 +29650,9 @@ fbs_a_done:
 .endif
 .if MODE3_HIGH_BASIC_FULL_RASTER_RELOCATE != 0 && ($04 = GRAPHICS_MODE || GRAPHICS_MODE = $05)
 mode3_high_basic_relocated_code_end = *
+.if CAMERA_MOVABLE != 0 && FPS_OVERLAY_ENABLE != 0 && mode3_high_basic_relocated_code_end > $9b80
+ .error "Mode 4/5 relocated raster code overlaps relocated camera block ($9B80)"
+.endif
 .if mode3_high_basic_relocated_code_end > $a000
  .error "Mode 4/5 relocated full raster overlaps the high code segment"
 .endif
@@ -31986,7 +32041,8 @@ shade_last_angz_lo: .byte $ff
 shade_last_angz_hi: .byte $ff
 .if FPS_OVERLAY_ENABLE != 0
 fps_latch: .byte 0
-fps_overlay_visible: .byte FPS_OVERLAY_ON_START
+text_split_visible: .byte FPS_OVERLAY_ON_START
+fps_overlay_visible = text_split_visible ; historical compatibility alias
 fps_digit_tens: .byte 1
 fps_digit_ones: .byte 1
 fps_digit_frac: .byte 1
@@ -34706,7 +34762,7 @@ $asm = $asm.Replace('FPS_CHARSET_UNDER_IO = $00', ('FPS_CHARSET_UNDER_IO = ' + (
 $asm = $asm.Replace("`nFPS_CHARSET_RELOCATED_D000 = `$00", ("`nFPS_CHARSET_RELOCATED_D000 = " + (ByteHex $FpsCharsetRelocationD000Flag)))
 $asm = $asm.Replace('ENGINE_MODE3_FPS_CHARSET_RELOCATED_D000 = $00', ('ENGINE_MODE3_FPS_CHARSET_RELOCATED_D000 = ' + (ByteHex $Mode3FpsCharsetRelocationFlag)))
 $asm = $asm.Replace('TEXT_HEADER_OFFSET = $00', ('TEXT_HEADER_OFFSET = ' + (ByteHex $headerOffset)))
-$asm = $asm.Replace('FPS_FONT_BYTE_COUNT = $B8', ('FPS_FONT_BYTE_COUNT = ' + (ByteHex $fpsFontByteCount)))
+$asm = $asm.Replace('TEXT_CHARSET_GLYPH_COUNT = $17', ('TEXT_CHARSET_GLYPH_COUNT = ' + (ByteHex $textCharsetGlyphCount)))
 $asm = $asm.Replace('TEXT_HEADER_STRING_BYTES', $headerBytesStr)
 $asm = $asm.Replace('MESH_COUNT = $01', ('MESH_COUNT = ' + (ByteHex $MeshCount)))
 $asm = $asm.Replace('SCENE_OBJECT_COUNT = $00', ('SCENE_OBJECT_COUNT = ' + (ByteHex $SceneObjectCount)))
