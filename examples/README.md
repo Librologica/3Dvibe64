@@ -1,6 +1,6 @@
 # Public JSON reference scenes
 
-These files are executable documentation for the public 3Dvibe64 1.1.1 builder. They
+These files are executable documentation for the public 3Dvibe64 1.1.2 builder. They
 are generic technical references, not distributed productions. The package includes
 no PRG; run commands in a disposable working copy if you want the source tree to
 remain artifact-free.
@@ -48,8 +48,10 @@ byte-compatible 1.1.0 bitmap-only path and legacy 160×100 normal viewport.
 ```
 
 `shared-instances-timeline-static-light.json` demonstrates source sharing,
-per-instance overrides, source-local face overrides, `light.type: "static"`, a
-50-Hz declarative timeline, and `resetKey: "SPACE"`. `mode5-solid-color-outline.json`
+using the documented `materialOverride`/`reflectivityOverride`/`colorOverride`
+properties for per-instance appearance. Plain `material` is not a shared-instance
+override. The scene also covers source-local face overrides, `light.type: "static"`,
+a 50-Hz declarative timeline, and `resetKey: "SPACE"`. `mode5-solid-color-outline.json`
 shows shared instances, solid face pigment, and the final clipped outline.
 `ground-plane-near-clip.json` demonstrates the Mode 3–5 `clip` profile with a plane
 Ground configuration.
