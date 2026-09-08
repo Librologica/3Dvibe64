@@ -65,7 +65,7 @@ param(
  [ValidateSet("default", "stable")]
  [string]$FaceCullProfile = "default",
 
- [ValidateSet("1", "2", "3", "4", "5")]
+ [ValidateSet("1", "2", "3", "4", "5", "6")]
  [string]$GraphicsMode = "4",
 
  [ValidateSet("default", "late", "clip")]
@@ -217,6 +217,9 @@ param(
 
  [switch]$ControlReflectivity,
 
+ [ValidateRange(1, 4)]
+ [int]$ReflectivityCycleLevels = 4,
+
  [switch]$FpsOverlayOnStart,
 
  [switch]$FpsOverlay,
@@ -302,9 +305,9 @@ if (-not $PSBoundParameters.ContainsKey("CameraViewport") -and $SceneFile.Trim()
  }
 }
 
-# GraphicsModes 4 and 5 share the public XY-Q2 profile. Keep explicit values
+# GraphicsModes 4, 5 and 6 share the public solid-dynamic XY-Q2 geometry profile. Keep explicit values
 # available for diagnostics, but ordinary builds select the validated Y-Q2 gates.
-$Mode4FamilyDefaultsRequested = (@("4", "5") -contains $GraphicsMode.Trim().ToLowerInvariant())
+$Mode4FamilyDefaultsRequested = (@("4", "5", "6") -contains $GraphicsMode.Trim().ToLowerInvariant())
 if ($Mode4FamilyDefaultsRequested -and -not $PSBoundParameters.ContainsKey("ExplorerClipMode")) {
  $ExplorerClipMode = "none"
 }
@@ -314,8 +317,8 @@ $Mode4CameraPlaneClipRequested = ($Mode4NearProfileKey -eq "clip")
 # The existing Mode4NearProfile switch is shared by the solid GraphicsModes
 # 3, 4 and 5; all three consume the same projection and reject constants.
 if (($Mode4LateNearRequested -or $Mode4CameraPlaneClipRequested) -and
-    -not (@("3", "4", "5") -contains $GraphicsMode.Trim())) {
- throw "Mode4NearProfile=late|clip is available only for GraphicsModes 3, 4 and 5"
+    -not (@("3", "4", "5", "6") -contains $GraphicsMode.Trim())) {
+ throw "Mode4NearProfile=late|clip is available only for GraphicsModes 3, 4, 5 and 6"
 }
 if (($Mode4LateNearRequested -or $Mode4CameraPlaneClipRequested) -and
     $PSBoundParameters.ContainsKey("ExplorerClipMode") -and
@@ -336,8 +339,8 @@ $Mode3LateNearNoPolyFlag = if ($Mode4LateNearRequested -and $GraphicsMode.Trim()
 $CameraPlaneClipProfileFlag = if ($Mode4CameraPlaneClipRequested) { 1 } else { 0 }
 $FaceCullProfileKey = $FaceCullProfile.Trim().ToLowerInvariant()
 $StableFaceCullRequested = ($FaceCullProfileKey -eq "stable")
-if ($StableFaceCullRequested -and -not (@("4", "5") -contains $GraphicsMode.Trim())) {
- throw "FaceCullProfile=stable is available only for GraphicsModes 4 and 5"
+if ($StableFaceCullRequested -and -not (@("4", "5", "6") -contains $GraphicsMode.Trim())) {
+ throw "FaceCullProfile=stable is available only for GraphicsModes 4, 5 and 6"
 }
 if ($StableFaceCullRequested -and $FaceRenderMode -eq "force") {
  throw "FaceCullProfile=stable is incompatible with FaceRenderMode=force"
@@ -421,6 +424,7 @@ function Resolve-RendererPlan {
  3 { "static-flat-cache" }
  4 { "dynamic-small-scene" }
  5 { "dynamic-small-scene-polygon-outline" }
+ 6 { "dynamic-gouraud-ordered-dither" }
  default { "unknown" }
  }
  $targetFillProfile = if ($GraphicsModeNumber -le 2) { "wire-only" } elseif ($GraphicsModeNumber -eq 3) { "flat-static-spans" } else { "small-scene-spans" }
@@ -684,6 +688,25 @@ function Get-PropertyValue([object]$Object, [string]$Name, [object]$Default = $n
  return $Object.$Name
  }
  return $Default
+}
+
+function Apply-GouraudMeshSettings([object]$Object, [string]$Context) {
+ if (-not (Has-Property $Object "gouraud")) {
+  return
+ }
+ $gouraud = Get-PropertyValue $Object "gouraud"
+ if ($null -eq $gouraud -or -not (Has-Property $gouraud "creaseAngle")) {
+  return
+ }
+ $raw = Get-PropertyValue $gouraud "creaseAngle"
+ if (-not ($raw -is [int] -or $raw -is [long] -or $raw -is [double] -or $raw -is [decimal])) {
+  throw "$Context gouraud.creaseAngle must be numeric in degrees"
+ }
+ $angle = [double]$raw
+ if ([double]::IsNaN($angle) -or [double]::IsInfinity($angle) -or $angle -lt 0.0 -or $angle -gt 180.0) {
+  throw "$Context gouraud.creaseAngle must be in range 0..180 degrees"
+ }
+ $script:CurrentMeshGouraudCreaseAngle = $angle
 }
 
 function Get-SceneAxisConvention([object]$Doc) {
@@ -1752,13 +1775,101 @@ $GraphicsModeMap = @{
  "3" = 3
  "4" = 4
  "5" = 5
+ "6" = 6
 }
 $GraphicsModeKey = $GraphicsMode.Trim().ToLowerInvariant()
 $GraphicsModeNumber = [int]$GraphicsModeMap[$GraphicsModeKey]
-$Mode4FamilyFlag = if ($GraphicsModeNumber -eq 4 -or $GraphicsModeNumber -eq 5) { 1 } else { 0 }
-$ControlLowresFlag = if ($Mode4FamilyFlag -ne 0) { 1 } else { 0 }
+$SolidDynamicGeometryFamilyFlag = if (@(4, 5, 6) -contains $GraphicsModeNumber) { 1 } else { 0 }
+$FlatDynamicShadeFlag = if (@(4, 5) -contains $GraphicsModeNumber) { 1 } else { 0 }
+$Mode6GouraudFlag = if ($GraphicsModeNumber -eq 6) { 1 } else { 0 }
+$Mode6ByteSpanKernelFlag = $Mode6GouraudFlag
+$Mode6ViewportClearSpecializedFlag = if ($Mode6GouraudFlag -ne 0 -and $EngineCameraViewportClearLimitedFlag -ne 0) { 1 } else { 0 }
+
+function New-Mode6ViewportClearRoutine(
+ [string]$Name,
+ [string]$BitmapBaseExpression,
+ [int[]]$Offsets
+) {
+ if ($Offsets.Count -eq 0) { throw "Mode 6 specialized clear has no bitmap offsets" }
+ $sorted = @($Offsets | Sort-Object -Unique)
+ if ($sorted.Count -ne $Offsets.Count) { throw "Mode 6 specialized clear offsets overlap" }
+ $chunks = @()
+ $runStart = [int]$sorted[0]
+ $runLength = 1
+ for ($index = 1; $index -lt $sorted.Count; $index++) {
+  if ([int]$sorted[$index] -eq ([int]$sorted[$index - 1] + 1)) {
+   $runLength++
+  } else {
+   $remaining = $runLength
+   $chunkStart = $runStart
+   while ($remaining -gt 0) {
+    $chunkLength = [Math]::Min(256, $remaining)
+    $chunks += ,[pscustomobject]@{ Start = $chunkStart; Length = $chunkLength }
+    $chunkStart += $chunkLength
+    $remaining -= $chunkLength
+   }
+   $runStart = [int]$sorted[$index]
+   $runLength = 1
+  }
+ }
+ $remaining = $runLength
+ $chunkStart = $runStart
+ while ($remaining -gt 0) {
+  $chunkLength = [Math]::Min(256, $remaining)
+  $chunks += ,[pscustomobject]@{ Start = $chunkStart; Length = $chunkLength }
+  $chunkStart += $chunkLength
+  $remaining -= $chunkLength
+ }
+
+ $source = "${Name}:`n lda #`$00`n"
+ $groupIndex = 0
+ foreach ($group in @($chunks | Group-Object Length | Sort-Object { [int]$_.Name } -Descending)) {
+  $length = [int]$group.Name
+  $loop = "${Name}_group_${groupIndex}"
+  $source += " ldx #`$00`n${loop}:`n"
+  foreach ($chunk in $group.Group) {
+   $source += " sta ${BitmapBaseExpression}+$(WordHex ([int]$chunk.Start)),x`n"
+  }
+  $source += " inx`n"
+  if ($length -eq 256) {
+   $source += " bne ${loop}`n"
+  } else {
+   $source += " cpx #$(ByteHex $length)`n bne ${loop}`n"
+  }
+  $groupIndex++
+ }
+ $source += " rts`n"
+ return $source
+}
+
+$Mode6ViewportClearAsm = ""
+if ($Mode6ViewportClearSpecializedFlag -ne 0) {
+ $viewportClearOffsets = @()
+ for ($logicalY = 0; $logicalY -lt $CameraViewportHeight; $logicalY++) {
+  foreach ($physicalLineInLogicalPixel in @(0, 1)) {
+   $physicalY = (($logicalY + $CameraViewportOriginY) * 2) + $physicalLineInLogicalPixel
+   $rowOffset = ($physicalY -band 7) + (320 * [Math]::Floor($physicalY / 8))
+   for ($cellX = 0; $cellX -lt $CameraViewportCellWidth; $cellX++) {
+    $viewportClearOffsets += [int]($rowOffset + $CameraViewportBitmapXOffset + ($cellX * 8))
+   }
+  }
+ }
+ $expectedClearBytes = $CameraViewportHeight * 2 * $CameraViewportCellWidth
+ if ($viewportClearOffsets.Count -ne $expectedClearBytes) {
+  throw "Mode 6 specialized clear byte-count mismatch"
+ }
+ $Mode6ViewportClearAsm += New-Mode6ViewportClearRoutine 'clear_camera_viewport_specialized_a' '$6000' ([int[]]$viewportClearOffsets)
+ $Mode6ViewportClearAsm += New-Mode6ViewportClearRoutine 'clear_camera_viewport_specialized_b' 'BITMAP_B_BASE' ([int[]]$viewportClearOffsets)
+}
+# Historical name retained for Mode 4/5-only flat-lighting code. Geometry code must use
+# SolidDynamicGeometryFamilyFlag so Mode 6 cannot accidentally enable flat-only hot paths.
+$Mode4FamilyFlag = $FlatDynamicShadeFlag
+$ControlLowresFlag = if ($FlatDynamicShadeFlag -ne 0) { 1 } else { 0 }
 $LowresTraceFlag = if ($ControlLowresFlag -ne 0) { 1 } else { 0 }
 $Mode5PolygonOutlineFlag = if ($GraphicsModeNumber -eq 5) { 1 } else { 0 }
+if ($Mode6GouraudFlag -ne 0 -and $HighBasicV2LayoutFlag -eq 0) {
+ throw "GraphicsMode 6 requires -MemoryLayout high-basic-v2"
+}
 $SolidSubpixelXQ2Flag = if ($SolidSubpixelXQ2.IsPresent) { 1 } else { 0 }
 $SolidSubpixelXNativeFlag = if ($SolidSubpixelXInput -eq "Native") { 1 } else { 0 }
 $SolidSubpixelXLegacyDirectFlag = if ($SolidSubpixelXInput -eq "LegacyDirect") { 1 } else { 0 }
@@ -1932,7 +2043,7 @@ $PolyFillFlag = if ($WireOnlyRenderFlag -ne 0) { 0 } else { 1 }
 $WirePureFlag = if ($GraphicsModeNumber -eq 1) { 1 } else { 0 }
 $FaceRenderEnableFlag = if (($WireOnlyRenderFlag -ne 0) -or ($PolyFillFlag -ne 0)) { 1 } else { 0 }
 $StaticShadeCacheFlag = if ($GraphicsModeNumber -eq 3 -and -not $NoStaticShade.IsPresent) { 1 } else { 0 }
-$FullDynamicShadeFlag = if ($Mode4FamilyFlag -ne 0) { 1 } else { 0 }
+$FullDynamicShadeFlag = $FlatDynamicShadeFlag
 if ($EngineMode1WirePureRuntimeFlag -ne 0) {
  $WireRenderFlag = 1
  $HiddenWireFlag = 0
@@ -2014,6 +2125,10 @@ $MaterialCount = [int]$MaterialFamilies.Count
 if ($MaterialCount -ne 10) {
  throw "The runtime keyboard material selector expects exactly 10 material families."
 }
+if ($ReflectivityCycleLevels -gt $MaterialReflectivityLevels.Count) {
+ throw "ReflectivityCycleLevels exceeds the available reflectivity table count ($($MaterialReflectivityLevels.Count))"
+}
+$ReflectivityCycleOffsetLimit = $ReflectivityCycleLevels * $MaterialCount
 if ($Reflectivity -lt 0 -or $Reflectivity -ge $MaterialReflectivityLevels.Count) {
  throw "Reflectivity $Reflectivity is not available in $MaterialScalePath"
 }
@@ -2243,6 +2358,7 @@ $CurrentMeshFirstWireEdge = 0
 $CurrentMeshIsWire = $false
 $CurrentMeshMaterialProfile = "single"
 $CurrentMeshWireColor = -1
+$CurrentMeshGouraudCreaseAngle = 60.0
 
 function Reset-Mesh {
  $script:MeshVertices = @()
@@ -2275,6 +2391,7 @@ function Begin-MeshRecord([string]$name) {
  $script:CurrentMeshIsWire = $false
  $script:CurrentMeshMaterialProfile = "single"
  $script:CurrentMeshWireColor = -1
+ $script:CurrentMeshGouraudCreaseAngle = 60.0
  $script:VertexMap = @{}
 }
 
@@ -2321,6 +2438,9 @@ function End-MeshRecord([string]$name = "") {
  GeometryKind = $(if ($script:CurrentMeshIsWire) { "wire" } else { "solid" })
  MaterialProfile = $(if ($script:CurrentMeshIsWire) { "single" } else { $script:CurrentMeshMaterialProfile })
  WireColor = [int]$script:CurrentMeshWireColor
+ GouraudCreaseAngle = [double]$script:CurrentMeshGouraudCreaseAngle
+ FirstShadeVertex = 0
+ ShadeVertexCount = 0
  }
 }
 
@@ -2363,6 +2483,92 @@ function Add-WireEdge([int]$a, [int]$b) {
  throw "Wire edge must reference two distinct vertices"
  }
  $script:MeshWireEdges += ,@($a, $b)
+}
+
+function Build-GouraudShadeVertices {
+ $script:GouraudShadeVertexGeom = @()
+ $script:GouraudShadeNormalX = @()
+ $script:GouraudShadeNormalY = @()
+ $script:GouraudShadeNormalZ = @()
+ $script:GouraudFaceShade0 = @(0) * $script:MeshFaces.Count
+ $script:GouraudFaceShade1 = @(0) * $script:MeshFaces.Count
+ $script:GouraudFaceShade2 = @(0) * $script:MeshFaces.Count
+ $script:GouraudFaceShade3 = @(0) * $script:MeshFaces.Count
+
+ foreach ($record in $script:MeshRecords) {
+  $record.FirstShadeVertex = $script:GouraudShadeVertexGeom.Count
+  if ([bool]$record.IsWire -or [int]$record.FaceCount -le 0) {
+   $record.ShadeVertexCount = 0
+   continue
+  }
+
+  $firstFace = [int]$record.FirstFace
+  $endFace = $firstFace + [int]$record.FaceCount
+  $rawNormals = @{}
+  $unitNormals = @{}
+  $adjacentFaces = @{}
+  for ($faceIndex = $firstFace; $faceIndex -lt $endFace; $faceIndex++) {
+   $face = [int[]]$script:MeshFaces[$faceIndex]
+   $arity = [int]$script:MeshFaceVertexCounts[$faceIndex]
+   $nx = 0.0; $ny = 0.0; $nz = 0.0
+   for ($corner = 0; $corner -lt $arity; $corner++) {
+    $p = $script:MeshVertices[[int]$face[$corner]]
+    $q = $script:MeshVertices[[int]$face[($corner + 1) % $arity]]
+    $nx += ([double]$p[1] - [double]$q[1]) * ([double]$p[2] + [double]$q[2])
+    $ny += ([double]$p[2] - [double]$q[2]) * ([double]$p[0] + [double]$q[0])
+    $nz += ([double]$p[0] - [double]$q[0]) * ([double]$p[1] + [double]$q[1])
+   }
+   $raw = [double[]]@($nx, $ny, $nz)
+   $rawNormals[$faceIndex] = $raw
+   $unitNormals[$faceIndex] = Normalize-Vector $raw
+   for ($corner = 0; $corner -lt $arity; $corner++) {
+    $vertexIndex = [int]$face[$corner]
+    if (-not $adjacentFaces.ContainsKey($vertexIndex)) { $adjacentFaces[$vertexIndex] = @() }
+    $adjacentFaces[$vertexIndex] = @($adjacentFaces[$vertexIndex]) + $faceIndex
+   }
+  }
+
+  $creaseCos = [Math]::Cos(([double]$record.GouraudCreaseAngle) * [Math]::PI / 180.0)
+  $shadeMap = @{}
+  for ($faceIndex = $firstFace; $faceIndex -lt $endFace; $faceIndex++) {
+   $face = [int[]]$script:MeshFaces[$faceIndex]
+   $arity = [int]$script:MeshFaceVertexCounts[$faceIndex]
+   $faceUnit = [double[]]$unitNormals[$faceIndex]
+   $cornerShade = @(0, 0, 0, 0)
+   for ($corner = 0; $corner -lt $arity; $corner++) {
+    $vertexIndex = [int]$face[$corner]
+    $sumX = 0.0; $sumY = 0.0; $sumZ = 0.0
+    foreach ($adjacentFace in @($adjacentFaces[$vertexIndex])) {
+     $otherUnit = [double[]]$unitNormals[[int]$adjacentFace]
+     $dot = ($faceUnit[0] * $otherUnit[0]) + ($faceUnit[1] * $otherUnit[1]) + ($faceUnit[2] * $otherUnit[2])
+     if ($dot -ge ($creaseCos - 0.0000001)) {
+      $areaNormal = [double[]]$rawNormals[[int]$adjacentFace]
+      $sumX += $areaNormal[0]; $sumY += $areaNormal[1]; $sumZ += $areaNormal[2]
+     }
+    }
+    $smooth = Normalize-Vector ([double[]]@($sumX, $sumY, $sumZ))
+    $qnx = Clamp-SignedByte ([int][Math]::Round($smooth[0] * 63.0)) -63 63
+    $qny = Clamp-SignedByte ([int][Math]::Round($smooth[1] * 63.0)) -63 63
+    $qnz = Clamp-SignedByte ([int][Math]::Round($smooth[2] * 63.0)) -63 63
+    $key = "$vertexIndex,$qnx,$qny,$qnz"
+    if (-not $shadeMap.ContainsKey($key)) {
+     $shadeIndex = $script:GouraudShadeVertexGeom.Count
+     $shadeMap[$key] = $shadeIndex
+     $script:GouraudShadeVertexGeom += $vertexIndex
+     $script:GouraudShadeNormalX += ($qnx -band 255)
+     $script:GouraudShadeNormalY += ($qny -band 255)
+     $script:GouraudShadeNormalZ += ($qnz -band 255)
+    }
+    $cornerShade[$corner] = [int]$shadeMap[$key]
+   }
+   if ($arity -eq 3) { $cornerShade[3] = $cornerShade[2] }
+   $script:GouraudFaceShade0[$faceIndex] = $cornerShade[0]
+   $script:GouraudFaceShade1[$faceIndex] = $cornerShade[1]
+   $script:GouraudFaceShade2[$faceIndex] = $cornerShade[2]
+   $script:GouraudFaceShade3[$faceIndex] = $cornerShade[3]
+  }
+  $record.ShadeVertexCount = $script:GouraudShadeVertexGeom.Count - [int]$record.FirstShadeVertex
+ }
 }
 
 function Get-LitFaceShade([int[]]$face) {
@@ -2603,6 +2809,7 @@ function Add-CubeMesh([int]$size) {
 }
 
 function Import-SolidDocument([object]$doc, [string]$Context) {
+ Apply-GouraudMeshSettings $doc $Context
  if (-not ($doc.PSObject.Properties.Name -contains "vertices")) {
  throw "MeshFile missing vertices array"
  }
@@ -3042,6 +3249,7 @@ function Add-BuiltinMesh([string]$Name) {
 }
 
 function Import-SceneMeshSource([object]$Source, [string]$SceneDir) {
+ Apply-GouraudMeshSettings $Source "scene mesh source"
  $sourceType = if (Has-Property $Source "type") { ([string](Get-PropertyValue $Source "type")).Trim().ToLowerInvariant() -replace "[_ ]", "-" } else { "" }
  $geometryKind = Read-SceneMeshGeometryKind $Source "scene mesh source"
  $materialProfile = Read-SceneMeshMaterialProfile $Source "scene mesh source"
@@ -3110,11 +3318,11 @@ function Import-SceneFile([string]$path) {
  if (Has-Property $doc "graphicsMode") {
  $sceneGraphicsMode = Get-PropertyValue $doc "graphicsMode"
  if (-not ($sceneGraphicsMode -is [int] -or $sceneGraphicsMode -is [long])) {
- throw "SceneFile graphicsMode must be an integer from 1 to 5"
+ throw "SceneFile graphicsMode must be an integer from 1 to 6"
  }
  $sceneGraphicsModeNumber = [int]$sceneGraphicsMode
- if ($sceneGraphicsModeNumber -lt 1 -or $sceneGraphicsModeNumber -gt 5) {
- throw "SceneFile graphicsMode must be an integer from 1 to 5"
+ if ($sceneGraphicsModeNumber -lt 1 -or $sceneGraphicsModeNumber -gt 6) {
+ throw "SceneFile graphicsMode must be an integer from 1 to 6"
  }
  }
  if (-not (Has-Property $doc "objects")) {
@@ -3174,15 +3382,15 @@ function Import-SceneFile([string]$path) {
  }
  $sharedMeshReferenceCount = @($meshReferenceCount.GetEnumerator() | Where-Object { [int]$_.Value -gt 1 }).Count
  $sourceSharingOptIn = [bool](Get-PropertyValue $doc "meshSourceSharing" $false)
- if ($sourceSharingOptIn -and (@(4, 5) -notcontains $GraphicsModeNumber)) {
-  throw "meshSourceSharing is supported only in GraphicsMode 4 and 5"
+ if ($sourceSharingOptIn -and (@(4, 5, 6) -notcontains $GraphicsModeNumber)) {
+  throw "meshSourceSharing is supported only in GraphicsMode 4, 5 and 6"
  }
  if ($sourceSharingOptIn -and $sharedMeshReferenceCount -eq 0) {
   throw "meshSourceSharing requires at least one source mesh referenced by multiple instances"
  }
  $script:SceneSourceSharingRequested = (
   $sourceSharingOptIn -and
-  (@(4, 5) -contains $GraphicsModeNumber) -and
+  (@(4, 5, 6) -contains $GraphicsModeNumber) -and
   ($sharedMeshReferenceCount -gt 0)
  )
  $sharedMeshIndexById = @{}
@@ -3506,10 +3714,10 @@ if ($RequestedCameraMode.Length -gt 0) {
  $EffectiveCameraMode = $RequestedCameraMode
 }
 
-# Resolve the public Mode 4/5 projection only after the effective camera mode
+# Resolve the public solid-dynamic (Mode 4/5/6) projection only after the effective camera mode
 # is known. Explicit input selectors remain diagnostic overrides; the legacy
 # switches are accepted but are redundant for the public Mode 4 profile.
-if ($Mode4FamilyFlag -ne 0) {
+if ($SolidDynamicGeometryFamilyFlag -ne 0) {
  $SolidSubpixelXQ2Flag = 1
  $SolidSubpixelYQ2Flag = 1
  if (-not $PSBoundParameters.ContainsKey("SolidSubpixelXInput")) {
@@ -3518,7 +3726,7 @@ if ($Mode4FamilyFlag -ne 0) {
  if (-not $PSBoundParameters.ContainsKey("SolidSubpixelYInput")) {
   $SolidSubpixelYInput = if ($EffectiveCameraMode -eq "fixed") { "Native" } else { "MobileNative" }
  }
- $Mode4ShadeStepLimitFlag = if ($Mode4ShadeStepLimit.IsPresent -or -not $Mode4ValidShadeFaceProbe.IsPresent) { 1 } else { 0 }
+ $Mode4ShadeStepLimitFlag = if ($FlatDynamicShadeFlag -ne 0 -and ($Mode4ShadeStepLimit.IsPresent -or -not $Mode4ValidShadeFaceProbe.IsPresent)) { 1 } else { 0 }
  $YQ2FastDiv11x8Flag = 1
  $YQ2FastPixelConvertFlag = 1
  $YQ2InlineBoundsFlag = 1
@@ -3619,8 +3827,8 @@ $ExplorerScreenClipPolyFlag = if ($Mode4CameraPlaneClipRequested -or (($CameraMo
 $WireScreenRawFlag = if (($WireRenderFlag -ne 0) -and ($CameraMovableFlag -ne 0)) { 1 } else { 0 }
 $ExplorerScreenRawFlag = if (($ExplorerScreenClipXFlag -ne 0) -or ($ExplorerScreenClipPolyFlag -ne 0) -or ($ExplorerNearPolyFlag -ne 0) -or ($WireScreenRawFlag -ne 0)) { 1 } else { 0 }
 $StandardProjectVertexFlag = if ($CameraMovableFlag -ne 0) { 0 } else { 1 }
-$Mode5HighBasicQ2ProfileFlag = if ($Mode4FamilyFlag -ne 0 -and $MemoryLayout -eq "high-basic-v2") { 1 } else { 0 }
-$SolidSubpixelQ2CoreProfileFlag = if ($Mode4FamilyFlag -ne 0 -and ($CameraViewportKey -eq "small" -or $CameraViewportKey -eq "normal") -and ($MemoryLayout -eq "stable" -or $Mode5HighBasicQ2ProfileFlag -ne 0) -and $PolyFillFlag -eq 1 -and $WireRenderFlag -eq 0 -and $HiddenWireFlag -eq 0 -and $FaceRenderMode -ne "force") { 1 } else { 0 }
+$Mode5HighBasicQ2ProfileFlag = if ($SolidDynamicGeometryFamilyFlag -ne 0 -and $MemoryLayout -eq "high-basic-v2") { 1 } else { 0 }
+$SolidSubpixelQ2CoreProfileFlag = if ($SolidDynamicGeometryFamilyFlag -ne 0 -and ($CameraViewportKey -eq "small" -or $CameraViewportKey -eq "normal") -and ($MemoryLayout -eq "stable" -or $Mode5HighBasicQ2ProfileFlag -ne 0) -and $PolyFillFlag -eq 1 -and $WireRenderFlag -eq 0 -and $HiddenWireFlag -eq 0 -and $FaceRenderMode -ne "force") { 1 } else { 0 }
 $SolidSubpixelQ2FixedProfileFlag = if ($SolidSubpixelQ2CoreProfileFlag -ne 0 -and $EffectiveCameraMode -eq "fixed" -and $StandardProjectVertexFlag -eq 1 -and $SolidSubpixelYMobileNativeFlag -eq 0) { 1 } else { 0 }
 $SolidSubpixelQ2MobileProfileFlag = if ($SolidSubpixelQ2CoreProfileFlag -ne 0 -and $CameraMovableFlag -ne 0 -and $StandardProjectVertexFlag -eq 0 -and $SolidSubpixelXQ2Flag -eq 1 -and $SolidSubpixelXLegacyDirectFlag -eq 1 -and $SolidSubpixelYQ2Flag -eq 1 -and $SolidSubpixelYMobileNativeFlag -eq 1 -and $ExplorerScreenClipPolyFlag -eq 1) { 1 } else { 0 }
 if ($SolidSubpixelXQ2Flag -ne 0 -or $SolidSubpixelYQ2Flag -ne 0) {
@@ -3662,7 +3870,7 @@ $TrackDirtySpansFlag = if ($FullClearFlag -eq 0 -and $CameraMovableFlag -eq 0) {
 if ($EngineWireDirtyClearFlag -ne 0) {
  $TrackDirtySpansFlag = 1
 }
-$DynamicLightFlag = if ($DynamicLight.IsPresent -or $SceneLightCount -gt 0) { 1 } else { 0 }
+$DynamicLightFlag = if ($DynamicLight.IsPresent -or $SceneLightCount -gt 0 -or $Mode6GouraudFlag -ne 0) { 1 } else { 0 }
 if ($WireOnlyRenderFlag -ne 0 -or $StaticShadeCacheFlag -ne 0) {
  $DynamicLightFlag = 0
  $ControlLightFlag = 0
@@ -3674,7 +3882,7 @@ if ($EngineWireLightShadingStrippedFlag -ne 0) {
  $ControlReflectivityFlag = 0
  $LightPulseOnSpaceFlag = 0
 }
-$Mode4DynamicShadeThresholdFixFlag = if ($Mode4FamilyFlag -ne 0 -and $FullDynamicShadeFlag -ne 0 -and $DynamicLightFlag -ne 0) { 1 } else { 0 }
+$Mode4DynamicShadeThresholdFixFlag = if ($FlatDynamicShadeFlag -ne 0 -and $FullDynamicShadeFlag -ne 0 -and $DynamicLightFlag -ne 0) { 1 } else { 0 }
 if ($Mode4ShadeStepLimitFlag -ne 0 -and $Mode4DynamicShadeThresholdFixFlag -eq 0) {
  throw "Mode4ShadeStepLimit requires the Mode 4 DynamicLight Q6 shade path."
 }
@@ -3703,22 +3911,41 @@ $ExplorerCameraZExt = (($ExplorerCameraZ -shr 8) -band 255)
 
 Validate-SceneObjectDepthDomains $EffectiveCameraMode
 
+$GouraudShadeVertexGeom = @()
+$GouraudShadeNormalX = @()
+$GouraudShadeNormalY = @()
+$GouraudShadeNormalZ = @()
+$GouraudFaceShade0 = @()
+$GouraudFaceShade1 = @()
+$GouraudFaceShade2 = @()
+$GouraudFaceShade3 = @()
+if ($Mode6GouraudFlag -ne 0) {
+ Build-GouraudShadeVertices
+}
+
 $SourceVertexCount = $MeshVertices.Count
 $SourceFaceCount = $MeshFaces.Count
+$SourceShadeVertexCount = $GouraudShadeVertexGeom.Count
 $MeshCount = $MeshRecords.Count
 $SceneObjectCount = $SceneObjects.Count
 $MeshSourceSharingRuntimeFlag = if ($SceneSourceSharingRequested) { 1 } else { 0 }
 if ($MeshSourceSharingRuntimeFlag -ne 0) {
  $VertexCount = 0
  $FaceCount = 0
+ $ShadeVertexCount = 0
  foreach ($object in $SceneObjects) {
   $record = $MeshRecords[[int]$object.MeshIndex]
   $VertexCount += [int]$record.VertexCount
   $FaceCount += [int]$record.FaceCount
+  $ShadeVertexCount += [int]$record.ShadeVertexCount
  }
 } else {
  $VertexCount = $SourceVertexCount
  $FaceCount = $SourceFaceCount
+ $ShadeVertexCount = $SourceShadeVertexCount
+}
+if ($Mode6GouraudFlag -ne 0 -and $ShadeVertexCount -gt 255) {
+ throw "GraphicsMode 6 supports at most 255 runtime shade vertices after crease splitting and mesh instancing; generated $ShadeVertexCount"
 }
 $ObjectModelContractVersion = 1
 $WorldSpaceZUpFlag = if ($SceneAxisConvention -eq "world-z-up") { 1 } else { 0 }
@@ -3735,7 +3962,7 @@ $WorldGroundEnableFlag = if ($null -ne $WorldGroundActive) { 1 } else { 0 }
 $WorldGroundMode = if ($null -ne $WorldGroundActive) { [string]$WorldGroundActive.Mode } else { "none" }
 $WorldGroundPlaneFlag = if ($WorldGroundMode -eq "plane") { 1 } else { 0 }
 if ($WorldGroundPlaneFlag -ne 0 -and $GraphicsModeNumber -lt 2) {
- throw "world ground mode 'plane' is available only in GraphicsMode 2, 3, 4, or 5"
+ throw "world ground mode 'plane' is available only in GraphicsMode 2, 3, 4, 5, or 6"
 }
 $WorldGroundColor = if ($null -ne $WorldGroundActive) { [int]$WorldGroundActive.Color } else { 5 }
 $WorldGroundScreenByte = (($WorldGroundColor -shl 4) -bor $WorldGroundColor) -band 255
@@ -5991,6 +6218,11 @@ ground_plane_append_current:
  sta clip_a_vzlo,y
  lda vzrawhi,x
  sta clip_a_vzhi,y
+.if GOURAUD_MODE6 != 0
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ sta clip_a_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  lda #$00
  sta clip_a_flag,y
@@ -6001,6 +6233,14 @@ ground_plane_append_current:
 ground_plane_append_intersection:
  lda clip_cur_inside
  beq gpai_cur_outside
+.if GOURAUD_MODE6 != 0
+ ldx clip_prev_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_in
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_out
+.endif
  ldx clip_prev_idx
  jsr near_get_face_vertex
  sta clip_in_x
@@ -6009,6 +6249,14 @@ ground_plane_append_intersection:
  sta clip_out_x
  jmp gpai_ratio
 gpai_cur_outside:
+.if GOURAUD_MODE6 != 0
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_in
+ ldx clip_prev_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_out
+.endif
  ldx clip_cur_idx
  jsr near_get_face_vertex
  sta clip_in_x
@@ -6046,6 +6294,11 @@ gpai_ratio_ready:
  jsr clip_project_a_x_from_camera
  ldx clip_a_count
  jsr clip_project_a_y_from_camera
+.endif
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_interp_clip_shade
+ ldy clip_a_count
+ sta clip_a_shade,y
 .endif
 .if WIRE_RENDER_ENABLE != 0
  ldy clip_a_count
@@ -6163,12 +6416,28 @@ gpnia_out:
 ground_plane_append_near_intersection_a_to_b:
  lda clip_prev_inside
  beq gpani_prev_outside
+.if GOURAUD_MODE6 != 0
+ ldx clip_prev_idx
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_in
+ ldx clip_cur_idx
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_out
+.endif
  lda clip_prev_idx
  sta clip_in_x
  lda clip_cur_idx
  sta clip_out_x
  jmp gpani_ratio
 gpani_prev_outside:
+.if GOURAUD_MODE6 != 0
+ ldx clip_cur_idx
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_in
+ ldx clip_prev_idx
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_out
+.endif
  lda clip_cur_idx
  sta clip_in_x
  lda clip_prev_idx
@@ -6201,6 +6470,11 @@ gpani_ratio:
  jsr clip_cam_interp_vx_a_to_b
  jsr clip_cam_interp_vy_a_to_b
  jsr clip_cam_interp_vz_a_to_b
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_interp_clip_shade
+ ldy clip_b_count
+ sta clip_b_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  ldy clip_b_count
  lda #$01
@@ -7009,8 +7283,8 @@ sm3fpbr_ptr1_ok:
  $WorldGroundRollRendererAsm = ""
  $WorldGroundOcclusionAsm = ""
 }
-$ObjectLightCacheShadeFlag = if ($FullDynamicShadeFlag -ne 0) { 1 } else { 0 }
-$Mode4ObjectLightCacheFlag = if ($ObjectLightCacheShadeFlag -ne 0 -and $SceneObjectCount -gt 0 -and $DynamicLightFlag -ne 0) { 1 } else { 0 }
+$ObjectLightCacheShadeFlag = if ($FullDynamicShadeFlag -ne 0 -or $Mode6GouraudFlag -ne 0) { 1 } else { 0 }
+$Mode4ObjectLightCacheFlag = if (($Mode6GouraudFlag -ne 0 -or $SceneObjectCount -gt 0) -and $ObjectLightCacheShadeFlag -ne 0 -and $DynamicLightFlag -ne 0) { 1 } else { 0 }
 $EmitMode4UncachedLightFallbackFlag = if ($Mode4FamilyFlag -ne 0 -and $DynamicLightFlag -ne 0 -and $Mode4ObjectLightCacheFlag -eq 0) { 1 } else { 0 }
 $WireMeshCount = @($MeshRecords | Where-Object { [bool]$_.IsWire }).Count
 $PolyMeshCount = $MeshCount - $WireMeshCount
@@ -7130,6 +7404,17 @@ $ShadeHystSolidMidUpQ6 = ConvertTo-Q6ThresholdPairs $ShadeHystSolidMidUp
 $ShadeHystCheckerHighDownQ6 = ConvertTo-Q6ThresholdPairs $ShadeHystCheckerHighDown
 $ShadeHystCheckerHighUpQ6 = ConvertTo-Q6ThresholdPairs $ShadeHystCheckerHighUp
 $ShadeHystSolidHighDownQ6 = ConvertTo-Q6ThresholdPairs $ShadeHystSolidHighDown
+$GouraudLightLevelTables = @()
+for ($gouraudIntensity = 0; $gouraudIntensity -le 10; $gouraudIntensity++) {
+ $levelTable = @()
+ for ($dotHi = 0; $dotHi -lt 64; $dotHi++) {
+  $level = [int][Math]::Round(($dotHi * $gouraudIntensity * 32.0) / 240.0)
+  if ($level -lt 0) { $level = 0 }
+  if ($level -gt 32) { $level = 32 }
+  $levelTable += $level
+ }
+ $GouraudLightLevelTables += ,([int[]]$levelTable)
+}
 $faceNormalX = @()
 $faceNormalY = @()
 $faceNormalZ = @()
@@ -7188,6 +7473,20 @@ $objectRuntimeVEnd = @()
 $objectRuntimeFaceFirst = @()
 $objectRuntimeFaceEnd = @()
 $objectSourceVertexDelta = @()
+$meshFirstShadeVertex = @()
+$meshEndShadeVertex = @()
+$objectRuntimeShadeFirst = @()
+$objectRuntimeShadeEnd = @()
+$gouraudRuntimeGeomVertex = @()
+$gouraudRuntimeNormalX = @()
+$gouraudRuntimeNormalY = @()
+$gouraudRuntimeNormalZ = @()
+$gouraudRuntimeCenterDotLo = @()
+$gouraudRuntimeCenterDotHi = @()
+$gouraudRuntimeFaceShade0 = @()
+$gouraudRuntimeFaceShade1 = @()
+$gouraudRuntimeFaceShade2 = @()
+$gouraudRuntimeFaceShade3 = @()
 $bucketFaceInstance = @()
 $bucketFaceLocal = @()
 $objectTraverseRadius = @()
@@ -7259,6 +7558,8 @@ foreach ($record in $MeshRecords) {
  $meshEndFace += ([int]$record.FirstFace + [int]$record.FaceCount)
  $meshIsWire += $(if ([bool]$record.IsWire) { 1 } else { 0 })
  $meshWireColor += $(if ([bool]$record.IsWire -and [int]$record.WireColor -ge 0) { [int]$record.WireColor } else { 255 })
+ $meshFirstShadeVertex += [int]$record.FirstShadeVertex
+ $meshEndShadeVertex += ([int]$record.FirstShadeVertex + [int]$record.ShadeVertexCount)
 }
 $runtimeVertexCursor = 0
 $runtimeFaceCursor = 0
@@ -7370,6 +7671,92 @@ if ($MeshSourceSharingRuntimeFlag -ne 0) {
  }
 }
 
+if ($Mode6GouraudFlag -ne 0) {
+ $shadeCursor = 0
+ if ($MeshSourceSharingRuntimeFlag -ne 0) {
+  for ($objectIndex = 0; $objectIndex -lt $SceneObjects.Count; $objectIndex++) {
+   $object = $SceneObjects[$objectIndex]
+   $record = $MeshRecords[[int]$object.MeshIndex]
+   $objectRuntimeShadeFirst += $shadeCursor
+   $sourceShadeFirst = [int]$record.FirstShadeVertex
+   $sourceShadeEnd = $sourceShadeFirst + [int]$record.ShadeVertexCount
+   for ($sourceShade = $sourceShadeFirst; $sourceShade -lt $sourceShadeEnd; $sourceShade++) {
+    $sourceGeom = [int]$GouraudShadeVertexGeom[$sourceShade]
+    $runtimeGeom = [int]$objectRuntimeVFirst[$objectIndex] + ($sourceGeom - [int]$record.FirstVertex)
+    $gouraudRuntimeGeomVertex += $runtimeGeom
+    $gouraudRuntimeNormalX += [int]$GouraudShadeNormalX[$sourceShade]
+    $gouraudRuntimeNormalY += [int]$GouraudShadeNormalY[$sourceShade]
+    $gouraudRuntimeNormalZ += [int]$GouraudShadeNormalZ[$sourceShade]
+    $normalX = if ([int]$GouraudShadeNormalX[$sourceShade] -ge 128) { [int]$GouraudShadeNormalX[$sourceShade] - 256 } else { [int]$GouraudShadeNormalX[$sourceShade] }
+    $normalY = if ([int]$GouraudShadeNormalY[$sourceShade] -ge 128) { [int]$GouraudShadeNormalY[$sourceShade] - 256 } else { [int]$GouraudShadeNormalY[$sourceShade] }
+    $normalZ = if ([int]$GouraudShadeNormalZ[$sourceShade] -ge 128) { [int]$GouraudShadeNormalZ[$sourceShade] - 256 } else { [int]$GouraudShadeNormalZ[$sourceShade] }
+    $vertex = $MeshVertices[$sourceGeom]
+    $qx = [int][Math]::Round(([double][int]$vertex[0]) / 2.0)
+    $qy = [int][Math]::Round(([double][int]$vertex[1]) / 2.0)
+    $qz = [int][Math]::Round(([double][int]$vertex[2]) / 2.0)
+    $centerDot = [int][Math]::Round(((($normalX * $qx) + ($normalY * $qy) + ($normalZ * $qz)) * [double][int]$object.Scale) / 64.0)
+    $centerDotWord = $centerDot -band 0xffff
+    $gouraudRuntimeCenterDotLo += ($centerDotWord -band 255)
+    $gouraudRuntimeCenterDotHi += (($centerDotWord -shr 8) -band 255)
+    $shadeCursor++
+   }
+   $objectRuntimeShadeEnd += $shadeCursor
+   $runtimeShadeBase = [int]$objectRuntimeShadeFirst[-1]
+   $firstFace = [int]$record.FirstFace
+   $endFace = $firstFace + [int]$record.FaceCount
+   for ($sourceFace = $firstFace; $sourceFace -lt $endFace; $sourceFace++) {
+    $gouraudRuntimeFaceShade0 += $runtimeShadeBase + ([int]$GouraudFaceShade0[$sourceFace] - $sourceShadeFirst)
+    $gouraudRuntimeFaceShade1 += $runtimeShadeBase + ([int]$GouraudFaceShade1[$sourceFace] - $sourceShadeFirst)
+    $gouraudRuntimeFaceShade2 += $runtimeShadeBase + ([int]$GouraudFaceShade2[$sourceFace] - $sourceShadeFirst)
+    $gouraudRuntimeFaceShade3 += $runtimeShadeBase + ([int]$GouraudFaceShade3[$sourceFace] - $sourceShadeFirst)
+   }
+  }
+ } else {
+  $gouraudRuntimeGeomVertex = @($GouraudShadeVertexGeom)
+  $gouraudRuntimeNormalX = @($GouraudShadeNormalX)
+  $gouraudRuntimeNormalY = @($GouraudShadeNormalY)
+  $gouraudRuntimeNormalZ = @($GouraudShadeNormalZ)
+  $gouraudRuntimeFaceShade0 = @($GouraudFaceShade0)
+  $gouraudRuntimeFaceShade1 = @($GouraudFaceShade1)
+  $gouraudRuntimeFaceShade2 = @($GouraudFaceShade2)
+  $gouraudRuntimeFaceShade3 = @($GouraudFaceShade3)
+  for ($recordIndex = 0; $recordIndex -lt $MeshRecords.Count; $recordIndex++) {
+   $record = $MeshRecords[$recordIndex]
+   $matchingObjects = @($SceneObjects | Where-Object { [int]$_.MeshIndex -eq $recordIndex })
+   $scale64 = if ($matchingObjects.Count -gt 0) { [int]$matchingObjects[0].Scale } else { 64 }
+   $sourceShadeFirst = [int]$record.FirstShadeVertex
+   $sourceShadeEnd = $sourceShadeFirst + [int]$record.ShadeVertexCount
+   for ($sourceShade = $sourceShadeFirst; $sourceShade -lt $sourceShadeEnd; $sourceShade++) {
+    $sourceGeom = [int]$GouraudShadeVertexGeom[$sourceShade]
+    $normalX = if ([int]$GouraudShadeNormalX[$sourceShade] -ge 128) { [int]$GouraudShadeNormalX[$sourceShade] - 256 } else { [int]$GouraudShadeNormalX[$sourceShade] }
+    $normalY = if ([int]$GouraudShadeNormalY[$sourceShade] -ge 128) { [int]$GouraudShadeNormalY[$sourceShade] - 256 } else { [int]$GouraudShadeNormalY[$sourceShade] }
+    $normalZ = if ([int]$GouraudShadeNormalZ[$sourceShade] -ge 128) { [int]$GouraudShadeNormalZ[$sourceShade] - 256 } else { [int]$GouraudShadeNormalZ[$sourceShade] }
+    $vertex = $MeshVertices[$sourceGeom]
+    $qx = [int][Math]::Round(([double][int]$vertex[0]) / 2.0)
+    $qy = [int][Math]::Round(([double][int]$vertex[1]) / 2.0)
+    $qz = [int][Math]::Round(([double][int]$vertex[2]) / 2.0)
+    $centerDot = [int][Math]::Round(((($normalX * $qx) + ($normalY * $qy) + ($normalZ * $qz)) * [double]$scale64) / 64.0)
+    $centerDotWord = $centerDot -band 0xffff
+    $gouraudRuntimeCenterDotLo += ($centerDotWord -band 255)
+    $gouraudRuntimeCenterDotHi += (($centerDotWord -shr 8) -band 255)
+   }
+  }
+  if ($SceneObjectCount -gt 0) {
+   foreach ($object in $SceneObjects) {
+    $record = $MeshRecords[[int]$object.MeshIndex]
+    $objectRuntimeShadeFirst += [int]$record.FirstShadeVertex
+    $objectRuntimeShadeEnd += ([int]$record.FirstShadeVertex + [int]$record.ShadeVertexCount)
+   }
+  }
+ }
+ if ($gouraudRuntimeGeomVertex.Count -ne $ShadeVertexCount -or $gouraudRuntimeCenterDotLo.Count -ne $ShadeVertexCount) {
+  throw "GraphicsMode 6 runtime shade descriptor construction disagrees with shade vertex count"
+ }
+ if ($gouraudRuntimeFaceShade0.Count -ne $FaceCount) {
+  throw "GraphicsMode 6 runtime face-to-shade descriptor construction disagrees with face count"
+ }
+}
+
 $SceneVelXActiveFlag = if ((Test-AnyNonZeroByte $objectVelXLo) -or (Test-AnyNonZeroByte $objectVelXHi)) { 1 } else { 0 }
 $SceneVelYActiveFlag = if ((Test-AnyNonZeroByte $objectVelYLo) -or (Test-AnyNonZeroByte $objectVelYHi)) { 1 } else { 0 }
 $SceneVelZActiveFlag = if ((Test-AnyNonZeroByte $objectVelZLo) -or (Test-AnyNonZeroByte $objectVelZHi) -or (Test-AnyNonZeroByte $objectVelZExt)) { 1 } else { 0 }
@@ -7442,7 +7829,7 @@ foreach ($record in $MeshRecords) {
  $recordIndex++
 }
 $FaceSolidColorRequestedFlag = if (Test-AllByteEqual $faceSolidColor 0xff) { 0 } else { 1 }
-$FaceSolidColorFlag = if ($FaceSolidColorRequestedFlag -ne 0 -and $GraphicsModeNumber -ge 1 -and $GraphicsModeNumber -le 5) { 1 } else { 0 }
+$FaceSolidColorFlag = if ($FaceSolidColorRequestedFlag -ne 0 -and $GraphicsModeNumber -ge 1 -and $GraphicsModeNumber -le 6) { 1 } else { 0 }
 $FaceReflectivityActiveOnlyFlag = if (Test-AllByteEqual $faceReflectivity 0xff) { 1 } else { 0 }
 $FaceMaterialActiveOnlyFlag = if (Test-AllByteEqual $faceMaterial 0xff) { 1 } else { 0 }
 if ($MeshSourceSharingRuntimeFlag -ne 0) {
@@ -7965,7 +8352,7 @@ if ($EngineMode3SpanHotloopFlag -ne 0) {
 # The renderer uses the validated universal stack and keeps all required fallbacks.
 $EngineMode3FramePrefillCompatibleFlag = if ($WorldGroundCount -eq 0 -or $EngineMode3FramePrefillRuntimeFlag -ne 0) { 1 } else { 0 }
 $EngineMode3ConsolidationFlag = if ($RendererActiveFlag -ne 0 -and $GraphicsModeNumber -eq 3 -and $HighBasicV2LayoutFlag -ne 0 -and $EngineMode3FramePrefillCompatibleFlag -ne 0 -and $EngineMode3FacePrepareOnceFlag -ne 0 -and $EngineMode3DirectConvexFillFlag -ne 0 -and $EngineMode3FastBoundsTraceFlag -ne 0 -and $EngineMode3SpanHotloopFlag -ne 0 -and $StaticShadeCacheFlag -ne 0 -and $StaticShadeDirectFlag -ne 0) { 1 } else { 0 }
-$Mode3HighBasicFullRasterRelocationFlag = if (($CameraMovableFlag -ne 0 -or $WorldGroundPlaneRequestedFlag -ne 0) -and $HighBasicV2LayoutFlag -ne 0 -and (($GraphicsModeNumber -eq 3 -and ($EngineMode3ConsolidationFlag -ne 0 -or $WorldGroundPlaneRequestedFlag -ne 0)) -or $GraphicsModeNumber -eq 4 -or $GraphicsModeNumber -eq 5)) { 1 } else { 0 }
+$Mode3HighBasicFullRasterRelocationFlag = if (($CameraMovableFlag -ne 0 -or $WorldGroundPlaneRequestedFlag -ne 0 -or $Mode6GouraudFlag -ne 0) -and $HighBasicV2LayoutFlag -ne 0 -and (($GraphicsModeNumber -eq 3 -and ($EngineMode3ConsolidationFlag -ne 0 -or $WorldGroundPlaneRequestedFlag -ne 0)) -or $SolidDynamicGeometryFamilyFlag -ne 0)) { 1 } else { 0 }
 $EngineMode3ConsolidationCheckFlag = if ($EngineMode3ConsolidationCheck.IsPresent) { 1 } else { 0 }
 $EngineMode3UniversalPathsOnlyFlag = $EngineMode3ConsolidationFlag
 $EngineMode3CompactFaceQueueFlag = 0
@@ -8344,7 +8731,7 @@ if ($Mode2WireOnlyFallbackFlag -ne 0) {
 # face. It therefore cannot require more entries than the byte-sized face set.
 # Wire depth sorting also uses this list for edge buckets, so retain the legacy
 # 256-byte capacity whenever that independent producer is active.
-$FaceBucketUsedListSpecializationFlag = if ($WireDepthSortFlag -eq 0 -and ((($GraphicsModeNumber -eq 2) -and ($Mode2FaceBucketPipelineFlag -ne 0)) -or $GraphicsModeNumber -eq 3 -or $Mode4FamilyFlag -ne 0)) { 1 } else { 0 }
+$FaceBucketUsedListSpecializationFlag = if ($WireDepthSortFlag -eq 0 -and ((($GraphicsModeNumber -eq 2) -and ($Mode2FaceBucketPipelineFlag -ne 0)) -or $GraphicsModeNumber -eq 3 -or $SolidDynamicGeometryFamilyFlag -ne 0)) { 1 } else { 0 }
 $FaceBucketUsedListCapacity = if ($FaceBucketUsedListSpecializationFlag -ne 0) { [Math]::Max(1, [Math]::Min([int]$FaceCount, 255)) } else { 256 }
 if ($HighBasicV2LayoutFlag -ne 0 -and $PolyFillFlag -ne 0 -and $WireDepthSortFlag -ne 0) {
  $FpsOverlayEnableFlag = 0
@@ -8564,6 +8951,8 @@ FACE_BUCKET_USED_LIST_CAPACITY = $0100
 VERT_COUNT = $08
 SOURCE_FACE_COUNT = $fd
 SOURCE_VERT_COUNT = $fe
+SHADE_VERT_COUNT = $00
+SOURCE_SHADE_VERT_COUNT = $00
 MEMORY_LAYOUT_HIGH_BASIC_V2 = $00
 BITMAP_B_BASE = $a000
 SCREEN_B_BASE = $8c00
@@ -8684,6 +9073,7 @@ ENGINE_CAMERA_VIEWPORT_SMALL = $00
 ENGINE_CAMERA_VIEWPORT_PROFILE_ID = $00
 ENGINE_CAMERA_VIEWPORT_PROJECTION_SCALED = $00
 ENGINE_CAMERA_VIEWPORT_CLEAR_LIMITED = $00
+MODE6_VIEWPORT_CLEAR_SPECIALIZED = $00
 ENGINE_CAMERA_VIEWPORT_GROUND_LIMITED = $00
 CAMERA_VIEWPORT_WIDTH = $a0
 CAMERA_VIEWPORT_HEIGHT = $64
@@ -8975,6 +9365,9 @@ FACE_RENDER_ENABLE = $01
 WIRE_PURE_ENABLE = $00
 STATIC_SHADE_CACHE = $00
 FULL_DYNAMIC_SHADE = $01
+FLAT_DYNAMIC_SHADE = $01
+GOURAUD_MODE6 = $00
+GOURAUD_BYTE_SPAN_KERNEL = $00
 MODE4_DYNAMIC_SHADE_THRESHOLD_FIX = $00
 STATIC_SHADE_DIRECT = $00
 FRAME_FACE_FILL_CACHE = $00
@@ -9040,6 +9433,7 @@ CONTROL_ZERO_MOTION_KEY = $00
 LOWRES_TRACE_ENABLE = $00
 CONTROL_MATERIAL_KEYS = $00
 CONTROL_REFLECTIVITY_KEYS = $00
+REFLECTIVITY_CYCLE_OFFSET_LIMIT = $28
 XCOORD_COUNT = $01
 YCOORD_COUNT = $01
 ZCOORD_COUNT = $01
@@ -9350,6 +9744,10 @@ render_frame_begin:
 .if FULL_DYNAMIC_SHADE != 0
  jsr update_shade_dirty
 .endif
+.endif
+.if GOURAUD_MODE6 != 0 && SCENE_OBJECT_COUNT = 0
+ jsr prepare_object_light_for_shade
+ jsr gouraud_update_object_shades
 .endif
 .if CONTROL_LOWRES_KEY != 0
  jsr update_lowres_scanline_parity
@@ -11227,7 +11625,7 @@ prk_key_down:
  clc
  lda active_reflect_offset
  adc #$0a
- cmp #$28
+ cmp #REFLECTIVITY_CYCLE_OFFSET_LIMIT
  bcc prk_store
  lda #$00
 prk_store:
@@ -12065,6 +12463,13 @@ clear_current_bitmap:
 ccb_full_clear:
 .endif
 .if ENGINE_CAMERA_VIEWPORT_CLEAR_LIMITED != 0
+.if MODE6_VIEWPORT_CLEAR_SPECIALIZED != 0
+ lda drawbuf
+ bne ccb_viewport_specialized_b
+ jmp clear_camera_viewport_specialized_a
+ccb_viewport_specialized_b:
+ jmp clear_camera_viewport_specialized_b
+.else
  lda drawbuf
  bne ccb_viewport_b
 ccb_viewport_a:
@@ -12099,6 +12504,7 @@ ccb_viewport_b_row:
  cpx #(PROJ_SCREEN_MAX_Y + 1)
  bne ccb_viewport_b_row
  rts
+.endif
 .endif
  lda drawbuf
  bne ccb_b
@@ -12222,6 +12628,8 @@ ccvbr_ptr1_ok:
  bne ccvbr_loop
  rts
 .endif
+
+; MODE6_VIEWPORT_CLEAR_SPECIALIZED_ROUTINES
 
 .endif
 
@@ -12650,6 +13058,107 @@ prepare_object_light_for_shade:
  rts
 .endif
 
+.if GOURAUD_MODE6 != 0
+gouraud_update_object_shades:
+.if SCENE_OBJECT_COUNT != 0
+ ldx objidx
+ lda object_runtime_shade_first,x
+ sta tmpidx
+ lda object_runtime_shade_end,x
+ sta fullcount
+.else
+ lda #$00
+ sta tmpidx
+ lda #SHADE_VERT_COUNT
+ sta fullcount
+.endif
+gous_loop:
+ lda tmpidx
+ cmp fullcount
+ beq gous_done
+ tay
+ lda #$00
+ sta dotlo
+ sta dothi
+ lda gouraud_normal_x,y
+ ldx sh_nx
+ jsr mul_s8_16
+ jsr add_dot_product
+ ldy tmpidx
+ lda gouraud_normal_y,y
+ ldx sh_ny
+ jsr mul_s8_16
+ jsr add_dot_product
+ ldy tmpidx
+ lda gouraud_normal_z,y
+ ldx sh_nz
+ jsr mul_s8_16
+ jsr add_dot_product
+ ldy tmpidx
+ sec
+ lda dotlo
+ sbc gouraud_center_dot_lo,y
+ sta dotlo
+ lda dothi
+ sbc gouraud_center_dot_hi,y
+ sta dothi
+ bmi gous_target_dark
+ cmp #$40
+ bcc gous_dot_in_range
+ lda #$3f
+gous_dot_in_range:
+ tay
+ ldx light_intensity
+ lda gouraud_level_ptr_lo,x
+ sta ptr0lo
+ lda gouraud_level_ptr_hi,x
+ sta ptr0hi
+ lda (ptr0lo),y
+ jmp gous_target_ready
+gous_target_dark:
+ lda #$00
+gous_target_ready:
+ sta shadeidx
+ ldy tmpidx
+ lda gouraud_shade_value,y
+ cmp #$ff
+ beq gous_store_target
+ sta p1lo
+ lda shadeidx
+ cmp p1lo
+ beq gous_store_target
+ bcc gous_falling
+ sec
+ sbc p1lo
+ cmp #$05
+ bcc gous_store_target
+ lda p1lo
+ clc
+ adc #$04
+ bne gous_store_value
+gous_falling:
+ lda p1lo
+ sec
+ sbc shadeidx
+ cmp #$05
+ bcc gous_store_target
+ lda p1lo
+ sec
+ sbc #$04
+ bcs gous_store_value
+ lda #$00
+ bcc gous_store_value
+gous_store_target:
+ lda shadeidx
+gous_store_value:
+ ldy tmpidx
+ sta gouraud_shade_value,y
+ inc tmpidx
+ jmp gous_loop
+gous_done:
+ rts
+.endif
+
 interp_sintab:
  sta p1lo
  lda sintab,x
@@ -12934,9 +13443,19 @@ load_projection_geometric_divisor:
 .if CAMERA_MOVABLE != 0
 .if MEMORY_LAYOUT_HIGH_BASIC_V2 != 0 && MODE3_HIGH_BASIC_FULL_RASTER_RELOCATE != 0 && FPS_OVERLAY_ENABLE != 0
 explorer_camera_low_return = *
+.if GOURAUD_MODE6 != 0
+* = $8800
+.else
 * = $9b80
+.endif
+.if GOURAUD_MODE6 != 0
+.if * < $8800 || * >= $9000
+ .error "Mode 6 relocated camera start address out of range ($8800..$8FFF)"
+.endif
+.else
 .if * < $9000 || * >= $a000
  .error "Relocated camera start address out of range ($9000..$9FFF)"
+.endif
 .endif
 explorer_camera_relocated_start = *
 .endif
@@ -13601,8 +14120,14 @@ explorer_negate_a:
 
 .if MEMORY_LAYOUT_HIGH_BASIC_V2 != 0 && CAMERA_MOVABLE != 0 && MODE3_HIGH_BASIC_FULL_RASTER_RELOCATE != 0 && FPS_OVERLAY_ENABLE != 0
 explorer_camera_relocated_end = *
+.if GOURAUD_MODE6 != 0
+.if explorer_camera_relocated_end > $9000
+ .error "Mode 6 relocated camera block exceeds $9000"
+.endif
+.else
 .if explorer_camera_relocated_end > $a000
  .error "Relocated camera block exceeds $A000"
+.endif
 .endif
 * = explorer_camera_low_return
 .endif
@@ -14110,11 +14635,17 @@ resp_solid_object:
  jsr prepare_explorer_matrix_fold
 .if MODE4_OBJECT_LIGHT_CACHE != 0
  jsr prepare_object_light_for_shade
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_update_object_shades
+.endif
 .endif
 .else
  jsr prepare_angles
 .if MODE4_OBJECT_LIGHT_CACHE != 0
  jsr prepare_object_light_for_shade
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_update_object_shades
+.endif
 .endif
  jsr explorer_prepare_view
 .if STABLE_FACE_CULL_PROFILE != 0
@@ -16517,6 +17048,9 @@ rso_solid_object:
  jsr prepare_angles
 .if MODE4_OBJECT_LIGHT_CACHE != 0
  jsr prepare_object_light_for_shade
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_update_object_shades
+.endif
 .endif
  jsr rotate_project_vertices
  jsr collect_active_mesh_faces
@@ -16970,7 +17504,7 @@ bucket_visible_face:
 bvf_camera_plane_original:
 .endif
 ; Mode 4 fixed uses the same full 16-bit depth reduction as walkLite/walkFull.
-.if CAMERA_MOVABLE != 0 || GRAPHICS_MODE = $04 || GRAPHICS_MODE = $05
+.if CAMERA_MOVABLE != 0 || GRAPHICS_MODE = $04 || GRAPHICS_MODE = $05 || GRAPHICS_MODE = $06
  ldy faceidx
  lda face0,y
  tax
@@ -17533,6 +18067,18 @@ ddb_face_loop:
  jmp ddb_face_load_done
 ddb_face_full_load:
 .endif
+.if GOURAUD_MODE6 != 0
+.if MESH_SOURCE_SHARING_RUNTIME != 0
+ ldy shared_runtime_face
+.else
+.if MODE4_FACE_ID_LATCH != 0
+ ldy mode4_current_face_id
+.else
+ ldy sortj
+.endif
+.endif
+ jsr gouraud_load_face_raw_shades_y
+.endif
  jsr load_face_y
 .if ENGINE_MODE3_FACE_PREPARE_ONCE != 0
 ddb_face_load_done:
@@ -17650,6 +18196,11 @@ ddb_hidden_wire_color_second_ready:
  ldy sortj
 .endif
  jsr load_face_material
+.endif
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_apply_face_reflectivity
+ jsr draw_loaded_face_gouraud
+ jmp ddb_after_draw
 .endif
 .if MODE4_FACE_ID_LATCH != 0
  ldy mode4_current_face_id
@@ -17867,7 +18418,7 @@ dcsp_done:
  rts
 .endif
 
-.if DYNAMIC_LIGHT != 0
+.if FLAT_DYNAMIC_SHADE != 0 && DYNAMIC_LIGHT != 0
 update_face_shade:
 .if DYNAMIC_LIGHT != 0
 .if FACE_REFLECTIVITY_ACTIVE_ONLY != $01
@@ -19074,6 +19625,14 @@ carcam_prev_inside:
  lda clip_cur_idx
  sta clip_out_x
 carcam_project:
+.if GOURAUD_MODE6 != 0
+ ldx clip_in_x
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_in
+ ldx clip_out_x
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_out
+.endif
  jsr clip_cam_ratio_right_a
  jsr clip_cam_interp_vx_a_to_b
  jsr clip_cam_interp_vy_a_to_b
@@ -19084,6 +19643,11 @@ carcam_project:
  sta clip_b_xlo,y
  lda #PROJ_SCREEN_MIN_X
  sta clip_b_xhi,y
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_interp_clip_shade
+ ldy clip_b_count
+ sta clip_b_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  lda #$01
  sta clip_b_flag,y
@@ -19106,6 +19670,14 @@ calcam_prev_inside:
  lda clip_cur_idx
  sta clip_out_x
 calcam_project:
+.if GOURAUD_MODE6 != 0
+ ldx clip_in_x
+ lda clip_b_shade,x
+ sta gouraud_clip_shade_in
+ ldx clip_out_x
+ lda clip_b_shade,x
+ sta gouraud_clip_shade_out
+.endif
  jsr clip_cam_ratio_left_b
  jsr clip_cam_interp_vx_b_to_a
  jsr clip_cam_interp_vy_b_to_a
@@ -19115,6 +19687,11 @@ calcam_project:
  sta clip_a_x,y
  sta clip_a_xlo,y
  sta clip_a_xhi,y
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_interp_clip_shade
+ ldy clip_a_count
+ sta clip_a_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  lda #$01
  sta clip_a_flag,y
@@ -19137,6 +19714,14 @@ catcam_prev_inside:
  lda clip_cur_idx
  sta clip_out_x
 catcam_project:
+.if GOURAUD_MODE6 != 0
+ ldx clip_in_x
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_in
+ ldx clip_out_x
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_out
+.endif
  jsr clip_cam_ratio_top_a
  jsr clip_cam_interp_vx_a_to_b
  jsr clip_cam_interp_vy_a_to_b
@@ -19146,6 +19731,11 @@ catcam_project:
  sta clip_b_y,y
  sta clip_b_ylo,y
  sta clip_b_yhi,y
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_interp_clip_shade
+ ldy clip_b_count
+ sta clip_b_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  lda #$01
  sta clip_b_flag,y
@@ -19168,6 +19758,14 @@ cabcam_prev_inside:
  lda clip_cur_idx
  sta clip_out_x
 cabcam_project:
+.if GOURAUD_MODE6 != 0
+ ldx clip_in_x
+ lda clip_b_shade,x
+ sta gouraud_clip_shade_in
+ ldx clip_out_x
+ lda clip_b_shade,x
+ sta gouraud_clip_shade_out
+.endif
  jsr clip_cam_ratio_bottom_b
  jsr clip_cam_interp_vx_b_to_a
  jsr clip_cam_interp_vy_b_to_a
@@ -19178,6 +19776,11 @@ cabcam_project:
  sta clip_a_ylo,y
  lda #PROJ_SCREEN_MIN_Y
  sta clip_a_yhi,y
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_interp_clip_shade
+ ldy clip_a_count
+ sta clip_a_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  lda #$01
  sta clip_a_flag,y
@@ -20093,12 +20696,28 @@ cpia_out:
 camera_plane_append_intersection_a_to_b:
  lda clip_prev_inside
  beq cpai_prev_outside
+.if GOURAUD_MODE6 != 0
+ ldx clip_prev_idx
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_in
+ ldx clip_cur_idx
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_out
+.endif
  lda clip_prev_idx
  sta clip_in_x
  lda clip_cur_idx
  sta clip_out_x
  jmp cpai_ratio
 cpai_prev_outside:
+.if GOURAUD_MODE6 != 0
+ ldx clip_cur_idx
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_in
+ ldx clip_prev_idx
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_out
+.endif
  lda clip_cur_idx
  sta clip_in_x
  lda clip_prev_idx
@@ -20125,6 +20744,11 @@ cpai_ratio:
  sta clip_b_vzlo,y
  lda #$00
  sta clip_b_vzhi,y
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_interp_clip_shade
+ ldy clip_b_count
+ sta clip_b_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  lda #$01
  sta clip_b_flag,y
@@ -20244,6 +20868,11 @@ cpaoc_projected:
  sta clip_a_x,y
  lda sy,x
  sta clip_a_y,y
+.if GOURAUD_MODE6 != 0
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ sta clip_a_shade,y
+.endif
  lda vxrawlo,x
  sta clip_a_vxlo,y
  lda vxrawhi,x
@@ -20266,6 +20895,14 @@ cpaoc_projected:
 camera_plane_append_original_intersection:
  lda clip_cur_inside
  beq cpaoi_cur_outside
+.if GOURAUD_MODE6 != 0
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_in
+ ldx clip_prev_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_out
+.endif
  ldx clip_prev_idx
  jsr camera_plane_get_face_vertex
  sta clip_out_x
@@ -20274,6 +20911,14 @@ camera_plane_append_original_intersection:
  sta clip_in_x
  jmp cpaoi_ratio
 cpaoi_cur_outside:
+.if GOURAUD_MODE6 != 0
+ ldx clip_prev_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_in
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_out
+.endif
  ldx clip_prev_idx
  jsr camera_plane_get_face_vertex
  sta clip_in_x
@@ -20305,6 +20950,11 @@ cpaoi_ratio:
  lda clip_a_count
  sta camera_plane_bucket_ready
  jsr camera_plane_project_original_intersection
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_interp_clip_shade
+ ldy clip_a_count
+ sta clip_a_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  ldy clip_a_count
  lda #$01
@@ -20535,7 +21185,7 @@ camera_plane_store_bucket_from_a:
  sta p1lo
  sta p1hi
 cpsb_sum_ok:
-.if CAMERA_MOVABLE != 0 || GRAPHICS_MODE = $04 || GRAPHICS_MODE = $05
+.if CAMERA_MOVABLE != 0 || GRAPHICS_MODE = $04 || GRAPHICS_MODE = $05 || GRAPHICS_MODE = $06
  lsr p1hi
  ror p1lo
  lsr p1hi
@@ -20672,6 +21322,13 @@ clip_near_fullscreen_fill:
  sta clip_a_y+2
  sta clip_a_ylo+3
  sta clip_a_y+3
+.if GOURAUD_MODE6 != 0
+ lda gouraud_vshade0
+ sta clip_a_shade
+ sta clip_a_shade+1
+ sta clip_a_shade+2
+ sta clip_a_shade+3
+.endif
  rts
 .endif
 
@@ -20712,6 +21369,11 @@ near_append_current_vertex:
  sta clip_a_x,y
  lda sy,x
  sta clip_a_y,y
+.if GOURAUD_MODE6 != 0
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ sta clip_a_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  lda #$00
  sta clip_a_flag,y
@@ -20736,6 +21398,14 @@ near_append_current_vertex:
 near_append_intersection:
  lda clip_cur_inside
  beq nai_cur_outside
+.if GOURAUD_MODE6 != 0
+ ldx clip_prev_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_in
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_out
+.endif
  ldx clip_prev_idx
  jsr near_get_face_vertex
  sta p1lo
@@ -20744,6 +21414,14 @@ near_append_intersection:
  sta p1hi
  jmp near_project_intersection
 nai_cur_outside:
+.if GOURAUD_MODE6 != 0
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_in
+ ldx clip_prev_idx
+ lda gouraud_vshade0,x
+ sta gouraud_clip_shade_out
+.endif
  ldx clip_cur_idx
  jsr near_get_face_vertex
  sta p1lo
@@ -20791,6 +21469,11 @@ npi_den_ok:
  jsr clip_project_a_x_from_camera
  ldx clip_a_count
  jsr clip_project_a_y_from_camera
+.if GOURAUD_MODE6 != 0
+ jsr gouraud_interp_clip_shade
+ ldy clip_a_count
+ sta clip_a_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  ldy clip_a_count
  lda #$01
@@ -21184,14 +21867,26 @@ clip_poly_init_from_face:
  ldx face0,y
  ldy #$00
  jsr clip_poly_load_vertex_a
+.if GOURAUD_MODE6 != 0
+ lda gouraud_vshade0
+ sta clip_a_shade
+.endif
  ldy sortj
  ldx face1,y
  ldy #$01
  jsr clip_poly_load_vertex_a
+.if GOURAUD_MODE6 != 0
+ lda gouraud_vshade1
+ sta clip_a_shade+1
+.endif
  ldy sortj
  ldx face2,y
  ldy #$02
  jsr clip_poly_load_vertex_a
+.if GOURAUD_MODE6 != 0
+ lda gouraud_vshade2
+ sta clip_a_shade+2
+.endif
 .if HAS_TRI_FACES != 0
  lda loaded_face_vertex_count
  cmp #$04
@@ -21201,6 +21896,10 @@ clip_poly_init_from_face:
  ldx face3,y
  ldy #$03
  jsr clip_poly_load_vertex_a
+.if GOURAUD_MODE6 != 0
+ lda gouraud_vshade3
+ sta clip_a_shade+3
+.endif
 cpiff_done:
  rts
 
@@ -21457,6 +22156,10 @@ clip_copy_a_to_b:
  sta clip_b_x,y
  lda clip_a_y,x
  sta clip_b_y,y
+.if GOURAUD_MODE6 != 0
+ lda clip_a_shade,x
+ sta clip_b_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  lda clip_a_flag,x
  sta clip_b_flag,y
@@ -21492,6 +22195,10 @@ clip_copy_b_to_a:
  sta clip_a_x,y
  lda clip_b_y,x
  sta clip_a_y,y
+.if GOURAUD_MODE6 != 0
+ lda clip_b_shade,x
+ sta clip_a_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  lda clip_b_flag,x
  sta clip_a_flag,y
@@ -21656,6 +22363,10 @@ cabia_interp:
  rts
 
 clip_load_inside_right_a:
+.if GOURAUD_MODE6 != 0
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_in
+.endif
  lda clip_a_xlo,x
  sta clip_in_x
  sta clip_axis_in_lo
@@ -21678,6 +22389,10 @@ clip_load_inside_right_a:
  rts
 
 clip_load_outside_right_a:
+.if GOURAUD_MODE6 != 0
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_out
+.endif
  lda clip_a_y,x
  sta clip_out_y
  lda clip_a_ylo,x
@@ -21715,6 +22430,10 @@ clora_done:
  rts
 
 clip_load_inside_left_b:
+.if GOURAUD_MODE6 != 0
+ lda clip_b_shade,x
+ sta gouraud_clip_shade_in
+.endif
  lda clip_b_xlo,x
  sta clip_in_x
  sta clip_axis_in_lo
@@ -21732,6 +22451,10 @@ clip_load_inside_left_b:
  rts
 
 clip_load_outside_left_b:
+.if GOURAUD_MODE6 != 0
+ lda clip_b_shade,x
+ sta gouraud_clip_shade_out
+.endif
  lda clip_b_y,x
  sta clip_out_y
  lda clip_b_ylo,x
@@ -21763,6 +22486,10 @@ clolb_nonzero:
  rts
 
 clip_load_inside_top_a:
+.if GOURAUD_MODE6 != 0
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_in
+.endif
  lda clip_a_x,x
  sta clip_in_x
  lda clip_a_xlo,x
@@ -21785,6 +22512,10 @@ clita_num_ready:
  rts
 
 clip_load_outside_top_a:
+.if GOURAUD_MODE6 != 0
+ lda clip_a_shade,x
+ sta gouraud_clip_shade_out
+.endif
  lda clip_a_x,x
  sta clip_out_x
  lda clip_a_xlo,x
@@ -21816,6 +22547,10 @@ clota_nonzero:
  rts
 
 clip_load_inside_bottom_b:
+.if GOURAUD_MODE6 != 0
+ lda clip_b_shade,x
+ sta gouraud_clip_shade_in
+.endif
  lda clip_b_x,x
  sta clip_in_x
  lda clip_b_xlo,x
@@ -21838,6 +22573,10 @@ clip_load_inside_bottom_b:
  rts
 
 clip_load_outside_bottom_b:
+.if GOURAUD_MODE6 != 0
+ lda clip_b_shade,x
+ sta gouraud_clip_shade_out
+.endif
  lda clip_b_x,x
  sta clip_out_x
  lda clip_b_xlo,x
@@ -21967,6 +22706,30 @@ clip_interp_raw_poly:
  adc clip_raw_in_hi
  sta p1hi
  rts
+
+.if GOURAUD_MODE6 != 0
+gouraud_interp_clip_shade:
+ sec
+ lda gouraud_clip_shade_out
+ sbc gouraud_clip_shade_in
+ sta p1lo
+ lda #$00
+ sbc #$00
+ sta p1hi
+ lda scalev
+ jsr mul_s16_u8_frac
+ clc
+ lda p1lo
+ adc gouraud_clip_shade_in
+ bpl gics_nonnegative
+ lda #$00
+gics_nonnegative:
+ cmp #$21
+ bcc gics_done
+ lda #$20
+gics_done:
+ rts
+.endif
 
 mul_s16_u8_frac:
  sta mul16mul
@@ -23701,7 +24464,7 @@ lfv_visible:
 lfv_depth_ok:
 .endif
 .endif
-.if DYNAMIC_LIGHT != 0
+.if FLAT_DYNAMIC_SHADE != 0 && DYNAMIC_LIGHT != 0
 .if SCENE_OBJECT_COUNT != 0
  ldy faceidx
  jsr update_face_shade
@@ -24453,6 +25216,12 @@ camera_plane_append_original_zero:
  lda clip_a_count
  sta camera_plane_bucket_ready
  jsr camera_plane_project_original_intersection
+.if GOURAUD_MODE6 != 0
+ ldx clip_cur_idx
+ lda gouraud_vshade0,x
+ ldy clip_a_count
+ sta clip_a_shade,y
+.endif
 .if WIRE_RENDER_ENABLE != 0
  ldy clip_a_count
  lda #$00
@@ -25608,6 +26377,580 @@ sdp_b:
 .endif
  rts
 
+.if GOURAUD_MODE6 != 0
+gouraud_load_face_raw_shades_y:
+ lda gouraud_face_shade0,y
+ tax
+ lda gouraud_shade_value,x
+ sta gouraud_vshade0
+ lda gouraud_face_shade1,y
+ tax
+ lda gouraud_shade_value,x
+ sta gouraud_vshade1
+ lda gouraud_face_shade2,y
+ tax
+ lda gouraud_shade_value,x
+ sta gouraud_vshade2
+ lda gouraud_face_shade3,y
+ tax
+ lda gouraud_shade_value,x
+ sta gouraud_vshade3
+ rts
+
+gouraud_boost_shade_a:
+ sta p1lo
+ lda material_reflect_offset_cur
+ cmp #$1e
+ bcs glbs_mirror
+ cmp #$14
+ bcs glbs_reflective
+ cmp #$0a
+ bcs glbs_gloss
+ lda p1lo
+ rts
+glbs_gloss:
+ lda #$02
+ bne glbs_add
+glbs_reflective:
+ lda #$04
+ bne glbs_add
+glbs_mirror:
+ lda #$06
+glbs_add:
+ clc
+ adc p1lo
+ cmp #$21
+ bcc glbs_done
+ lda #$20
+glbs_done:
+ rts
+
+gouraud_apply_face_reflectivity:
+.if EXPLORER_SCREEN_CLIP_POLY != 0
+ lda clip_poly_active
+ beq gafr_projected
+ ldx #$00
+gafr_clip_loop:
+ lda clip_a_shade,x
+ jsr gouraud_boost_shade_a
+ sta clip_a_shade,x
+ inx
+ cpx clip_a_count
+ bne gafr_clip_loop
+ rts
+gafr_projected:
+.endif
+ lda gouraud_vshade0
+ jsr gouraud_boost_shade_a
+ sta gouraud_vshade0
+ lda gouraud_vshade1
+ jsr gouraud_boost_shade_a
+ sta gouraud_vshade1
+ lda gouraud_vshade2
+ jsr gouraud_boost_shade_a
+ sta gouraud_vshade2
+ lda gouraud_vshade3
+ jsr gouraud_boost_shade_a
+ sta gouraud_vshade3
+ rts
+
+draw_loaded_face_gouraud:
+.if EXPLORER_SCREEN_CLIP_POLY != 0
+ lda clip_poly_active
+ bne draw_clip_poly_gouraud
+.endif
+ jsr build_loaded_face_bounds
+.if SOLID_SUBPIXEL_XYQ2_LEGACY_DIRECT_Y != 0
+ lda xyq2_face_valid
+ beq dlfg_done
+.endif
+ jsr gouraud_build_edge_shades
+ jmp gouraud_fill_bounds
+dlfg_done:
+ rts
+
+gouraud_build_edge_shades:
+ ldx face_ymin
+gbes_init:
+ lda gouraud_vshade0
+ sta leftshade,x
+ sta rightshade,x
+ cpx face_ymax
+ beq gbes_edges
+ inx
+ bne gbes_init
+gbes_edges:
+ lda vx0
+ sta gouraud_edge_x0
+ lda vy0
+ sta gouraud_edge_y0
+ lda gouraud_vshade0
+ sta gouraud_edge_s0
+ lda vx1
+ sta gouraud_edge_x1
+ lda vy1
+ sta gouraud_edge_y1
+ lda gouraud_vshade1
+ sta gouraud_edge_s1
+ jsr gouraud_trace_shade_edge
+ lda vx1
+ sta gouraud_edge_x0
+ lda vy1
+ sta gouraud_edge_y0
+ lda gouraud_vshade1
+ sta gouraud_edge_s0
+ lda vx2
+ sta gouraud_edge_x1
+ lda vy2
+ sta gouraud_edge_y1
+ lda gouraud_vshade2
+ sta gouraud_edge_s1
+ jsr gouraud_trace_shade_edge
+.if HAS_TRI_FACES != 0
+ lda loaded_face_vertex_count
+ cmp #$04
+ bne gbes_close_triangle
+.endif
+ lda vx2
+ sta gouraud_edge_x0
+ lda vy2
+ sta gouraud_edge_y0
+ lda gouraud_vshade2
+ sta gouraud_edge_s0
+ lda vx3
+ sta gouraud_edge_x1
+ lda vy3
+ sta gouraud_edge_y1
+ lda gouraud_vshade3
+ sta gouraud_edge_s1
+ jsr gouraud_trace_shade_edge
+ lda vx3
+ sta gouraud_edge_x0
+ lda vy3
+ sta gouraud_edge_y0
+ lda gouraud_vshade3
+ sta gouraud_edge_s0
+ jmp gbes_close_common
+gbes_close_triangle:
+ lda vx2
+ sta gouraud_edge_x0
+ lda vy2
+ sta gouraud_edge_y0
+ lda gouraud_vshade2
+ sta gouraud_edge_s0
+gbes_close_common:
+ lda vx0
+ sta gouraud_edge_x1
+ lda vy0
+ sta gouraud_edge_y1
+ lda gouraud_vshade0
+ sta gouraud_edge_s1
+ jmp gouraud_trace_shade_edge
+
+gouraud_trace_shade_edge:
+ lda gouraud_edge_y0
+ cmp gouraud_edge_y1
+ bcc gtse_ordered
+ beq gtse_horizontal
+ lda gouraud_edge_x0
+ ldx gouraud_edge_x1
+ stx gouraud_edge_x0
+ sta gouraud_edge_x1
+ lda gouraud_edge_y0
+ ldx gouraud_edge_y1
+ stx gouraud_edge_y0
+ sta gouraud_edge_y1
+ lda gouraud_edge_s0
+ ldx gouraud_edge_s1
+ stx gouraud_edge_s0
+ sta gouraud_edge_s1
+gtse_ordered:
+ sec
+ lda gouraud_edge_y1
+ sbc gouraud_edge_y0
+ sta gouraud_edge_dy
+ sec
+ lda gouraud_edge_x1
+ sbc gouraud_edge_x0
+ bcs gtse_dx_positive
+ eor #$ff
+ clc
+ adc #$01
+ sta gouraud_edge_dx
+ lda #$ff
+ bne gtse_dx_ready
+gtse_dx_positive:
+ sta gouraud_edge_dx
+ lda #$01
+gtse_dx_ready:
+ sta gouraud_edge_xdir
+ sec
+ lda gouraud_edge_s1
+ sbc gouraud_edge_s0
+ bcs gtse_ds_positive
+ eor #$ff
+ clc
+ adc #$01
+ sta gouraud_edge_sdelta
+ lda #$ff
+ bne gtse_ds_ready
+gtse_ds_positive:
+ sta gouraud_edge_sdelta
+ lda #$01
+gtse_ds_ready:
+ sta gouraud_edge_sdir
+ lda #$00
+ sta gouraud_edge_xerr_lo
+ sta gouraud_edge_xerr_hi
+ sta gouraud_edge_serr
+ lda gouraud_edge_y0
+ sta gouraud_edge_row
+ lda gouraud_edge_x0
+ sta gouraud_edge_xcur
+ lda gouraud_edge_s0
+ sta gouraud_edge_scur
+gtse_loop:
+ jsr gouraud_store_edge_sample
+ lda gouraud_edge_row
+ cmp gouraud_edge_y1
+ beq gtse_done
+ clc
+ lda gouraud_edge_xerr_lo
+ adc gouraud_edge_dx
+ sta gouraud_edge_xerr_lo
+ lda gouraud_edge_xerr_hi
+ adc #$00
+ sta gouraud_edge_xerr_hi
+gtse_xstep_check:
+ lda gouraud_edge_xerr_hi
+ bne gtse_xstep
+ lda gouraud_edge_xerr_lo
+ cmp gouraud_edge_dy
+ bcc gtse_xstep_done
+gtse_xstep:
+ sec
+ lda gouraud_edge_xerr_lo
+ sbc gouraud_edge_dy
+ sta gouraud_edge_xerr_lo
+ lda gouraud_edge_xerr_hi
+ sbc #$00
+ sta gouraud_edge_xerr_hi
+ clc
+ lda gouraud_edge_xcur
+ adc gouraud_edge_xdir
+ sta gouraud_edge_xcur
+ jmp gtse_xstep_check
+gtse_xstep_done:
+ clc
+ lda gouraud_edge_serr
+ adc gouraud_edge_sdelta
+ sta gouraud_edge_serr
+gtse_sstep_check:
+ lda gouraud_edge_serr
+ cmp gouraud_edge_dy
+ bcc gtse_sstep_done
+ sec
+ sbc gouraud_edge_dy
+ sta gouraud_edge_serr
+ clc
+ lda gouraud_edge_scur
+ adc gouraud_edge_sdir
+ sta gouraud_edge_scur
+ jmp gtse_sstep_check
+gtse_sstep_done:
+ inc gouraud_edge_row
+ jmp gtse_loop
+gtse_horizontal:
+ lda gouraud_edge_y0
+ sta gouraud_edge_row
+ lda gouraud_edge_x0
+ sta gouraud_edge_xcur
+ lda gouraud_edge_s0
+ sta gouraud_edge_scur
+ jsr gouraud_store_edge_sample
+ lda gouraud_edge_x1
+ sta gouraud_edge_xcur
+ lda gouraud_edge_s1
+ sta gouraud_edge_scur
+ jmp gouraud_store_edge_sample
+gtse_done:
+ rts
+
+gouraud_store_edge_sample:
+ lda gouraud_edge_row
+ cmp face_ymin
+ bcc gses_done
+ cmp face_ymax
+ bcc gses_in_range
+ bne gses_done
+gses_in_range:
+ tax
+ sec
+ lda gouraud_edge_xcur
+ sbc leftb,x
+ bcs gses_left_abs
+ eor #$ff
+ clc
+ adc #$01
+gses_left_abs:
+ sta p1lo
+ sec
+ lda rightb,x
+ sbc gouraud_edge_xcur
+ bcs gses_right_abs
+ eor #$ff
+ clc
+ adc #$01
+gses_right_abs:
+ cmp p1lo
+ bcc gses_right
+ lda gouraud_edge_scur
+ sta leftshade,x
+ rts
+gses_right:
+ lda gouraud_edge_scur
+ sta rightshade,x
+gses_done:
+ rts
+
+gouraud_fill_bounds:
+.if TRACK_DIRTY_SPANS != 0
+ lda drawbuf
+ bne gfb_dirty_b
+ lda face_ymin
+ cmp dirty_ymin_a
+ bcs gfb_dirty_ymin_done
+ sta dirty_ymin_a
+gfb_dirty_ymin_done:
+ lda face_ymax
+ cmp dirty_ymax_a
+ bcc gfb_dirty_done
+ sta dirty_ymax_a
+ jmp gfb_dirty_done
+gfb_dirty_b:
+ lda face_ymin
+ cmp dirty_ymin_b
+ bcs gfb_dirty_ymin_b_done
+ sta dirty_ymin_b
+gfb_dirty_ymin_b_done:
+ lda face_ymax
+ cmp dirty_ymax_b
+ bcc gfb_dirty_done
+ sta dirty_ymax_b
+gfb_dirty_done:
+.endif
+ ldx face_ymin
+gfb_row:
+ lda leftb,x
+ sta leftval
+ lda rightb,x
+ sta rightval
+ cmp leftval
+ bcc gfb_next
+ stx yrow
+ ldx leftval
+ lda xbyte,x
+ sta startbyte
+ ldx rightval
+ lda xbyte,x
+ sta endbyte
+ lda drawbuf
+ bne gfb_rows_b
+ ldx yrow
+ lda row0lo_a,x
+ sta row0lo
+ lda row0hi_a,x
+ sta row0hi
+ lda row1lo_a,x
+ sta row1lo
+ lda row1hi_a,x
+ sta row1hi
+.if FACE_MATERIAL_ACTIVE_ONLY != $01 || FACE_REFLECTIVITY_ACTIVE_ONLY != $01 || VIC_COLOR_POLICY_ENABLE != 0
+ jsr apply_material_span_a
+.endif
+ jmp gfb_rows_ready
+gfb_rows_b:
+ ldx yrow
+ lda row0lo_b,x
+ sta row0lo
+ lda row0hi_b,x
+ sta row0hi
+ lda row1lo_b,x
+ sta row1lo
+ lda row1hi_b,x
+ sta row1hi
+.if FACE_MATERIAL_ACTIVE_ONLY != $01 || FACE_REFLECTIVITY_ACTIVE_ONLY != $01 || VIC_COLOR_POLICY_ENABLE != 0
+ jsr apply_material_span_b
+.endif
+gfb_rows_ready:
+.if TRACK_DIRTY_SPANS != 0
+ ldx yrow
+ lda drawbuf
+ bne gfb_dirty_span_b
+ lda startbyte
+ cmp dirtymin_a,x
+ bcs gfb_dirty_min_a_done
+ sta dirtymin_a,x
+gfb_dirty_min_a_done:
+ lda endbyte
+ cmp dirtymax_a,x
+ bcc gfb_dirty_span_done
+ sta dirtymax_a,x
+ jmp gfb_dirty_span_done
+gfb_dirty_span_b:
+ lda startbyte
+ cmp dirtymin_b,x
+ bcs gfb_dirty_min_b_done
+ sta dirtymin_b,x
+gfb_dirty_min_b_done:
+ lda endbyte
+ cmp dirtymax_b,x
+ bcc gfb_dirty_span_done
+ sta dirtymax_b,x
+gfb_dirty_span_done:
+.endif
+ ; Select one screen-anchored Bayer row once per scanline. The pixel kernel
+ ; then indexes a builder-generated 33 shade x 4 X-phase slice directly.
+ lda yrow
+ and #$03
+ tax
+ lda gouraud_bayer_code_lut_row_lo,x
+ sta gpsp_lut_load+$01
+ lda gouraud_bayer_code_lut_row_hi,x
+ sta gpsp_lut_load+$02
+ ldx yrow
+ lda leftshade,x
+ sta gouraud_scan_shade
+ lda rightshade,x
+ sec
+ sbc leftshade,x
+ bcs gfb_scan_positive
+ eor #$ff
+ clc
+ adc #$01
+ sta gouraud_scan_delta
+ lda #$ff
+ bne gfb_scan_dir_ready
+gfb_scan_positive:
+ sta gouraud_scan_delta
+ lda #$01
+gfb_scan_dir_ready:
+ sta gouraud_scan_dir
+ sec
+ lda rightval
+ sbc leftval
+ sta gouraud_scan_span
+ lda #$00
+ sta gouraud_scan_err
+ lda leftval
+ sta gouraud_scan_x
+ lda rightval
+ sta gouraud_scan_end
+.if GOURAUD_BYTE_SPAN_KERNEL != 0
+ jsr gouraud_draw_scan_span_bytes
+ jmp gfb_next_restore
+.else
+gfb_pixel_loop:
+ jsr gouraud_plot_scan_pixel
+ lda gouraud_scan_x
+ cmp gouraud_scan_end
+ beq gfb_next_restore
+ lda gouraud_scan_span
+ beq gfb_next_restore
+ clc
+ lda gouraud_scan_err
+ adc gouraud_scan_delta
+ sta gouraud_scan_err
+gfb_shade_step_check:
+ lda gouraud_scan_err
+ cmp gouraud_scan_span
+ bcc gfb_shade_step_done
+ sec
+ sbc gouraud_scan_span
+ sta gouraud_scan_err
+ clc
+ lda gouraud_scan_shade
+ adc gouraud_scan_dir
+ sta gouraud_scan_shade
+ jmp gfb_shade_step_check
+gfb_shade_step_done:
+ inc gouraud_scan_x
+ jmp gfb_pixel_loop
+.endif
+gfb_next_restore:
+ ldx yrow
+gfb_next:
+ cpx face_ymax
+ beq gfb_done
+ inx
+ jmp gfb_row
+gfb_done:
+ rts
+
+.if GOURAUD_BYTE_SPAN_KERNEL = 0
+gouraud_plot_scan_pixel:
+ lda gouraud_scan_x
+ and #$03
+ sta shadeidx
+ lda gouraud_scan_shade
+ asl
+ asl
+ ora shadeidx
+ tay
+gpsp_lut_load:
+ lda gouraud_bayer_code_lut_y0,y
+ sta p1lo
+ ldx shadeidx
+ lda gouraud_pair_clear,x
+ sta maskv
+ ldx gouraud_scan_x
+ clc
+ lda row0lo
+ adc xofflo,x
+ sta ptr0lo
+ lda row0hi
+ adc xoffhi,x
+ sta ptr0hi
+ clc
+ lda row1lo
+ adc xofflo,x
+ sta ptr1lo
+ lda row1hi
+ adc xoffhi,x
+ sta ptr1hi
+ ldy #$00
+ lda (ptr0lo),y
+ and maskv
+ ora p1lo
+ sta (ptr0lo),y
+ lda (ptr1lo),y
+ and maskv
+ ora p1lo
+ sta (ptr1lo),y
+ rts
+.else
+; Gate 5 span cursor initialization occupies the retired scalar kernel's
+; segment. This keeps Ground builds within the unchanged high-code window.
+gouraud_init_span_pointers:
+ ldx gouraud_scan_x
+ clc
+ lda row0lo
+ adc xofflo,x
+ sta ptr0lo
+ lda row0hi
+ adc xoffhi,x
+ sta ptr0hi
+ clc
+ lda row1lo
+ adc xofflo,x
+ sta ptr1lo
+ lda row1hi
+ adc xoffhi,x
+ sta ptr1hi
+ rts
+.endif
+.endif
+
 draw_loaded_face_solid_a:
 .if EXPLORER_SCREEN_CLIP_POLY != 0
  lda clip_poly_active
@@ -25770,7 +27113,40 @@ load_clip_poly_fan_triangle:
  lda clip_a_y,x
  sta vy2
  sta vy3
+.if GOURAUD_MODE6 != 0
+ lda clip_a_shade
+ sta gouraud_vshade0
+ ldx clip_cur_idx
+ lda clip_a_shade,x
+ sta gouraud_vshade1
+ inx
+ lda clip_a_shade,x
+ sta gouraud_vshade2
+ sta gouraud_vshade3
+.endif
  rts
+
+.if GOURAUD_MODE6 != 0
+draw_clip_poly_gouraud:
+ lda clip_a_count
+ cmp #$03
+ bcc dcpg_done
+ lda #$01
+ sta clip_cur_idx
+dcpg_loop:
+ jsr load_clip_poly_fan_triangle
+ jsr build_loaded_face_bounds_convex
+ jsr gouraud_build_edge_shades
+ jsr gouraud_fill_bounds
+ inc clip_cur_idx
+ lda clip_cur_idx
+ clc
+ adc #$01
+ cmp clip_a_count
+ bcc dcpg_loop
+dcpg_done:
+ rts
+.endif
 
 draw_clip_poly_solid_a:
  lda #<fill_bounds_solid_a
@@ -27995,7 +29371,7 @@ pvwr_done:
  rts
 .endif
 
-.if MODE3_HIGH_BASIC_FULL_RASTER_RELOCATE != 0 && GRAPHICS_MODE != $04 && GRAPHICS_MODE != $05
+.if MODE3_HIGH_BASIC_FULL_RASTER_RELOCATE != 0 && GRAPHICS_MODE != $04 && GRAPHICS_MODE != $05 && GRAPHICS_MODE != $06
 mode3_high_basic_relocated_code_end = *
 .if mode3_high_basic_relocated_code_end > $a000
  .error "Mode 3 relocated full raster overlaps the high code segment"
@@ -29648,9 +31024,9 @@ fbs_a_done:
  rts
 
 .endif
-.if MODE3_HIGH_BASIC_FULL_RASTER_RELOCATE != 0 && ($04 = GRAPHICS_MODE || GRAPHICS_MODE = $05)
+.if MODE3_HIGH_BASIC_FULL_RASTER_RELOCATE != 0 && ($04 = GRAPHICS_MODE || GRAPHICS_MODE = $05 || GRAPHICS_MODE = $06)
 mode3_high_basic_relocated_code_end = *
-.if CAMERA_MOVABLE != 0 && FPS_OVERLAY_ENABLE != 0 && mode3_high_basic_relocated_code_end > $9b80
+.if CAMERA_MOVABLE != 0 && FPS_OVERLAY_ENABLE != 0 && GOURAUD_MODE6 = 0 && mode3_high_basic_relocated_code_end > $9b80
  .error "Mode 4/5 relocated raster code overlaps relocated camera block ($9B80)"
 .endif
 .if mode3_high_basic_relocated_code_end > $a000
@@ -29658,6 +31034,179 @@ mode3_high_basic_relocated_code_end = *
 .endif
 * = $a000
 mode3_high_basic_high_code_start = *
+.endif
+.if GOURAUD_BYTE_SPAN_KERNEL != 0
+; Gate 5: exact partial-byte aggregation. The Gate 3 full-byte samples and
+; the shade DDA are unchanged. Each partial byte is read/modified once per
+; physical row; bitmap pointers persist until crossing a byte boundary.
+gouraud_draw_scan_span_bytes:
+ ; Copy the scanline-selected LUT address into the four absolute,Y loads.
+ ; Patching once per span is IRQ-safe and preserves Gate 1's RAM layout.
+ lda gpsp_lut_load+$01
+ sta gdsb_lut_phase0+$01
+ sta gdsb_lut_phase1+$01
+ sta gdsb_lut_phase2+$01
+ sta gdsb_lut_phase3+$01
+ lda gpsp_lut_load+$02
+ sta gdsb_lut_phase0+$02
+ sta gdsb_lut_phase1+$02
+ sta gdsb_lut_phase2+$02
+ sta gdsb_lut_phase3+$02
+
+ ; Initialize the two physical-row pointers once per span.
+gdsb_pointer_init:
+ jsr gouraud_init_span_pointers
+
+gdsb_dispatch:
+ lda gouraud_scan_x
+ and #$03
+ bne gdsb_partial
+ sec
+ lda gouraud_scan_end
+ sbc gouraud_scan_x
+ cmp #$03
+ bcc gdsb_partial
+
+ ; Phase 0.
+ lda gouraud_scan_shade
+ asl
+ asl
+ tay
+gdsb_lut_phase0:
+ lda gouraud_bayer_code_lut_y0,y
+ sta p1lo
+ jsr gouraud_advance_scan_pixel
+
+ ; Phase 1.
+ lda gouraud_scan_shade
+ asl
+ asl
+ ora #$01
+ tay
+gdsb_lut_phase1:
+ lda gouraud_bayer_code_lut_y0,y
+ ora p1lo
+ sta p1lo
+ jsr gouraud_advance_scan_pixel
+
+ ; Phase 2.
+ lda gouraud_scan_shade
+ asl
+ asl
+ ora #$02
+ tay
+gdsb_lut_phase2:
+ lda gouraud_bayer_code_lut_y0,y
+ ora p1lo
+ sta p1lo
+ jsr gouraud_advance_scan_pixel
+
+ ; Phase 3 completes the byte. All four pixel pairs are covered, so no
+ ; bitmap read/mask is required.
+ lda gouraud_scan_shade
+ asl
+ asl
+ ora #$03
+ tay
+gdsb_lut_phase3:
+ lda gouraud_bayer_code_lut_y0,y
+ ora p1lo
+ ldy #$00
+ sta (ptr0lo),y
+ sta (ptr1lo),y
+ lda gouraud_scan_x
+ cmp gouraud_scan_end
+ beq gdsb_done
+ jsr gouraud_advance_scan_pixel
+ jmp gdsb_next_byte
+
+gdsb_partial:
+ lda #$00
+ sta p1lo
+ lda #$ff
+ sta maskv
+gdsb_partial_sample:
+ lda gouraud_scan_x
+ and #$03
+ sta shadeidx
+ lda gouraud_scan_shade
+ asl
+ asl
+ ora shadeidx
+ tay
+gdsb_partial_lut:
+ ; Reuse the original scanline-selected LUT operand directly. There is no
+ ; scalar pixel caller in this kernel; its dead implementation is omitted.
+gpsp_lut_load:
+ lda gouraud_bayer_code_lut_y0,y
+ ora p1lo
+ sta p1lo
+ ldx shadeidx
+ lda gouraud_pair_clear,x
+ and maskv
+ sta maskv
+ cpx #$03
+ beq gdsb_partial_store
+ lda gouraud_scan_x
+ cmp gouraud_scan_end
+ beq gdsb_partial_store
+ jsr gouraud_advance_scan_pixel
+ jmp gdsb_partial_sample
+gdsb_partial_store:
+ ldy #$00
+ lda (ptr0lo),y
+ and maskv
+ ora p1lo
+ sta (ptr0lo),y
+ lda (ptr1lo),y
+ and maskv
+ ora p1lo
+ sta (ptr1lo),y
+ lda gouraud_scan_x
+ cmp gouraud_scan_end
+ beq gdsb_done
+ jsr gouraud_advance_scan_pixel
+gdsb_next_byte:
+ ; Adjacent C64 bitmap bytes on one scanline are eight addresses apart.
+ clc
+ lda ptr0lo
+ adc #$08
+ sta ptr0lo
+ bcc gdsb_ptr0_ready
+ inc ptr0hi
+gdsb_ptr0_ready:
+ clc
+ lda ptr1lo
+ adc #$08
+ sta ptr1lo
+ bcc gdsb_ptr1_ready
+ inc ptr1hi
+gdsb_ptr1_ready:
+ jmp gdsb_dispatch
+gdsb_done:
+ rts
+
+; Bit-exact extraction of the original per-pixel shade DDA step.
+gouraud_advance_scan_pixel:
+ clc
+ lda gouraud_scan_err
+ adc gouraud_scan_delta
+ sta gouraud_scan_err
+gasp_step_check:
+ lda gouraud_scan_err
+ cmp gouraud_scan_span
+ bcc gasp_step_done
+ sec
+ sbc gouraud_scan_span
+ sta gouraud_scan_err
+ clc
+ lda gouraud_scan_shade
+ adc gouraud_scan_dir
+ sta gouraud_scan_shade
+ jmp gasp_step_check
+gasp_step_done:
+ inc gouraud_scan_x
+ rts
 .endif
 .if POLY_FILL_ENABLE != 0 && HIDDEN_WIRE_ENABLE = 0
 fill_bounds_pattern_a:
@@ -31923,6 +33472,47 @@ shade_dirty: .byte 1
 material_screen_cur: .byte MATERIAL_SCREEN_BYTE
 material_color_cur: .byte MATERIAL_COLOR_RAM
 material_reflect_offset_cur: .byte MATERIAL_REFLECTIVITY_OFFSET
+.if GOURAUD_MODE6 != 0
+gouraud_vshade0: .byte 0
+gouraud_vshade1: .byte 0
+gouraud_vshade2: .byte 0
+gouraud_vshade3: .byte 0
+gouraud_edge_x0: .byte 0
+gouraud_edge_y0: .byte 0
+gouraud_edge_x1: .byte 0
+gouraud_edge_y1: .byte 0
+gouraud_edge_s0: .byte 0
+gouraud_edge_s1: .byte 0
+gouraud_edge_dx: .byte 0
+gouraud_edge_dy: .byte 0
+gouraud_edge_xdir: .byte 0
+gouraud_edge_sdelta: .byte 0
+gouraud_edge_sdir: .byte 0
+gouraud_edge_xerr_lo: .byte 0
+gouraud_edge_xerr_hi: .byte 0
+gouraud_edge_serr: .byte 0
+gouraud_edge_row: .byte 0
+gouraud_edge_xcur: .byte 0
+gouraud_edge_scur: .byte 0
+gouraud_scan_x: .byte 0
+gouraud_scan_end: .byte 0
+gouraud_scan_delta: .byte 0
+gouraud_scan_dir: .byte 0
+gouraud_scan_err: .byte 0
+gouraud_scan_span: .byte 0
+gouraud_scan_shade: .byte 0
+gouraud_clip_shade_in: .byte 0
+gouraud_clip_shade_out: .byte 0
+gouraud_bayer4x4: .byte 0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5
+gouraud_pair_01: .byte $40,$10,$04,$01
+gouraud_pair_10: .byte $80,$20,$08,$02
+gouraud_pair_11: .byte $c0,$30,$0c,$03
+gouraud_pair_clear: .byte $3f,$cf,$f3,$fc
+gouraud_bayer_code_lut_row_lo:
+ .byte <gouraud_bayer_code_lut_y0,<gouraud_bayer_code_lut_y1,<gouraud_bayer_code_lut_y2,<gouraud_bayer_code_lut_y3
+gouraud_bayer_code_lut_row_hi:
+ .byte >gouraud_bayer_code_lut_y0,>gouraud_bayer_code_lut_y1,>gouraud_bayer_code_lut_y2,>gouraud_bayer_code_lut_y3
+.endif
 .if ENGINE_WIRE_CELL_WRITE_SKIP_SAME != 0
 engine_wire_last_cell_x: .byte $ff
 engine_wire_last_cell_y: .byte $ff
@@ -32160,25 +33750,47 @@ clip_a_ylo = clip_a_xhi + 12
 clip_a_yhi = clip_a_ylo + 12
 clip_a_x = clip_a_yhi + 12
 clip_a_y = clip_a_x + 12
+.if GOURAUD_MODE6 != 0
+clip_a_shade = clip_a_y + 12
+.endif
 .if WIRE_RENDER_ENABLE != 0
+.if GOURAUD_MODE6 != 0
+clip_a_flag = clip_a_shade + 12
+.else
 clip_a_flag = clip_a_y + 12
+.endif
 clip_b_xlo = clip_a_flag + 12
 .else
+.if GOURAUD_MODE6 != 0
+clip_b_xlo = clip_a_shade + 12
+.else
 clip_b_xlo = clip_a_y + 12
+.endif
 .endif
 clip_b_xhi = clip_b_xlo + 12
 clip_b_ylo = clip_b_xhi + 12
 clip_b_yhi = clip_b_ylo + 12
 clip_b_x = clip_b_yhi + 12
 clip_b_y = clip_b_x + 12
+.if GOURAUD_MODE6 != 0
+clip_b_shade = clip_b_y + 12
+.endif
 .if WIRE_RENDER_ENABLE != 0
+.if GOURAUD_MODE6 != 0
+clip_b_flag = clip_b_shade + 12
+.else
 clip_b_flag = clip_b_y + 12
+.endif
 .endif
 .if EXPLORER_NEAR_POLY != 0 || CAMERA_PLANE_CLIP_PROFILE != 0
 .if WIRE_RENDER_ENABLE != 0
 clip_a_vxlo = clip_b_flag + 12
 .else
+.if GOURAUD_MODE6 != 0
+clip_a_vxlo = clip_b_shade + 12
+.else
 clip_a_vxlo = clip_b_y + 12
+.endif
 .endif
 clip_a_vxhi = clip_a_vxlo + 12
 clip_a_vylo = clip_a_vxhi + 12
@@ -32196,7 +33808,11 @@ RUNTIME_AFTER_CLIP_VERTEX = clip_b_vzhi + 12
 .if WIRE_RENDER_ENABLE != 0
 RUNTIME_AFTER_CLIP_VERTEX = clip_b_flag + 12
 .else
+.if GOURAUD_MODE6 != 0
+RUNTIME_AFTER_CLIP_VERTEX = clip_b_shade + 12
+.else
 RUNTIME_AFTER_CLIP_VERTEX = clip_b_y + 12
+.endif
 .endif
 .endif
 clip_raw_in_lo = RUNTIME_AFTER_CLIP_VERTEX
@@ -32245,11 +33861,18 @@ z_m22 = z_m12 + ZCOORD_COUNT
 leftb = z_m22 + ZCOORD_COUNT
 VIEWPORT_ROW_CAPACITY = 100
 rightb = leftb + VIEWPORT_ROW_CAPACITY
+.if GOURAUD_MODE6 != 0
+leftshade = rightb + VIEWPORT_ROW_CAPACITY
+rightshade = leftshade + VIEWPORT_ROW_CAPACITY
+RUNTIME_AFTER_GOURAUD_ROWS = rightshade + VIEWPORT_ROW_CAPACITY
+.else
+RUNTIME_AFTER_GOURAUD_ROWS = rightb + VIEWPORT_ROW_CAPACITY
+.endif
 .if LAZY_CONVEX_BOUNDS != 0
-bounds_stamp = rightb + VIEWPORT_ROW_CAPACITY
+bounds_stamp = RUNTIME_AFTER_GOURAUD_ROWS
 dirtymin_a = bounds_stamp + VIEWPORT_ROW_CAPACITY
 .else
-dirtymin_a = rightb + VIEWPORT_ROW_CAPACITY
+dirtymin_a = RUNTIME_AFTER_GOURAUD_ROWS
 .endif
 dirtymax_a = dirtymin_a + VIEWPORT_ROW_CAPACITY
 dirtymin_b = dirtymax_a + VIEWPORT_ROW_CAPACITY
@@ -32259,6 +33882,9 @@ dirtymax_b = dirtymin_b + VIEWPORT_ROW_CAPACITY
 .endif
 .if rightb != leftb + VIEWPORT_ROW_CAPACITY || dirtymax_a != dirtymin_a + VIEWPORT_ROW_CAPACITY || dirtymin_b != dirtymax_a + VIEWPORT_ROW_CAPACITY || dirtymax_b != dirtymin_b + VIEWPORT_ROW_CAPACITY
  .error "Per-row runtime arrays are not contiguous 100-byte ranges"
+.endif
+.if GOURAUD_MODE6 != 0 && (leftshade != rightb + VIEWPORT_ROW_CAPACITY || rightshade != leftshade + VIEWPORT_ROW_CAPACITY)
+ .error "Gouraud left/right shade rows are not contiguous 100-byte ranges"
 .endif
 .if MODE1_FACE_BUCKET_MEMORY_SPECIALIZATION = 0
 bucket_head = dirtymax_b + VIEWPORT_ROW_CAPACITY
@@ -34099,6 +35725,42 @@ xyq2_div_signed_euclid_11x8:
  lda #$01
  sta xyq2_negative
 xyq2_div11_abs_ready:
+.if GOURAUD_MODE6 != 0
+ ; Gate 4: exact byte-seeded division, 1<=D<=255.
+ ; Preserve Gate 3's 11-bit magnitude truncation even outside the
+ ; old documented |N|<=2032 domain (normal viewport can exceed it).
+ ; Divide the (at most seven) high units, then consume eight low bits.
+ ; ROL A keeps the ninth remainder bit in carry. Both routes to SBC
+ ; establish carry=1, including the overflow route (R>=256>D).
+ lda xyq2_nlo
+ sta xyq2_qlo
+ lda #$00
+ sta xyq2_qhi
+ sta xyq2_rhi
+ lda xyq2_nhi
+ and #$07
+xyq2_div11_seed:
+ cmp xyq2_divlo
+ bcc xyq2_div11_low_start
+ sbc xyq2_divlo
+ inc xyq2_qhi
+ jmp xyq2_div11_seed
+xyq2_div11_low_start:
+ ldx #$08
+xyq2_div11_low_loop:
+ asl xyq2_qlo
+ rol a
+ bcs xyq2_div11_low_sub
+ cmp xyq2_divlo
+ bcc xyq2_div11_low_skip
+xyq2_div11_low_sub:
+ sbc xyq2_divlo
+ inc xyq2_qlo
+xyq2_div11_low_skip:
+ dex
+ bne xyq2_div11_low_loop
+ sta xyq2_rlo
+.else
  lda xyq2_nlo
  sta xyq2_qlo
  lda xyq2_nhi
@@ -34137,6 +35799,7 @@ xyq2_div11_sub:
 xyq2_div11_skip:
  dex
  bne xyq2_div11_loop
+.endif
  lda xyq2_negative
  beq xyq2_div11_done
  lda xyq2_rlo
@@ -34729,6 +36392,7 @@ $asm = $asm.Replace('ENGINE_CAMERA_VIEWPORT_SMALL = $00', ('ENGINE_CAMERA_VIEWPO
 $asm = $asm.Replace('ENGINE_CAMERA_VIEWPORT_PROFILE_ID = $00', ('ENGINE_CAMERA_VIEWPORT_PROFILE_ID = ' + (ByteHex $EngineCameraViewportSmallFlag)))
 $asm = $asm.Replace('ENGINE_CAMERA_VIEWPORT_PROJECTION_SCALED = $00', ('ENGINE_CAMERA_VIEWPORT_PROJECTION_SCALED = ' + (ByteHex $EngineCameraViewportProjectionScaledFlag)))
 $asm = $asm.Replace('ENGINE_CAMERA_VIEWPORT_CLEAR_LIMITED = $00', ('ENGINE_CAMERA_VIEWPORT_CLEAR_LIMITED = ' + (ByteHex $EngineCameraViewportClearLimitedFlag)))
+$asm = $asm.Replace('MODE6_VIEWPORT_CLEAR_SPECIALIZED = $00', ('MODE6_VIEWPORT_CLEAR_SPECIALIZED = ' + (ByteHex $Mode6ViewportClearSpecializedFlag)))
 $asm = $asm.Replace('ENGINE_CAMERA_VIEWPORT_GROUND_LIMITED = $00', ('ENGINE_CAMERA_VIEWPORT_GROUND_LIMITED = ' + (ByteHex $EngineCameraViewportGroundLimitedFlag)))
 $asm = $asm.Replace('CAMERA_VIEWPORT_WIDTH = $a0', ('CAMERA_VIEWPORT_WIDTH = ' + (ByteHex $CameraViewportWidth)))
 $asm = $asm.Replace('CAMERA_VIEWPORT_HEIGHT = $64', ('CAMERA_VIEWPORT_HEIGHT = ' + (ByteHex $CameraViewportHeight)))
@@ -34737,8 +36401,11 @@ $asm = $asm.Replace('CAMERA_VIEWPORT_ORIGIN_Y = $00', ('CAMERA_VIEWPORT_ORIGIN_Y
 $asm = $asm.Replace('CAMERA_VIEWPORT_CELL_ORIGIN_X = $00', ('CAMERA_VIEWPORT_CELL_ORIGIN_X = ' + (ByteHex $CameraViewportCellOriginX)))
 $asm = $asm.Replace('CAMERA_VIEWPORT_CELL_WIDTH = $28', ('CAMERA_VIEWPORT_CELL_WIDTH = ' + (ByteHex $CameraViewportCellWidth)))
 $asm = $asm.Replace('CAMERA_VIEWPORT_BITMAP_X_OFFSET = $00', ('CAMERA_VIEWPORT_BITMAP_X_OFFSET = ' + (ByteHex $CameraViewportBitmapXOffset)))
+$asm = $asm.Replace('; MODE6_VIEWPORT_CLEAR_SPECIALIZED_ROUTINES', $Mode6ViewportClearAsm.TrimEnd())
 $asm = $asm.Replace('SOURCE_FACE_COUNT = $fd', ('SOURCE_FACE_COUNT = ' + (ByteHex $SourceFaceCount)))
 $asm = $asm.Replace('SOURCE_VERT_COUNT = $fe', ('SOURCE_VERT_COUNT = ' + (ByteHex $SourceVertexCount)))
+$asm = $asm.Replace('SOURCE_SHADE_VERT_COUNT = $00', ('SOURCE_SHADE_VERT_COUNT = ' + (ByteHex $SourceShadeVertexCount)))
+$asm = $asm.Replace("`nSHADE_VERT_COUNT = `$00", ("`nSHADE_VERT_COUNT = " + (ByteHex $ShadeVertexCount)))
 $asm = $asm.Replace('FACE_COUNT = $0c', ('FACE_COUNT = ' + (ByteHex $FaceCount)))
 $asm = $asm.Replace('FACE_BUCKET_USED_LIST_CAPACITY = $0100', ('FACE_BUCKET_USED_LIST_CAPACITY = ' + (WordHex $FaceBucketUsedListCapacity)))
 $asm = $asm.Replace('VERT_COUNT = $08', ('VERT_COUNT = ' + (ByteHex $VertexCount)))
@@ -35077,6 +36744,9 @@ $asm = $asm.Replace('FACE_RENDER_ENABLE = $01', ('FACE_RENDER_ENABLE = ' + (Byte
 $asm = $asm.Replace('WIRE_PURE_ENABLE = $00', ('WIRE_PURE_ENABLE = ' + (ByteHex $WirePureFlag)))
 $asm = $asm.Replace('STATIC_SHADE_CACHE = $00', ('STATIC_SHADE_CACHE = ' + (ByteHex $StaticShadeCacheFlag)))
 $asm = $asm.Replace('FULL_DYNAMIC_SHADE = $01', ('FULL_DYNAMIC_SHADE = ' + (ByteHex $FullDynamicShadeFlag)))
+$asm = $asm.Replace('FLAT_DYNAMIC_SHADE = $01', ('FLAT_DYNAMIC_SHADE = ' + (ByteHex $FlatDynamicShadeFlag)))
+$asm = $asm.Replace('GOURAUD_MODE6 = $00', ('GOURAUD_MODE6 = ' + (ByteHex $Mode6GouraudFlag)))
+$asm = $asm.Replace('GOURAUD_BYTE_SPAN_KERNEL = $00', ('GOURAUD_BYTE_SPAN_KERNEL = ' + (ByteHex $Mode6ByteSpanKernelFlag)))
 $asm = $asm.Replace('MODE4_DYNAMIC_SHADE_THRESHOLD_FIX = $00', ('MODE4_DYNAMIC_SHADE_THRESHOLD_FIX = ' + (ByteHex $Mode4DynamicShadeThresholdFixFlag)))
 $asm = $asm.Replace('STATIC_SHADE_DIRECT = $00', ('STATIC_SHADE_DIRECT = ' + (ByteHex $StaticShadeDirectFlag)))
 $asm = $asm.Replace('FRAME_FACE_FILL_CACHE = $00', ('FRAME_FACE_FILL_CACHE = ' + (ByteHex $FrameFaceFillCacheFlag)))
@@ -35144,6 +36814,7 @@ $asm = $asm.Replace('CONTROL_ZERO_MOTION_KEY = $00', ('CONTROL_ZERO_MOTION_KEY =
 $asm = $asm.Replace('LOWRES_TRACE_ENABLE = $00', ('LOWRES_TRACE_ENABLE = ' + (ByteHex $LowresTraceFlag)))
 $asm = $asm.Replace('CONTROL_MATERIAL_KEYS = $00', ('CONTROL_MATERIAL_KEYS = ' + (ByteHex $ControlMaterialFlag)))
 $asm = $asm.Replace('CONTROL_REFLECTIVITY_KEYS = $00', ('CONTROL_REFLECTIVITY_KEYS = ' + (ByteHex $ControlReflectivityFlag)))
+$asm = $asm.Replace('REFLECTIVITY_CYCLE_OFFSET_LIMIT = $28', ('REFLECTIVITY_CYCLE_OFFSET_LIMIT = ' + (ByteHex $ReflectivityCycleOffsetLimit)))
 $asm = $asm.Replace('FULL_CLEAR = $00', ('FULL_CLEAR = ' + (ByteHex $FullClearFlag)))
 $asm = $asm.Replace('TRACK_DIRTY_SPANS = $01', ('TRACK_DIRTY_SPANS = ' + (ByteHex $TrackDirtySpansFlag)))
 $asm = $asm.Replace('DYNAMIC_LIGHT = $00', ('DYNAMIC_LIGHT = ' + (ByteHex $DynamicLightFlag)))
@@ -35363,7 +37034,7 @@ $asm += "; FaceCullProfile: $FaceCullProfileKey stable=$StableFaceCullProfileFla
 "
 $asm += "; CameraPlaneCull: sceneObjects=$SceneObjectCount faceMinDepth=8 sceneRenderMinY=0 fpsOverlay=$FpsOverlayEnableFlag fpsCounter=$FpsCounterEnableFlag objectStatePreserved=$($SceneObjectCount -gt 0)
 "
-$asm += "; Controls: fpsF=$FpsKeyToggleEnableFlag fpsStart=$FpsOverlayOnStartFlag fpsCounterOnly=$FpsCounterOnlyFlag space=$ControlSpaceFlag return=$ControlReturnFlag rotation=$ControlRotationFlag light=$ControlLightFlag lowres=$ControlLowresFlag lowresTrace=$($LowresTraceFlag -ne 0) material=$ControlMaterialFlag reflectivity=$ControlReflectivityFlag randomMaterial=$RandomMaterialCycleFlag randomMaterialTicks=$RandomMaterialCycleTicks
+$asm += "; Controls: fpsF=$FpsKeyToggleEnableFlag fpsStart=$FpsOverlayOnStartFlag fpsCounterOnly=$FpsCounterOnlyFlag space=$ControlSpaceFlag return=$ControlReturnFlag rotation=$ControlRotationFlag light=$ControlLightFlag lowres=$ControlLowresFlag lowresTrace=$($LowresTraceFlag -ne 0) material=$ControlMaterialFlag reflectivity=$ControlReflectivityFlag reflectivityCycleLevels=$ReflectivityCycleLevels randomMaterial=$RandomMaterialCycleFlag randomMaterialTicks=$RandomMaterialCycleTicks
 "
 $asm += "; MaterialCellSpanCache: $MaterialCellSpanCacheFlag activeOnlyMaterial=$FaceMaterialActiveOnlyFlag activeOnlyReflectivity=$FaceReflectivityActiveOnlyFlag faceSolidColor=$FaceSolidColorFlag requested=$FaceSolidColorRequestedFlag wireEdgeSolidColor=$WireEdgeSolidColorFlag requested=$WireEdgeSolidColorRequestedFlag
 "
@@ -35409,7 +37080,7 @@ for ($i = 0; $i -lt $MeshRecords.Count; $i++) {
  } else {
  "mesh geometry=solid render=normal"
  }
- $asm += "; ${i}: $($record.Name) type=$recordType vertices=$($record.VertexCount) faces=$($record.FaceCount) drawEdges=$edgeCount
+ $asm += "; ${i}: $($record.Name) type=$recordType vertices=$($record.VertexCount) faces=$($record.FaceCount) shadeVertices=$($record.ShadeVertexCount) gouraudCreaseAngle=$($record.GouraudCreaseAngle) drawEdges=$edgeCount
 "
 }
 $asm += "; Wire draw edge records: total=$PolyEdgeCount emitted=$EmittedWireEdgeCount wireMeshes=$WireMeshCount pendingWireRenderer=$($WireRenderFlag -eq 0)
@@ -35433,7 +37104,11 @@ if ($SceneTimelineFlag -ne 0 -and $HighBasicV2LayoutFlag -ne 0) {
 $asm += Add-Bytes "mesh_vfirst" ([int[]]$meshFirstVertex)
 $asm += Add-Bytes "mesh_vend" ([int[]]$meshEndVertex)
 $asm += Add-Bytes "mesh_face_first" ([int[]]$meshFirstFace)
-$asm += Add-Bytes "mesh_face_end" ([int[]]$meshEndFace)
+ $asm += Add-Bytes "mesh_face_end" ([int[]]$meshEndFace)
+if ($Mode6GouraudFlag -ne 0) {
+ $asm += Add-Bytes "mesh_shade_first" ([int[]]$meshFirstShadeVertex)
+ $asm += Add-Bytes "mesh_shade_end" ([int[]]$meshEndShadeVertex)
+}
 if ($WireMeshCount -gt 0) {
  $asm += Add-Bytes "mesh_is_wire" ([int[]]$meshIsWire)
 }
@@ -35460,6 +37135,10 @@ if ($WireFaceEdgeFlag -ne 0) {
 }
 if ($SceneObjectCount -gt 0) {
  $asm += Add-Bytes "object_mesh" ([int[]]$objectMeshIndex)
+ if ($Mode6GouraudFlag -ne 0) {
+  $asm += Add-Bytes "object_runtime_shade_first" ([int[]]$objectRuntimeShadeFirst)
+  $asm += Add-Bytes "object_runtime_shade_end" ([int[]]$objectRuntimeShadeEnd)
+ }
  if ($MeshSourceSharingRuntimeFlag -ne 0) {
   $asm += Add-Bytes "object_runtime_vfirst" ([int[]]$objectRuntimeVFirst)
   $asm += Add-Bytes "object_runtime_vend" ([int[]]$objectRuntimeVEnd)
@@ -35591,8 +37270,44 @@ if ($FaceRenderEnableFlag -ne 0) {
  if ($FaceSolidColorFlag -ne 0) {
  $asm += Add-Bytes "face_solid_color" $faceSolidColor
  }
+ if ($Mode6GouraudFlag -ne 0) {
+  $asm += Add-Bytes "gouraud_face_shade0" ([int[]]$gouraudRuntimeFaceShade0)
+  $asm += Add-Bytes "gouraud_face_shade1" ([int[]]$gouraudRuntimeFaceShade1)
+  $asm += Add-Bytes "gouraud_face_shade2" ([int[]]$gouraudRuntimeFaceShade2)
+  $asm += Add-Bytes "gouraud_face_shade3" ([int[]]$gouraudRuntimeFaceShade3)
+ }
  if ($WireTwoColorMode2Flag -ne 0) {
  $asm += Add-Bytes "wire_face_slot" ([int[]]$wireFaceSlot)
+ }
+}
+if ($Mode6GouraudFlag -ne 0) {
+ $asm += Add-Bytes "gouraud_geom_vertex" ([int[]]$gouraudRuntimeGeomVertex)
+ $asm += Add-Bytes "gouraud_normal_x" ([int[]]$gouraudRuntimeNormalX)
+ $asm += Add-Bytes "gouraud_normal_y" ([int[]]$gouraudRuntimeNormalY)
+ $asm += Add-Bytes "gouraud_normal_z" ([int[]]$gouraudRuntimeNormalZ)
+ $asm += Add-Bytes "gouraud_center_dot_lo" ([int[]]$gouraudRuntimeCenterDotLo)
+ $asm += Add-Bytes "gouraud_center_dot_hi" ([int[]]$gouraudRuntimeCenterDotHi)
+ $asm += Add-Bytes "gouraud_shade_value" ([int[]](0..($ShadeVertexCount - 1) | ForEach-Object { 255 }))
+ # Exact 33-level x 16-phase Bayer LUT. Physical layout is four 132-byte
+ # screen-anchored Y rows; within each row: shade-major, then X phase 0..3.
+ $gouraudBayer = @(0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5)
+ $gouraudLutRows = @(@(), @(), @(), @())
+ for ($bayerY = 0; $bayerY -lt 4; $bayerY++) {
+  for ($shade = 0; $shade -le 32; $shade++) {
+   for ($bayerX = 0; $bayerX -lt 4; $bayerX++) {
+    $threshold = [int]$gouraudBayer[($bayerY * 4) + $bayerX]
+    if ($shade -le 16) {
+     $slot = if ($threshold -lt $shade) { 2 } else { 1 }
+    } else {
+     $slot = if ($threshold -lt ($shade - 16)) { 3 } else { 2 }
+    }
+    $gouraudLutRows[$bayerY] += [int](($slot -shl ((3 - $bayerX) * 2)) -band 255)
+   }
+  }
+  if ($gouraudLutRows[$bayerY].Count -ne 132) {
+   throw "Mode 6 Bayer LUT row must contain exactly 132 entries"
+  }
+  $asm += Add-Bytes ("gouraud_bayer_code_lut_y" + $bayerY) ([int[]]$gouraudLutRows[$bayerY])
  }
 }
 if ($PolyFillFlag -ne 0) {
@@ -35632,6 +37347,13 @@ if ($DynamicLightFlag -ne 0) {
   $asm += Add-Bytes "shade_thresh_mid_high" ([int[]]$ShadeThresholdMidHigh)
   $asm += Add-Bytes "shade_thresh_high" ([int[]]$ShadeThresholdHigh)
  }
+}
+if ($Mode6GouraudFlag -ne 0) {
+ for ($gouraudIntensity = 0; $gouraudIntensity -le 10; $gouraudIntensity++) {
+  $asm += Add-Bytes ("gouraud_level_" + $gouraudIntensity) ([int[]]$GouraudLightLevelTables[$gouraudIntensity])
+ }
+ $asm += "gouraud_level_ptr_lo:`n .byte " + ((0..10 | ForEach-Object { "<gouraud_level_$_" }) -join ",") + "`n"
+ $asm += "gouraud_level_ptr_hi:`n .byte " + ((0..10 | ForEach-Object { ">gouraud_level_$_" }) -join ",") + "`n"
 }
 if ($FullDynamicShadeFlag -ne 0) {
  if ($Mode4DynamicShadeThresholdFixFlag -ne 0) {
@@ -36569,6 +38291,62 @@ if ($GroundFixedDiv16uOwnerFlag -ne 0) {
  $asm = Remove-Div16uRoutineContainingLabel $asm 'd16_loop' $true
 } else {
  $asm = Remove-Div16uRoutineContainingLabel $asm 'gpfdiv_loop' $false
+}
+
+if ($Mode6GouraudFlag -ne 0) {
+ # Gate 4: keep the original div16u body as the exact general fallback.
+ # Only the one-byte-divisor / one-byte-quotient domain takes eight rounds.
+ # Apply after Ground chooses the single owner. Other modes are untouched.
+ $gate4DivPrefix = @'
+div16u:
+ lda p1hi
+ bne gate4_div16_fallback
+ lda p1lo
+ beq gate4_div16_fallback
+ lda prodhi
+ cmp p1lo
+ bcs gate4_div16_fallback
+ ldx #$00
+ stx prodhi
+ stx crosshi
+ ldx #$08
+gate4_div16_low_loop:
+ asl prodlo
+ rol a
+ bcs gate4_div16_low_sub
+ cmp p1lo
+ bcc gate4_div16_low_skip
+gate4_div16_low_sub:
+ sbc p1lo
+ inc prodlo
+gate4_div16_low_skip:
+ dex
+ bne gate4_div16_low_loop
+ sta crosslo
+ ; Preserve the original div16u scratch-register ABI as well: Y is the
+ ; final trial-subtraction low byte, A its high byte, X=0, C=accepted.
+ lda prodlo
+ lsr a
+ bcs gate4_div16_accepted
+ sec
+ lda crosslo
+ sbc p1lo
+ tay
+ lda #$ff
+ clv
+ ldx #$01
+ dex
+ rts
+gate4_div16_accepted:
+ ldy crosslo
+ lda #$00
+ clv
+ ldx #$01
+ dex
+ rts
+gate4_div16_fallback:
+'@
+ $asm = [regex]::Replace($asm, '(?m)^div16u:', [System.Text.RegularExpressions.MatchEvaluator]{ param($match) $gate4DivPrefix })
 }
 
 Set-Content -LiteralPath $AsmPath -Encoding ASCII -Value $asm
