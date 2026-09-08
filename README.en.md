@@ -1,6 +1,6 @@
-# 3Dvibe64 1.1.2
+# 3Dvibe64 1.2.0
 
-This public 1.1.2 package is a source SDK: it contains the frozen builder,
+This public 1.2.0 package is a source SDK: it contains the frozen builder,
 documentation, JSON reference scenes, and contracts, but no precompiled PRG or
 diagnostic artifact. Build examples locally, preferably in a disposable working copy.
 The examples are executable API documentation, not bundled productions.
@@ -15,26 +15,26 @@ The practical Codex-assisted workflow—environment preparation, scene creation,
 building, VICE testing, and preservation of approved versions—is documented in
 [VIBE-CODING-GUIDE.en.md](VIBE-CODING-GUIDE.en.md).
 
-## Stable culling and shared Mode 4/5 instances
+## Stable culling and shared Mode 4/5/6 instances
 
-`-FaceCullProfile default|stable` is available for GraphicsMode 4 and 5. `default`
-preserves the validated screen-space culling path byte-for-byte. `stable` uses screen
+`-FaceCullProfile default|stable` is available for GraphicsMode 4, 5, and 6. In
+Modes 4/5, `default` preserves the validated screen-space culling path byte-for-byte. `stable` uses screen
 space outside signed band `[-64,+64]` and camera-space facing for nearly edge-on
 faces, reusing the normals and matrix already available. Exactly edge-on faces are
 kept without hysteresis or cross-frame state, and rendering remains one-sided. The
 `sh_nx`, `sh_ny`, and `sh_nz` light cache is saved on the stack and restored after
 either culling outcome, with zero persistent scratch and unchanged dynamic shading.
-Mode 3 is excluded.
+Mode 3 is excluded. Mode 6 uses the same facing decision before Gouraud rasterization.
 
-With `"meshSourceSharing": true`, reused source geometry is emitted once. Mesh and instance descriptors remain separate, and each instance keeps its own transformed and projected buffers. Bucket entries identify instance plus local face, and every visible instance participates in one global painter order. The shared path is available only in Mode 4/5. Opting in from Mode 1, 2, or 3 stops the build with `meshSourceSharing is supported only in GraphicsMode 4 and 5`; opting in without a source mesh referenced by multiple instances also stops the build. There is no silent expansion fallback. Scenes without the opt-in retain the byte-identical direct path.
+With `"meshSourceSharing": true`, reused source geometry is emitted once. Mesh and instance descriptors remain separate, and each instance keeps its own transformed and projected buffers. Bucket entries identify instance plus local face, and every visible instance participates in one global painter order. The shared path is available only in Mode 4/5/6. Opting in from Mode 1, 2, or 3 stops the build with `meshSourceSharing is supported only in GraphicsMode 4, 5 and 6`; opting in without a source mesh referenced by multiple instances also stops the build. There is no silent expansion fallback. Scenes without the opt-in retain the byte-identical direct path.
 
 `materialOverride`, `reflectivityOverride`, and `colorOverride` apply without rewriting shared source tables. Precedence is local face override, instance override, then source material. In the shared path, `faceOverrides` belongs to the source mesh and its keys are source-local face indices; per-instance `faceOverrides` is rejected. An explicit non-shaded pigment uses a sparse source map such as `"faceOverrides": { "0": { "solidColor": 7, "shading": false } }`. Mode 4 fills it in normal painter order; Mode 5 also outlines the final post-clipping polygon and leaves no residual outline for rejected faces.
 
 A real static light uses `"type": "static"` and `"position": [x,y,z]`: it emits one sample and no orbit phase, tick divisor, or duplicated table, while shading still reacts to object rotation. The legacy `"mode": "static"` value does not select this current compile-time path and can retain phase, tick, and table infrastructure. The declarative timeline requires `tickRate: 50`; `resetKey: "SPACE"` restores state, poses, visibility, and counters. PAL and NTSC both produce 50 logical ticks per second. Generic sinusoidal easing is intentionally outside 1.0.
 
-## Near profiles for Mode 3, 4, and 5
+## Near profiles for Mode 3, 4, 5, and 6
 
-The public API documents compile-time `-Mode4NearProfile default|late|clip` for GraphicsMode 3, 4, and 5; the option name is retained for compatibility. `default` preserves rejection below 8 WU and the 8-WU minimum projection divisor, with validated-baseline byte-identical behavior. `late` rejects depth `<= 0`, accepts 1 WU with a minimum divisor of 2 WU, and uses geometric depth from 2 WU onward. This creates a short divisor-2 projection plateau from 1 to 2 WU.
+The public API documents compile-time `-Mode4NearProfile default|late|clip` for GraphicsMode 3, 4, 5, and 6; the option name is retained for compatibility. `default` preserves rejection below 8 WU and the 8-WU minimum projection divisor, with validated-baseline byte-identical behavior. `late` rejects depth `<= 0`, accepts 1 WU with a minimum divisor of 2 WU, and uses geometric depth from 2 WU onward. This creates a short divisor-2 projection plateau from 1 to 2 WU.
 
 The `late` profile does not enable near-plane polygon clipping, change backface culling, or add two-sided rendering: faces crossing the camera plane are rejected whole. `clip` instead performs Sutherland-Hodgman clipping against the camera plane after optional Ground clipping. It preserves the portion in front of the camera through 0 WU, creates projectable intersections at depth 1 WU with divisor minimum 2, and rejects a face only after a real crossing. Camera-space culling uses the original polygon; rasterization and the Mode 5 outline use the final polygon. The legacy near-poly path stays disabled and one-sided behavior is unchanged. `default` and `late` remain byte-identical; the `clip` fix adds zero scratch.
 
@@ -79,7 +79,7 @@ An instance selects its source with `mesh` and can use `materialOverride`, `refl
 
 With sharing enabled, `faceOverrides` must be stored on the source entry in `meshes`, never on an object instance. Keys are local face indices. `solidColor` with `shading:false` bypasses dynamic shading for that face. A per-instance map on a reused source fails with `per-instance object faceOverrides are not supported by the shared-source path`.
 
-Sharing is explicit and limited to Mode 4/5. Source geometry is emitted once, but each instance requires separate transformed/projected runtime buffers. Byte-sized indices cap source vertices, source faces, runtime vertices, runtime faces, mesh descriptors, and scene objects/instances at 255 each. Available memory normally imposes lower practical limits; complex scenes can require explicit `-MemoryLayout high-basic-v2`.
+Sharing is explicit and limited to Mode 4/5/6. Source geometry is emitted once, but each instance requires separate transformed/projected runtime buffers. Byte-sized indices cap source vertices, source faces, runtime vertices, runtime faces, mesh descriptors, and scene objects/instances at 255 each. Mode 6 additionally caps runtime shade vertices at 255. Available memory normally imposes lower practical limits; complex scenes can require explicit `-MemoryLayout high-basic-v2`.
 
 This public release restricts `H` (Temporal Scanline Mode) to GraphicsMode 4 and 5. Modes 1-3 compile none of its handler, state, temporal copy, or feature-only raster gates.
 
@@ -90,8 +90,8 @@ pre-1.0 promotes two compile-time Ground profiles. `ground.z` is expressed in WU
 - Mode 1: a decorative roll-aware horizon line, with neither occlusion nor fill.
 - Mode 2 `simple`: the same decorative line and no geometric clipping; every mesh is retained. The line is drawn before faces, so hidden-wire face masks cover it behind surfaces.
 - Mode 2 `plane`: a background horizon line, plane-side classification, rejection of faces opposite the camera, and clipping of crossing faces. Hidden-wire and edges consume the post-clipping polygon. No half-plane is ever filled. This profile adds `VERT_COUNT` bytes of `ground_vside`, uses polygon buffers through 12 vertices, and can require `high-basic-v2`.
-- Modes 3-5 `simple`: the traditional screen-space Ground.
-- Modes 3-5 `plane`: a filled roll-aware half-plane plus geometric classification and clipping, for cameras above or below the plane. Mode 3 fixed uses the corrected Ground relocation under `high-basic-v2`.
+- Modes 3-6 `simple`: the traditional screen-space Ground.
+- Modes 3-6 `plane`: a filled roll-aware half-plane plus geometric classification and clipping, for cameras above or below the plane. Mode 3 fixed uses the corrected Ground relocation under `high-basic-v2`; Mode 6 also interpolates shade at Ground intersections.
 
 Under the pre-1.0 convention, roll `+32 TU` makes the horizon slope down to the right, `-32 TU` makes it slope up to the right, and `+64 TU` makes it vertical. A line wholly outside the viewport is not drawn and leaves no residue on its borders.
 
@@ -105,13 +105,30 @@ The two-pigment limit is independent of whether faces are triangles or quadrilat
 
 ## Graphics profiles
 
-**Mode 5: solid dynamic outlined.**
+**Mode 5: solid dynamic outlined. Mode 6: Gouraud ordered dither.**
+
+Release 1.2.0 uses the validated Gate 5 engine: exact Gouraud/Bayer LUT, specialized
+clear, byte-oriented spans, exact division and partial-byte aggregation. This is
+ordered-dithered Gouraud for VIC-II, not a continuous-color framebuffer. There is
+no per-object hybrid flat/Gouraud selector. See `GOURAUD-MODE6-REPORT.md` and `TESTING.md`.
+At creaseAngle 0 faces retain hard boundaries; 60 degrees is the default; 180
+smooths the coarse torus across adjacent faces. Smoothing changes lighting normals,
+not geometry, polygon count or silhouette. Both hard and smooth cube examples are included.
 
 Graphics modes 1 and 2 provide the wire and hidden-wire paths. Mode 3 uses filled faces with static shading. GraphicsMode 4 provides filled faces with dynamic lighting and automatically enables the validated XY-Q2 profile; experimental subpixel flags are not required.
 
 GraphicsMode 5 inherits the complete Mode 4 pipeline and adds a one-lowres-pixel polygon outline after each face fill. The outline follows the final post-clipping polygon, including generated near-plane and screen edges, and uses `world.backgroundColor`. It is applied face-by-face in the existing far-to-near painter order, so a nearer fill naturally covers outlines belonging to farther geometry.
 
 The outline has a measurable cost. The pre-1.0 performance audit did not promote risky changes or changes with insufficient impact: Mode 5 preserves Mode 4 dynamic rendering, shading, and materials and adds only the post-fill outline to the post-clipping polygon.
+
+GraphicsMode 6 calculates a 33-level shade per runtime shade vertex and interpolates
+it across the final clipped polygon. A screen-anchored 4x4 Bayer matrix selects
+among the material's three VIC-II pigments using only opaque bitmap codes. Mesh
+property `gouraud.creaseAngle` (0–180, default 60 degrees) controls area-weighted
+normal smoothing and hard-edge splits. Mode 6 requires `high-basic-v2`; after the
+first sample, shade changes are limited to four levels per simulation tick. See
+[GOURAUD-MODE6-REPORT.md](GOURAUD-MODE6-REPORT.md) for the exact algorithm,
+limitations, validation, and benchmark.
 
 Dense stable-layout builds remain subject to the existing `$5C00` video-buffer boundary. The reference Mode 5 scene fits with the FPS overlay enabled; the full near-plane stress scene uses the existing `high-basic-v2` layout.
 
@@ -170,7 +187,7 @@ The VIC-II legally accepts every color index from 0-15, including black, and dup
 - `Q` / `E`: move down / up
 - cursor keys: yaw and pitch
 - `N` / `M`: roll
-- `R`: with `-ControlRotation`, pause/resume mesh rotation; interactive-reflectivity builds should reserve it for `-ControlReflectivity`
+- `R`: with `-ControlRotation`, pause/resume mesh rotation; interactive-reflectivity builds should reserve it for `-ControlReflectivity`. `-ReflectivityCycleLevels 3` limits the cycle to satin, gloss, and reflective.
 - `L`: light control where supported by the scene
 - `F`: complete Generic Text/FPS header
 - `H`: Temporal Scanline Mode, GraphicsMode 4 and 5 only
@@ -181,16 +198,17 @@ If `-ControlRotation` and `-ControlReflectivity` are forced together, both handl
 
 | Option | Values | Default / effect |
 |---|---|---|
-| `-GraphicsMode` | `1`-`5` | `4` |
+| `-GraphicsMode` | `1`-`6` | `4` |
 | `-CameraMode` | `fixed`, `walkLite`, `walkFull` | scene camera mode, otherwise `fixed`; an explicit CLI value wins |
 | `-VideoStandard` | `auto`, `pal`, `ntsc` | `auto`; forced PAL/NTSC keeps logical simulation at 50 ST/s |
 | ViewportProfile / `-CameraViewport` | `normal`, `small` | `normal`; `contract.viewportProfile` is used when CLI is omitted |
 | `-MemoryLayout` | `stable`, `high-basic-v2` | `stable`; never changes automatically |
-| `-Mode4NearProfile` | `default`, `late`, `clip` | `default`; valid for Mode 3-5 |
-| `-FaceCullProfile` | `default`, `stable` | `default`; `stable` only for Mode 4/5 |
+| `-Mode4NearProfile` | `default`, `late`, `clip` | `default`; valid for Mode 3-6 |
+| `-FaceCullProfile` | `default`, `stable` | `default`; `stable` only for Mode 4/5/6 |
 | `-ControlRotation` | switch | off; assigns `R` to pause/resume rotation |
 | `-ControlLight` | switch | off; enables the scene-supported light key |
 | `-ControlReflectivity` | switch | off; assigns `R` to reflectivity when `ControlRotation` is not enabled |
+| `-ReflectivityCycleLevels` | `1`-`4` | `4`; number of levels traversed cyclically by `R`; use `3` for `0 → 1 → 2 → 0` |
 | `-FpsOverlay` | switch | overlay system is included by default and toggled with `F`; explicit compatibility selector |
 | `-FpsOverlayOnStart` | switch | off; starts the included overlay visible |
 | `-HeaderText` | string | empty; up to 40 compact-charset characters in the middle header row |

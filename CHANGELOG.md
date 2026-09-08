@@ -1,5 +1,35 @@
 # Changelog
 
+## 1.2.0 — 2026-09-05
+
+First official Gouraud release, promoted from the validated Gate 5 builder without
+engine changes. Includes the exact Gouraud/Bayer LUT and specialized viewport clear
+(Gate 1), byte-oriented span kernel (Gate 3), exact byte-seeded division (Gate 4,
+no reciprocal approximation), and exact partial-byte span aggregation (Gate 5).
+No Edge Fusion or hybrid flat/Gouraud implementation is included. Release metadata
+and contracts identify the Gate 5 builder; historical benchmark products are not
+distributed. See TESTING.md for clean-copy qualification.
+
+Adds GraphicsMode 6, a real per-vertex Gouraud lighting path rendered through an
+opaque, screen-anchored 4x4 Bayer ordered dither. The builder generates
+area-weighted smoothing normals with a configurable `gouraud.creaseAngle`, keeps
+hard creases through shade-vertex splits, computes 33 lighting levels, applies
+reflectivity bias, and rate-limits temporal changes to four levels per simulation
+tick after the first sample.
+
+Triangles and native quadrilaterals interpolate shade across their final clipped
+polygons. Camera-plane, screen, frustum, and Ground intersections carry the same
+affine shade attribute. Every covered pixel uses VIC-II bitmap code `01`, `10`, or
+`11`; code `00` remains background-only. Source sharing, instance material and
+reflectivity overrides, source-face `solidColor`/`shading:false`, both bitmap
+buffers, fixed/walkLite/walkFull cameras, and the three near profiles are supported.
+
+Mode 6 deliberately requires `high-basic-v2` and caps runtime shade vertices at
+255. Temporal Scanline Mode (`H`) remains compiled only for GraphicsMode 4 and 5.
+The legacy Mode 1–5 reference programs retain their frozen SHA-256 values. New
+host and x64sc/xscpu64/Turbo6510 tests, executable Mode 6 JSON references, and
+`GOURAUD-MODE6-REPORT.md` document the implementation and its limits.
+
 ## 1.1.2 — 2026-08-18
 
 Fixes runtime `F` toggling for the DEV7 Generic Text/FPS split. Bitmap-only frames

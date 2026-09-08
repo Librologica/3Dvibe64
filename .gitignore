@@ -12,8 +12,9 @@
 /work/*.gif
 /work/*.cmd
 
-# Locally installed external tools
-/work/tools/
+# Locally installed external tools; keep the distributed material reference table
+/work/tools/*
+!/work/tools/c64_material_scales.generated.json
 
 # Keep the empty build directory, ignore its generated contents
 /work/build/*

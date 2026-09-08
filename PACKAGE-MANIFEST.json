@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.1.2",
-    "version": "1.1.2",
+    "displayName": "3Dvibe64 1.2.0",
+    "version": "1.2.0",
     "distribution": "source-sdk",
-    "permanentFiles": 45,
+    "permanentFiles": 59,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -13,7 +13,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "8B16C2CB523403516B8AE667A7E1DEB21997BD03084ED6705F51F021D816997E"
+    "sha256": "44B23B5DEF3A5B0D24E845AA355DF3F8DC65D00426B688253F811D97DB8B90A7"
   },
   "examples": [
     "examples/wire-two-color-multimaterial.json",
@@ -23,27 +23,40 @@
     "examples/dynamic-reflective-material-reference.json",
     "examples/shared-instances-timeline-static-light.json",
     "examples/mode5-solid-color-outline.json",
-    "examples/ground-plane-near-clip.json"
+    "examples/ground-plane-near-clip.json",
+    "examples/mode6-gouraud-torus.json",
+    "examples/mode6-gouraud-mixed-faces.json",
+    "examples/mode6-gouraud-shared-materials.json",
+    "examples/mode6-gouraud-cube-hard.json",
+    "examples/mode6-gouraud-cube-smooth.json",
+    "examples/mode6-gouraud-torus-fps.json"
   ],
+  "releaseEngine": {
+    "baseline": "Optimization Gate 5",
+    "promotedGates": [1, 3, 4, 5],
+    "hybridFlatGouraud": false,
+    "torusFpsScene": "examples/mode6-gouraud-torus-fps.json",
+    "torusFpsPrgSha256": "F59587562E2CD78F7E28ACE58108274B88013A7DDC2A4F6949C393CD87844662"
+  },
   "renderer": {
-    "graphicsModes": [1, 2, 3, 4, 5],
+    "graphicsModes": [1, 2, 3, 4, 5, 6],
     "cameraModes": ["fixed", "walkLite", "walkFull"],
     "viewports": ["normal", "small"],
     "layouts": ["stable", "high-basic-v2"],
     "groundModes": ["simple", "plane"],
     "nearProfiles": {
       "option": "Mode4NearProfile",
-      "modes": [3, 4, 5],
+      "modes": [3, 4, 5, 6],
       "values": ["default", "late", "clip"]
     },
     "faceCullProfiles": {
-      "modes": [4, 5],
+      "modes": [4, 5, 6],
       "values": ["default", "stable"]
     }
   },
   "sharedScenes": {
     "optIn": "meshSourceSharing",
-    "supportedModes": [4, 5],
+    "supportedModes": [4, 5, 6],
     "sourceGeometryShared": true,
     "runtimeBuffersPerInstance": true,
     "globalPainterOrder": true,
@@ -51,6 +64,19 @@
     "sourceFaceOverrides": ["solidColor", "shading"],
     "staticLight": "light.type=static",
     "timeline": {"tickRate": 50, "resetKey": "SPACE"}
+  },
+  "gouraudMode6": {
+    "memoryLayout": "high-basic-v2",
+    "shadeLevels": 33,
+    "runtimeShadeVertexLimit": 255,
+    "creaseAngleDefault": 60,
+    "creaseAngleRange": [0, 180],
+    "normalFormat": "Q6",
+    "temporalMaxLevelStepPerSimulationTick": 4,
+    "dither": "screen-anchored Bayer 4x4",
+    "bayerMatrix": [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]],
+    "opaqueBitmapCodes": [1, 2, 3],
+    "temporalScanlineModeH": false
   },
   "textSplit": {
     "headerRows": 3,
