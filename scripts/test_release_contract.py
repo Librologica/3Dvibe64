@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained public 3Dvibe64 1.1.2 source-SDK contract."""
+"""Self-contained public 3Dvibe64 1.2.0 source-SDK contract."""
 from __future__ import annotations
 
 import hashlib
@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.1.2"
-BUILDER_SHA256 = "8B16C2CB523403516B8AE667A7E1DEB21997BD03084ED6705F51F021D816997E"
-PERMANENT_FILE_COUNT = 45
+VERSION = "1.2.0"
+BUILDER_SHA256 = "44B23B5DEF3A5B0D24E845AA355DF3F8DC65D00426B688253F811D97DB8B90A7"
+PERMANENT_FILE_COUNT = 59
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -198,7 +198,7 @@ def check_builder_and_package() -> None:
     assert sha256(builder) == BUILDER_SHA256, "builder hash changed"
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
-        "name": "3Dvibe64", "displayName": "3Dvibe64 1.1.2", "version": VERSION,
+        "name": "3Dvibe64", "displayName": "3Dvibe64 1.2.0", "version": VERSION,
         "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT,
         "precompiledPrograms": False,
         "author": "librologica.digital",
@@ -206,11 +206,20 @@ def check_builder_and_package() -> None:
         "documentationLicense": "CC-BY-NC-4.0",
     }
     assert manifest["builder"]["sha256"] == BUILDER_SHA256
-    assert len(manifest["examples"]) == 8
+    assert len(manifest["examples"]) == 14
     assert len(manifest["referenceBuilds"]) == 11
-    assert manifest["renderer"]["nearProfiles"]["modes"] == [3, 4, 5]
-    assert manifest["renderer"]["faceCullProfiles"]["modes"] == [4, 5]
-    assert manifest["sharedScenes"]["supportedModes"] == [4, 5]
+    assert manifest["renderer"]["nearProfiles"]["modes"] == [3, 4, 5, 6]
+    assert manifest["renderer"]["faceCullProfiles"]["modes"] == [4, 5, 6]
+    assert manifest["sharedScenes"]["supportedModes"] == [4, 5, 6]
+    assert manifest["gouraudMode6"] == {
+        "memoryLayout": "high-basic-v2", "shadeLevels": 33,
+        "runtimeShadeVertexLimit": 255, "creaseAngleDefault": 60,
+        "creaseAngleRange": [0, 180], "normalFormat": "Q6",
+        "temporalMaxLevelStepPerSimulationTick": 4,
+        "dither": "screen-anchored Bayer 4x4",
+        "bayerMatrix": [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]],
+        "opaqueBitmapCodes": [1, 2, 3], "temporalScanlineModeH": False,
+    }
     assert manifest["textSplit"] == {
         "headerRows": 3, "headerScreenBytes": 120,
         "bodyFirstRaster": 75, "bitmapIrqRaster": 74,
@@ -232,7 +241,7 @@ def check_builder_and_package() -> None:
     assert roll_framebuffer["signatures"] == {f"mode{mode}-roll{roll}": digest for (mode, roll), digest in GROUND_ROLL_FRAMEBUFFER_SHA256.items()}
     source = builder.read_text(encoding="utf-8")
     for token in (
-        'meshSourceSharing is supported only in GraphicsMode 4 and 5',
+        'meshSourceSharing is supported only in GraphicsMode 4, 5 and 6',
         'meshSourceSharing requires at least one source mesh referenced by multiple instances',
         '[ValidateSet("default", "late", "clip")]',
         '[ValidateSet("default", "stable")]',
@@ -245,6 +254,9 @@ def check_builder_and_package() -> None:
         'TEXT_BODY_FIRST_RASTER = $4B', 'TEXT_BITMAP_IRQ_RASTER = $4A',
         '[string]$HeaderText = ""', 'TEXT_CHARSET_GLYPH_COUNT = $17',
         'TEXT_CHARSET_BYTES = TEXT_CHARSET_GLYPH_COUNT * 8',
+        'GraphicsMode 6 requires -MemoryLayout high-basic-v2',
+        'GraphicsMode 6 supports at most 255 runtime shade vertices',
+        'gouraud_bayer4x4: .byte 0,8,2,10,12,4,14,6,3,11,1,9,15,7,13,5',
     ):
         assert token in source, f"builder contract missing: {token}"
 
@@ -252,14 +264,14 @@ def check_builder_and_package() -> None:
 def check_documentation() -> None:
     assert (ROOT / "VERSION").read_text(encoding="utf-8-sig").strip() == VERSION
     main = (ROOT / "README.md").read_text(encoding="utf-8-sig")
-    assert main.startswith("# 3Dvibe64 1.1.2\n")
-    for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1–5", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile"):
+    assert main.startswith("# 3Dvibe64 1.2.0\n")
+    for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1–6", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
         assert token in main, f"README.md does not document {token}"
     for token in ("HeaderText", "160×88", "TEXT_HEADER_SCREEN_BYTES"):
         assert token in main, f"README.md does not document DEV7 token {token}"
     for relative in ("README.en.md", "README.it.md"):
         text = (ROOT / relative).read_text(encoding="utf-8-sig").lower()
-        for token in ("graphicsmode 5", "walklite", "walkfull", "high-basic-v2", "mode4nearprofile", "facecullprofile", "meshsourcesharing", "materialoverride", "reflectivityoverride", "coloroverride", "faceoverrides", "tickrate", "resetkey", "visible", "visibility", "explorerclipmode", "explorernearcrossmode", "static", "255"):
+        for token in ("graphicsmode 5", "graphicsmode 6", "gouraud.creaseangle", "walklite", "walkfull", "high-basic-v2", "mode4nearprofile", "facecullprofile", "meshsourcesharing", "materialoverride", "reflectivityoverride", "coloroverride", "faceoverrides", "tickrate", "resetkey", "visible", "visibility", "explorerclipmode", "explorernearcrossmode", "static", "255"):
             assert token in text, f"{relative} does not document {token}"
         assert "near + poly" not in text
         assert "reset mesh rotation" not in text and "reset della rotazione della mesh" not in text
@@ -626,7 +638,7 @@ def check_schema_and_failure_contracts() -> None:
             path = sandbox / "validation" / f"sharing-mode{mode}.json"
             write_json(path, scene)
             result = build(sandbox, str(path.relative_to(sandbox)), ("-GraphicsMode", str(mode), "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-NoFpsOverlay"), expect_ok=False)
-            assert "meshSourceSharing is supported only in GraphicsMode 4 and 5" in (result.stdout + result.stderr)
+            assert "meshSourceSharing is supported only in GraphicsMode 4, 5 and 6" in (result.stdout + result.stderr)
 
         scene = dict(basic)
         scene["meshSourceSharing"] = True
@@ -713,7 +725,7 @@ def main() -> None:
     check_ground_framebuffer_runtime()
     check_ground_roll_framebuffer_runtime()
     check_clean_tree()
-    print("PUBLIC_1_1_2_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass pointFixedMin=expected-error dev7TextSplit=separate files=45 builder=exact manifest=exact tree=clean")
+    print(f"PUBLIC_1_2_0_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass gouraud=separate-tests pointFixedMin=expected-error dev7TextSplit=separate files={PERMANENT_FILE_COUNT} builder=exact manifest=exact tree=clean")
 
 
 if __name__ == "__main__":

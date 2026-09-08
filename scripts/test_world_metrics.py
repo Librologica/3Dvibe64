@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Repeatable host-side audit of the public 3Dvibe64 1.1.2 metric contract."""
+"""Repeatable host-side audit of the public 3Dvibe64 1.2.0 metric contract."""
 from __future__ import annotations
 
 import hashlib
@@ -11,8 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "work" / "build-3Dvibe64.ps1"
 SOURCE = BUILDER.read_text(encoding="utf-8").replace("\r\n", "\n")
-VERSION = "1.1.2"
-BUILDER_SHA256 = "8B16C2CB523403516B8AE667A7E1DEB21997BD03084ED6705F51F021D816997E"
+VERSION = "1.2.0"
+BUILDER_SHA256 = "44B23B5DEF3A5B0D24E845AA355DF3F8DC65D00426B688253F811D97DB8B90A7"
 
 
 def sha256(path: Path) -> str:
@@ -36,7 +36,7 @@ def check_package_and_documentation() -> None:
     assert package["package"]["version"] == VERSION
     assert package["builder"]["sha256"] == BUILDER_SHA256
     near = package["renderer"]["nearProfiles"]
-    assert near == {"option": "Mode4NearProfile", "modes": [3, 4, 5], "values": ["default", "late", "clip"]}
+    assert near == {"option": "Mode4NearProfile", "modes": [3, 4, 5, 6], "values": ["default", "late", "clip"]}
     assert package["renderer"]["groundModes"] == ["simple", "plane"]
 
     document = (ROOT / "WORLD-METRICS.md").read_text(encoding="utf-8-sig")
@@ -84,9 +84,9 @@ def main() -> None:
     require("camera_plane_original_facing:")
 
     # Ground is Z-up in authored coordinates; plane Ground remains line-only
-    # in Mode 2 and uses post-clipping polygons in Modes 3–5.
+    # in Mode 2 and uses post-clipping polygons in Modes 3–6.
     require('"world-z-up"')
-    require("world ground mode 'plane' is available only in GraphicsMode 2, 3, 4, or 5")
+    require("world ground mode 'plane' is available only in GraphicsMode 2, 3, 4, 5, or 6")
     require("ground_vside = RUNTIME_BUFFER_END")
     require("RUNTIME_AFTER_GROUND = ground_vside + VERT_COUNT")
 
@@ -97,7 +97,7 @@ def main() -> None:
     assert hex_constant("EXPLORER_ROLL_TICK_DIV") == 2
     assert 127 / 256 * 50 == 24.8046875
 
-    print("WORLD_METRICS_1_1_2 axes=pass depth=pass nearProfiles=default-late-clip ground=pass timing=pass")
+    print("WORLD_METRICS_1_2_0 axes=pass depth=pass nearProfiles=default-late-clip ground=pass timing=pass")
 
 
 if __name__ == "__main__":
