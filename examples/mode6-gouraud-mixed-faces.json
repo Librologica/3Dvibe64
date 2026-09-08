@@ -1,0 +1,32 @@
+{
+  "schema": 1,
+  "name": "mode6_gouraud_mixed_faces",
+  "graphicsMode": 6,
+  "axisConvention": "engine-y-up",
+  "world": { "backgroundColor": 0, "grounds": [] },
+  "camera": { "id": "camera", "position": [0, 0, 0], "rotation": [0, 0, 0], "mode": "fixed" },
+  "lights": [{ "id": "key", "mode": "static", "position": [-48, 40, 32], "intensity": 10 }],
+  "meshes": [{
+    "id": "mixed",
+    "type": "mesh",
+    "geometry": "solid",
+    "materialProfile": "multimaterial",
+    "gouraud": { "creaseAngle": 75 },
+    "vertices": [[-28,-24,0],[28,-24,0],[28,24,0],[-28,24,0],[0,0,28]],
+    "faces": [[0,3,2,1],[0,1,4],[1,2,4],[2,3,4],[3,0,4]],
+    "faceVertexCounts": [4,3,3,3,3],
+    "faceMaterialFamilies": ["blue","red","yellow","cyan","green"]
+  }],
+  "objects": [{
+    "id": "mixed_tri_quad",
+    "mesh": "mixed",
+    "position": [0, 0, 112],
+    "rotation": [18, 22, 0],
+    "angularVelocity": [0.05, 0.08, 0.03],
+    "scale": 0.85,
+    "visible": true,
+    "material": "blue",
+    "reflectivity": "gloss"
+  }],
+  "contract": { "version": 1, "viewportProfile": "normal", "ground": false }
+}

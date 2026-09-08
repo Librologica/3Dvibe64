@@ -1,6 +1,30 @@
 # Public JSON reference scenes
 
-These files are executable documentation for the public 3Dvibe64 1.1.2 builder. They
+## Gate 5 release references
+
+`mode6-gouraud-cube-hard.json` and `mode6-gouraud-cube-smooth.json` have identical
+geometry, pose, light and material. Only creaseAngle changes 0 to 180 (plus the
+descriptive scene name). Compile either with `-GraphicsMode 6 -MemoryLayout
+high-basic-v2 -Quality fast -Projection extended-table -NoFpsOverlay -SkipCmdUpdate`.
+
+Reproduce the exact frozen Gate 5 torus/FPS build in a disposable SDK copy:
+
+```powershell
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps1 `
+  -SceneFile .\examples\mode6-gouraud-torus-fps.json -GraphicsMode 6 `
+  -MemoryLayout high-basic-v2 -Quality fast -Projection extended-table `
+  -CameraViewport normal -VideoStandard pal -MaterialFamily yellow -Reflectivity 2 `
+  -ControlMaterial -ControlReflectivity -ReflectivityCycleLevels 3 -SkipCmdUpdate
+```
+
+Expected PRG SHA-256:
+`F59587562E2CD78F7E28ACE58108274B88013A7DDC2A4F6949C393CD87844662`.
+Keys 1–0 select material; R cycles reflectivity 0, 1, 2; F toggles the FPS/text header.
+Do not also enable ControlRotation when R is reserved for reflectivity.
+
+## Other references
+
+These files are executable documentation for the public 3Dvibe64 1.2.0 builder. They
 are generic technical references, not distributed productions. The package includes
 no PRG; run commands in a disposable working copy if you want the source tree to
 remain artifact-free.
@@ -55,3 +79,21 @@ a 50-Hz declarative timeline, and `resetKey: "SPACE"`. `mode5-solid-color-outlin
 shows shared instances, solid face pigment, and the final clipped outline.
 `ground-plane-near-clip.json` demonstrates the Mode 3–5 `clip` profile with a plane
 Ground configuration.
+
+## GraphicsMode 6 Gouraud references
+
+Mode 6 requires `high-basic-v2` and accepts `gouraud.creaseAngle` from 0 through
+180 degrees on each mesh (default 60):
+
+```powershell
+& $build -SceneFile .\examples\mode6-gouraud-torus.json -GraphicsMode 6 -CameraMode walkFull -CameraViewport normal -Quality balanced -Projection table -MemoryLayout high-basic-v2 -SkipCmdUpdate
+& $build -SceneFile .\examples\mode6-gouraud-mixed-faces.json -GraphicsMode 6 -CameraMode fixed -CameraViewport normal -Quality balanced -Projection table -MemoryLayout high-basic-v2 -NoFpsOverlay -SkipCmdUpdate
+& $build -SceneFile .\examples\mode6-gouraud-shared-materials.json -GraphicsMode 6 -CameraMode fixed -CameraViewport normal -Quality balanced -Projection table -MemoryLayout high-basic-v2 -FaceCullProfile stable -NoFpsOverlay -SkipCmdUpdate
+```
+
+The torus demonstrates smooth normals and an animated light; the mixed scene covers
+native triangles and quadrilaterals with multiple material families; the shared
+scene covers source sharing, per-instance materials/reflectivity, and a source face
+whose explicit pigment bypasses dynamic shading. The complete algorithm, limits,
+test matrix, and benchmark are in
+[GOURAUD-MODE6-REPORT.md](../GOURAUD-MODE6-REPORT.md).
