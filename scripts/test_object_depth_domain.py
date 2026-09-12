@@ -138,7 +138,7 @@ def run_builder(
     scene_path.write_text(json.dumps(scene, indent=2), encoding="utf-8")
     result = subprocess.run(
         [
-            "powershell.exe",
+            shutil.which("pwsh") or "powershell.exe",
             "-NoProfile",
             "-ExecutionPolicy",
             "Bypass",

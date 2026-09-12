@@ -45,7 +45,7 @@ def resolve_executable(env_names: tuple[str, ...], names: tuple[str, ...]) -> Pa
 
 def build(root: Path, video: str, *extra: str) -> tuple[Path, Path]:
     command = [
-        "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+        shutil.which("pwsh") or "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
         str(root / "work" / "build-3Dvibe64.ps1"),
         "-SceneFile", str(root / "examples" / "basic-solid-reference.json"),
         "-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "normal",
@@ -167,7 +167,7 @@ def run_vice(vice: Path, tass: Path, sandbox: Path, video: str) -> None:
 
 def layout_contract(sandbox: Path) -> None:
     command = [
-        "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+        shutil.which("pwsh") or "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
         str(sandbox / "work" / "build-3Dvibe64.ps1"),
         "-SceneFile", str(sandbox / "examples" / "basic-solid-reference.json"),
         "-GraphicsMode", "5", "-CameraMode", "fixed", "-CameraViewport", "small",

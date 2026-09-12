@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained public 3Dvibe64 1.2.0 source-SDK contract."""
+"""Self-contained public 3Dvibe64 1.3.0 source-SDK contract."""
 from __future__ import annotations
 
 import hashlib
@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.2.0"
-BUILDER_SHA256 = "44B23B5DEF3A5B0D24E845AA355DF3F8DC65D00426B688253F811D97DB8B90A7"
-PERMANENT_FILE_COUNT = 59
+VERSION = "1.3.0"
+BUILDER_SHA256 = "1B85F8CF0F62275B1804D2FC4A122B68BB611A5E52B8CE81636BB5E772E37E13"
+PERMANENT_FILE_COUNT = 88
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -170,11 +170,16 @@ def check_manifest() -> None:
 
 
 def check_clean_tree() -> None:
-    forbidden_suffixes = {".asm", ".lst", ".log", ".trace", ".tmp", ".png", ".bmp", ".gif", ".vice", ".cmd", ".zip"}
+    allowed_inputs = {
+        "work/mode7-kernel.asm", "work/mode7-lighting.asm", "work/mode7-gouraud.asm",
+        "work/mode7-compositor-b.asm", "work/mode7-compositor-c.asm",
+        "examples/textures/bricks.png",
+    }
+    forbidden_suffixes = {".asm", ".lst", ".log", ".trace", ".tmp", ".png", ".bmp", ".gif", ".vice", ".cmd", ".zip", ".pyc"}
     for path in ROOT.rglob("*"):
         if not path.is_file():
             continue
-        assert path.suffix.lower() not in forbidden_suffixes, f"temporary output included: {path.relative_to(ROOT)}"
+        assert path.relative_to(ROOT).as_posix() in allowed_inputs or path.suffix.lower() not in forbidden_suffixes, f"temporary output included: {path.relative_to(ROOT)}"
         assert path.suffix.lower() != ".prg", f"precompiled program included: {path.relative_to(ROOT)}"
     assert not (ROOT / "artifacts").exists(), "packaged binary-artifact directory included"
     assert not (ROOT / "work" / "3Dvibe64.prg").exists()
@@ -198,7 +203,7 @@ def check_builder_and_package() -> None:
     assert sha256(builder) == BUILDER_SHA256, "builder hash changed"
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
-        "name": "3Dvibe64", "displayName": "3Dvibe64 1.2.0", "version": VERSION,
+        "name": "3Dvibe64", "displayName": "3Dvibe64 1.3.0", "version": VERSION,
         "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT,
         "precompiledPrograms": False,
         "author": "librologica.digital",
@@ -206,7 +211,11 @@ def check_builder_and_package() -> None:
         "documentationLicense": "CC-BY-NC-4.0",
     }
     assert manifest["builder"]["sha256"] == BUILDER_SHA256
-    assert len(manifest["examples"]) == 14
+    assert len(manifest["examples"]) == 22
+    assert manifest["renderer"]["graphicsModes"] == list(range(1, 8))
+    assert manifest["mode7"]["defaultGouraudCompositor"] == "C"
+    for relative, digest in manifest["mode7"]["backendHashes"].items():
+        assert sha256(ROOT / relative) == digest, relative
     assert len(manifest["referenceBuilds"]) == 11
     assert manifest["renderer"]["nearProfiles"]["modes"] == [3, 4, 5, 6]
     assert manifest["renderer"]["faceCullProfiles"]["modes"] == [4, 5, 6]
@@ -264,14 +273,14 @@ def check_builder_and_package() -> None:
 def check_documentation() -> None:
     assert (ROOT / "VERSION").read_text(encoding="utf-8-sig").strip() == VERSION
     main = (ROOT / "README.md").read_text(encoding="utf-8-sig")
-    assert main.startswith("# 3Dvibe64 1.2.0\n")
+    assert main.startswith("# 3Dvibe64 1.3.0\n")
     for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1–6", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
         assert token in main, f"README.md does not document {token}"
     for token in ("HeaderText", "160×88", "TEXT_HEADER_SCREEN_BYTES"):
         assert token in main, f"README.md does not document DEV7 token {token}"
     for relative in ("README.en.md", "README.it.md"):
         text = (ROOT / relative).read_text(encoding="utf-8-sig").lower()
-        for token in ("graphicsmode 5", "graphicsmode 6", "gouraud.creaseangle", "walklite", "walkfull", "high-basic-v2", "mode4nearprofile", "facecullprofile", "meshsourcesharing", "materialoverride", "reflectivityoverride", "coloroverride", "faceoverrides", "tickrate", "resetkey", "visible", "visibility", "explorerclipmode", "explorernearcrossmode", "static", "255"):
+        for token in ("graphicsmode 5", "graphicsmode 6", "mode 7", "texturelighting", "texturecompositor", "sourcecolors", "texturepalette", "q4.4", "pillow", "gouraud.creaseangle", "walklite", "walkfull", "high-basic-v2", "mode4nearprofile", "facecullprofile", "meshsourcesharing", "materialoverride", "reflectivityoverride", "coloroverride", "faceoverrides", "tickrate", "resetkey", "visible", "visibility", "explorerclipmode", "explorernearcrossmode", "static", "255"):
             assert token in text, f"{relative} does not document {token}"
         assert "near + poly" not in text
         assert "reset mesh rotation" not in text and "reset della rotazione della mesh" not in text
@@ -302,7 +311,7 @@ def check_documentation() -> None:
 
 def build(root: Path, scene: str, args: tuple[str, ...], expect_ok: bool = True) -> subprocess.CompletedProcess[str]:
     command = [
-        "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+        shutil.which("pwsh") or "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
         str(root / BUILDER_RELATIVE), "-SceneFile", str(root / scene), *args,
         "-SkipCmdUpdate",
     ]
@@ -645,7 +654,8 @@ def check_schema_and_failure_contracts() -> None:
         path = sandbox / "validation" / "sharing-no-reuse.json"
         write_json(path, scene)
         result = build(sandbox, str(path.relative_to(sandbox)), ("-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-NoFpsOverlay"), expect_ok=False)
-        result_text = " ".join((result.stdout + result.stderr).split())
+        # PowerShell 7 decorates wrapped error lines with a vertical bar.
+        result_text = " ".join((result.stdout + result.stderr).replace("|", " ").split())
         assert "meshSourceSharing requires at least one source mesh referenced by multiple instances" in result_text, result_text
 
         build(sandbox, "examples/shared-instances-timeline-static-light.json", ("-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-FaceCullProfile", "stable", "-NoFpsOverlay"))
@@ -658,7 +668,7 @@ def check_schema_and_failure_contracts() -> None:
         path = sandbox / "validation" / "instance-face-overrides.json"
         write_json(path, shared)
         result = build(sandbox, str(path.relative_to(sandbox)), ("-GraphicsMode", "4", "-CameraMode", "fixed", "-CameraViewport", "normal", "-Quality", "balanced", "-Projection", "table", "-MemoryLayout", "stable", "-NoFpsOverlay"), expect_ok=False)
-        result_text = " ".join((result.stdout + result.stderr).split())
+        result_text = " ".join((result.stdout + result.stderr).replace("|", " ").split())
         assert "per-instance object faceOverrides are not supported by the shared-source path" in result_text, result_text
 
         # Per-instance material overrides must keep the draw-time material path.
@@ -725,7 +735,7 @@ def main() -> None:
     check_ground_framebuffer_runtime()
     check_ground_roll_framebuffer_runtime()
     check_clean_tree()
-    print(f"PUBLIC_1_2_0_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass gouraud=separate-tests pointFixedMin=expected-error dev7TextSplit=separate files={PERMANENT_FILE_COUNT} builder=exact manifest=exact tree=clean")
+    print(f"PUBLIC_1_3_0_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass gouraud=separate-tests pointFixedMin=expected-error dev7TextSplit=separate files={PERMANENT_FILE_COUNT} builder=exact manifest=exact tree=clean")
 
 
 if __name__ == "__main__":
