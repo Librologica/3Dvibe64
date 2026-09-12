@@ -2,10 +2,10 @@
 
 ## Release identity
 
-3Dvibe64 1.2.0 promotes the validated Gate 5 engine without engine edits.
-Builder SHA-256:
-`44B23B5DEF3A5B0D24E845AA355DF3F8DC65D00426B688253F811D97DB8B90A7`.
-Only documentation, examples and test/package metadata are updated.
+Historical Mode 6 qualification: 3Dvibe64 1.2.0 promoted the validated Gate 5 engine without engine edits.
+The 1.3.0 PowerShell entry point also dispatches Mode 7; its current SHA-256 and
+all Mode 7 module hashes are recorded in PACKAGE-MANIFEST.json. The Mode 6 runtime
+and its frozen PRG references remain the validated Gate 5 implementation.
 Mode 1–5 code generation remains frozen. No hybrid flat/Gouraud selector is included.
 
 Mode 6 requires `-MemoryLayout high-basic-v2`; `stable` is explicitly rejected.

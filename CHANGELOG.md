@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.3.0 — 2026-09-12
+
+English: GraphicsMode 7 becomes official: generic affine texture mapping, unused
+Gouraud-state cleanup, flat and shade-vertex lighting, compositor C texel-first
+with LightFix, recovered memory layout, strict host-side PNG import, and the R1
+edge-inclusion correction. Textured Gouraud now defaults to C; explicit A/B remain
+available for compatibility. Modes 1–6 retain the official 1.2.0 reference output.
+Eight public examples and equivalent English/Italian Mode 7, texture and PNG
+guides are included. No new rendering optimization or perspective correction.
+
+Italiano: GraphicsMode 7 diventa ufficiale: texture mapping affine generico,
+rimozione dello stato Gouraud inutile, illuminazione flat e per shade vertex,
+compositor C texel-first con LightFix, layout di memoria recuperato, import PNG
+host-side rigoroso e correzione R1 dell'inclusione degli edge. Gouraud textured
+usa ora C di default; A/B espliciti restano per compatibilità. Mode 1–6 conservano
+l'output di riferimento ufficiale 1.2.0. Inclusi otto esempi pubblici e guide
+Mode 7, texture e PNG equivalenti in italiano/inglese. Nessuna nuova
+ottimizzazione del rendering o perspective correction.
+
 ## 1.2.0 — 2026-09-05
 
 First official Gouraud release, promoted from the validated Gate 5 builder without

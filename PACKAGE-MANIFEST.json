@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.2.0",
-    "version": "1.2.0",
+    "displayName": "3Dvibe64 1.3.0",
+    "version": "1.3.0",
     "distribution": "source-sdk",
-    "permanentFiles": 59,
+    "permanentFiles": 88,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -13,7 +13,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "44B23B5DEF3A5B0D24E845AA355DF3F8DC65D00426B688253F811D97DB8B90A7"
+    "sha256": "1B85F8CF0F62275B1804D2FC4A122B68BB611A5E52B8CE81636BB5E772E37E13"
   },
   "examples": [
     "examples/wire-two-color-multimaterial.json",
@@ -29,53 +29,150 @@
     "examples/mode6-gouraud-shared-materials.json",
     "examples/mode6-gouraud-cube-hard.json",
     "examples/mode6-gouraud-cube-smooth.json",
-    "examples/mode6-gouraud-torus-fps.json"
+    "examples/mode6-gouraud-torus-fps.json",
+    "examples/mode7-triangle.json",
+    "examples/mode7-cube.json",
+    "examples/mode7-cube-flat.json",
+    "examples/mode7-cube-gouraud.json",
+    "examples/mode7-torus-gouraud.json",
+    "examples/mode7-uvsphere-gouraud.json",
+    "examples/mode7-multi-texture.json",
+    "examples/mode7-cube-png.json"
   ],
   "releaseEngine": {
+    "scope": "GraphicsMode 6 runtime (Mode 7 identity is recorded separately)",
     "baseline": "Optimization Gate 5",
-    "promotedGates": [1, 3, 4, 5],
+    "promotedGates": [
+      1,
+      3,
+      4,
+      5
+    ],
     "hybridFlatGouraud": false,
     "torusFpsScene": "examples/mode6-gouraud-torus-fps.json",
     "torusFpsPrgSha256": "F59587562E2CD78F7E28ACE58108274B88013A7DDC2A4F6949C393CD87844662"
   },
   "renderer": {
-    "graphicsModes": [1, 2, 3, 4, 5, 6],
-    "cameraModes": ["fixed", "walkLite", "walkFull"],
-    "viewports": ["normal", "small"],
-    "layouts": ["stable", "high-basic-v2"],
-    "groundModes": ["simple", "plane"],
+    "graphicsModes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "cameraModes": [
+      "fixed",
+      "walkLite",
+      "walkFull"
+    ],
+    "viewports": [
+      "normal",
+      "small"
+    ],
+    "layouts": [
+      "stable",
+      "high-basic-v2"
+    ],
+    "groundModes": [
+      "simple",
+      "plane"
+    ],
     "nearProfiles": {
       "option": "Mode4NearProfile",
-      "modes": [3, 4, 5, 6],
-      "values": ["default", "late", "clip"]
+      "modes": [
+        3,
+        4,
+        5,
+        6
+      ],
+      "values": [
+        "default",
+        "late",
+        "clip"
+      ]
     },
     "faceCullProfiles": {
-      "modes": [4, 5, 6],
-      "values": ["default", "stable"]
+      "modes": [
+        4,
+        5,
+        6
+      ],
+      "values": [
+        "default",
+        "stable"
+      ]
     }
   },
   "sharedScenes": {
     "optIn": "meshSourceSharing",
-    "supportedModes": [4, 5, 6],
+    "supportedModes": [
+      4,
+      5,
+      6
+    ],
     "sourceGeometryShared": true,
     "runtimeBuffersPerInstance": true,
     "globalPainterOrder": true,
-    "instanceOverrides": ["materialOverride", "reflectivityOverride", "colorOverride"],
-    "sourceFaceOverrides": ["solidColor", "shading"],
+    "instanceOverrides": [
+      "materialOverride",
+      "reflectivityOverride",
+      "colorOverride"
+    ],
+    "sourceFaceOverrides": [
+      "solidColor",
+      "shading"
+    ],
     "staticLight": "light.type=static",
-    "timeline": {"tickRate": 50, "resetKey": "SPACE"}
+    "timeline": {
+      "tickRate": 50,
+      "resetKey": "SPACE"
+    }
   },
   "gouraudMode6": {
     "memoryLayout": "high-basic-v2",
     "shadeLevels": 33,
     "runtimeShadeVertexLimit": 255,
     "creaseAngleDefault": 60,
-    "creaseAngleRange": [0, 180],
+    "creaseAngleRange": [
+      0,
+      180
+    ],
     "normalFormat": "Q6",
     "temporalMaxLevelStepPerSimulationTick": 4,
     "dither": "screen-anchored Bayer 4x4",
-    "bayerMatrix": [[0, 8, 2, 10], [12, 4, 14, 6], [3, 11, 1, 9], [15, 7, 13, 5]],
-    "opaqueBitmapCodes": [1, 2, 3],
+    "bayerMatrix": [
+      [
+        0,
+        8,
+        2,
+        10
+      ],
+      [
+        12,
+        4,
+        14,
+        6
+      ],
+      [
+        3,
+        11,
+        1,
+        9
+      ],
+      [
+        15,
+        7,
+        13,
+        5
+      ]
+    ],
+    "opaqueBitmapCodes": [
+      1,
+      2,
+      3
+    ],
     "temporalScanlineModeH": false
   },
   "textSplit": {
@@ -83,8 +180,16 @@
     "headerScreenBytes": 120,
     "bodyFirstRaster": 75,
     "bitmapIrqRaster": 74,
-    "normalBody": {"width": 160, "height": 88, "originY": 12},
-    "smallBody": {"width": 128, "height": 80, "originY": 12},
+    "normalBody": {
+      "width": 160,
+      "height": 88,
+      "originY": 12
+    },
+    "smallBody": {
+      "width": 128,
+      "height": 80,
+      "originY": 12
+    },
     "headerTextOption": "HeaderText",
     "headerTextMaxCharacters": 40,
     "terminator": 255,
@@ -96,36 +201,100 @@
     "sameBank": true
   },
   "referenceBuilds": [
-    {"label":"mode1-wire-reference","scene":"examples/basic-solid-reference.json","sha256":"D6091440121F8F8ABA3086D72551E2C886469E4F38E00388A844D76222AC2682"},
-    {"label":"mode2-hidden-wire-reference","scene":"examples/basic-solid-reference.json","sha256":"726C32CBDB26EE0030F20043CA10FAA265DF5114E99EC1D0E29127DF4B336880"},
-    {"label":"mode3-static-solid-reference","scene":"examples/basic-solid-reference.json","sha256":"459CB92DEDCC59A42AC25463602188C7638DE7BEE965CBA91A3BE4419590F6B2"},
-    {"label":"mode4-dynamic-solid-normal-reference","scene":"examples/basic-solid-reference.json","sha256":"27B4EDCD3ACC2FA35F2227B6972BAFEB8C402966ED0EE353ACBEBED3F29775CF"},
-    {"label":"mode4-dynamic-solid-small-reference","scene":"examples/basic-solid-reference.json","sha256":"D25ED041E53B2C19B9F3E2B46B6C110CE3B90670B52A8888BCD1599879274C8A"},
-    {"label":"mode4-walkLite-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"CE534BBEB406F7428B0012F7BF0A5B2EAE2312323203E2058DAF9E80D4EE6434"},
-    {"label":"mode4-walkFull-auto-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"2A794961A62FF2ABF2CB32AFC0D7CEF01E6149D1D224E0873F515C600064AE07"},
-    {"label":"mode4-walkFull-PAL-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"F22CC753350F594BC9497412121072DC2237E4BC332AD48E3B1DB2A0E5F89FE7"},
-    {"label":"mode4-walkFull-NTSC-reference","scene":"examples/mode4-walkfull-reference.json","sha256":"36DC6F6F76347120311221BB018F5889A0AF409059CA568546FDBF78985237DD"},
-    {"label":"mode4-satin-material-reference","scene":"examples/static-satin-material-reference.json","sha256":"20D8B6889BD39E731EF584477C1E369351B2D44E9977B3856CEAD2CEAA087EA6"},
-    {"label":"mode4-reflective-material-reference","scene":"examples/dynamic-reflective-material-reference.json","sha256":"6AEEB2A738857F4359CA6A329267E2D4B5933E0BBAA15750ABEB214F361B13A5"}
+    {
+      "label": "mode1-wire-reference",
+      "scene": "examples/basic-solid-reference.json",
+      "sha256": "D6091440121F8F8ABA3086D72551E2C886469E4F38E00388A844D76222AC2682"
+    },
+    {
+      "label": "mode2-hidden-wire-reference",
+      "scene": "examples/basic-solid-reference.json",
+      "sha256": "726C32CBDB26EE0030F20043CA10FAA265DF5114E99EC1D0E29127DF4B336880"
+    },
+    {
+      "label": "mode3-static-solid-reference",
+      "scene": "examples/basic-solid-reference.json",
+      "sha256": "459CB92DEDCC59A42AC25463602188C7638DE7BEE965CBA91A3BE4419590F6B2"
+    },
+    {
+      "label": "mode4-dynamic-solid-normal-reference",
+      "scene": "examples/basic-solid-reference.json",
+      "sha256": "27B4EDCD3ACC2FA35F2227B6972BAFEB8C402966ED0EE353ACBEBED3F29775CF"
+    },
+    {
+      "label": "mode4-dynamic-solid-small-reference",
+      "scene": "examples/basic-solid-reference.json",
+      "sha256": "D25ED041E53B2C19B9F3E2B46B6C110CE3B90670B52A8888BCD1599879274C8A"
+    },
+    {
+      "label": "mode4-walkLite-reference",
+      "scene": "examples/mode4-walkfull-reference.json",
+      "sha256": "CE534BBEB406F7428B0012F7BF0A5B2EAE2312323203E2058DAF9E80D4EE6434"
+    },
+    {
+      "label": "mode4-walkFull-auto-reference",
+      "scene": "examples/mode4-walkfull-reference.json",
+      "sha256": "2A794961A62FF2ABF2CB32AFC0D7CEF01E6149D1D224E0873F515C600064AE07"
+    },
+    {
+      "label": "mode4-walkFull-PAL-reference",
+      "scene": "examples/mode4-walkfull-reference.json",
+      "sha256": "F22CC753350F594BC9497412121072DC2237E4BC332AD48E3B1DB2A0E5F89FE7"
+    },
+    {
+      "label": "mode4-walkFull-NTSC-reference",
+      "scene": "examples/mode4-walkfull-reference.json",
+      "sha256": "36DC6F6F76347120311221BB018F5889A0AF409059CA568546FDBF78985237DD"
+    },
+    {
+      "label": "mode4-satin-material-reference",
+      "scene": "examples/static-satin-material-reference.json",
+      "sha256": "20D8B6889BD39E731EF584477C1E369351B2D44E9977B3856CEAD2CEAA087EA6"
+    },
+    {
+      "label": "mode4-reflective-material-reference",
+      "scene": "examples/dynamic-reflective-material-reference.json",
+      "sha256": "6AEEB2A738857F4359CA6A329267E2D4B5933E0BBAA15750ABEB214F361B13A5"
+    }
   ],
   "twoColorWireReferences": [
-    {"label":"mode1-two-color-wire-reference","scene":"examples/wire-two-color-multimaterial.json","sha256":"C81F5C79825DDC01171EB84EB2FE1C8A90C356AC9EFCDFD480A40EC56D35B90F"},
-    {"label":"mode2-two-color-hidden-wire-reference","scene":"examples/wire-two-color-multimaterial.json","sha256":"2B5598C68758D269DF739E2D944DAE53091DC5B1B99D183FDD17E0F1F3DC250D"}
+    {
+      "label": "mode1-two-color-wire-reference",
+      "scene": "examples/wire-two-color-multimaterial.json",
+      "sha256": "C81F5C79825DDC01171EB84EB2FE1C8A90C356AC9EFCDFD480A40EC56D35B90F"
+    },
+    {
+      "label": "mode2-two-color-hidden-wire-reference",
+      "scene": "examples/wire-two-color-multimaterial.json",
+      "sha256": "2B5598C68758D269DF739E2D944DAE53091DC5B1B99D183FDD17E0F1F3DC250D"
+    }
   ],
   "geometryValidation": {
     "pointFixedMin": "Camera-plane culling requires three non-collinear vertices in face 0"
   },
   "runtimeFramebufferRegression": {
     "frames": 32,
-    "modes": [4, 5],
+    "modes": [
+      4,
+      5
+    ],
     "signature": "SHA-256 of symbolic bitmap/screen RAM plus VIC layout and color configuration",
     "mode4": "40832038ECC0F8615BEF3F6B51ED2CE1ADC0C584E19DE871A353A926A8B7C8BB",
     "mode5": "B9D482F56D5051C8B32F82ECF1E78AEA71C2CBC1C63FB141393FA0DFEA7DFC79"
   },
   "runtimeGroundRollFramebufferRegression": {
     "frames": 32,
-    "modes": [3, 4, 5],
-    "rolls": [0, 32, 64, 224],
+    "modes": [
+      3,
+      4,
+      5
+    ],
+    "rolls": [
+      0,
+      32,
+      64,
+      224
+    ],
     "signature": "SHA-256 of symbolic bitmap, screen RAM, color RAM, VIC layout and colors",
     "signatures": {
       "mode3-roll0": "F5B4F305F0782D1140618E9FA1273559EF5EE3E2BABBF0A7FF13C3411FB7436F",
@@ -141,5 +310,230 @@
       "mode5-roll64": "1FCE7776D5181E7909F56AD36B1A1422AB2FBEC3C443BB6D4D2F2D246DD07FBC",
       "mode5-roll224": "1E3510D4EECE51EC3205155FFC64AA09AF04A98DE0B0B404D3FC75EF68686561"
     }
+  },
+  "mode7": {
+    "baseline": "Qualified R1",
+    "features": [
+      "generic-affine",
+      "M1-unused-Gouraud-state-removal",
+      "M2-flat-lighting",
+      "M3-Gouraud-lighting",
+      "C-texel-first",
+      "LightFix",
+      "M4-memory-layout-recovery",
+      "T1-PNG",
+      "R1-edge-inclusion-C"
+    ],
+    "memoryLayout": "high-basic-v2",
+    "quality": "fast",
+    "projection": "extended-table",
+    "nearProfile": "clip",
+    "textureLighting": [
+      "none",
+      "flat",
+      "gouraud"
+    ],
+    "defaultTextureLighting": "none",
+    "gouraudCompositor": "C",
+    "defaultGouraudCompositor": "C",
+    "compatibilityCompositors": [
+      "A",
+      "B"
+    ],
+    "textureSize": [
+      16,
+      16
+    ],
+    "texelCodes": [
+      1,
+      2,
+      3
+    ],
+    "textureBytes": 256,
+    "textureAlignment": 256,
+    "uvFormat": "Q4.4",
+    "uvRange": [
+      0,
+      15.9375
+    ],
+    "repeatValues": [
+      1,
+      2,
+      4,
+      8,
+      16
+    ],
+    "quadDiagonal": [
+      0,
+      2
+    ],
+    "runtimeTriangleLimit": 255,
+    "runtimeShadeVertexLimit": 255,
+    "sourceColorsOrder": [
+      "Dark",
+      "High",
+      "Highlight"
+    ],
+    "pngHostDependency": "Pillow",
+    "pngInlineRuntimeEquivalent": true,
+    "backendHashes": {
+      "work/mode7_gouraud.py": "158EC940AA4BEA8B14BE948178C4AABF960A2AC016D55C6B78309189317D496C",
+      "work/mode7_layout.py": "8F79FA71A5407AB531145A74DF79B76FABD1A0E93501367D5354361BED1D5EDB",
+      "work/mode7_lighting.py": "9E8C708B6619D261A32D68ACEEA763BB9B0A344CB659A5AF9B9E91B5F57CB64C",
+      "work/mode7_png.py": "E8EF15B42F1F04D65F423E2702DD7E3E459EABF7959B7F177E949F26E1B25038",
+      "work/mode7_raster.py": "DE1AE3727A92ECBF403BFD52F1E5147D341017E10C940391119D478E55E84193",
+      "work/mode7-compositor-b.asm": "35D5EED91766980BBEE41515303DDBA366E4E0E258483B0B60F2226A4B150225",
+      "work/mode7-compositor-c.asm": "5C3E2E1C58E882BBC90BA1F81AF3F5D3E9094DA9C9FBD7ECA5D5BAB1DD71AF05",
+      "work/mode7-gouraud.asm": "1734DD130773E99887010B1A03614F9B422C631D3121257A2CB73BCB752456C4",
+      "work/mode7-kernel.asm": "BDF4F341DC8D2826EFFED58A5E1D315BBE371A7815F2257A6C4C1FB253E9B010",
+      "work/mode7-lighting.asm": "9406D3746529420712FA97268EA535BD2B8326A290F77A8BB3E207FC0ED139DC",
+      "work/mode7.py": "F88775AEFCA39DF8C0926BCB0A3A1FE5149DFC8B93D4BF2B21BE5B7106AE3706"
+    },
+    "referenceBuilds": [
+      {
+        "label": "mode7-triangle",
+        "scene": "examples/mode7-triangle.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly"
+        ],
+        "sha256": "6BD2E3CAFB279995003D63FA3C938971038B49EF27A205D5D5F6BF16649B1D5D"
+      },
+      {
+        "label": "mode7-cube",
+        "scene": "examples/mode7-cube.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly"
+        ],
+        "sha256": "11A4B1D7C1C2D277045CBA07A6EE2620064D9A80ECD19D7DB34EB1DFC63DE66F"
+      },
+      {
+        "label": "mode7-cube-flat",
+        "scene": "examples/mode7-cube-flat.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly"
+        ],
+        "sha256": "E375588BE4C9AC52858BD695356F8A287BBE85852FBAE072E1BAE3CEE88E53F8"
+      },
+      {
+        "label": "mode7-cube-gouraud",
+        "scene": "examples/mode7-cube-gouraud.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "fixed",
+          "-FpsCounterOnly"
+        ],
+        "sha256": "CCE4859399A8E7C682A8E72A1A25D54471B720C387A903B89352A55B345EB9D4"
+      },
+      {
+        "label": "mode7-torus-gouraud",
+        "scene": "examples/mode7-torus-gouraud.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly"
+        ],
+        "sha256": "FBF9DC36241BB32FF272C437D69B0EC27764E5BBB4809A66B4CA0125E94EDA37"
+      },
+      {
+        "label": "mode7-uvsphere-gouraud",
+        "scene": "examples/mode7-uvsphere-gouraud.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "fixed",
+          "-FpsCounterOnly"
+        ],
+        "sha256": "33FE0A60F29631951C1BF50065A36202A9EC6A0F11119454681632769CAF9949"
+      },
+      {
+        "label": "mode7-multi-texture",
+        "scene": "examples/mode7-multi-texture.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly"
+        ],
+        "sha256": "EC7546A204361AD0E39884D026798871156FDA6A15F36DA9B10F918F9652AB07"
+      },
+      {
+        "label": "mode7-cube-png",
+        "scene": "examples/mode7-cube-png.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "fixed",
+          "-FpsCounterOnly"
+        ],
+        "sha256": "CCE4859399A8E7C682A8E72A1A25D54471B720C387A903B89352A55B345EB9D4"
+      }
+    ]
   }
 }

@@ -1,0 +1,5 @@
+# Host CPU/framebuffer tests. Native emulator tests also need VICE and 64tass.
+-r requirements-mode7.txt
+py65>=1.2.0
+Pillow>=12.3
+numpy
