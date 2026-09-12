@@ -1,6 +1,10 @@
-# 3Dvibe64 1.2.0
+# 3Dvibe64 1.3.0
 
-This public 1.2.0 package is a source SDK: it contains the frozen builder,
+**New: official GraphicsMode 7 affine textures**, optional flat/Gouraud C lighting
+and strict PNG import. Start with [Mode 7](MODE7.en.md). Modes 1–6 preserve their
+official 1.2.0 reference output; their existing API is documented below.
+
+This public 1.3.0 package is a source SDK: it contains the frozen builder,
 documentation, JSON reference scenes, and contracts, but no precompiled PRG or
 diagnostic artifact. Build examples locally, preferably in a disposable working copy.
 The examples are executable API documentation, not bundled productions.
@@ -107,7 +111,7 @@ The two-pigment limit is independent of whether faces are triangles or quadrilat
 
 **Mode 5: solid dynamic outlined. Mode 6: Gouraud ordered dither.**
 
-Release 1.2.0 uses the validated Gate 5 engine: exact Gouraud/Bayer LUT, specialized
+Mode 6 retains the validated 1.2.0 Gate 5 runtime: exact Gouraud/Bayer LUT, specialized
 clear, byte-oriented spans, exact division and partial-byte aggregation. This is
 ordered-dithered Gouraud for VIC-II, not a continuous-color framebuffer. There is
 no per-object hybrid flat/Gouraud selector. See `GOURAUD-MODE6-REPORT.md` and `TESTING.md`.
@@ -247,3 +251,23 @@ and remain subject to their respective authors' licenses.
 ## Build requirements
 
 Use Windows PowerShell and 64tass 1.60 or newer. Put `64tass.exe` on `PATH`, set `TASS64_EXE`/`TASS64_PATH`, or place it below `work/tools/64tass`. Build commands are listed in [examples/README.md](examples/README.md). The full release contract also requires VICE x64sc; put it on `PATH` or set `VICE_X64SC`/`VICE_EXE` before running `python scripts/test_release_contract.py`.
+
+## Official Mode 7 in 1.3.0
+
+GraphicsMode 1–7 are available. GraphicsMode 1–6 retain their 1.2.0 reference output; the older API sections below still apply to those modes.
+
+Mode 4 is dynamic flat shading. Mode 6 is ordered-dithered Gouraud shading.
+Mode 7 is **affine texture mapping**, optionally with flat or Gouraud lighting:
+`textureLighting` absent/`"none"`, `"flat"`, or `"gouraud"`.
+The official Gouraud compositor is `textureCompositor: "C"` (texel-first + LightFix; now the Gouraud default). R1 corrects edge inclusion in this C path. A/B remain compatibility options, not the recommended renderer.
+
+Mode 7 requires `high-basic-v2`, Python 3, `fast` quality and `extended-table` projection.
+Textures are 16×16, nearest-neighbor, three pigment codes 1/2/3, with UV Q4.4 and optional repeat 1/2/4/8/16. It supports per-vertex or corner UVs, seams, per-face textures, triangulated quads (0→2), near/screen clipping, byte-oriented fill, partial bytes, double buffering, PAL/NTSC, normal/small and fixed/walkLite/walkFull.
+
+PNG import is host-side, through Pillow: `source` and mandatory ordered `sourceColors` map exactly three opaque RGB colors to Dark/High/Highlight texels. `texturePalette` separately selects three VIC-II colors. No resizing, quantization or transparency. Inline texels remain supported and runtime-equivalent.
+
+Textured Gouraud uses `gouraud.creaseAngle` (default60°, range0–180°) for hard edges or smooth normals, with the applicable255-shade-vertex limit. Mode 7 has its own memory/geometry constraints and does not inherit every Mode 6 override/source-sharing API.
+
+No perspective correction, bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Affine distortion and sampling aliasing remain intentional limitations.
+
+Read the [complete Mode7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](examples/README.md). The paired Italian guides cover the same contract.

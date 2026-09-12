@@ -24,7 +24,7 @@ Do not also enable ControlRotation when R is reserved for reflectivity.
 
 ## Other references
 
-These files are executable documentation for the public 3Dvibe64 1.2.0 builder. They
+These files are executable documentation for the public 3Dvibe64 1.3.0 builder. They
 are generic technical references, not distributed productions. The package includes
 no PRG; run commands in a disposable working copy if you want the source tree to
 remain artifact-free.
@@ -97,3 +97,30 @@ scene covers source sharing, per-instance materials/reflectivity, and a source f
 whose explicit pigment bypasses dynamic shading. The complete algorithm, limits,
 test matrix, and benchmark are in
 [GOURAUD-MODE6-REPORT.md](../GOURAUD-MODE6-REPORT.md).
+
+## Mode 7 — public examples / esempi pubblici
+
+All scenes below contain `graphicsMode: 7`. Use `-GraphicsMode 7 -MemoryLayout high-basic-v2 -Quality fast -Projection extended-table -Mode4NearProfile clip -VideoStandard pal -CameraViewport normal -FpsCounterOnly`, plus the camera shown. Keep the command and JSON together.
+
+Tutte le scene contengono `graphicsMode: 7`. Usare i parametri sopra più la camera indicata. Conservare comando e JSON insieme. Compilare in una copia modificabile; nessun PRG è incluso.
+
+| Scene / scena | Lighting / luce | Camera | Purpose / scopo |
+| --- | --- | --- | --- |
+| mode7-triangle.json | none | walkLite | Inclined triangle / triangolo inclinato |
+| mode7-cube.json | none | walkLite | Textured rotating cube / cubo textured rotante |
+| mode7-cube-flat.json | flat | walkLite | Dynamic face light / luce dinamica per faccia |
+| mode7-cube-gouraud.json | gouraud C | fixed | Hard cube edges, inline brick texture / spigoli duri, mattoni inline |
+| mode7-torus-gouraud.json | gouraud C | walkLite | Smooth curved surface and UV seams / superficie curva smooth e seam UV |
+| mode7-uvsphere-gouraud.json | gouraud C | fixed | Smooth sphere / sfera smooth |
+| mode7-multi-texture.json | none | walkLite | Per-face selection and repeat / selezione per faccia e repeat |
+| mode7-cube-png.json | gouraud C | fixed | Same output as inline cube / stesso output del cubo inline |
+
+```powershell
+.\work\build-3Dvibe64.ps1 -SceneFile .\examples\mode7-cube-png.json -GraphicsMode 7 -MemoryLayout high-basic-v2 -CameraMode fixed -CameraViewport normal -VideoStandard pal -FpsCounterOnly -SkipCmdUpdate
+```
+
+Install Pillow for the PNG example; keep `textures/bricks.png` beside the scene folder as distributed. The PNG/inline pair must compile to identical bytes. These examples demonstrate the existing R1 renderer, not perspective correction or a higher polygon reference.
+
+Installare Pillow per il PNG; mantenere `textures/bricks.png` nella posizione distribuita. La coppia PNG/inline deve produrre byte identici. Gli esempi dimostrano il renderer R1 esistente, non perspective correction o nuovi riferimenti con più poligoni.
+
+[English contract](../MODE7.en.md) · [Contratto italiano](../MODE7.it.md)

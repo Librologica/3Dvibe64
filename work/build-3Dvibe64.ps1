@@ -65,7 +65,7 @@ param(
  [ValidateSet("default", "stable")]
  [string]$FaceCullProfile = "default",
 
- [ValidateSet("1", "2", "3", "4", "5", "6")]
+ [ValidateSet("1", "2", "3", "4", "5", "6", "7")]
  [string]$GraphicsMode = "4",
 
  [ValidateSet("default", "late", "clip")]
@@ -283,6 +283,27 @@ Install 64tass separately, then either:
 $Tass = Resolve-64tass
 
 New-Item -ItemType Directory -Force -Path (Join-Path $Root "build") | Out-Null
+
+# DEV-only Mode 7 adapter. Modes 1-6 never execute these generators.
+$Mode7Experimental = ($GraphicsMode -eq "7")
+if ($Mode7Experimental) {
+ if ($MemoryLayout -ne 'high-basic-v2') { throw 'Mode 7 requires high-basic-v2' }
+ if (-not $SceneFile) { throw 'Mode 7 requires a textured SceneFile' }
+ if (-not $PSBoundParameters.ContainsKey('Projection')) { $Projection = 'extended-table' }
+ if ($Projection -ne 'extended-table') { throw 'Mode 7 v1 requires Projection=extended-table' }
+ if (-not $PSBoundParameters.ContainsKey('Quality')) { $Quality = 'fast' }
+ if ($Quality -ne 'fast') { throw 'Mode 7 v1 is qualified only with Quality=fast' }
+ if ($Mode4NearProfile -eq 'default') { $Mode4NearProfile = 'clip' }
+ if ($Mode4NearProfile -ne 'clip') { throw 'Mode 7 v1 requires the camera-plane clipping profile' }
+ $mode7SceneInput = (Resolve-Path -LiteralPath $SceneFile).Path
+ $mode7Prepared = Join-Path $Root 'build/mode7-scene.json'
+ & python -B (Join-Path $Root 'mode7.py') prepare $mode7SceneInput $mode7Prepared
+ if ($LASTEXITCODE -ne 0) { throw 'Mode 7 texture/UV validation failed' }
+ $SceneFile = $mode7Prepared
+ # Reuse geometry/clipping generation only; the final pass removes lighting
+ # and replaces the attribute/raster code with the independent UV mapper.
+ $GraphicsMode = '6'
+}
 
 $RendererActiveFlag = 1
 
@@ -38350,6 +38371,11 @@ gate4_div16_fallback:
 }
 
 Set-Content -LiteralPath $AsmPath -Encoding ASCII -Value $asm
+
+if ($Mode7Experimental) {
+ & python -B (Join-Path $Root 'mode7.py') emit $mode7Prepared $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Mode 7 code generation failed' }
+}
 
 $tassArgs = @("-a", "-B", "-o", $PrgPath)
 if ($StableRelocatedCodeFlag -ne 0) {

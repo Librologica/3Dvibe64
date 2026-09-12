@@ -16,7 +16,7 @@ TESTS = (
     "test_optimization_gate4_division.py", "test_mobile_yq2.py",
     "test_camera_move_step.py", "test_camera_angular_repeat.py",
     "test_object_depth_domain.py", "test_gouraud_mode6_emulators.py",
-    "test_dev7_text_split.py",
+    "test_dev7_text_split.py", "test_mode7.py",
 )
 
 def main():

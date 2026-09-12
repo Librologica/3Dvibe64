@@ -1,6 +1,10 @@
-# 3Dvibe64 1.2.0
+# 3Dvibe64 1.3.0
 
-3Dvibe64 1.2.0 is a source SDK for creating specialized Commodore 64 3D programs
+**New in 1.3.0: official GraphicsMode 7 affine textures**, with optional flat or
+Gouraud C lighting and PNG import. [English guide](MODE7.en.md) · [Guida italiana](MODE7.it.md).
+Modes 1–6 preserve their official 1.2.0 reference output.
+
+3Dvibe64 1.3.0 is a source SDK for creating specialized Commodore 64 3D programs
 from JSON scenes. It includes the frozen PowerShell builder, engine code generation,
 technical documentation, generic executable JSON references, and reproducibility
 contracts. It deliberately ships with no precompiled PRG and no diagnostic artifacts.
@@ -104,17 +108,37 @@ sinusoidal-easing language.
 
 ## Public release contract
 
-The 1.2.0 contract requires version `1.2.0`, the immutable builder hash, 59 permanent
+The 1.3.0 contract requires version `1.3.0`, immutable builder/backend hashes, 88 permanent
 source files, no permanent `.prg`, a valid manifest, generic examples, and reference
 build hashes generated outside the package. Invalid point-only or collinear faces are
 rejected by the builder as malformed geometry. It also runs frozen Ground-crossing
 poses for Modes 4 and 5 through at least 32 `render_frame_end` events and verifies
 symbol-derived bitmap/screen-RAM signatures. Dedicated Mode 6 host and emulator
 contracts live in `scripts/test_gouraud_mode6.py` and
-`scripts/test_gouraud_mode6_emulators.py`. Run `python scripts/test_release_contract.py`;
+`scripts/test_gouraud_mode6_emulators.py`. Run `python -B scripts/run_release_tests.py`;
 set `VICE_X64SC` (or `VICE_EXE`) when x64sc is not on `PATH`.
 
-This release ships the validated Gate 5 engine unchanged: exact 528-entry
+Mode 6 retains the validated Gate 5 runtime: exact 528-entry
 Gouraud/Bayer LUT, specialized viewport clear, byte-oriented spans, exact division,
 and exact partial-byte aggregation (Gates 1, 3, 4, 5). No hybrid flat/Gouraud
 selector is supported. See [TESTING.md](TESTING.md) for the complete clean-copy suite.
+
+## Official Mode 7 in 1.3.0
+
+GraphicsMode 1–7 are available. GraphicsMode 1–6 retain their 1.2.0 reference output; the older API sections below still apply to those modes.
+
+Mode 4 is dynamic flat shading. Mode 6 is ordered-dithered Gouraud shading.
+Mode 7 is **affine texture mapping**, optionally with flat or Gouraud lighting:
+`textureLighting` absent/`"none"`, `"flat"`, or `"gouraud"`.
+The official Gouraud compositor is `textureCompositor: "C"` (texel-first + LightFix; now the Gouraud default). R1 corrects edge inclusion in this C path. A/B remain compatibility options, not the recommended renderer.
+
+Mode 7 requires `high-basic-v2`, Python 3, `fast` quality and `extended-table` projection.
+Textures are 16×16, nearest-neighbor, three pigment codes 1/2/3, with UV Q4.4 and optional repeat 1/2/4/8/16. It supports per-vertex or corner UVs, seams, per-face textures, triangulated quads (0→2), near/screen clipping, byte-oriented fill, partial bytes, double buffering, PAL/NTSC, normal/small and fixed/walkLite/walkFull.
+
+PNG import is host-side, through Pillow: `source` and mandatory ordered `sourceColors` map exactly three opaque RGB colors to Dark/High/Highlight texels. `texturePalette` separately selects three VIC-II colors. No resizing, quantization or transparency. Inline texels remain supported and runtime-equivalent.
+
+Textured Gouraud uses `gouraud.creaseAngle` (default60°, range0–180°) for hard edges or smooth normals, with the applicable255-shade-vertex limit. Mode 7 has its own memory/geometry constraints and does not inherit every Mode 6 override/source-sharing API.
+
+No perspective correction, bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Affine distortion and sampling aliasing remain intentional limitations.
+
+Read the [complete Mode7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](examples/README.md). The paired Italian guides cover the same contract.

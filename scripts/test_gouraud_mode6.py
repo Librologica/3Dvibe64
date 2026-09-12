@@ -107,7 +107,7 @@ def lerp_u8(a: int, b: int, scale: int) -> int:
 
 def main() -> None:
     for token in (
-        '[ValidateSet("1", "2", "3", "4", "5", "6")]',
+        '[ValidateSet("1", "2", "3", "4", "5", "6", "7")]',
         "GraphicsMode 6 requires -MemoryLayout high-basic-v2",
         "$CurrentMeshGouraudCreaseAngle = 60.0",
         "Build-GouraudShadeVertices",

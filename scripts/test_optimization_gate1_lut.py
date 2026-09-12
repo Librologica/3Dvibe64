@@ -51,7 +51,7 @@ def main() -> None:
             "-MemoryLayout", "high-basic-v2", "-Quality", "fast", "-Projection", "extended-table",
             "-NoFpsOverlay", "-SkipCmdUpdate"], cwd=sdk, env=os.environ.copy(), text=True, capture_output=True)
         assert run.returncode == 0, run.stdout + run.stderr
-        variant = "release-1.2.0"
+        variant = "release-1.3.0"
         asm = sdk / "work/3Dvibe64.asm"
         source = asm.read_text(encoding="ascii")
         total = 0

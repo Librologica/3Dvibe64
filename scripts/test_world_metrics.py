@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Repeatable host-side audit of the public 3Dvibe64 1.2.0 metric contract."""
+"""Repeatable host-side audit of the public 3Dvibe64 1.3.0 metric contract."""
 from __future__ import annotations
 
 import hashlib
@@ -11,8 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "work" / "build-3Dvibe64.ps1"
 SOURCE = BUILDER.read_text(encoding="utf-8").replace("\r\n", "\n")
-VERSION = "1.2.0"
-BUILDER_SHA256 = "44B23B5DEF3A5B0D24E845AA355DF3F8DC65D00426B688253F811D97DB8B90A7"
+VERSION = "1.3.0"
+BUILDER_SHA256 = "1B85F8CF0F62275B1804D2FC4A122B68BB611A5E52B8CE81636BB5E772E37E13"
 
 
 def sha256(path: Path) -> str:
@@ -97,7 +97,7 @@ def main() -> None:
     assert hex_constant("EXPLORER_ROLL_TICK_DIV") == 2
     assert 127 / 256 * 50 == 24.8046875
 
-    print("WORLD_METRICS_1_2_0 axes=pass depth=pass nearProfiles=default-late-clip ground=pass timing=pass")
+    print("WORLD_METRICS_1_3_0 axes=pass depth=pass nearProfiles=default-late-clip ground=pass timing=pass")
 
 
 if __name__ == "__main__":
