@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.4.0 — 2026-09-19
+
+- Promote GraphicsMode 8: 2.5D, separate property-selected single-level and
+  heightfield bitmap backends, 128×144 logical viewport, adaptive discontinuity
+  refinement, static apertures/thickness and qualified continuous ramps.
+- Public `-GraphicsMode 8 -SceneFile` dispatch, strict map contract,
+  standalone assembly templates, portable build dependencies and external output.
+- Three original complete maps, three editing tutorials, equivalent IT/EN
+  architecture and map guides, optional scene-cost analysis.
+- Preserve Mode 1–7 reference PRGs and public commands; no new rendering
+  optimization. Source SDK and six-program demo archive are separate.
+
+Italiano: Mode 8 ufficiale con backend distinti selezionati dalle proprietà,
+viewport bitmap 128×144, aperture/spessori e rampe qualificate.
+Builder pubblico, contratto rigoroso, sorgenti autosufficienti, tre mappe
+originali e tre tutorial, guide IT/EN equivalenti e analisi costi opzionale.
+PRG di riferimento e comandi Mode 1–7 invariati; nessuna nuova ottimizzazione.
+SDK sorgente e archivio delle sei demo rimangono separati.
+
 ## 1.3.0 — 2026-09-12
 
 English: GraphicsMode 7 becomes official: generic affine texture mapping, unused

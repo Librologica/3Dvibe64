@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Repeatable host-side audit of the public 3Dvibe64 1.3.0 metric contract."""
+"""Repeatable host-side audit of the public 3Dvibe64 1.4.0 metric contract."""
 from __future__ import annotations
 
 import hashlib
@@ -11,8 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "work" / "build-3Dvibe64.ps1"
 SOURCE = BUILDER.read_text(encoding="utf-8").replace("\r\n", "\n")
-VERSION = "1.3.0"
-BUILDER_SHA256 = "1B85F8CF0F62275B1804D2FC4A122B68BB611A5E52B8CE81636BB5E772E37E13"
+VERSION = "1.4.0"
+BUILDER_SHA256 = "F7D2B35EFFF705CE0F55BEEE85B2DF02A631D5C29FBC8019140C41DEB06546AE"
 
 
 def sha256(path: Path) -> str:

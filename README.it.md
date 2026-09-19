@@ -1,10 +1,39 @@
-# 3Dvibe64 1.3.0
+# 3Dvibe64 1.4.0
 
-**Novità: GraphicsMode 7 ufficiale con texture affini**, luce flat/Gouraud C
+## Novità della 1.4.0: GraphicsMode 8 — 2.5D
+
+L'SDK pubblico supporta **GraphicsMode 1–8**. La Mode 8 promuove il renderer
+bitmap multicolor VIC-II qualificato a 128×144 pixel logici, con backend
+monolivello e heightfield distinti selezionati dalle proprietà della mappa.
+Non è il precedente renderer a celle carattere. Usa pigmenti per orientamento,
+retino del soffitto, aperture statiche con spessore e le rampe continue
+documentate. Texture UV sulle pareti e room-over-room non sono supportati.
+
+Iniziare dall'[architettura e tabella delle opzioni](MODE8.it.md), quindi dalla
+[guida completa alle mappe](MAPS-2.5D.it.md). Camera iniziale, percorsi monolivello
+e footprint delle rampe hanno vincoli espliciti legati ai template.
+Le guide spiegano questi limiti prima dei tutorial di modifica.
+
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../perimeter-build
+```
+
+W/S per avanzare/arretrare, A/D per ruotare. PAL/NTSC viene riconosciuto a runtime.
+PowerShell, Python 3 e 64tass bastano per compilare la Mode 8; gli strumenti
+opzionali aggiungono py65 e Pillow. Gli output restano fuori dall'SDK.
+L'archivio demo separato contiene sei PRG; l'SDK sorgente non contiene PRG precompilati.
+
+Mode 1–7 conservano riferimenti qualificati e comandi esistenti. JSON mesh,
+camere, layout, metriche e split testuale descritti sotto **non** configurano
+la Mode 8. L'API non consente di comporre le due pipeline nella stessa vista.
+Vedere [note di release](RELEASE-NOTES-1.4.0.md) e [test](TESTING.md).
+Non è stata eseguita una prova hardware: la qualificazione Mode 8 usa x64sc stock.
+
+**Conservata: GraphicsMode 7 ufficiale con texture affini**, luce flat/Gouraud C
 opzionale e import PNG rigoroso. Iniziare da [Mode 7](MODE7.it.md). Mode 1–6
 conservano l'output ufficiale 1.2.0; la loro API esistente è documentata sotto.
 
-Questo pacchetto pubblico 1.3.0 è un SDK sorgente: contiene builder congelato,
+Questo pacchetto pubblico 1.4.0 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni
@@ -256,7 +285,7 @@ Servono Windows PowerShell e 64tass 1.60 o successivo. Inserire `64tass.exe` nel
 
 ## Mode 7 ufficiale nella 1.3.0
 
-Sono disponibili GraphicsMode 1–7. Le GraphicsMode 1–6 conservano l'output di riferimento della 1.2.0; le sezioni API precedenti continuano a descrivere quelle modalità.
+Sono disponibili GraphicsMode 1–8. Le GraphicsMode 1–6 conservano l'output di riferimento della 1.2.0; le sezioni API precedenti continuano a descrivere quelle modalità.
 
 Mode 4 è flat shading dinamico. Mode 6 è Gouraud ordered-dithered.
 Mode 7 è **texture mapping affine**, con luce flat o Gouraud opzionale:

@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.3.0",
-    "version": "1.3.0",
+    "displayName": "3Dvibe64 1.4.0",
+    "version": "1.4.0",
     "distribution": "source-sdk",
-    "permanentFiles": 88,
+    "permanentFiles": 134,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -13,7 +13,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "1B85F8CF0F62275B1804D2FC4A122B68BB611A5E52B8CE81636BB5E772E37E13"
+    "sha256": "F7D2B35EFFF705CE0F55BEEE85B2DF02A631D5C29FBC8019140C41DEB06546AE"
   },
   "examples": [
     "examples/wire-two-color-multimaterial.json",
@@ -37,7 +37,13 @@
     "examples/mode7-torus-gouraud.json",
     "examples/mode7-uvsphere-gouraud.json",
     "examples/mode7-multi-texture.json",
-    "examples/mode7-cube-png.json"
+    "examples/mode7-cube-png.json",
+    "examples/mode8/perimeter.json",
+    "examples/mode8/perimeter-tutorial.json",
+    "examples/mode8/apertures.json",
+    "examples/mode8/apertures-tutorial.json",
+    "examples/mode8/two-levels.json",
+    "examples/mode8/two-levels-tutorial.json"
   ],
   "releaseEngine": {
     "scope": "GraphicsMode 6 runtime (Mode 7 identity is recorded separately)",
@@ -60,7 +66,8 @@
       4,
       5,
       6,
-      7
+      7,
+      8
     ],
     "cameraModes": [
       "fixed",
@@ -103,7 +110,8 @@
         "default",
         "stable"
       ]
-    }
+    },
+    "polygonOptionsScope": "Modes 1–7; Mode 8 options are separate"
   },
   "sharedScenes": {
     "optIn": "meshSourceSharing",
@@ -535,5 +543,102 @@
         "sha256": "CCE4859399A8E7C682A8E72A1A25D54471B720C387A903B89352A55B345EB9D4"
       }
     ]
+  },
+  "mode8": {
+    "name": "2.5D",
+    "sceneSchema": "3dvibe64-mode8-map-v1",
+    "backends": [
+      "mono-opaque",
+      "mono-portals",
+      "multi"
+    ],
+    "mapSize": [
+      32,
+      32
+    ],
+    "logicalViewport": [
+      128,
+      144
+    ],
+    "activeBitmapBytes": 4608,
+    "doubleBuffer": true,
+    "videoStandard": "runtime PAL/NTSC",
+    "logicalTicksPerSecond": 50,
+    "textureUV": false,
+    "roomOverRoom": false,
+    "cameraRestriction": "template initial pose; mono navigation fixed; documented multi nodes and ramps only",
+    "sourceTemplates": [
+      "work/mode8/asm/perimeter-auto.asm",
+      "work/mode8/asm/perimeter-interactive.asm",
+      "work/mode8/asm/apertures-auto.asm",
+      "work/mode8/asm/apertures-interactive.asm",
+      "work/mode8/asm/two-levels-auto.asm",
+      "work/mode8/asm/two-levels-interactive.asm"
+    ],
+    "referenceBuilds": [
+      {
+        "family": "perimeter",
+        "run": "auto",
+        "scene": "examples/mode8/perimeter.json",
+        "sha256": "EABC9F158FA20C26965DAC679FF33A44455AFEFB609D5CB85B86C1609A374BAF"
+      },
+      {
+        "family": "perimeter",
+        "run": "interactive",
+        "scene": "examples/mode8/perimeter.json",
+        "sha256": "D332B66DCF99EC4B1F499DD490C979996F0177282188529891C40D5829EDA1A9"
+      },
+      {
+        "family": "apertures",
+        "run": "auto",
+        "scene": "examples/mode8/apertures.json",
+        "sha256": "0F3D2BECB760564C82781FE3BDD1FBADB1EE75198D2CE608F98B6DB734BB545A"
+      },
+      {
+        "family": "apertures",
+        "run": "interactive",
+        "scene": "examples/mode8/apertures.json",
+        "sha256": "5E1E552858946A8099A31FD9D79010352D54163A6EFDDD4CC7F66E3FD7833532"
+      },
+      {
+        "family": "two-levels",
+        "run": "auto",
+        "scene": "examples/mode8/two-levels.json",
+        "sha256": "8EC77E3DC35E5FABDF222616A1B06506E184500E151725CA61102D3A496A611A"
+      },
+      {
+        "family": "two-levels",
+        "run": "interactive",
+        "scene": "examples/mode8/two-levels.json",
+        "sha256": "7BE8E3C21AAC34F51D4FB938A4AED6A672001846B197138A2D69CBB2B82BA799"
+      }
+    ],
+    "backendHashes": {
+      "work/mode8/__init__.py": "66A552BFC3D42316FCDB80B9B43E386D3670EE9779CF21E8E23634DDC47FF43B",
+      "work/mode8/analyze.py": "B3FDE8DCDA66242E05D33EAD250873E7D1EC995DD78A1E3AFDBEDB9DA4851330",
+      "work/mode8/asm/apertures-auto.asm": "54208E56B38C3915A0E05BF8007D062945B08A9FE41E5AF3D9BB3F90BB1034A9",
+      "work/mode8/asm/apertures-interactive.asm": "1C73F1CE5992D89240516C2D91A19CF3FA05464275971015F4497305B991219A",
+      "work/mode8/asm/perimeter-auto.asm": "229DD62932C471A5B42B357BD2A1D14E3A1AF69FF43479411EB8DB6DCE4B2803",
+      "work/mode8/asm/perimeter-interactive.asm": "986EC1CA84CD572D05EAEB2DE1F12385274BC9E74E9063F99F20199DA2888336",
+      "work/mode8/asm/two-levels-auto.asm": "D041C9DD998F08F63BE4CDFAF6BD3667F27F6D2C533D15C38E7585D9127126CB",
+      "work/mode8/asm/two-levels-interactive.asm": "34A9044DBCEA61017A84F3956DDCB95F46A0F67CB5DBAC0B05485CD67ECEFF7A",
+      "work/mode8/build.py": "1D58EB987708AC7646D3A0885177F99581F6C22773D5C387697FB04457E7FCCC",
+      "work/mode8/common.py": "E381BCA41F8443F2AD15F638AB771D1C0CBBE4AE1510283833D3445783D0B096",
+      "work/mode8/contract.py": "43B22FE7EEE365085A7E1B8E615C41DCBC7F018CED0C622AE70DF9BBAD582EC6",
+      "work/mode8/directions.py": "1CCE354DB9284B1B8AB55FD4B06AE81ED55D4A15ED44F7249D5D63BA4C1C2870",
+      "work/mode8/font.bin": "B7605C10D1DED50F00726E37B204A12B247AB48A8D05DA9038CC1F954684DF94",
+      "work/mode8/font.py": "79B6CA4CE54CD35B58E67E4A629D658FBCA9F8357A96DFCCAD7E7AB9BE524C8C",
+      "work/mode8/model.py": "CE7A7F1A79A7958867D91D766AB8CCD920F54CFD1D6FBE42DACCADE7FEAB949E",
+      "work/mode8/mono.py": "6F3955B56DC9BD13DAEA11831F4697CCA5DBE59A3CE1FB0506BAB278EA6B4D8E",
+      "work/mode8/native.py": "DF16E91A07A5E27C0AC38AF34E33FD25ADAC36C3322694B82D0C26BE973F036D",
+      "work/mode8/navigation.py": "3F6775270005529979F735D460702AB3F462EB4DE7A88ED3579E26685D73E70C",
+      "work/mode8/profile-groups.json": "841CFBD7EDF682CD615012075005DE39692E2157C2A192BC19C41FB3209017D6",
+      "work/mode8/reference.py": "7F38E776B5158426789C627A3E41297E74AB24CC0B643A0AE5AE78438E3FDE0E",
+      "work/mode8/tables.py": "DF10D3159DAD11CEEB1120A55F24678336782D08BF1C515F5BFA52AC722B51BD",
+      "work/mode8/templates.json": "8BAC36E44E31A7C5DC08654D0DEC6F9424C37548E375942EB7282E7E5FCF8227",
+      "work/mode8/trace.py": "C29733D9764E93ED9654021DD5D84AF90708A25FC0978B658D50218D4DBE9EB8",
+      "work/mode8/vice.py": "A592E4D9F0CC384B39F71E24813410B4EBC8E5F7974B21F1806A80325DDC3DAB",
+      "work/mode8/walls.py": "153DD137C9390253BEAA297FF51B9FDE6831E7228A8DDB0FB4030E25D66D1A09"
+    }
   }
 }

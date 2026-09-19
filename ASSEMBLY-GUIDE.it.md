@@ -1,5 +1,19 @@
 # 3Dvibe64 — Guida per il programmatore assembly
 
+## Ambito Mode 8 nella 1.4.0
+
+Il generatore poligonale descritto sotto resta il percorso Mode 1–7. La Mode 8
+viene instradata prima a `work/mode8_build.py` e al package `work/mode8/`.
+I sei file in `work/mode8/asm/` sono template sorgenti specializzati intenzionali,
+non dipendenze da output generati. Il builder host istanzia tabelle geometriche
+e navigazione; i kernel qualificati restano distinti.
+Non serve alcuna directory sperimentale storica.
+Leggere [Mode 8](MODE8.it.md), [mappa memoria](MODE8-MEMORY.md) e
+[contratto mappe](MAPS-2.5D.it.md) prima di modificare il percorso.
+Non applicare a questi kernel a colonne le assunzioni poligonali su clipping,
+normali, riflettività e buffer triangoli. Definire mappe non richiede modifiche ASM.
+Usare copie pulite per le regressioni e output esterni all'SDK.
+
 Questa guida è rivolta a chi conosce il Commodore 64, il 6510/6502, il VIC-II e un assembler tradizionale e vuole usare o modificare 3Dvibe64 con un normale processo di sviluppo software. Non è una guida al vibe coding e non presuppone l'impiego di strumenti generativi. Il percorso pratico assistito da Codex è documentato separatamente in [VIBE-CODING-GUIDE.it.md](VIBE-CODING-GUIDE.it.md).
 
 La documentazione generale dell'API, delle scene e dei profili di rendering resta in [README.it.md](README.it.md). Le unità geometriche e temporali sono definite in [WORLD-METRICS.md](WORLD-METRICS.md). Questo documento spiega invece come è costruito l'engine, come ottenere il sorgente assembly effettivo, come orientarsi nelle routine generate e come apportare modifiche riproducibili.

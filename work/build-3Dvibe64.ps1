@@ -65,7 +65,7 @@ param(
  [ValidateSet("default", "stable")]
  [string]$FaceCullProfile = "default",
 
- [ValidateSet("1", "2", "3", "4", "5", "6", "7")]
+ [ValidateSet("1", "2", "3", "4", "5", "6", "7", "8")]
  [string]$GraphicsMode = "4",
 
  [ValidateSet("default", "late", "clip")]
@@ -228,11 +228,38 @@ param(
 
  [switch]$NoFpsOverlay,
 
- [switch]$SkipCmdUpdate
+ [switch]$SkipCmdUpdate,
+
+ [ValidateSet("auto", "interactive")]
+ [string]$Mode8Run = "interactive",
+
+ [string]$OutputDirectory = "",
+
+ [switch]$ValidateOnly
 )
 
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
+
+# Mode 8 is a distinct public map contract, dispatched before polygon setup.
+if ($GraphicsMode -eq "8") {
+ $allowed = @('GraphicsMode', 'SceneFile', 'Mode8Run', 'OutputDirectory', 'ValidateOnly', 'VideoStandard')
+ foreach ($key in $PSBoundParameters.Keys) {
+  if ($key -notin $allowed) { throw "Mode 8: explicitly requested option -$key is not applicable. See MODE8.en.md." }
+ }
+ if (-not $SceneFile) { throw 'Mode 8 requires -SceneFile with a Mode 8 map, not a polygon scene.' }
+ if ($VideoStandard -ne 'auto') { throw 'Mode 8 uses runtime PAL/NTSC detection; use -VideoStandard auto.' }
+ if (-not $OutputDirectory) { $OutputDirectory = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) '3Dvibe64-output/mode8' }
+ $python = if ($env:PYTHON_EXE) { $env:PYTHON_EXE } else { 'python' }
+ $arguments = @('-B', (Join-Path $PSScriptRoot 'mode8_build.py'), '--scene', (Resolve-Path -LiteralPath $SceneFile).Path, '--out', $OutputDirectory, '--run', $Mode8Run)
+ if ($ValidateOnly) { $arguments += '--validate-only' }
+ & $python @arguments
+ if ($LASTEXITCODE -ne 0) { throw "Mode 8 build/validation failed with exit code $LASTEXITCODE." }
+ return
+}
+foreach ($key in @('Mode8Run', 'OutputDirectory', 'ValidateOnly')) {
+ if ($PSBoundParameters.ContainsKey($key)) { throw "-$key is only applicable to GraphicsMode 8." }
+}
 
 # Public API note: a feature is promoted only when it is visible at all three
 # levels: parameter/build-script surface, generated ASM, and linked runtime

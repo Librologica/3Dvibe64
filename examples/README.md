@@ -1,5 +1,36 @@
 # Public JSON reference scenes
 
+## Mode 8 / 2.5D — 1.4.0
+
+Original complete maps / mappe originali complete:
+[perimeter](mode8/perimeter.json), [apertures](mode8/apertures.json),
+[two-levels](mode8/two-levels.json).
+Complete editing tutorials / tutorial completi:
+[perimeter-tutorial](mode8/perimeter-tutorial.json),
+[apertures-tutorial](mode8/apertures-tutorial.json),
+[two-levels-tutorial](mode8/two-levels-tutorial.json).
+Read [EN map contract](../MAPS-2.5D.en.md) / leggere il
+[contratto IT](../MAPS-2.5D.it.md) before editing / prima delle modifiche.
+[Plans / piante](mode8/PLANS.md) are generated from JSON / generate dai JSON.
+
+Tutorials 1/2 are not recommended speed optimizations; tutorial 3 narrows an
+aperture and partially reduces observed corpus cost, without a global FPS promise.
+I tutorial 1/2 non sono ottimizzazioni consigliate; il terzo restringe un varco
+e riduce parzialmente il costo osservato, senza promessa globale di FPS.
+
+From the SDK root / dalla radice SDK:
+
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../perimeter-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/apertures.json -Mode8Run interactive -OutputDirectory ../apertures-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/two-levels.json -Mode8Run interactive -OutputDirectory ../two-levels-build
+```
+
+Use `-Mode8Run auto` and a different empty output directory for automatic tours.
+Do not add polygonal switches below to Mode 8 commands.
+Usare `-Mode8Run auto` e altra directory vuota per i giri automatici.
+Non aggiungere ai comandi Mode 8 le opzioni poligonali seguenti.
+
 ## Gate 5 release references
 
 `mode6-gouraud-cube-hard.json` and `mode6-gouraud-cube-smooth.json` have identical
@@ -24,7 +55,7 @@ Do not also enable ControlRotation when R is reserved for reflectivity.
 
 ## Other references
 
-These files are executable documentation for the public 3Dvibe64 1.3.0 builder. They
+These files are executable documentation for the public 3Dvibe64 1.4.0 builder. They
 are generic technical references, not distributed productions. The package includes
 no PRG; run commands in a disposable working copy if you want the source tree to
 remain artifact-free.
