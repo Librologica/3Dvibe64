@@ -110,7 +110,7 @@ def r1_math():
 
 def references():
     package = json.loads((ROOT/"PACKAGE-MANIFEST.json").read_text(encoding="utf-8-sig"))
-    assert package["renderer"]["graphicsModes"] == list(range(1,8))
+    assert package["renderer"]["graphicsModes"] == list(range(1,9))
     for relative, expected in package["mode7"]["backendHashes"].items():
         assert hashlib.sha256((ROOT/relative).read_bytes()).hexdigest().upper() == expected, relative
     shell = shutil.which("pwsh") or shutil.which("powershell.exe")

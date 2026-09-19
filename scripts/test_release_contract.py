@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained public 3Dvibe64 1.3.0 source-SDK contract."""
+"""Self-contained public 3Dvibe64 1.4.0 source-SDK contract."""
 from __future__ import annotations
 
 import hashlib
@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.3.0"
-BUILDER_SHA256 = "1B85F8CF0F62275B1804D2FC4A122B68BB611A5E52B8CE81636BB5E772E37E13"
-PERMANENT_FILE_COUNT = 88
+VERSION = "1.4.0"
+BUILDER_SHA256 = "F7D2B35EFFF705CE0F55BEEE85B2DF02A631D5C29FBC8019140C41DEB06546AE"
+PERMANENT_FILE_COUNT = 134
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -175,6 +175,9 @@ def check_clean_tree() -> None:
         "work/mode7-compositor-b.asm", "work/mode7-compositor-c.asm",
         "examples/textures/bricks.png",
     }
+    allowed_inputs.update(f"work/mode8/asm/{family}-{run}.asm"
+                         for family in ("perimeter", "apertures", "two-levels")
+                         for run in ("auto", "interactive"))
     forbidden_suffixes = {".asm", ".lst", ".log", ".trace", ".tmp", ".png", ".bmp", ".gif", ".vice", ".cmd", ".zip", ".pyc"}
     for path in ROOT.rglob("*"):
         if not path.is_file():
@@ -203,7 +206,7 @@ def check_builder_and_package() -> None:
     assert sha256(builder) == BUILDER_SHA256, "builder hash changed"
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
-        "name": "3Dvibe64", "displayName": "3Dvibe64 1.3.0", "version": VERSION,
+        "name": "3Dvibe64", "displayName": "3Dvibe64 1.4.0", "version": VERSION,
         "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT,
         "precompiledPrograms": False,
         "author": "librologica.digital",
@@ -211,11 +214,14 @@ def check_builder_and_package() -> None:
         "documentationLicense": "CC-BY-NC-4.0",
     }
     assert manifest["builder"]["sha256"] == BUILDER_SHA256
-    assert len(manifest["examples"]) == 22
-    assert manifest["renderer"]["graphicsModes"] == list(range(1, 8))
+    assert len(manifest["examples"]) == 28
+    assert manifest["renderer"]["graphicsModes"] == list(range(1, 9))
     assert manifest["mode7"]["defaultGouraudCompositor"] == "C"
     for relative, digest in manifest["mode7"]["backendHashes"].items():
         assert sha256(ROOT / relative) == digest, relative
+    for relative, digest in manifest["mode8"]["backendHashes"].items():
+        assert sha256(ROOT / relative) == digest, relative
+    assert len(manifest["mode8"]["referenceBuilds"]) == 6
     assert len(manifest["referenceBuilds"]) == 11
     assert manifest["renderer"]["nearProfiles"]["modes"] == [3, 4, 5, 6]
     assert manifest["renderer"]["faceCullProfiles"]["modes"] == [4, 5, 6]
@@ -273,8 +279,8 @@ def check_builder_and_package() -> None:
 def check_documentation() -> None:
     assert (ROOT / "VERSION").read_text(encoding="utf-8-sig").strip() == VERSION
     main = (ROOT / "README.md").read_text(encoding="utf-8-sig")
-    assert main.startswith("# 3Dvibe64 1.3.0\n")
-    for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1–6", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
+    assert main.startswith("# 3Dvibe64 1.4.0\n")
+    for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1–8", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
         assert token in main, f"README.md does not document {token}"
     for token in ("HeaderText", "160×88", "TEXT_HEADER_SCREEN_BYTES"):
         assert token in main, f"README.md does not document DEV7 token {token}"
@@ -735,7 +741,7 @@ def main() -> None:
     check_ground_framebuffer_runtime()
     check_ground_roll_framebuffer_runtime()
     check_clean_tree()
-    print(f"PUBLIC_1_3_0_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass gouraud=separate-tests pointFixedMin=expected-error dev7TextSplit=separate files={PERMANENT_FILE_COUNT} builder=exact manifest=exact tree=clean")
+    print(f"PUBLIC_1_4_0_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass gouraud=separate-tests pointFixedMin=expected-error dev7TextSplit=separate files={PERMANENT_FILE_COUNT} builder=exact manifest=exact tree=clean")
 
 
 if __name__ == "__main__":
