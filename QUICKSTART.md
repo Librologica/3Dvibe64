@@ -1,6 +1,30 @@
 # Quick start / Guida rapida
 
-3Dvibe64 1.3.0 is a source SDK. It intentionally contains no precompiled PRG:
+## Mode 8 — 2.5D / 1.4.0
+
+Build dependencies: Python 3, PowerShell, 64tass on PATH (or
+`TASS64_EXE`). No optional analysis packages are needed for this command.
+Dipendenze: Python 3, PowerShell, 64tass nel PATH (o `TASS64_EXE`).
+Gli strumenti di analisi opzionali non servono per compilare.
+
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -ValidateOnly
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../mode8-start
+x64sc -default -pal -autostartprgmode 1 ../mode8-start/3Dvibe64.prg
+```
+
+W/S move, A/D turn; use `-Mode8Run auto` with a different empty output directory
+for the automatic itinerary. PAL/NTSC detection is automatic.
+W/S per muoversi, A/D per ruotare; `-Mode8Run auto` con altra directory vuota
+produce il percorso automatico. PAL/NTSC viene rilevato automaticamente.
+
+[Map authoring EN](MAPS-2.5D.en.md) · [Creazione mappe IT](MAPS-2.5D.it.md).
+These templates have explicit geometry/camera restrictions. Do not add the
+polygonal options in the remaining Mode 1–7 examples to a Mode 8 command.
+I template hanno vincoli espliciti su geometria e camera. Non aggiungere
+alle build Mode 8 le opzioni degli esempi poligonali Mode 1–7 seguenti.
+
+3Dvibe64 1.4.0 is a source SDK. It intentionally contains no precompiled PRG:
 compile a JSON scene locally with the PowerShell builder.
 
 ## Build / Compilazione
@@ -32,7 +56,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps
   -Quality balanced -Projection table -MemoryLayout high-basic-v2 -SkipCmdUpdate
 ```
 
-Il pacchetto 3Dvibe64 1.3.0 contiene solo sorgenti: compilare localmente una scena JSON
+Il pacchetto 3Dvibe64 1.4.0 contiene solo sorgenti: compilare localmente una scena JSON
 con il builder PowerShell. Il comando precedente genera `work/3Dvibe64.prg`.
 Con lo split Generic Text/FPS predefinito, `normal` offre un body 3D 160×88 sotto
 tre righe di testo e `small` un body 128×80. Usare
@@ -55,7 +79,7 @@ See [TESTING.md](TESTING.md) to verify a clean SDK without generating files insi
 
 ## Official Mode 7 in 1.3.0
 
-GraphicsMode 1–7 are available. GraphicsMode 1–6 retain their 1.2.0 reference output; the older API sections below still apply to those modes.
+GraphicsMode 1–8 are available. GraphicsMode 1–6 retain their 1.2.0 reference output; the older API sections below still apply to those modes.
 
 Mode 4 is dynamic flat shading. Mode 6 is ordered-dithered Gouraud shading.
 Mode 7 is **affine texture mapping**, optionally with flat or Gouraud lighting:
@@ -75,7 +99,7 @@ Read the [complete Mode7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.e
 
 ## Mode 7 ufficiale nella 1.3.0
 
-Sono disponibili GraphicsMode 1–7. Le GraphicsMode 1–6 conservano l'output di riferimento della 1.2.0; le sezioni API precedenti continuano a descrivere quelle modalità.
+Sono disponibili GraphicsMode 1–8. Le GraphicsMode 1–6 conservano l'output di riferimento della 1.2.0; le sezioni API precedenti continuano a descrivere quelle modalità.
 
 Mode 4 è flat shading dinamico. Mode 6 è Gouraud ordered-dithered.
 Mode 7 è **texture mapping affine**, con luce flat o Gouraud opzionale:

@@ -1,5 +1,19 @@
 # 3Dvibe64 world metrics / Metrica del mondo 3Dvibe64
 
+## Scope / Ambito in 1.4.0
+
+The WU/TU and mesh-camera conventions below apply to **Modes 1–7**.
+Mode 8 is a separate cell-map contract: 32×32 cells, position already encoded
+as Q8.8 integers (256 units/cell), vertical values in 1/32 cell, yaw 0–511
+(512 units/turn). Yaw 0 looks +Y, 128 looks +X. It does not automatically convert
+polygonal units. See [complete EN guide](MAPS-2.5D.en.md).
+
+Le convenzioni WU/TU e della camera mesh sotto valgono per **Mode 1–7**.
+La Mode 8 ha un contratto separato: 32×32 celle, posizione già codificata come
+interi Q8.8 (256 unità/cella), quote in 1/32 di cella, yaw 0–511
+(512 unità/giro). Yaw 0 guarda +Y, 128 guarda +X. Non converte automaticamente
+le unità poligonali. Vedere la [guida IT completa](MAPS-2.5D.it.md).
+
 This document defines the metric contract promoted in `0.1.0-pre-1.0`, including the mobile-camera initialization correction validated in pre-1.0 development, the object-depth signed 16.8 validation added in pre-1.0 development, the historical movement audit in pre-1.0 development, and the updated walk-camera control defaults validated in pre-1.0 development. It describes an abstract engine convention, not a physical-unit convention: a world unit is not automatically a metre, centimetre, inch, or any other real-world measure. Physical scale belongs to a scene or to authoring tools. The pre-1.0 `walkLite` zero-pitch framebuffer fix changes only CPU depth-test flags and does not alter WU, TU, or ST semantics.
 
 Questo documento definisce il contratto metrico promosso in `0.1.0-pre-1.0`, includendo la correzione dell'inizializzazione camera pre-1.0 development, la validazione signed 16.8 della profondita oggetto pre-1.0 development, l'audit storico del movimento pre-1.0 development e i nuovi default dei controlli walk validati nella pre-1.0 development. Descrive una convenzione astratta dell'engine e non introduce una scala fisica: una world unit non equivale automaticamente a un metro, centimetro, pollice o altra misura reale. La correzione pre-1.0 del framebuffer `walkLite` pitch-zero modifica soltanto i flag CPU del test di profondita e non altera la semantica WU, TU o ST.

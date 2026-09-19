@@ -1,10 +1,39 @@
-# 3Dvibe64 1.3.0
+# 3Dvibe64 1.4.0
 
-**New in 1.3.0: official GraphicsMode 7 affine textures**, with optional flat or
+## New in 1.4.0: GraphicsMode 8 — 2.5D
+
+The public SDK supports **GraphicsMode 1–8**. Mode 8 promotes the qualified
+128×144 logical-pixel VIC-II multicolor bitmap renderer, with separate
+single-level and heightfield backends selected from map properties.
+It is not the historical character-cell renderer. It has orientation pigments,
+a ceiling stipple, static openings with thickness, and the documented continuous
+ramps. Wall UV textures and room-over-room are not supported.
+
+Start with the [architecture and option table](MODE8.en.md), then the
+[complete map authoring guide](MAPS-2.5D.en.md). Camera initialization,
+single-level tours and ramp footprints have explicit template restrictions.
+The guides describe those restrictions before the editing tutorials.
+
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../perimeter-build
+```
+
+Use W/S to move and A/D to turn. PAL/NTSC is detected at runtime. PowerShell,
+Python 3 and 64tass suffice to build Mode 8; optional analysis tools add py65 and
+Pillow. Build products go outside the SDK. A separate demo archive contains six
+PRGs; this source SDK contains no precompiled PRG.
+
+Modes 1–7 retain their qualified references and existing commands. Their mesh
+JSON, cameras, layouts, metrics and text split described below do **not** configure
+Mode 8. The two pipelines cannot be composited in one view through this API.
+See [release notes](RELEASE-NOTES-1.4.0.md) and [tests](TESTING.md).
+Hardware operation has not been tested; the Mode 8 qualification uses stock x64sc.
+
+**Retained from 1.3.0: official GraphicsMode 7 affine textures**, with optional flat or
 Gouraud C lighting and PNG import. [English guide](MODE7.en.md) · [Guida italiana](MODE7.it.md).
 Modes 1–6 preserve their official 1.2.0 reference output.
 
-3Dvibe64 1.3.0 is a source SDK for creating specialized Commodore 64 3D programs
+3Dvibe64 1.4.0 is a source SDK for creating specialized Commodore 64 3D programs
 from JSON scenes. It includes the frozen PowerShell builder, engine code generation,
 technical documentation, generic executable JSON references, and reproducibility
 contracts. It deliberately ships with no precompiled PRG and no diagnostic artifacts.
@@ -57,7 +86,7 @@ authors' licenses; they are not included in this distribution.
 
 ## Renderer overview
 
-GraphicsMode 1–6 are available. Mode 6 adds per-vertex Gouraud lighting using a
+GraphicsMode 1–8 are available. Mode 6 adds per-vertex Gouraud lighting using a
 33-level, screen-anchored 4x4 Bayer ordered dither. It requires
 `-MemoryLayout high-basic-v2`; `gouraud.creaseAngle` controls smoothing across
 adjacent faces and defaults to 60 degrees. Runtime shade vertices are limited to
@@ -108,8 +137,7 @@ sinusoidal-easing language.
 
 ## Public release contract
 
-The 1.3.0 contract requires version `1.3.0`, immutable builder/backend hashes, 88 permanent
-source files, no permanent `.prg`, a valid manifest, generic examples, and reference
+The 1.4.0 contract requires version `1.4.0`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
 build hashes generated outside the package. Invalid point-only or collinear faces are
 rejected by the builder as malformed geometry. It also runs frozen Ground-crossing
 poses for Modes 4 and 5 through at least 32 `render_frame_end` events and verifies
@@ -125,7 +153,7 @@ selector is supported. See [TESTING.md](TESTING.md) for the complete clean-copy 
 
 ## Official Mode 7 in 1.3.0
 
-GraphicsMode 1–7 are available. GraphicsMode 1–6 retain their 1.2.0 reference output; the older API sections below still apply to those modes.
+GraphicsMode 1–8 are available. GraphicsMode 1–6 retain their 1.2.0 reference output; the older API sections below still apply to those modes.
 
 Mode 4 is dynamic flat shading. Mode 6 is ordered-dithered Gouraud shading.
 Mode 7 is **affine texture mapping**, optionally with flat or Gouraud lighting:

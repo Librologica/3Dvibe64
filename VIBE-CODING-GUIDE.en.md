@@ -1,5 +1,17 @@
 # Practical Manual for Creating Demos and PRGs with 3Dvibe64 Using Codex
 
+## Mode 8 workflow in 1.4.0
+
+Choose a map family in [MAPS-2.5D.en.md](MAPS-2.5D.en.md) before asking for
+geometry changes. Copy one complete template and use its matching tutorial;
+validate with `-GraphicsMode 8 -SceneFile ... -ValidateOnly`.
+Build with `-Mode8Run interactive|auto -OutputDirectory ...` outside the SDK.
+Do not supply polygonal switches, mesh JSON, material overrides or arbitrary
+ramps. Keep the exact command, input and build hashes together.
+Distinguish host instruction-cycle measurements from native emulated FPS and
+from untested hardware. The rest of this manual describes the unchanged
+Mode 1–7 mesh workflow; it is not a second map schema.
+
 ## Introduction
 
 3Dvibe64 is a 3D graphics engine designed for the Commodore 64. Its purpose is to let you describe a three-dimensional scene in a JSON file and turn that description into a `.prg` program, ready to run on a compatible C64 or in the VICE emulator.
