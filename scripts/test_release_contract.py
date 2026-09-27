@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained public 3Dvibe64 1.4.0 source-SDK contract."""
+"""Self-contained public 3Dvibe64 1.5.0 source-SDK contract."""
 from __future__ import annotations
 
 import hashlib
@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.4.0"
-BUILDER_SHA256 = "F7D2B35EFFF705CE0F55BEEE85B2DF02A631D5C29FBC8019140C41DEB06546AE"
-PERMANENT_FILE_COUNT = 134
+VERSION = "1.5.0"
+BUILDER_SHA256 = "64EC5ACC79A070615F6E3BAAE66146766BAEEC31C53BDB8E8B0624B1665055A4"
+PERMANENT_FILE_COUNT = 166
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -178,6 +178,9 @@ def check_clean_tree() -> None:
     allowed_inputs.update(f"work/mode8/asm/{family}-{run}.asm"
                          for family in ("perimeter", "apertures", "two-levels")
                          for run in ("auto", "interactive"))
+    allowed_inputs.update('work/q8/src/'+name for name in (
+        'camera.asm','clip.asm','kernel.asm','poly.asm','wide.asm','winding.asm','wire_line.asm'))
+    allowed_inputs.update(('work/subpixel-x-probe.asm','work/subpixel-mobile-x.asm'))
     forbidden_suffixes = {".asm", ".lst", ".log", ".trace", ".tmp", ".png", ".bmp", ".gif", ".vice", ".cmd", ".zip", ".pyc"}
     for path in ROOT.rglob("*"):
         if not path.is_file():
@@ -206,7 +209,7 @@ def check_builder_and_package() -> None:
     assert sha256(builder) == BUILDER_SHA256, "builder hash changed"
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
-        "name": "3Dvibe64", "displayName": "3Dvibe64 1.4.0", "version": VERSION,
+        "name": "3Dvibe64", "displayName": "3Dvibe64 1.5.0", "version": VERSION,
         "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT,
         "precompiledPrograms": False,
         "author": "librologica.digital",
@@ -214,12 +217,19 @@ def check_builder_and_package() -> None:
         "documentationLicense": "CC-BY-NC-4.0",
     }
     assert manifest["builder"]["sha256"] == BUILDER_SHA256
-    assert len(manifest["examples"]) == 28
+    assert len(manifest["examples"]) == 35
     assert manifest["renderer"]["graphicsModes"] == list(range(1, 9))
     assert manifest["mode7"]["defaultGouraudCompositor"] == "C"
     for relative, digest in manifest["mode7"]["backendHashes"].items():
         assert sha256(ROOT / relative) == digest, relative
     for relative, digest in manifest["mode8"]["backendHashes"].items():
+        assert sha256(ROOT / relative) == digest, relative
+    precision = manifest['precision']
+    assert precision['default'] == 'legacy' and precision['automaticSelection'] is False
+    assert precision['legacyDeprecated'] is False
+    assert precision['q8']['modes'] == list(range(1,8))
+    assert precision['q8']['maxObjects'] == 2 and precision['q8']['ground'] is False
+    for relative, digest in precision['q8']['backendHashes'].items():
         assert sha256(ROOT / relative) == digest, relative
     assert len(manifest["mode8"]["referenceBuilds"]) == 6
     assert len(manifest["referenceBuilds"]) == 11
@@ -279,7 +289,7 @@ def check_builder_and_package() -> None:
 def check_documentation() -> None:
     assert (ROOT / "VERSION").read_text(encoding="utf-8-sig").strip() == VERSION
     main = (ROOT / "README.md").read_text(encoding="utf-8-sig")
-    assert main.startswith("# 3Dvibe64 1.4.0\n")
+    assert main.startswith("# 3Dvibe64 1.5.0\n")
     for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1–8", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
         assert token in main, f"README.md does not document {token}"
     for token in ("HeaderText", "160×88", "TEXT_HEADER_SCREEN_BYTES"):
@@ -291,6 +301,11 @@ def check_documentation() -> None:
         assert "near + poly" not in text
         assert "reset mesh rotation" not in text and "reset della rotazione della mesh" not in text
         assert "headertext" in text and "text_header_screen_bytes" in text
+        assert '-precision q8' in text and '20 mhz' in text and 'legacy' in text
+    for language in ('en','it'):
+        precision_text=(ROOT/f'PRECISION.{language}.md').read_text(encoding='utf-8')
+        for token in ('-Precision legacy','-Precision q8','20 MHz','meshSourceSharing','96','40 WU','walkLite'):
+            assert token in precision_text,(language,token)
     software_license = (ROOT / "LICENSE").read_text(encoding="utf-8-sig")
     assert software_license.startswith("Required Notice: 3Dvibe64. Copyright © 2026 librologica.digital.\n")
     assert "# PolyForm Noncommercial License 1.0.0" in software_license
@@ -741,7 +756,7 @@ def main() -> None:
     check_ground_framebuffer_runtime()
     check_ground_roll_framebuffer_runtime()
     check_clean_tree()
-    print(f"PUBLIC_1_4_0_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass gouraud=separate-tests pointFixedMin=expected-error dev7TextSplit=separate files={PERMANENT_FILE_COUNT} builder=exact manifest=exact tree=clean")
+    print(f"PUBLIC_1_5_0_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass gouraud=separate-tests pointFixedMin=expected-error dev7TextSplit=separate files={PERMANENT_FILE_COUNT} builder=exact manifest=exact tree=clean")
 
 
 if __name__ == "__main__":
