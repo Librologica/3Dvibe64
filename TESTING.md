@@ -1,5 +1,36 @@
 # Release tests
 
+## 1.5.0 / Q8 precision
+
+The complete runner now contains **15 scripts**. The previous fourteen remain,
+with only version/source-package identities updated in metadata contracts.
+Legacy PRG/framebuffer reference hashes and all Mode 8 algorithms are unchanged.
+`test_precision_q8.py` checks omitted/explicit legacy for Modes 1-7, 42 Q8 builds
+against silent rebuilds of the qualified source, and invalid profile/output cases.
+Run through the temporary-copy runner below; no historical workspace is required.
+The extra Q8 test requires no emulator. Source ASM under work/q8/src and the
+subpixel preparation templates are intentional inputs, not generated artifacts.
+
+Il runner completo contiene ora **15 script**. I quattordici precedenti restano,
+con aggiornamento delle sole identità versione/sorgente nei contratti del pacchetto.
+Hash PRG/framebuffer legacy e algoritmi Mode 8 invariati. `test_precision_q8.py`
+verifica legacy omesso/esplicito Mode 1-7, 42 build Q8 contro ricompilazioni
+silenziose della sorgente qualificata e rifiuti di profili/output non validi.
+Usare il runner su copie temporanee; nessuna dipendenza dal workspace storico.
+Il test Q8 aggiuntivo non richiede emulatori. Gli ASM in work/q8/src e i template
+di preparazione subpixel sono input intenzionali, non artefatti generati.
+
+```powershell
+python -B scripts/run_release_tests.py test_precision_q8.py
+```
+
+Native release checks are separate from build-hash tests and use same-pose RAM
+captures/replay. Q8 does not imply unrestricted Ground/sharing/small/roll support
+or a new stock FPS qualification. See [EN](PRECISION.en.md) / [IT](PRECISION.it.md).
+I controlli nativi release sono separati dagli hash build e usano catture RAM e
+replay della stessa posa. Q8 non implica supporto illimitato Ground/sharing/small/
+roll né una nuova qualificazione FPS stock. Guide [EN](PRECISION.en.md) / [IT](PRECISION.it.md).
+
 ## 1.4.0 / Mode 8
 
 The runner contains **14 scripts**: the 13 legacy Mode 1–7 contracts and

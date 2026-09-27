@@ -1,5 +1,14 @@
 # 3Dvibe64 — Assembly Programmer's Guide
 
+## Precision profiles / Profili di precisione — 1.5.0
+
+Legacy remains the default; the metric/renderer contracts below describe legacy
+unless explicitly stated otherwise. Optional Q8 has a narrower qualified scope,
+not a global replacement. See [Q8 EN](PRECISION.en.md).
+Legacy resta il default; i contratti metrici/renderer seguenti descrivono legacy
+salvo indicazione diversa. Q8 opzionale ha un ambito qualificato più ristretto,
+non sostituisce globalmente legacy. Vedere [Q8 IT](PRECISION.it.md).
+
 ## Mode 8 scope in 1.4.0
 
 The polygonal generator described below remains the Mode 1–7 path. Mode 8

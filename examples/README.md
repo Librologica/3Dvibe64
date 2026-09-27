@@ -1,5 +1,13 @@
 # Public JSON reference scenes
 
+## Q8 / 1.5.0
+
+`q8/two-objects-mode1.json` through `q8/two-objects-mode7.json` are matching
+two-object examples / sono esempi equivalenti con due oggetti.
+Use explicit `-Precision q8` and matching `-GraphicsMode`; legacy remains default.
+Usare `-Precision q8` e `-GraphicsMode` coerente; legacy resta il default.
+[Guide EN](../PRECISION.en.md) / [Guida IT](../PRECISION.it.md).
+
 ## Mode 8 / 2.5D — 1.4.0
 
 Original complete maps / mappe originali complete:

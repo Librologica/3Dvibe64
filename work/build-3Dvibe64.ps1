@@ -1,4 +1,10 @@
 param(
+ [ValidateSet("legacy", "q8")]
+ [string]$Precision = "legacy",
+
+ [ValidateSet("stationary", "interactive", "auto")]
+ [string]$Q8Camera = "stationary",
+
  [ValidateSet("torus6x6", "torus8x6", "torus10x6", "torus12x6", "cube", "dual", "dual_low")]
  [string]$Mesh = "torus8x6",
 
@@ -74,6 +80,9 @@ param(
  [switch]$DiagnosticHalfCameraRates,
 
  [switch]$SolidSubpixelXQ2,
+
+ # Isolated first-gate experiment. Default output remains byte-identical.
+ [switch]$ExperimentalSubpixelXProbe,
 
  [ValidateSet("LegacyUpscaled", "LegacyDirect", "Native")]
  [string]$SolidSubpixelXInput = "LegacyUpscaled",
@@ -241,9 +250,36 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
+# Precision is an explicit opt-in, never selected from CPU speed or scene data.
+# The adapter works in a fresh output tree; legacy generation below is unchanged.
+if ($Precision -eq 'q8') {
+ $allowed = @('Precision','Q8Camera','GraphicsMode','SceneFile','OutputDirectory',
+              'VideoStandard','CameraMode','CameraViewport','MemoryLayout','Quality',
+              'Projection','NoFpsOverlay','SkipCmdUpdate')
+ foreach ($key in $PSBoundParameters.Keys) {
+  if ($key -notin $allowed) { throw "Q8: option -$key is outside the qualified profile. See PRECISION.en.md." }
+ }
+ if ($GraphicsMode -eq '8') { throw 'Q8 supports GraphicsMode 1-7 only; Mode 8 is unchanged.' }
+ if (-not $SceneFile) { throw 'Q8 requires -SceneFile.' }
+ $required = @{ CameraMode='walkLite'; CameraViewport='normal'; MemoryLayout='high-basic-v2'; Quality='fast'; Projection='extended-table' }
+ foreach ($key in $required.Keys) {
+  if ($PSBoundParameters.ContainsKey($key) -and $PSBoundParameters[$key] -ne $required[$key]) {
+   throw "Q8 requires -$key $($required[$key])."
+  }
+ }
+ if (-not $PSBoundParameters.ContainsKey('VideoStandard')) { $VideoStandard = 'pal' }
+ if ($VideoStandard -eq 'auto') { throw 'Q8 requires pal or ntsc; runtime auto detection is not qualified.' }
+ if (-not $OutputDirectory) { $OutputDirectory = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) '3Dvibe64-output/q8' }
+ $python = if ($env:PYTHON_EXE) { $env:PYTHON_EXE } else { 'python' }
+ & $python -B (Join-Path $PSScriptRoot 'q8/build.py') --scene (Resolve-Path -LiteralPath $SceneFile).Path --out $OutputDirectory --mode $GraphicsMode --standard $VideoStandard --camera $Q8Camera
+ if ($LASTEXITCODE -ne 0) { throw "Q8 build failed with exit code $LASTEXITCODE." }
+ return
+}
+if ($PSBoundParameters.ContainsKey('Q8Camera')) { throw '-Q8Camera requires -Precision q8.' }
+
 # Mode 8 is a distinct public map contract, dispatched before polygon setup.
 if ($GraphicsMode -eq "8") {
- $allowed = @('GraphicsMode', 'SceneFile', 'Mode8Run', 'OutputDirectory', 'ValidateOnly', 'VideoStandard')
+ $allowed = @('GraphicsMode', 'SceneFile', 'Mode8Run', 'OutputDirectory', 'ValidateOnly', 'VideoStandard', 'Precision')
  foreach ($key in $PSBoundParameters.Keys) {
   if ($key -notin $allowed) { throw "Mode 8: explicitly requested option -$key is not applicable. See MODE8.en.md." }
  }
@@ -313,6 +349,9 @@ New-Item -ItemType Directory -Force -Path (Join-Path $Root "build") | Out-Null
 
 # DEV-only Mode 7 adapter. Modes 1-6 never execute these generators.
 $Mode7Experimental = ($GraphicsMode -eq "7")
+if ($ExperimentalSubpixelXProbe -and $GraphicsMode -notin @('3','4','5','6')) {
+ throw 'ExperimentalSubpixelXProbe currently supports only Mode 3/4/5/6.'
+}
 if ($Mode7Experimental) {
  if ($MemoryLayout -ne 'high-basic-v2') { throw 'Mode 7 requires high-basic-v2' }
  if (-not $SceneFile) { throw 'Mode 7 requires a textured SceneFile' }
@@ -3765,7 +3804,9 @@ if ($RequestedCameraMode.Length -gt 0) {
 # Resolve the public solid-dynamic (Mode 4/5/6) projection only after the effective camera mode
 # is known. Explicit input selectors remain diagnostic overrides; the legacy
 # switches are accepted but are redundant for the public Mode 4 profile.
-if ($SolidDynamicGeometryFamilyFlag -ne 0) {
+# Mode 3 opt-in reuses only the Q2 geometry setup, never flat/Gouraud lighting.
+$ExperimentalStaticQ8Probe = ($ExperimentalSubpixelXProbe.IsPresent -and $GraphicsModeNumber -eq 3)
+if ($SolidDynamicGeometryFamilyFlag -ne 0 -or $ExperimentalStaticQ8Probe) {
  $SolidSubpixelXQ2Flag = 1
  $SolidSubpixelYQ2Flag = 1
  if (-not $PSBoundParameters.ContainsKey("SolidSubpixelXInput")) {
@@ -3794,6 +3835,13 @@ if ($SolidDynamicGeometryFamilyFlag -ne 0) {
  $Mode4FaceIdLatchFlag = if ($SolidSubpixelXYQ2LegacyDirectYFlag -ne 0) { 1 } else { 0 }
 }
 $CameraMovableFlag = if ($EffectiveCameraMode -ne "fixed") { 1 } else { 0 }
+if ($ExperimentalSubpixelXProbe) {
+ $ProbeFixed = ($EffectiveCameraMode -eq 'fixed' -and $SolidSubpixelYInput -eq 'Native')
+ $ProbeWalkIdle = ($EffectiveCameraMode -eq 'walkLite' -and $GraphicsModeNumber -in @(3,4,5,6) -and $SolidSubpixelYInput -eq 'MobileNative' -and $NoCameraRuntimeControls.IsPresent)
+ if ((-not $ProbeFixed -and -not $ProbeWalkIdle) -or $SolidSubpixelXInput -ne 'LegacyDirect' -or $Projection -eq 'reference') {
+  throw 'ExperimentalSubpixelXProbe requires fixed Native-Y or Mode 3/4/5/6 walkLite MobileNative-Y with NoCameraRuntimeControls, LegacyDirect X and table projection. Standalone probe clipping remains unqualified; the Q8 adapter supplies its own clipper.'
+ }
+}
 $EmitRenderSceneObjectsFlag = if ($CameraMovableFlag -eq 0 -or $GraphicsModeNumber -eq 1) { 1 } else { 0 }
 $CameraWalkLiteFlag = if ($EffectiveCameraMode -eq "walkLite") { 1 } else { 0 }
 $CameraWalkFullFlag = if ($EffectiveCameraMode -eq "walkFull") { 1 } else { 0 }
@@ -3875,8 +3923,8 @@ $ExplorerScreenClipPolyFlag = if ($Mode4CameraPlaneClipRequested -or (($CameraMo
 $WireScreenRawFlag = if (($WireRenderFlag -ne 0) -and ($CameraMovableFlag -ne 0)) { 1 } else { 0 }
 $ExplorerScreenRawFlag = if (($ExplorerScreenClipXFlag -ne 0) -or ($ExplorerScreenClipPolyFlag -ne 0) -or ($ExplorerNearPolyFlag -ne 0) -or ($WireScreenRawFlag -ne 0)) { 1 } else { 0 }
 $StandardProjectVertexFlag = if ($CameraMovableFlag -ne 0) { 0 } else { 1 }
-$Mode5HighBasicQ2ProfileFlag = if ($SolidDynamicGeometryFamilyFlag -ne 0 -and $MemoryLayout -eq "high-basic-v2") { 1 } else { 0 }
-$SolidSubpixelQ2CoreProfileFlag = if ($SolidDynamicGeometryFamilyFlag -ne 0 -and ($CameraViewportKey -eq "small" -or $CameraViewportKey -eq "normal") -and ($MemoryLayout -eq "stable" -or $Mode5HighBasicQ2ProfileFlag -ne 0) -and $PolyFillFlag -eq 1 -and $WireRenderFlag -eq 0 -and $HiddenWireFlag -eq 0 -and $FaceRenderMode -ne "force") { 1 } else { 0 }
+$Mode5HighBasicQ2ProfileFlag = if (($SolidDynamicGeometryFamilyFlag -ne 0 -or $ExperimentalStaticQ8Probe) -and $MemoryLayout -eq "high-basic-v2") { 1 } else { 0 }
+$SolidSubpixelQ2CoreProfileFlag = if (($SolidDynamicGeometryFamilyFlag -ne 0 -or $ExperimentalStaticQ8Probe) -and ($CameraViewportKey -eq "small" -or $CameraViewportKey -eq "normal") -and ($MemoryLayout -eq "stable" -or $Mode5HighBasicQ2ProfileFlag -ne 0) -and $PolyFillFlag -eq 1 -and $WireRenderFlag -eq 0 -and $HiddenWireFlag -eq 0 -and $FaceRenderMode -ne "force") { 1 } else { 0 }
 $SolidSubpixelQ2FixedProfileFlag = if ($SolidSubpixelQ2CoreProfileFlag -ne 0 -and $EffectiveCameraMode -eq "fixed" -and $StandardProjectVertexFlag -eq 1 -and $SolidSubpixelYMobileNativeFlag -eq 0) { 1 } else { 0 }
 $SolidSubpixelQ2MobileProfileFlag = if ($SolidSubpixelQ2CoreProfileFlag -ne 0 -and $CameraMovableFlag -ne 0 -and $StandardProjectVertexFlag -eq 0 -and $SolidSubpixelXQ2Flag -eq 1 -and $SolidSubpixelXLegacyDirectFlag -eq 1 -and $SolidSubpixelYQ2Flag -eq 1 -and $SolidSubpixelYMobileNativeFlag -eq 1 -and $ExplorerScreenClipPolyFlag -eq 1) { 1 } else { 0 }
 if ($SolidSubpixelXQ2Flag -ne 0 -or $SolidSubpixelYQ2Flag -ne 0) {
@@ -36381,7 +36429,7 @@ RUNTIME_AFTER_RAW = pyrawhi + VERT_COUNT
 RUNTIME_AFTER_RAW = RUNTIME_AFTER_SXQ2
 .endif
 '@ + "`n"))
- if ($SolidSubpixelXLegacyDirectFlag -ne 0) {
+ if ($SolidSubpixelXLegacyDirectFlag -ne 0 -and -not $ExperimentalSubpixelXProbe) {
   $asm = [regex]::Replace($asm, '(?m)^sxq2_lo = sy \+ VERT_COUNT\r?\nsxq2_hi = sxq2_lo \+ VERT_COUNT\r?\nRUNTIME_AFTER_SXQ2 = sxq2_hi \+ VERT_COUNT$', 'RUNTIME_AFTER_SXQ2 = sy + VERT_COUNT')
  }
  if ($SolidSubpixelYQ2Flag -ne 0) {
@@ -38398,6 +38446,11 @@ gate4_div16_fallback:
 }
 
 Set-Content -LiteralPath $AsmPath -Encoding ASCII -Value $asm
+
+if ($ExperimentalSubpixelXProbe) {
+ & python -B (Join-Path $Root 'subpixel_probe.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Subpixel X probe generation failed' }
+}
 
 if ($Mode7Experimental) {
  & python -B (Join-Path $Root 'mode7.py') emit $mode7Prepared $AsmPath

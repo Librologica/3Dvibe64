@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.5.0 — 2026-09-27
+
+- Explicit `-Precision q8` for qualified Mode 1-7 fractional geometry/clipping.
+- Legacy remains the unconditional default, non-deprecated; reference PRGs and
+  Mode 8 unchanged. Q8 recommended above 20 MHz; legacy at <=20 MHz.
+- Bounded normal/walkLite, one/two-object profile; strict validation, isolated
+  output, stationary/interactive/automatic cameras, bilingual guide and tests.
+- No new optimization, public soundtrack or generated files in the source SDK.
+
+Italiano: Q8 esplicito per geometria/clipping Mode 1-7; legacy sempre default e
+non deprecato, riferimenti e Mode 8 invariati. Q8 consigliato sopra 20 MHz,
+legacy fino a 20 MHz. Profilo limitato normal/walkLite, uno/due oggetti,
+validazione rigorosa, output isolato, camera ferma/interattiva/automatica,
+guide e test. Nessuna nuova ottimizzazione o colonna sonora pubblica.
+
 ## 1.4.0 — 2026-09-19
 
 - Promote GraphicsMode 8: 2.5D, separate property-selected single-level and

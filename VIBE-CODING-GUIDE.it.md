@@ -1,5 +1,14 @@
 # Manuale pratico per creare demo e PRG con 3Dvibe64 usando Codex
 
+## Precision profiles / Profili di precisione — 1.5.0
+
+Legacy remains the default; the metric/renderer contracts below describe legacy
+unless explicitly stated otherwise. Optional Q8 has a narrower qualified scope,
+not a global replacement. See [Q8 EN](PRECISION.en.md).
+Legacy resta il default; i contratti metrici/renderer seguenti descrivono legacy
+salvo indicazione diversa. Q8 opzionale ha un ambito qualificato più ristretto,
+non sostituisce globalmente legacy. Vedere [Q8 IT](PRECISION.it.md).
+
 ## Workflow Mode 8 nella 1.4.0
 
 Scegliere una famiglia in [MAPS-2.5D.it.md](MAPS-2.5D.it.md) prima di richiedere

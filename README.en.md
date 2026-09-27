@@ -1,4 +1,8 @@
-# 3Dvibe64 1.4.0
+# 3Dvibe64 1.5.0
+
+## New in 1.5.0: optional Q8 precision
+
+**Legacy always remains the default.** Q8 requires `-Precision q8`; there is no CPU-based automatic selection. Recommend Q8 above 20 MHz, legacy at 20 MHz or below. Legacy is not deprecated. The qualified Q8 profile is limited to normal/walkLite and at most two objects; read the [limits and commands](PRECISION.en.md). Mode 8 is unchanged.
 
 ## New in 1.4.0: GraphicsMode 8 — 2.5D
 
@@ -26,14 +30,14 @@ PRGs; this source SDK contains no precompiled PRG.
 Modes 1–7 retain their qualified references and existing commands. Their mesh
 JSON, cameras, layouts, metrics and text split described below do **not** configure
 Mode 8. The two pipelines cannot be composited in one view through this API.
-See [release notes](RELEASE-NOTES-1.4.0.md) and [tests](TESTING.md).
+See [release notes](RELEASE-NOTES-1.5.0.md) and [tests](TESTING.md).
 Hardware operation has not been tested; the Mode 8 qualification uses stock x64sc.
 
 **Retained: official GraphicsMode 7 affine textures**, optional flat/Gouraud C lighting
 and strict PNG import. Start with [Mode 7](MODE7.en.md). Modes 1–6 preserve their
 official 1.2.0 reference output; their existing API is documented below.
 
-This public 1.4.0 package is a source SDK: it contains the frozen builder,
+This public 1.5.0 package is a source SDK: it contains the frozen builder,
 documentation, JSON reference scenes, and contracts, but no precompiled PRG or
 diagnostic artifact. Build examples locally, preferably in a disposable working copy.
 The examples are executable API documentation, not bundled productions.
@@ -231,7 +235,9 @@ If `-ControlRotation` and `-ControlReflectivity` are forced together, both handl
 
 | Option | Values | Default / effect |
 |---|---|---|
-| `-GraphicsMode` | `1`-`6` | `4` |
+| `-Precision` | `legacy`, `q8` | **legacy**; Q8 only on explicit request; [qualified limits](PRECISION.en.md) |
+| `-Q8Camera` | `stationary`, `interactive`, `auto` | `stationary`; only with Q8 |
+| `-GraphicsMode` | `1`-`8` | `4`; Mode 8 uses its separate map API |
 | `-CameraMode` | `fixed`, `walkLite`, `walkFull` | scene camera mode, otherwise `fixed`; an explicit CLI value wins |
 | `-VideoStandard` | `auto`, `pal`, `ntsc` | `auto`; forced PAL/NTSC keeps logical simulation at 50 ST/s |
 | ViewportProfile / `-CameraViewport` | `normal`, `small` | `normal`; `contract.viewportProfile` is used when CLI is omitted |
