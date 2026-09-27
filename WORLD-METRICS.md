@@ -1,5 +1,14 @@
 # 3Dvibe64 world metrics / Metrica del mondo 3Dvibe64
 
+## Precision profiles / Profili di precisione — 1.5.0
+
+Legacy remains the default; the metric/renderer contracts below describe legacy
+unless explicitly stated otherwise. Optional Q8 has a narrower qualified scope,
+not a global replacement. See [Q8 EN](PRECISION.en.md).
+Legacy resta il default; i contratti metrici/renderer seguenti descrivono legacy
+salvo indicazione diversa. Q8 opzionale ha un ambito qualificato più ristretto,
+non sostituisce globalmente legacy. Vedere [Q8 IT](PRECISION.it.md).
+
 ## Scope / Ambito in 1.4.0
 
 The WU/TU and mesh-camera conventions below apply to **Modes 1–7**.
