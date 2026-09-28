@@ -1,4 +1,12 @@
-# 3Dvibe64 1.5.0
+# 3Dvibe64 1.5.5
+
+## New in 1.5.5: Mode 8 lintel correctness
+
+The `mono-portals` backend clears its inside state on lintel exit and
+also recognizes front-plane identity during adaptive edge refinement. The
+map contract is unchanged; infinite worlds and distance shading are not
+included. Modes 1–7, Q8 and the other two Mode 8 backends are unchanged.
+See [1.5.5 release notes](RELEASE-NOTES-1.5.5.md).
 
 ## New in 1.5.0: optional Q8 precision
 
@@ -24,20 +32,20 @@ pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile example
 
 Use W/S to move and A/D to turn. PAL/NTSC is detected at runtime. PowerShell,
 Python 3 and 64tass suffice to build Mode 8; optional analysis tools add py65 and
-Pillow. Build products go outside the SDK. A separate demo archive contains six
-PRGs; this source SDK contains no precompiled PRG.
+Pillow. Build products go outside the SDK. The three maps each support automatic
+and interactive builds; this source SDK contains no precompiled PRG.
 
 Modes 1–7 retain their qualified references and existing commands. Their mesh
 JSON, cameras, layouts, metrics and text split described below do **not** configure
 Mode 8. The two pipelines cannot be composited in one view through this API.
-See [release notes](RELEASE-NOTES-1.5.0.md) and [tests](TESTING.md).
+See [release notes](RELEASE-NOTES-1.5.5.md) and [tests](TESTING.md).
 Hardware operation has not been tested; the Mode 8 qualification uses stock x64sc.
 
 **Retained: official GraphicsMode 7 affine textures**, optional flat/Gouraud C lighting
 and strict PNG import. Start with [Mode 7](MODE7.en.md). Modes 1–6 preserve their
 official 1.2.0 reference output; their existing API is documented below.
 
-This public 1.5.0 package is a source SDK: it contains the frozen builder,
+This public 1.5.5 package is a source SDK: it contains the frozen builder,
 documentation, JSON reference scenes, and contracts, but no precompiled PRG or
 diagnostic artifact. Build examples locally, preferably in a disposable working copy.
 The examples are executable API documentation, not bundled productions.

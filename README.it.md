@@ -1,4 +1,12 @@
-# 3Dvibe64 1.5.0
+# 3Dvibe64 1.5.5
+
+## Novità 1.5.5: correttezza delle architravi Mode 8
+
+Il backend `mono-portals` azzera lo stato interno all'uscita dall'architrave e
+riconosce anche la faccia frontale nel raffinamento adattivo dei bordi. Il
+contratto delle mappe resta invariato; non sono inclusi mondo infinito o
+ombre a distanza. Mode 1–7, Q8 e gli altri due backend Mode 8 sono invariati.
+Vedere [note 1.5.5](RELEASE-NOTES-1.5.5.md).
 
 ## Novità 1.5.0: precisione Q8 opzionale
 
@@ -25,19 +33,19 @@ pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile example
 W/S per avanzare/arretrare, A/D per ruotare. PAL/NTSC viene riconosciuto a runtime.
 PowerShell, Python 3 e 64tass bastano per compilare la Mode 8; gli strumenti
 opzionali aggiungono py65 e Pillow. Gli output restano fuori dall'SDK.
-L'archivio demo separato contiene sei PRG; l'SDK sorgente non contiene PRG precompilati.
+Le tre mappe supportano build automatiche e interattive; l'SDK sorgente non contiene PRG precompilati.
 
 Mode 1–7 conservano riferimenti qualificati e comandi esistenti. JSON mesh,
 camere, layout, metriche e split testuale descritti sotto **non** configurano
 la Mode 8. L'API non consente di comporre le due pipeline nella stessa vista.
-Vedere [note di release](RELEASE-NOTES-1.5.0.md) e [test](TESTING.md).
+Vedere [note di release](RELEASE-NOTES-1.5.5.md) e [test](TESTING.md).
 Non è stata eseguita una prova hardware: la qualificazione Mode 8 usa x64sc stock.
 
 **Conservata: GraphicsMode 7 ufficiale con texture affini**, luce flat/Gouraud C
 opzionale e import PNG rigoroso. Iniziare da [Mode 7](MODE7.it.md). Mode 1–6
 conservano l'output ufficiale 1.2.0; la loro API esistente è documentata sotto.
 
-Questo pacchetto pubblico 1.5.0 è un SDK sorgente: contiene builder congelato,
+Questo pacchetto pubblico 1.5.5 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni

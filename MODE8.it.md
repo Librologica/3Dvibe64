@@ -1,5 +1,10 @@
 # GraphicsMode 8 — 2.5D
 
+Nella 1.5.5 mono-portals azzera lo stato all'uscita e include l'identità del piano
+frontale nel raffinamento adattivo. Mappe ammesse e API sotto restano invariati:
+non aggiunge mondi procedurali né architravi multiple arbitrarie per raggio.
+Vedere [note di release](RELEASE-NOTES-1.5.5.md).
+
 3Dvibe64 1.4.0 aggiunge all'SDK un renderer indipendente per mappe. Per costruire ambienti partire da [Costruire mappe Mode 8](MAPS-2.5D.it.md). Il sottoinsieme è deliberatamente conservativo: tre template completi, validazione per proprietà, partenze fisse e rampe/aperture limitate. Non sono disponibili conversione di mesh o composizione simultanea poligonale/2.5D.
 
 ## Build pubblica

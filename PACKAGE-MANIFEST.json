@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.5.0",
-    "version": "1.5.0",
+    "displayName": "3Dvibe64 1.5.5",
+    "version": "1.5.5",
     "distribution": "source-sdk",
-    "permanentFiles": 166,
+    "permanentFiles": 168,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -118,7 +118,7 @@
         "stable"
       ]
     },
-    "polygonOptionsScope": "Modes 1ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ7; Mode 8 options are separate"
+    "polygonOptionsScope": "Modes 1-7; Mode 8 options are separate"
   },
   "sharedScenes": {
     "optIn": "meshSourceSharing",
@@ -599,13 +599,13 @@
         "family": "apertures",
         "run": "auto",
         "scene": "examples/mode8/apertures.json",
-        "sha256": "0F3D2BECB760564C82781FE3BDD1FBADB1EE75198D2CE608F98B6DB734BB545A"
+        "sha256": "8CDE4D4787CBB57A79C4E3863C7C3D84BA1B0E012FCA665C31CB47F51498C94D"
       },
       {
         "family": "apertures",
         "run": "interactive",
         "scene": "examples/mode8/apertures.json",
-        "sha256": "5E1E552858946A8099A31FD9D79010352D54163A6EFDDD4CC7F66E3FD7833532"
+        "sha256": "F670EADED201A40126FE9F85D8698E37B2C7C6DB0020BE65C0C90B4E9425D9A7"
       },
       {
         "family": "two-levels",
@@ -623,8 +623,8 @@
     "backendHashes": {
       "work/mode8/__init__.py": "66A552BFC3D42316FCDB80B9B43E386D3670EE9779CF21E8E23634DDC47FF43B",
       "work/mode8/analyze.py": "B3FDE8DCDA66242E05D33EAD250873E7D1EC995DD78A1E3AFDBEDB9DA4851330",
-      "work/mode8/asm/apertures-auto.asm": "54208E56B38C3915A0E05BF8007D062945B08A9FE41E5AF3D9BB3F90BB1034A9",
-      "work/mode8/asm/apertures-interactive.asm": "1C73F1CE5992D89240516C2D91A19CF3FA05464275971015F4497305B991219A",
+      "work/mode8/asm/apertures-auto.asm": "09CFEBCA24F5B1F2FFA304D98088295B381619ADA7C65E734CEB288788EB3F2E",
+      "work/mode8/asm/apertures-interactive.asm": "B48AE881F08FD099971A9CDD4D2EAFF7841EFD06A62F8B6CA196B101F85AF6D0",
       "work/mode8/asm/perimeter-auto.asm": "229DD62932C471A5B42B357BD2A1D14E3A1AF69FF43479411EB8DB6DCE4B2803",
       "work/mode8/asm/perimeter-interactive.asm": "986EC1CA84CD572D05EAEB2DE1F12385274BC9E74E9063F99F20199DA2888336",
       "work/mode8/asm/two-levels-auto.asm": "D041C9DD998F08F63BE4CDFAF6BD3667F27F6D2C533D15C38E7585D9127126CB",
@@ -636,7 +636,7 @@
       "work/mode8/font.bin": "B7605C10D1DED50F00726E37B204A12B247AB48A8D05DA9038CC1F954684DF94",
       "work/mode8/font.py": "79B6CA4CE54CD35B58E67E4A629D658FBCA9F8357A96DFCCAD7E7AB9BE524C8C",
       "work/mode8/model.py": "CE7A7F1A79A7958867D91D766AB8CCD920F54CFD1D6FBE42DACCADE7FEAB949E",
-      "work/mode8/mono.py": "6F3955B56DC9BD13DAEA11831F4697CCA5DBE59A3CE1FB0506BAB278EA6B4D8E",
+      "work/mode8/mono.py": "C300DF793D2F511878FAA86007A06DE01B53F4378A53211BEE019825D6EB9FD2",
       "work/mode8/native.py": "DF16E91A07A5E27C0AC38AF34E33FD25ADAC36C3322694B82D0C26BE973F036D",
       "work/mode8/navigation.py": "3F6775270005529979F735D460702AB3F462EB4DE7A88ED3579E26685D73E70C",
       "work/mode8/profile-groups.json": "841CFBD7EDF682CD615012075005DE39692E2157C2A192BC19C41FB3209017D6",
