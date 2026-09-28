@@ -1,5 +1,10 @@
 # Public JSON reference scenes
 
+1.5.5: examples and build commands are unchanged. The two aperture reference
+builds include the lintel fixes; other reference identities are retained.
+Esempi e comandi sono invariati. Le due build aperture includono le correzioni
+alle architravi; le altre identità di riferimento sono conservate.
+
 ## Q8 / 1.5.0
 
 `q8/two-objects-mode1.json` through `q8/two-objects-mode7.json` are matching

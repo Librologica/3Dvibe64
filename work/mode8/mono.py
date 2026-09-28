@@ -67,6 +67,7 @@ def raster(g,pose):
         far.append(f);near.append(u)
     nowners=[u['mat']+16*u['side'] if u['mat']>=9 else 0 for u in near]
     exits=[u.get('exitplane',0) for u in near]
+    fronts=[u['plane'] if u['mat']>=9 else 0 for u in near]
     raw=[[raw_height(f['depth'])[i] for f in far] for i in (0,1)]
     raw+=[[raw_height(u['depth'])[i] if u['mat']>=9 else 0 for u in near] for i in (0,2)]
     raw+=[[raw_height(u['exitdepth'])[2] if u['mat']>=9 else 0 for u in near]]
@@ -87,7 +88,7 @@ def raster(g,pose):
                 h=max(0,base+sign*delta);p=project(h)
                 for idx,kind in kinds:ends[idx][col+offset]=p[kind]
     ends[4]=[max(a,b) for a,b in zip(ends[4],ends[3])]
-    flags=[int(any(a[c]!=a[n] for a in (owners,nowners,exits) for n in (c-1,c+1) if 0<=n<N)) for c in range(N)]
+    flags=[int(any(a[c]!=a[n] for a in (owners,nowners,fronts,exits) for n in (c-1,c+1) if 0<=n<N)) for c in range(N)]
     samples=[];extra=0;steps=0;covowner=bytearray(160)
     for col in range(N):
         previous=COARSE[col]

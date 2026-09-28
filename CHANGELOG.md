@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.5.5 — 2026-09-28
+
+- Mode 8 mono-portals: reset inside state on exit and recognize front-plane
+  boundaries in adaptive refinement; matching independent host-oracle update.
+- Public map contract unchanged; mono-opaque/multi PRGs, Modes 1–7 and Q8 intact.
+- New executed lintel regression test and promoted portal reference identities.
+- Bilingual documentation and source-package contracts updated. Legacy remains
+  default; Q8 recommended above 20 MHz. No new optimization or world generator.
+
+Italiano: Mode 8 mono-portals azzera lo stato interno all'uscita e riconosce i
+confini frontali nel raffinamento; oracolo aggiornato. Contratto mappe invariato,
+PRG mono-opaque/multi e Mode 1–7/Q8 intatti. Nuovo test eseguito delle architravi,
+identità porte promosse, guide bilingui e contratti aggiornati. Legacy default,
+Q8 consigliato sopra 20 MHz. Nessuna nuova ottimizzazione o generatore del mondo.
+
 ## 1.5.0 — 2026-09-27
 
 - Explicit `-Precision q8` for qualified Mode 1-7 fractional geometry/clipping.

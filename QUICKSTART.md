@@ -38,7 +38,7 @@ polygonal options in the remaining Mode 1–7 examples to a Mode 8 command.
 I template hanno vincoli espliciti su geometria e camera. Non aggiungere
 alle build Mode 8 le opzioni degli esempi poligonali Mode 1–7 seguenti.
 
-3Dvibe64 1.5.0 is a source SDK. It intentionally contains no precompiled PRG:
+3Dvibe64 1.5.5 is a source SDK. It intentionally contains no precompiled PRG:
 compile a JSON scene locally with the PowerShell builder.
 
 ## Build / Compilazione
@@ -70,7 +70,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps
   -Quality balanced -Projection table -MemoryLayout high-basic-v2 -SkipCmdUpdate
 ```
 
-Il pacchetto 3Dvibe64 1.5.0 contiene solo sorgenti: compilare localmente una scena JSON
+Il pacchetto 3Dvibe64 1.5.5 contiene solo sorgenti: compilare localmente una scena JSON
 con il builder PowerShell. Il comando precedente genera `work/3Dvibe64.prg`.
 Con lo split Generic Text/FPS predefinito, `normal` offre un body 3D 160×88 sotto
 tre righe di testo e `small` un body 128×80. Usare

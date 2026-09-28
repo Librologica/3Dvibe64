@@ -1,4 +1,12 @@
-# 3Dvibe64 1.5.0
+# 3Dvibe64 1.5.5
+
+## New in 1.5.5: Mode 8 lintel correctness
+
+The `mono-portals` backend clears its inside state on lintel exit and
+also recognizes front-plane identity during adaptive edge refinement. The
+map contract is unchanged; infinite worlds and distance shading are not
+included. Modes 1–7, Q8 and the other two Mode 8 backends are unchanged.
+See [1.5.5 release notes](RELEASE-NOTES-1.5.5.md).
 
 ## New in 1.5.0: optional Q8 precision
 
@@ -24,20 +32,20 @@ pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile example
 
 Use W/S to move and A/D to turn. PAL/NTSC is detected at runtime. PowerShell,
 Python 3 and 64tass suffice to build Mode 8; optional analysis tools add py65 and
-Pillow. Build products go outside the SDK. A separate demo archive contains six
-PRGs; this source SDK contains no precompiled PRG.
+Pillow. Build products go outside the SDK. The three maps each support automatic
+and interactive builds; this source SDK contains no precompiled PRG.
 
 Modes 1–7 retain their qualified references and existing commands. Their mesh
 JSON, cameras, layouts, metrics and text split described below do **not** configure
 Mode 8. The two pipelines cannot be composited in one view through this API.
-See [release notes](RELEASE-NOTES-1.5.0.md) and [tests](TESTING.md).
+See [release notes](RELEASE-NOTES-1.5.5.md) and [tests](TESTING.md).
 Hardware operation has not been tested; the Mode 8 qualification uses stock x64sc.
 
 **Retained from 1.3.0: official GraphicsMode 7 affine textures**, with optional flat or
 Gouraud C lighting and PNG import. [English guide](MODE7.en.md) · [Guida italiana](MODE7.it.md).
 Modes 1–6 preserve their official 1.2.0 reference output.
 
-3Dvibe64 1.5.0 is a source SDK for creating specialized Commodore 64 3D programs
+3Dvibe64 1.5.5 is a source SDK for creating specialized Commodore 64 3D programs
 from JSON scenes. It includes the frozen PowerShell builder, engine code generation,
 technical documentation, generic executable JSON references, and reproducibility
 contracts. It deliberately ships with no precompiled PRG and no diagnostic artifacts.
@@ -141,7 +149,7 @@ sinusoidal-easing language.
 
 ## Public release contract
 
-The 1.5.0 contract requires version `1.5.0`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
+The 1.5.5 contract requires version `1.5.5`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
 build hashes generated outside the package. Invalid point-only or collinear faces are
 rejected by the builder as malformed geometry. It also runs frozen Ground-crossing
 poses for Modes 4 and 5 through at least 32 `render_frame_end` events and verifies

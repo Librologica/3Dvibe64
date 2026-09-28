@@ -52,12 +52,18 @@ I cambi di banking `$01`, `$DD00` e `$D018` appartengono al protocollo split qua
 | Scene | PRG bytes | Low code bytes | Low margin bytes |
 |---|---:|---:|---:|
 | perimeter | 50,689 | 9,814 | 157 |
-| apertures | 50,689 | 9,831 | 140 |
+| apertures (1.5.5) | 50,689 | 9,851 | 120 |
 | two-levels | 49,665 | 10,151 | 76 |
+
+The 1.5.5 portal fixes add 20 code bytes and zero state RAM in each template;
+the interactive portal low-code margin is 634 bytes. Other layouts are unchanged.
 
 PRG size includes zero-fill and load gaps: it is not total live RAM usage.
 Interactive variants have their own source and build report. The normal map
 workflow cannot change this layout or silently reduce precision to fit it.
+
+Le correzioni porte 1.5.5 aggiungono 20 byte di codice e zero stato RAM in ciascun
+template; il margine low interattivo è 634 byte. Gli altri layout sono invariati.
 
 La dimensione PRG comprende riserve e buchi di caricamento: non è la RAM viva
 totale. Le varianti interattive hanno sorgenti/report propri. Il workflow mappe

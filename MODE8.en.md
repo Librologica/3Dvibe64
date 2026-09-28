@@ -1,5 +1,10 @@
 # GraphicsMode 8 — 2.5D
 
+In 1.5.5, mono-portals clears exit state and includes front-plane identity in
+adaptive refinement. The map subset and build API below are unchanged; this
+does not add procedural worlds or arbitrary multiple lintels per ray.
+See [release notes](RELEASE-NOTES-1.5.5.md).
+
 3Dvibe64 1.4.0 adds an independent map renderer to the source SDK. For making environments, start with [Building Mode 8 maps](MAPS-2.5D.en.md). The supported subset is intentionally conservative: three complete templates, property validation, fixed camera starts and restricted ramps/apertures. No mesh conversion or simultaneous polygon/2.5D composition is provided.
 
 ## Public build

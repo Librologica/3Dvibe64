@@ -1,5 +1,29 @@
 # Release tests
 
+## Current 1.5.5 / Attuale 1.5.5
+
+The complete runner contains **16 scripts**: the previous 15 plus
+`test_mode8_lintels.py`. It assembles both portal templates, executes the
+exit-state and front-only boundary cases on py65, and compares 36 same-pose
+complete bitmaps against the host model. This test requires py65 and 64tass,
+not VICE. The existing `test_mode8.py` retains all 67 cases with the two
+separately qualified portal hashes promoted in this new package only.
+All other Mode 8 references, Modes 1–7 and Q8 identities remain unchanged.
+The 1.5.0/1.4.0 sections below describe their historical introductions.
+
+Il runner completo contiene **16 script**: i precedenti 15 più
+`test_mode8_lintels.py`. Assembla entrambi i template porte, esegue su py65 i
+casi di uscita e discontinuità solo frontale e confronta 36 bitmap complete
+alla stessa posa con il modello host. Richiede py65 e 64tass, non VICE.
+`test_mode8.py` conserva tutti i 67 casi: solo i due hash porte, qualificati
+separatamente, vengono promossi nel nuovo pacchetto. Gli altri riferimenti
+Mode 8, Mode 1–7 e Q8 restano invariati. Le sezioni 1.5.0/1.4.0 sotto descrivono
+le rispettive introduzioni storiche.
+
+```powershell
+python -B scripts/run_release_tests.py
+```
+
 ## 1.5.0 / Q8 precision
 
 The complete runner now contains **15 scripts**. The previous fourteen remain,
