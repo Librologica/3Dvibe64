@@ -1,5 +1,14 @@
 # Public JSON reference scenes
 
+1.6.0: `mode7-perspective-cube.json` specializes the public diagnostic cube,
+not the development demo. Requires `-Precision q8 -GraphicsMode 7` and output
+outside the SDK. Previous examples remain affine with unchanged PRG references.
+Read [EN](../TEXTURE-PRECISION.en.md) / [IT](../TEXTURE-PRECISION.it.md).
+
+1.6.0: l'esempio prospettico deriva dal cubo diagnostico pubblico, non dalla demo.
+Richiede Q8/Mode7 e output esterno. Esempi precedenti affini e hash invariati.
+Precisione texture indipendente dalla geometria: leggere le due guide sopra.
+
 1.5.5: examples and build commands are unchanged. The two aperture reference
 builds include the lintel fixes; other reference identities are retained.
 Esempi e comandi sono invariati. Le due build aperture includono le correzioni
