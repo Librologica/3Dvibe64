@@ -1,6 +1,6 @@
 """Exact quotient/remainder Q2 edge DDA. Divisions occur in edge setup only."""
-def generate(shaded):
-    attrs=['x','s','v']+(['q'] if shaded else [])
+def generate(shaded,perspective=False):
+    attrs=['x','s','v']+(['w'] if perspective else [])+(['q'] if shaded else [])
     s='''; Every face uses its whole clipped convex polygon, not a fan.
 draw_clip_poly_gouraud:
  lda #0
@@ -156,7 +156,9 @@ tq_x_bias:
  bcs tq_right
  sta leftb,x
 '''
-    for i,n in enumerate(['leftshade','m7_leftv']+(['m3_leftq'] if shaded else []),1):
+    names=(['ps_lefts_hi','ps_leftv_hi','ps_leftw_hi'] if perspective else ['leftshade','m7_leftv'])+(['m3_leftq'] if shaded else [])
+    for i,n in enumerate(names,1):
+        if perspective and i<=3:s+=f' lda tq_cur0+{i}\n sta {n[:-2]}lo,x\n'
         s+=f' lda tq_cur1+{i}\n sta {n},x\n'
     s+='''tq_right:
  lda tq_work
@@ -172,7 +174,9 @@ tq_right_tie:
 tq_right_cap:
  sta tq_closed,x
 '''
-    for i,n in enumerate(['rightshade','m7_rightv']+(['m3_rightq'] if shaded else []),1):
+    names=(['ps_rights_hi','ps_rightv_hi','ps_rightw_hi'] if perspective else ['rightshade','m7_rightv'])+(['m3_rightq'] if shaded else [])
+    for i,n in enumerate(names,1):
+        if perspective and i<=3:s+=f' lda tq_cur0+{i}\n sta {n[:-2]}lo,x\n'
         s+=f' lda tq_cur1+{i}\n sta {n},x\n'
     s+='''tq_next_row:
  inc tq_row
