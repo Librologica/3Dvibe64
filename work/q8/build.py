@@ -19,9 +19,12 @@ def assemble(source,out,stem):
     r=subprocess.run(cmd,capture_output=True,text=True,cwd=out);(out/(stem+'.log')).write_text(r.stdout+r.stderr)
     if r.returncode:raise RuntimeError(r.stdout+r.stderr)
     return labels(out/(stem+'.labels'))
-def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True):
+def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True,texture_precision=None):
     scene=Path(scene).resolve();spec=json.loads(scene.read_text(encoding='utf-8-sig'));out=Path(name).resolve()
     validate(spec,mode,standard,out)
+    texture_precision = texture_precision if texture_precision is not None else spec.get('texturePrecision','affine')
+    if texture_precision not in ('affine','perspective'):raise ValueError('TEXTURE_PRECISION: affine or perspective required')
+    if texture_precision=='perspective' and mode!=7:raise ValueError('TEXTURE_PERSPECTIVE_PROFILE: Mode 7 Q8 only')
     if precision!='q8' or music or motion:raise ValueError('Q8_INTERNAL: public adapter accepts only the silent Q8 profile')
     camera_mobile=camera_mobile or camera_auto
     if camera_mobile and precision!='q8':raise ValueError('Q8_CAMERA_REQUIRES_Q8')
@@ -38,6 +41,13 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
         if spec['world']['grounds']:raise ValueError('Q8_GROUND_UNQUALIFIED')
     out.mkdir(parents=True,exist_ok=False);sdk=out/'sdk'
     shutil.copytree(SDK_ROOT,sdk,ignore=shutil.ignore_patterns('q8','__pycache__','*.pyc','3Dvibe64.asm','3Dvibe64.prg','3Dvibe64.cmd','3Dvibe64.log','build'))
+    if texture_precision=='perspective' or 'texturePrecision' in spec:
+        # Generate only the established affine intermediate geometry/materials.
+        # Perspective interpolation is attached explicitly below, never ignored.
+        intermediate=json.loads(json.dumps(spec));intermediate.pop('texturePrecision',None)
+        for texture in intermediate.get('textures',[]):
+            if 'source' in texture:texture['source']=str((scene.parent/texture['source']).resolve())
+        scene=out/'intermediate-scene.json';scene.write_text(json.dumps(intermediate,indent=2))
     cmd=[shutil.which('pwsh'),'-NoProfile','-File',str(sdk/'work/build-3Dvibe64.ps1'),'-SceneFile',str(scene),'-GraphicsMode',str(mode),'-CameraMode','walkLite','-CameraViewport','normal','-VideoStandard',standard,'-Quality','fast','-Projection','extended-table','-MemoryLayout','high-basic-v2','-NoFpsOverlay','-SkipCmdUpdate','-NoCameraRuntimeControls','-ExplorerNearCrossMode',near]
     if mode==7:cmd[-1]='skip' # Mode 7 has its own camera-plane near profile.
     if precision in ('q8','xq2-reference') and 3<=mode<=6:cmd+=['-ExperimentalSubpixelXProbe']
@@ -85,6 +95,16 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
         if lab['SCENE_OBJECT_COUNT']>1:
             parts=multi_adapt(parts)
             info['precisionContract']['multiobject']='two disjoint nonshared objects, Mode 1-7'
+        if texture_precision=='perspective':
+            from perspective import adapt as perspective_adapt
+            source,parts=perspective_adapt(source,parts)
+            from perspective_exact import apply as exact_perspective
+            source,parts=exact_perspective(source,parts)
+            from perspective_uniform import apply as uniform_perspective
+            source,parts,uniform=uniform_perspective(source,parts,lab,byte)
+            info.update(texturePrecision='perspective',perspectiveDepthDomainWU=[1,256],
+                        perspectiveFaultLabel='ps_fault',perspectiveSampling='exact-fixed-point-per-sample',
+                        uniformTexturePigments=uniform)
         sizing_source=attach(source,parts)
         verify_retired_state_absent(sizing_source)
         sizing=assemble(sizing_source,out,'sizing')
@@ -120,6 +140,7 @@ def validate(spec,mode,standard,out):
 if __name__=='__main__':
     p=argparse.ArgumentParser(description=__doc__);p.add_argument('--out',type=Path,required=True);p.add_argument('--scene',type=Path,required=True)
     p.add_argument('--standard',choices=['pal','ntsc'],default='pal');p.add_argument('--mode',type=int,required=True)
-    p.add_argument('--camera',choices=['stationary','interactive','auto'],default='stationary');a=p.parse_args()
-    try:build(a.out,a.scene,standard=a.standard,mode=a.mode,camera_mobile=a.camera!='stationary',camera_auto=a.camera=='auto')
+    p.add_argument('--camera',choices=['stationary','interactive','auto'],default='stationary')
+    p.add_argument('--texture-precision',choices=['affine','perspective'],default=None);a=p.parse_args()
+    try:build(a.out,a.scene,standard=a.standard,mode=a.mode,camera_mobile=a.camera!='stationary',camera_auto=a.camera=='auto',texture_precision=getattr(a,'texture_precision',None))
     except (ValueError,KeyError,TypeError) as e:raise SystemExit(f'Q8 validation/build refused: {e}')
