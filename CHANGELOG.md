@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.6.0 — 2026-10-03
+
+English: optional `texturePrecision: perspective` / `-TexturePrecision perspective`
+for Mode7 Q8; affine and legacy remain defaults. Exact Euclidean span setup,
+leading-zero division trim, guarded narrow clipping products, full-depth
+reciprocal cache, unlit rational recurrence with exact fallback, and automatic
+uniform-page UV fast path. Mixed-repeat sampler dispatch targets the correct
+address jump. The bounded depth1..256 WU profile stops before publishing an
+invalid frame. No approximate blocks, room-specific portals, baked light,
+development demo or music. Existing Mode1–8/Q8-affine output references retained.
+
+Italiano: `texturePrecision: perspective` / `-TexturePrecision perspective`
+opzionale per Mode7 Q8; affine e legacy restano default. Setup span euclideo,
+divisione senza bit iniziali nulli, prodotti clipping stretti protetti, cache
+reciproco per profondità completa, ricorrenza razionale unlit con fallback esatto
+e fast path UV automatico per pagine uniformi. Dispatch repeat diversi corretto.
+Il profilo profondità1..256 WU ferma un frame non valido prima di pubblicarlo.
+Niente blocchi approssimati, portali specifici, luce precalcolata, demo di sviluppo
+o musica. Riferimenti precedenti Mode1–8/Q8-affine conservati.
+
 ## 1.5.5 — 2026-09-28
 
 - Mode 8 mono-portals: reset inside state on exit and recognize front-plane

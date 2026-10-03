@@ -1,6 +1,9 @@
-# GraphicsMode 7 — Affine Texture Mapping
+# GraphicsMode 7 — Texture Mapping
 
-3Dvibe64 1.3.0 promotes the qualified R1 renderer. This is software **affine**, not perspective-correct, texture mapping for the VIC-II multicolor bitmap.
+The default is the qualified R1 software **affine** texture mapper for the VIC-II
+multicolor bitmap. Version1.6.0 adds optional fixed-point projective interpolation
+in the bounded Q8 profile; it is not enabled by Q8 alone. See the complete
+[texture precision contract](TEXTURE-PRECISION.en.md) before selecting it.
 
 ## Modes and lighting
 
@@ -50,6 +53,13 @@ Textures are unpacked, page-aligned, 256 bytes per used 16×16 texture, plus ali
 
 Mode 7 currently requires explicit geometry: no builtin/file mesh loader, `meshSourceSharing`, face shading overrides or per-object material/color/reflectivity override fields. Ordinary supported material/reflectivity properties are distinct from those Mode 6 override features.
 
-Intentional limits: affine mapping; nearest-neighbor; 16×16 textures; three VIC-II pigments; UV Q4.4; runtime triangles and triangulated quads. No perspective correction, bilinear filtering, mipmapping, transparency, packed texture runtime or native quad mapper. Affine distortion and nearest-neighbor aliasing under motion are expected limitations, not perspective-correct rendering.
+Common limits: nearest-neighbor;16×16 textures;three VIC-II pigments;UV Q4.4;
+runtime triangles and triangulated quads. No bilinear filtering, mipmapping,
+transparency, packed runtime textures or native quad mapper. The default affine
+path has no perspective correction. Projective sampling is optional and has
+narrower camera/viewport/depth limits, extra memory and CPU cost. Nearest-neighbor
+aliasing and fixed-point quantization remain in both paths.
 
-See [texture format](TEXTURE-GUIDE.en.md), [PNG import](PNG-TEXTURES.en.md), [examples](examples/README.md), and [tests](TESTING.md). No new optimization is introduced by this packaging.
+See [texture format](TEXTURE-GUIDE.en.md), [PNG import](PNG-TEXTURES.en.md),
+[texture precision](TEXTURE-PRECISION.en.md), [examples](examples/README.md),
+and [tests](TESTING.md). Modes1–6/8 and old affine output retain their references.

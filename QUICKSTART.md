@@ -1,5 +1,15 @@
 # Quick start / Guida rapida
 
+## Optional projective textures / Texture prospettiche opzionali — 1.6.0
+
+Legacy/affine remain defaults / Legacy/affine restano default.
+The bounded profile requires explicit Q8; leggere i limiti prima della build:
+[EN](TEXTURE-PRECISION.en.md) · [IT](TEXTURE-PRECISION.it.md).
+
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -TexturePrecision perspective -SceneFile examples/mode7-perspective-cube.json -VideoStandard pal -OutputDirectory ../perspective-cube-pal
+```
+
 ## Precision / Precisione — 1.5.0
 
 Legacy is always the default; Q8 is explicit, not CPU-selected. Recommend Q8
@@ -38,7 +48,7 @@ polygonal options in the remaining Mode 1–7 examples to a Mode 8 command.
 I template hanno vincoli espliciti su geometria e camera. Non aggiungere
 alle build Mode 8 le opzioni degli esempi poligonali Mode 1–7 seguenti.
 
-3Dvibe64 1.5.5 is a source SDK. It intentionally contains no precompiled PRG:
+3Dvibe64 1.6.0 is a source SDK. It intentionally contains no precompiled PRG:
 compile a JSON scene locally with the PowerShell builder.
 
 ## Build / Compilazione
@@ -70,7 +80,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps
   -Quality balanced -Projection table -MemoryLayout high-basic-v2 -SkipCmdUpdate
 ```
 
-Il pacchetto 3Dvibe64 1.5.5 contiene solo sorgenti: compilare localmente una scena JSON
+Il pacchetto 3Dvibe64 1.6.0 contiene solo sorgenti: compilare localmente una scena JSON
 con il builder PowerShell. Il comando precedente genera `work/3Dvibe64.prg`.
 Con lo split Generic Text/FPS predefinito, `normal` offre un body 3D 160×88 sotto
 tre righe di testo e `small` un body 128×80. Usare
@@ -107,7 +117,7 @@ PNG import is host-side, through Pillow: `source` and mandatory ordered `sourceC
 
 Textured Gouraud uses `gouraud.creaseAngle` (default60°, range0–180°) for hard edges or smooth normals, with the applicable255-shade-vertex limit. Mode 7 has its own memory/geometry constraints and does not inherit every Mode 6 override/source-sharing API.
 
-No perspective correction, bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Affine distortion and sampling aliasing remain intentional limitations.
+The default affine path has no perspective correction. Optional projective interpolation requires the bounded Q8 profile; see [texture precision](TEXTURE-PRECISION.en.md). No bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Sampling aliasing remains.
 
 Read the [complete Mode7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](examples/README.md). The paired Italian guides cover the same contract.
 
@@ -127,6 +137,6 @@ L'import PNG è host-side tramite Pillow: `source` e `sourceColors` obbligatorio
 
 Il Gouraud textured usa `gouraud.creaseAngle` (default60°, intervallo0–180°) per spigoli duri o normali smussate, con il limite di255 shade vertices dove applicabile. Mode 7 ha vincoli propri di memoria/geometria e non eredita tutte le API override/source-sharing della Mode 6.
 
-Niente perspective correction, bilinear filtering, mipmapping, texture packed runtime o quad mapper nativo. Distorsione affine e aliasing di campionamento restano limiti intenzionali.
+Il default affine non corregge la prospettiva. L’interpolazione prospettica opzionale richiede il profilo Q8 limitato: vedere [precisione texture](TEXTURE-PRECISION.it.md). Niente bilinear, mipmapping, texture runtime packed o quad mapper nativo. Resta l’aliasing di campionamento.
 
 Leggere il [contratto Mode7 completo](MODE7.it.md), la [guida texture](TEXTURE-GUIDE.it.md), la [guida PNG](PNG-TEXTURES.it.md) e gli [otto esempi pubblici](examples/README.md). Le guide inglesi equivalenti coprono lo stesso contratto.

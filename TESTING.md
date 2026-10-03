@@ -1,6 +1,23 @@
 # Release tests
 
-## Current 1.5.5 / Attuale 1.5.5
+## Current 1.6.0 / Attuale 1.6.0
+
+The complete runner contains 17 scripts. The previous 16 preserve all old PRG
+references. `test_texture_perspective.py` builds none/flat/Gouraud C and executes
+the actual assembled 48/24 divider, clipping products, reciprocal encoder/cache,
+signed span setup and projective samplers on py65 against independent integer
+expectations. Requires py65, PowerShell and 64tass. No historical SDK or demo path.
+Native qualification is reported separately; these arithmetic tests are not FPS
+measurements or hardware tests. [Contract](TEXTURE-PRECISION.en.md).
+
+Il runner completo contiene 17 script. I precedenti 16 conservano tutti gli hash
+PRG. Il nuovo test compila none/flat/Gouraud C ed esegue l'assembly reale su py65
+per divisione 48/24, prodotti clipping, encoding/cache, setup span e sampler,
+confrontando attese intere indipendenti. Richiede py65, PowerShell e 64tass,
+non copie storiche o demo. Qualificazione nativa separata: non misura FPS o
+hardware. [Contratto](TEXTURE-PRECISION.it.md).
+
+## Historical 1.5.5 / Storico 1.5.5
 
 The complete runner contains **16 scripts**: the previous 15 plus
 `test_mode8_lintels.py`. It assembles both portal templates, executes the

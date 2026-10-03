@@ -1,4 +1,14 @@
-# 3Dvibe64 1.5.5
+# 3Dvibe64 1.6.0
+
+## New in 1.6.0: optional projective Mode 7 textures
+
+`-TexturePrecision perspective` / scene `texturePrecision` enables fixed-point
+projective UV only with `-Precision q8 -GraphicsMode 7`. Legacy geometry and
+affine textures remain defaults; old outputs retain their reference hashes.
+None/flat/Gouraud C, exact arithmetic specializations and builder-detected uniform
+textures are supported in the bounded profile. Extra RAM/CPU cost and runtime
+fault behavior are described in [texture precision](TEXTURE-PRECISION.en.md).
+No development demo or soundtrack is included. [Release notes](RELEASE-NOTES-1.6.0.md).
 
 ## New in 1.5.5: Mode 8 lintel correctness
 
@@ -45,7 +55,7 @@ Hardware operation has not been tested; the Mode 8 qualification uses stock x64s
 and strict PNG import. Start with [Mode 7](MODE7.en.md). Modes 1–6 preserve their
 official 1.2.0 reference output; their existing API is documented below.
 
-This public 1.5.5 package is a source SDK: it contains the frozen builder,
+This public 1.6.0 package is a source SDK: it contains the frozen builder,
 documentation, JSON reference scenes, and contracts, but no precompiled PRG or
 diagnostic artifact. Build examples locally, preferably in a disposable working copy.
 The examples are executable API documentation, not bundled productions.
@@ -311,6 +321,6 @@ PNG import is host-side, through Pillow: `source` and mandatory ordered `sourceC
 
 Textured Gouraud uses `gouraud.creaseAngle` (default60°, range0–180°) for hard edges or smooth normals, with the applicable255-shade-vertex limit. Mode 7 has its own memory/geometry constraints and does not inherit every Mode 6 override/source-sharing API.
 
-No perspective correction, bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Affine distortion and sampling aliasing remain intentional limitations.
+The default affine path has no perspective correction. Optional projective interpolation requires the bounded Q8 profile; see [texture precision](TEXTURE-PRECISION.en.md). No bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Sampling aliasing remains.
 
 Read the [complete Mode7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](examples/README.md). The paired Italian guides cover the same contract.
