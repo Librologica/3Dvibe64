@@ -1,6 +1,9 @@
-# GraphicsMode 7 — Texture mapping affine
+# GraphicsMode 7 — Texture mapping
 
-3Dvibe64 1.3.0 promuove il renderer R1 qualificato. È texture mapping software **affine**, non perspective-correct, per la bitmap multicolor VIC-II.
+Il default è il renderer R1 qualificato con texture software **affini** su bitmap
+multicolor VIC-II. La1.6.0 aggiunge interpolazione prospettica fixed-point opzionale
+nel profilo Q8 limitato; Q8 da solo non la attiva. Leggere il
+[contratto precisione texture](TEXTURE-PRECISION.it.md) prima di selezionarla.
 
 ## Modalità e illuminazione
 
@@ -50,6 +53,13 @@ Le texture sono unpacked, allineate a pagina, 256 byte per texture 16×16 utiliz
 
 Mode 7 richiede geometria esplicita: non supporta loader mesh builtin/file, `meshSourceSharing`, override shading per faccia o campi override material/color/reflectivity per oggetto. Le normali proprietà supportate material/reflectivity sono distinte dagli override della Mode 6.
 
-Limiti intenzionali: mapping affine; nearest-neighbor; texture 16×16; tre pigmenti VIC-II; UV Q4.4; triangoli runtime e quad triangolati. Nessuna perspective correction, bilinear filtering, mipmapping, trasparenza, texture packed runtime o quad mapper nativo. Distorsione affine e aliasing nearest-neighbor in movimento sono limiti previsti, non rendering perspective-correct.
+Limiti comuni: nearest-neighbor;texture16×16;tre pigmenti VIC-II;UV Q4.4;
+triangoli runtime e quad triangolati. Niente bilinear, mipmapping, trasparenza,
+texture runtime packed o quad mapper nativo. Il default affine non corregge la
+prospettiva. Il sampling prospettico opzionale ha limiti camera/viewport/profondità
+più stretti e costo RAM/CPU aggiuntivo. Restano aliasing nearest-neighbor e
+quantizzazione fixed-point in entrambi i percorsi.
 
-Vedere [formato texture](TEXTURE-GUIDE.it.md), [import PNG](PNG-TEXTURES.it.md), [esempi](examples/README.md) e [test](TESTING.md). Questo packaging non introduce nuove ottimizzazioni.
+Vedere [formato texture](TEXTURE-GUIDE.it.md), [import PNG](PNG-TEXTURES.it.md),
+[precisione texture](TEXTURE-PRECISION.it.md), [esempi](examples/README.md) e
+[test](TESTING.md). Mode1–6/8 e output affine precedente conservano i riferimenti.

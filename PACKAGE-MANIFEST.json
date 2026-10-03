@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.5.5",
-    "version": "1.5.5",
+    "displayName": "3Dvibe64 1.6.0",
+    "version": "1.6.0",
     "distribution": "source-sdk",
-    "permanentFiles": 168,
+    "permanentFiles": 177,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -13,7 +13,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "64EC5ACC79A070615F6E3BAAE66146766BAEEC31C53BDB8E8B0624B1665055A4"
+    "sha256": "36D9F6506E4D2EBCF92320BBDF22D65230824895848E4E8D8D8E23460876F4EC"
   },
   "examples": [
     "examples/wire-two-color-multimaterial.json",
@@ -50,7 +50,8 @@
     "examples/q8/two-objects-mode4.json",
     "examples/q8/two-objects-mode5.json",
     "examples/q8/two-objects-mode6.json",
-    "examples/q8/two-objects-mode7.json"
+    "examples/q8/two-objects-mode7.json",
+    "examples/mode7-perspective-cube.json"
   ],
   "releaseEngine": {
     "scope": "GraphicsMode 6 runtime (Mode 7 identity is recorded separately)",
@@ -402,7 +403,7 @@
       "work/mode7-gouraud.asm": "1734DD130773E99887010B1A03614F9B422C631D3121257A2CB73BCB752456C4",
       "work/mode7-kernel.asm": "BDF4F341DC8D2826EFFED58A5E1D315BBE371A7815F2257A6C4C1FB253E9B010",
       "work/mode7-lighting.asm": "9406D3746529420712FA97268EA535BD2B8326A290F77A8BB3E207FC0ED139DC",
-      "work/mode7.py": "F88775AEFCA39DF8C0926BCB0A3A1FE5149DFC8B93D4BF2B21BE5B7106AE3706"
+      "work/mode7.py": "0DAF55C5A28749ECFC6DF43E75FCDE2179E43AB7A279ED2F3A47BBD476B7850C"
     },
     "referenceBuilds": [
       {
@@ -549,7 +550,33 @@
         ],
         "sha256": "CCE4859399A8E7C682A8E72A1A25D54471B720C387A903B89352A55B345EB9D4"
       }
-    ]
+    ],
+    "texturePrecision": {
+      "values": [
+        "affine",
+        "perspective"
+      ],
+      "default": "affine",
+      "automaticSelection": false,
+      "cli": "TexturePrecision",
+      "scene": "texturePrecision",
+      "perspectiveRequires": "Mode7 Q8",
+      "depthDomainWU": [
+        1,
+        256
+      ],
+      "sampling": "exact-fixed-point-per-sample",
+      "fault": "sticky ps_fault; stop before publication; red border",
+      "lighting": [
+        "none",
+        "flat",
+        "gouraud C"
+      ],
+      "reciprocalCacheEntries": 8,
+      "reciprocalCacheStateBytes": 34,
+      "approximateBlocks": false,
+      "sceneSpecificPortals": false
+    }
   },
   "mode8": {
     "name": "2.5D",
@@ -696,7 +723,7 @@
       "music": false,
       "outputOutsideSDK": true,
       "backendHashes": {
-        "work/q8/build.py": "00E00EDCFD59241213AC34B6832EF8C111CADF22BF30C7A609C414D6A04A24E8",
+        "work/q8/build.py": "75E9B7FF479F7F4FF41F888F780EB5A364E3F716578AF3CE22903777D4482475",
         "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
         "work/q8/src/camera.py": "C1497B56E9C3325D1738C068DDED7C97BF20DB524214F2C6EF483EE3C14B5909",
         "work/q8/src/clip.asm": "69178B5C3A359F5299631CA53DEBBA7431E7AA413E3E2B5C568CA82C57CDFB5B",
@@ -708,7 +735,7 @@
         "work/q8/src/q8_memory.py": "688F08E564EB1557F23EF180E251C9D916DB21C1D919800E04F0159DD58F83CF",
         "work/q8/src/screen.py": "189CB3FB05B012128336AD10036CFD1F12CB6A0D41E2D746A878D654D6B0F102",
         "work/q8/src/texture.py": "F201EC1DB196A4F631D17BE15548D9E42A4F5F1682F3A5E5EE0ADA8F06DDD349",
-        "work/q8/src/texture_edges.py": "E3D76E3BDBF970674F41EEECE8B066BE5FA82A0BD672792EE5BEE539136C1443",
+        "work/q8/src/texture_edges.py": "3651778944E12E95E6873AF82DD9143C271737B11196F80303CD70CC3C14961F",
         "work/q8/src/wide.asm": "6653F13A13A25F1D2C3D2B43778CF2F4096318940C0EFF4AF3C65EEB46243576",
         "work/q8/src/winding.asm": "FB40675AF44961A177856594AB462D47FDB7819667EF58E7D151E36C676A1874",
         "work/q8/src/wire.py": "AB7E272243FA35083D1A5661FFD32ABB0CC45167E3013B8DFCBE9E233D7863C4",
@@ -716,7 +743,11 @@
         "work/q8/src/wire_line.asm": "A5684C79B802B2BCA0602CB756C315F0EF55E4F1C4A695A3CBED0ECDABB232DE",
         "work/subpixel_probe.py": "261D1DD18616585C4D10BAC880ADA6950CF9B4A1593B8BE9F75DC7C064317FF9",
         "work/subpixel-x-probe.asm": "FB7113490FC125A832965F5CC5BE1BA982EF355EEDED56B3A7BD36CE35EBCEFF",
-        "work/subpixel-mobile-x.asm": "834F680A9A0F8E36D15EFB68C1E1806669196D059C115663025B311F1E907B81"
+        "work/subpixel-mobile-x.asm": "834F680A9A0F8E36D15EFB68C1E1806669196D059C115663025B311F1E907B81",
+        "work/q8/src/perspective.py": "30DD70898B458C1888DDF0E14D2C3D0F1B97ABF38E5B404500EA2A222BE30EDF",
+        "work/q8/src/perspective_exact.py": "EEBED49EA84309E9984EC3C24D401917FC6EEB5F155BA853A3D759A6EC192B63",
+        "work/q8/src/perspective_rational.py": "48AD7C4FB6BD1A684676A8913033C82A5DF7BF4EFA211C3CAF1AE75EECB7E10C",
+        "work/q8/src/perspective_uniform.py": "3E7F275BB42BFB07041027F118C74B8C4C16734B21C8A16984075F5E4B02ADF8"
       },
       "referenceBuilds": [
         {

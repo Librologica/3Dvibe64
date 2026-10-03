@@ -41,4 +41,4 @@ Nearest-neighbor e wrap power-of-two evitano divisioni costose per texel.
 
 Disegnare un'immagine opaca 16×16 con esattamente tre colori RGB, senza antialiasing. Usare [import PNG](PNG-TEXTURES.it.md), oppure convertire ogni pixel nell'intero1/2/3 tramite una mappa RGB-pigmento esplicita, scorrere le righe dall'alto a sinistra e inserire tutti i256 valori in texels. Nessun resizing/quantizzazione impliciti. Impostare separatamente texturePalette con i colori C64 desiderati.
 
-Restano i limiti affine, tre pigmenti, Q4.4 e nearest-neighbor: niente perspective correction, filtering, trasparenza o texture più grandi. L'illuminazione aggiunge memoria shade/codice e il limite di255 shade vertices dove applicabile; il controllo dei segmenti del builder è definitivo.
+Il default resta affine. Il sampling prospettico opzionale usa gli stessi tre pigmenti, Q4.4 e nearest-neighbor: vedere [precisione texture](TEXTURE-PRECISION.it.md). Niente filtering, trasparenza o texture più grandi. L'illuminazione aggiunge memoria shade/codice e il limite di255 shade vertices dove applicabile; il controllo dei segmenti del builder è definitivo.

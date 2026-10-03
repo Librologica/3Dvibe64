@@ -1,5 +1,9 @@
 # Profili di precisione — 1.5.0
 
+La1.6.0 aggiunge una selezione texture indipendente: Q8 da solo usa ancora UV
+affini. `-TexturePrecision perspective` richiede Mode7 Q8 e il contratto aggiuntivo
+di profondità limitata. Vedere [precisione texture](TEXTURE-PRECISION.it.md).
+
 ## Default e raccomandazione
 
 **Legacy è sempre il default.** Omettere `-Precision` e specificare

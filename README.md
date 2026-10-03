@@ -1,4 +1,14 @@
-# 3Dvibe64 1.5.5
+# 3Dvibe64 1.6.0
+
+## New in 1.6.0: optional projective Mode 7 textures
+
+`-TexturePrecision perspective` / scene `texturePrecision` enables fixed-point
+projective UV only with `-Precision q8 -GraphicsMode 7`. Legacy geometry and
+affine textures remain defaults; all previous reference outputs are retained.
+The new profile supports none/flat/Gouraud C with exact arithmetic fast paths,
+but has bounded depth and extra RAM/CPU cost. Read the [complete contract](TEXTURE-PRECISION.en.md)
+or [guida italiana](TEXTURE-PRECISION.it.md). No development demo or soundtrack
+is included. See [1.6.0 notes](RELEASE-NOTES-1.6.0.md).
 
 ## New in 1.5.5: Mode 8 lintel correctness
 
@@ -45,7 +55,7 @@ Hardware operation has not been tested; the Mode 8 qualification uses stock x64s
 Gouraud C lighting and PNG import. [English guide](MODE7.en.md) · [Guida italiana](MODE7.it.md).
 Modes 1–6 preserve their official 1.2.0 reference output.
 
-3Dvibe64 1.5.5 is a source SDK for creating specialized Commodore 64 3D programs
+3Dvibe64 1.6.0 is a source SDK for creating specialized Commodore 64 3D programs
 from JSON scenes. It includes the frozen PowerShell builder, engine code generation,
 technical documentation, generic executable JSON references, and reproducibility
 contracts. It deliberately ships with no precompiled PRG and no diagnostic artifacts.
@@ -149,7 +159,7 @@ sinusoidal-easing language.
 
 ## Public release contract
 
-The 1.5.5 contract requires version `1.5.5`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
+The 1.6.0 contract requires version `1.6.0`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
 build hashes generated outside the package. Invalid point-only or collinear faces are
 rejected by the builder as malformed geometry. It also runs frozen Ground-crossing
 poses for Modes 4 and 5 through at least 32 `render_frame_end` events and verifies
@@ -179,6 +189,6 @@ PNG import is host-side, through Pillow: `source` and mandatory ordered `sourceC
 
 Textured Gouraud uses `gouraud.creaseAngle` (default60°, range0–180°) for hard edges or smooth normals, with the applicable255-shade-vertex limit. Mode 7 has its own memory/geometry constraints and does not inherit every Mode 6 override/source-sharing API.
 
-No perspective correction, bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Affine distortion and sampling aliasing remain intentional limitations.
+The default affine path has no perspective correction. Optional projective interpolation requires the bounded Q8 profile; see [texture precision](TEXTURE-PRECISION.en.md). No bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Sampling aliasing remains.
 
 Read the [complete Mode7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](examples/README.md). The paired Italian guides cover the same contract.

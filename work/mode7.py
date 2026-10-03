@@ -20,6 +20,8 @@ _png_spec.loader.exec_module(_png_module)
 
 def prepare(doc, scene_dir=None):
     doc = copy.deepcopy(doc)
+    if doc.get('texturePrecision','affine') != 'affine':
+        raise ValueError('texturePrecision perspective requires the public Q8 build dispatch; affine is the legacy default')
     if doc.get('graphicsMode') != 7:
         raise ValueError('graphicsMode must be 7')
     if doc.get('meshSourceSharing'):

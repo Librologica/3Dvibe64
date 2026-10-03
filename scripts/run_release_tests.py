@@ -18,6 +18,7 @@ TESTS = (
     "test_object_depth_domain.py", "test_gouraud_mode6_emulators.py",
     "test_dev7_text_split.py", "test_mode7.py", "test_mode8.py", "test_precision_q8.py",
     "test_mode8_lintels.py",
+    "test_texture_perspective.py",
 )
 
 def main():

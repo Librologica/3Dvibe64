@@ -2,6 +2,9 @@ param(
  [ValidateSet("legacy", "q8")]
  [string]$Precision = "legacy",
 
+ [ValidateSet("affine", "perspective")]
+ [string]$TexturePrecision = "affine",
+
  [ValidateSet("stationary", "interactive", "auto")]
  [string]$Q8Camera = "stationary",
 
@@ -250,10 +253,26 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
+# Texture interpolation is independent of geometric precision. Never silently
+# accept a perspective request in the legacy generator or another mode.
+if ($SceneFile) {
+ $textureScene = Get-Content -LiteralPath $SceneFile -Raw | ConvertFrom-Json
+ if ($textureScene.PSObject.Properties.Name -contains 'texturePrecision') {
+  if ($textureScene.texturePrecision -notin @('affine','perspective')) { throw 'texturePrecision must be affine or perspective.' }
+  if (-not $PSBoundParameters.ContainsKey('TexturePrecision')) { $TexturePrecision = $textureScene.texturePrecision }
+ }
+}
+if ($TexturePrecision -eq 'perspective' -and ($Precision -ne 'q8' -or $GraphicsMode -ne '7')) {
+ throw 'TexturePrecision perspective requires GraphicsMode 7 and -Precision q8.'
+}
+if ($PSBoundParameters.ContainsKey('TexturePrecision') -and $GraphicsMode -ne '7') {
+ throw '-TexturePrecision is only applicable to GraphicsMode 7.'
+}
+
 # Precision is an explicit opt-in, never selected from CPU speed or scene data.
 # The adapter works in a fresh output tree; legacy generation below is unchanged.
 if ($Precision -eq 'q8') {
- $allowed = @('Precision','Q8Camera','GraphicsMode','SceneFile','OutputDirectory',
+ $allowed = @('Precision','TexturePrecision','Q8Camera','GraphicsMode','SceneFile','OutputDirectory',
               'VideoStandard','CameraMode','CameraViewport','MemoryLayout','Quality',
               'Projection','NoFpsOverlay','SkipCmdUpdate')
  foreach ($key in $PSBoundParameters.Keys) {
@@ -271,7 +290,9 @@ if ($Precision -eq 'q8') {
  if ($VideoStandard -eq 'auto') { throw 'Q8 requires pal or ntsc; runtime auto detection is not qualified.' }
  if (-not $OutputDirectory) { $OutputDirectory = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) '3Dvibe64-output/q8' }
  $python = if ($env:PYTHON_EXE) { $env:PYTHON_EXE } else { 'python' }
- & $python -B (Join-Path $PSScriptRoot 'q8/build.py') --scene (Resolve-Path -LiteralPath $SceneFile).Path --out $OutputDirectory --mode $GraphicsMode --standard $VideoStandard --camera $Q8Camera
+ $q8args = @('-B', (Join-Path $PSScriptRoot 'q8/build.py'), '--scene', (Resolve-Path -LiteralPath $SceneFile).Path, '--out', $OutputDirectory, '--mode', $GraphicsMode, '--standard', $VideoStandard, '--camera', $Q8Camera)
+ if ($GraphicsMode -eq '7') { $q8args += @('--texture-precision', $TexturePrecision) }
+ & $python @q8args
  if ($LASTEXITCODE -ne 0) { throw "Q8 build failed with exit code $LASTEXITCODE." }
  return
 }

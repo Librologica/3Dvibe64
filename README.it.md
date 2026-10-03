@@ -1,4 +1,14 @@
-# 3Dvibe64 1.5.5
+# 3Dvibe64 1.6.0
+
+## Novità 1.6.0: texture prospettiche Mode 7 opzionali
+
+`-TexturePrecision perspective` / campo scena `texturePrecision` attiva UV
+prospettiche fixed-point solo con `-Precision q8 -GraphicsMode 7`. Geometria
+legacy e texture affini restano default; gli output precedenti conservano gli hash.
+None/flat/Gouraud C, specializzazioni aritmetiche esatte e riconoscimento di
+texture uniformi sono supportati nel profilo limitato. Costo RAM/CPU e arresto
+per input runtime non validi sono descritti in [precisione texture](TEXTURE-PRECISION.it.md).
+Nessuna demo di sviluppo o musica inclusa. [Note release](RELEASE-NOTES-1.6.0.md).
 
 ## Novità 1.5.5: correttezza delle architravi Mode 8
 
@@ -45,7 +55,7 @@ Non è stata eseguita una prova hardware: la qualificazione Mode 8 usa x64sc sto
 opzionale e import PNG rigoroso. Iniziare da [Mode 7](MODE7.it.md). Mode 1–6
 conservano l'output ufficiale 1.2.0; la loro API esistente è documentata sotto.
 
-Questo pacchetto pubblico 1.5.5 è un SDK sorgente: contiene builder congelato,
+Questo pacchetto pubblico 1.6.0 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni
@@ -313,6 +323,6 @@ L'import PNG è host-side tramite Pillow: `source` e `sourceColors` obbligatorio
 
 Il Gouraud textured usa `gouraud.creaseAngle` (default60°, intervallo0–180°) per spigoli duri o normali smussate, con il limite di255 shade vertices dove applicabile. Mode 7 ha vincoli propri di memoria/geometria e non eredita tutte le API override/source-sharing della Mode 6.
 
-Niente perspective correction, bilinear filtering, mipmapping, texture packed runtime o quad mapper nativo. Distorsione affine e aliasing di campionamento restano limiti intenzionali.
+Il default affine non corregge la prospettiva. L’interpolazione prospettica opzionale richiede il profilo Q8 limitato: vedere [precisione texture](TEXTURE-PRECISION.it.md). Niente bilinear, mipmapping, texture runtime packed o quad mapper nativo. Resta l’aliasing di campionamento.
 
 Leggere il [contratto Mode7 completo](MODE7.it.md), la [guida texture](TEXTURE-GUIDE.it.md), la [guida PNG](PNG-TEXTURES.it.md) e gli [otto esempi pubblici](examples/README.md). Le guide inglesi equivalenti coprono lo stesso contratto.

@@ -1,5 +1,9 @@
 # Precision profiles — 1.5.0
 
+Version 1.6.0 adds an independent optional texture setting: Q8 alone still uses
+affine UV. `-TexturePrecision perspective` requires Mode 7 Q8 and its additional
+bounded-depth contract. See [texture precision](TEXTURE-PRECISION.en.md).
+
 ## Default and recommendation
 
 **Legacy is always the default.** Omitting `-Precision` and specifying
