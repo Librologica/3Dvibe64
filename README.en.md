@@ -1,4 +1,15 @@
-# 3Dvibe64 1.6.0
+# 3Dvibe64 1.6.1
+
+## New in 1.6.1: exact paired projective UV division
+
+Mode 7 Q8 perspective flat/Gouraud C now uses an exact zero-page, unrolled
+U/V divider for nonuniform textures. Rendering quality is unchanged. Legacy,
+affine, unlit recurrence and all-uniform fast paths keep their existing output.
+The measured public cube pose saves 16.30% Gouraud / 17.36% flat CPU instruction
+cycles; these are not native FPS measurements or universal speedup promises.
+Cost: +673 code bytes on that cube, eight reserved zero-page bytes `$E8..$EF`.
+External IRQ code must respect that scratch ownership. Existing memory/profile
+limits remain. [Release notes EN/IT](RELEASE-NOTES-1.6.1.md).
 
 ## New in 1.6.0: optional projective Mode 7 textures
 
@@ -55,7 +66,7 @@ Hardware operation has not been tested; the Mode 8 qualification uses stock x64s
 and strict PNG import. Start with [Mode 7](MODE7.en.md). Modes 1–6 preserve their
 official 1.2.0 reference output; their existing API is documented below.
 
-This public 1.6.0 package is a source SDK: it contains the frozen builder,
+This public 1.6.1 package is a source SDK: it contains the frozen builder,
 documentation, JSON reference scenes, and contracts, but no precompiled PRG or
 diagnostic artifact. Build examples locally, preferably in a disposable working copy.
 The examples are executable API documentation, not bundled productions.

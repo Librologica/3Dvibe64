@@ -1,6 +1,30 @@
 # Release tests
 
-## Current 1.6.0 / Attuale 1.6.0
+## Current 1.6.1 / Attuale 1.6.1
+
+The runner contains 18 scripts. `test_texture_uvzp.py` adds 12,814 assembled
+paired-divider cases, a 1,048,576-input host subset and ownership/skip checks.
+The full 16-bit triple space is not claimed exhausted: fast-domain equivalence
+follows the restoring remainder invariant; other values retain the original
+scalar fallback. No historical demo/ROM/benchmark directory is needed.
+Existing 17 contracts/reference hashes retained; py65/PowerShell/64tass required.
+
+Il runner contiene 18 script. `test_texture_uvzp.py` aggiunge 12.814 casi del
+divisore assemblato, 1.048.576 input host e controlli scratch/percorsi esclusi.
+Non si dichiara esaustivo l'intero spazio di triple16bit: invariante restoring
+nel dominio veloce, fallback originale negli altri casi. Nessuna demo/ROM o
+directory benchmark storica. I17 contratti/hash restano; richiesti py65,
+PowerShell e 64tass. [Note release / Release notes](RELEASE-NOTES-1.6.1.md).
+
+Native DEV qualification: 2,610 real KERNAL/raster IRQ instruction-boundary
+injections and 32 same-pose bitmap/color A/B comparisons PAL/NTSC across
+x64sc/xscpu64/Turbo6510, zero differences. Separate from public arithmetic
+tests; captures are not shipped, hardware and a new native FPS curve not claimed.
+Qualificazione DEV: 2.610 interruzioni reali e 32 confronti bitmap/colori alla
+stessa posa PAL/NTSC nei tre emulatori, zero differenze. Prove separate dai test
+CPU pubblici; catture non distribuite, hardware/nuova curva FPS non dichiarati.
+
+## Historical 1.6.0 / Storico 1.6.0
 
 The complete runner contains 17 scripts. The previous 16 preserve all old PRG
 references. `test_texture_perspective.py` builds none/flat/Gouraud C and executes

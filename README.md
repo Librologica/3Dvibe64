@@ -1,4 +1,15 @@
-# 3Dvibe64 1.6.0
+# 3Dvibe64 1.6.1
+
+## New in 1.6.1: exact paired projective UV division
+
+Mode 7 Q8 perspective flat/Gouraud C now uses an exact zero-page, unrolled
+U/V divider for nonuniform textures. Rendering quality is unchanged. Legacy,
+affine, unlit recurrence and all-uniform fast paths keep their existing output.
+The measured public cube pose saves 16.30% Gouraud / 17.36% flat CPU instruction
+cycles; these are not native FPS measurements or universal speedup promises.
+Cost: +673 code bytes on that cube, eight reserved zero-page bytes `$E8..$EF`.
+External IRQ code must respect that scratch ownership. Existing memory/profile
+limits remain. [Release notes EN/IT](RELEASE-NOTES-1.6.1.md).
 
 ## New in 1.6.0: optional projective Mode 7 textures
 
@@ -55,7 +66,7 @@ Hardware operation has not been tested; the Mode 8 qualification uses stock x64s
 Gouraud C lighting and PNG import. [English guide](MODE7.en.md) · [Guida italiana](MODE7.it.md).
 Modes 1–6 preserve their official 1.2.0 reference output.
 
-3Dvibe64 1.6.0 is a source SDK for creating specialized Commodore 64 3D programs
+3Dvibe64 1.6.1 is a source SDK for creating specialized Commodore 64 3D programs
 from JSON scenes. It includes the frozen PowerShell builder, engine code generation,
 technical documentation, generic executable JSON references, and reproducibility
 contracts. It deliberately ships with no precompiled PRG and no diagnostic artifacts.
@@ -159,7 +170,7 @@ sinusoidal-easing language.
 
 ## Public release contract
 
-The 1.6.0 contract requires version `1.6.0`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
+The 1.6.1 contract requires version `1.6.1`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
 build hashes generated outside the package. Invalid point-only or collinear faces are
 rejected by the builder as malformed geometry. It also runs frozen Ground-crossing
 poses for Modes 4 and 5 through at least 32 `render_frame_end` events and verifies

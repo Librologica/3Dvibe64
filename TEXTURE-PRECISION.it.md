@@ -88,3 +88,25 @@ Z-buffer, portali/PVS generali, bilinear, mipmapping, trasparenza, texture runti
 packed o quad mapper nativo. Diagonale quad 0→2 invariata. Affine conserva le
 camere/viewport legacy più ampie. [Test](TESTING.md) separa aritmetica CPU,
 verifiche native e hardware: i cicli sintetici non sono FPS misurati.
+## 1.6.1: divisione UV esatta accoppiata
+
+La versione 1.6.1 aggiunge un divisore restoring accoppiato
+per texture prospettiche non uniformi con illuminazione flat/Gouraud C.
+Campionamento U/V e risultati numerici restano esatti nel contratto intero
+dei carrier esistente. Sette passi frazionari unrolled; nessun patching del
+denominatore o approssimazione. Il divisore scalare originale gestisce input
+fuori dal dominio veloce e W nullo. Otto byte zero page $E8-$EF sono riservati
+mentre il renderer controlla la macchina: IRQ/estensioni KERNAL esterni non
+devono usare questo scratch o chiamare il sampler. La routine non è rientrante.
+Gli IRQ del renderer esistente non accedono a questo stato. Aumenta il codice,
+non la RAM delle texture; restano attivi i controlli del budget di memoria.
+Ricorrenza razionale unlit e texture tutte uniformi mantengono i vecchi percorsi.
+Affine, legacy, altre modalità, limiti viewport/camera e default di precisione
+restano invariati. Il blocco accoppiato occupa 682 byte; crescita netta codice
+sul cubo pubblico 673 byte, senza scratch assoluto aggiuntivo. Una posa del
+cubo misurata risparmia 16,30% Gouraud / 17,36% flat dei cicli delle istruzioni,
+esclusi stall VIC, IRQ, attesa e presentazione: non sono FPS nativi o guadagni
+universali. Il codice aggiunto riduce il margine memoria della singola scena;
+layout non sicuri restano rifiutati, non semplificati in silenzio.
+Vedere [note release](RELEASE-NOTES-1.6.1.md).
+

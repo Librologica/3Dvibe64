@@ -1,5 +1,12 @@
 # Public JSON reference scenes
 
+1.6.1: no new demo/scene; lit perspective UV division is optimized exactly.
+Legacy/affine/unlit/uniform reference outputs remain unchanged. Same perspective
+cube illustrates the new kernel; respect `$E8..$EF` scratch ownership.
+Nessuna nuova demo/scena: divisione UV illuminata prospettica ottimizzata esatta.
+Output legacy/affine/unlit/uniforme invariati. Stesso cubo prospettico pubblico;
+rispettare `$E8..$EF`. [Release notes](../RELEASE-NOTES-1.6.1.md).
+
 1.6.0: `mode7-perspective-cube.json` specializes the public diagnostic cube,
 not the development demo. Requires `-Precision q8 -GraphicsMode 7` and output
 outside the SDK. Previous examples remain affine with unchanged PRG references.

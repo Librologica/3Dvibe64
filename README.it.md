@@ -1,4 +1,15 @@
-# 3Dvibe64 1.6.0
+# 3Dvibe64 1.6.1
+
+## Novità 1.6.1: divisione UV prospettica accoppiata esatta
+
+Mode 7 Q8 perspective flat/Gouraud C usa ora un divisore U/V esatto, unrolled
+in zero page, per texture non uniformi. Qualità del rendering invariata. Legacy,
+affine, ricorrenza unlit e fast path tutto uniforme conservano i propri output.
+La posa misurata del cubo pubblico risparmia 16,30% Gouraud / 17,36% flat dei
+cicli CPU delle istruzioni: non sono FPS nativi né promesse universali.
+Costo: +673 byte di codice su quel cubo, otto byte zero page riservati `$E8..$EF`.
+Gli IRQ esterni devono rispettare questo scratch. Limiti di memoria/profilo
+invariati. [Note release EN/IT](RELEASE-NOTES-1.6.1.md).
 
 ## Novità 1.6.0: texture prospettiche Mode 7 opzionali
 
@@ -55,7 +66,7 @@ Non è stata eseguita una prova hardware: la qualificazione Mode 8 usa x64sc sto
 opzionale e import PNG rigoroso. Iniziare da [Mode 7](MODE7.it.md). Mode 1–6
 conservano l'output ufficiale 1.2.0; la loro API esistente è documentata sotto.
 
-Questo pacchetto pubblico 1.6.0 è un SDK sorgente: contiene builder congelato,
+Questo pacchetto pubblico 1.6.1 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni

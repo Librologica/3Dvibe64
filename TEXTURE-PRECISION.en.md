@@ -90,3 +90,23 @@ general portals/PVS, bilinear filtering, mipmapping, transparency, packed runtim
 texture or native quad mapper. Quad split remains 0→2. Affine retains its broader
 legacy camera/viewport support. [Testing](TESTING.md) distinguishes CPU arithmetic,
 native checks and hardware tests; synthetic cycle costs are not measured FPS.
+## 1.6.1: exact paired UV division
+
+Version 1.6.1 adds a paired restoring divider for
+nonuniform projective textures with flat/Gouraud C lighting. U/V sampling and
+all numerical results remain exact under the existing integer carrier contract.
+Seven fractional steps are unrolled; no denominator patching or approximation.
+The original scalar divider handles out-of-fast-domain inputs and zero W.
+Eight zero-page bytes $E8-$EF are reserved while the renderer owns the machine;
+external IRQ/KERNAL extensions must not use this scratch or call the sampler.
+The routine is not reentrant. Existing renderer IRQs do not access this state.
+It adds code, not texture RAM; ordinary memory-budget checks remain active.
+Unlit rational recurrence and all-uniform textures retain their old paths.
+Affine, legacy, other modes, viewport/camera limits and precision defaults are
+unchanged. The paired block occupies 682 bytes; net code growth on the public
+cube is 673 bytes, with no extra absolute scratch. A measured cube pose saves
+16.30% Gouraud / 17.36% flat instruction cycles, excluding VIC stalls, IRQ,
+wait and presentation. This is not a native FPS measurement or universal gain.
+Additional code reduces scene-specific memory headroom; unsafe layouts are
+still rejected, not silently simplified. See [release notes](RELEASE-NOTES-1.6.1.md).
+
