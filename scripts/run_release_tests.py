@@ -19,6 +19,7 @@ TESTS = (
     "test_dev7_text_split.py", "test_mode7.py", "test_mode8.py", "test_precision_q8.py",
     "test_mode8_lintels.py",
     "test_texture_perspective.py",
+    "test_texture_uvzp.py",
 )
 
 def main():
