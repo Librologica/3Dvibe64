@@ -102,6 +102,8 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
             source,parts=exact_perspective(source,parts)
             from perspective_uniform import apply as uniform_perspective
             source,parts,uniform=uniform_perspective(source,parts,lab,byte)
+            from perspective_uvzp import apply as paired_uv
+            source,parts=paired_uv(source,parts,uniform)
             info.update(texturePrecision='perspective',perspectiveDepthDomainWU=[1,256],
                         perspectiveFaultLabel='ps_fault',perspectiveSampling='exact-fixed-point-per-sample',
                         uniformTexturePigments=uniform)
