@@ -5,6 +5,11 @@ multicolor VIC-II. La1.6.0 aggiunge interpolazione prospettica fixed-point opzio
 nel profilo Q8 limitato; Q8 da solo non la attiva. Leggere il
 [contratto precisione texture](TEXTURE-PRECISION.it.md) prima di selezionarla.
 
+La 1.6.1 ottimizza soltanto la divisione UV prospettica flat/Gouraud C non
+uniforme, in modo esatto. Otto byte zero page `$E8..$EF` sono riservati: gli
+IRQ esterni non devono usarli. Renderer affine default e contratti di luce/output
+invariati. [Note manutenzione](RELEASE-NOTES-1.6.1.md): costo e misure circoscritte.
+
 ## Modalità e illuminazione
 
 | Mode | Rendering della superficie |

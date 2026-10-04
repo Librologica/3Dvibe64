@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.6.1 — 2026-10-04
+
+English: exact paired zero-page/unrolled UV division for nonuniform Mode 7
+Q8 perspective flat/Gouraud C. Original scalar fallback, zero-denominator
+behavior and pixel output preserved. Legacy/affine/unlit/all-uniform paths,
+Modes 1–6/8 and previous reference hashes unchanged. Eight reserved zero-page
+bytes, +673 code bytes on the measured cube. CPU cycle savings are scene-specific,
+not FPS promises. New self-contained assembled UV divider regression and
+bilingual scratch/memory documentation. No private demo or generated artifacts.
+
+Italiano: divisione UV accoppiata esatta in zero page/unrolled per Mode 7 Q8
+perspective flat/Gouraud C con texture non uniformi. Fallback scalare, divisore
+nullo e pixel invariati. Legacy/affine/unlit/tutto uniforme, Mode 1–6/8 e hash
+precedenti intatti. Otto byte zero page riservati, +673 byte codice sul cubo
+misurato. Risparmi CPU specifici della scena, non promesse FPS. Nuovo test UV
+assemblato autonomo e guide bilingui scratch/memoria. Nessuna demo privata o
+artefatto generato incluso.
+
 ## 1.6.0 — 2026-10-03
 
 English: optional `texturePrecision: perspective` / `-TexturePrecision perspective`

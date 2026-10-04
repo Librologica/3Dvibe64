@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.6.0",
-    "version": "1.6.0",
+    "displayName": "3Dvibe64 1.6.1",
+    "version": "1.6.1",
     "distribution": "source-sdk",
-    "permanentFiles": 177,
+    "permanentFiles": 180,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -723,7 +723,7 @@
       "music": false,
       "outputOutsideSDK": true,
       "backendHashes": {
-        "work/q8/build.py": "75E9B7FF479F7F4FF41F888F780EB5A364E3F716578AF3CE22903777D4482475",
+        "work/q8/build.py": "A19901D118751492406546BE379A4F1259228C7954CABFBAD3BAE270C17A2BCD",
         "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
         "work/q8/src/camera.py": "C1497B56E9C3325D1738C068DDED7C97BF20DB524214F2C6EF483EE3C14B5909",
         "work/q8/src/clip.asm": "69178B5C3A359F5299631CA53DEBBA7431E7AA413E3E2B5C568CA82C57CDFB5B",
@@ -747,7 +747,8 @@
         "work/q8/src/perspective.py": "30DD70898B458C1888DDF0E14D2C3D0F1B97ABF38E5B404500EA2A222BE30EDF",
         "work/q8/src/perspective_exact.py": "EEBED49EA84309E9984EC3C24D401917FC6EEB5F155BA853A3D759A6EC192B63",
         "work/q8/src/perspective_rational.py": "48AD7C4FB6BD1A684676A8913033C82A5DF7BF4EFA211C3CAF1AE75EECB7E10C",
-        "work/q8/src/perspective_uniform.py": "3E7F275BB42BFB07041027F118C74B8C4C16734B21C8A16984075F5E4B02ADF8"
+        "work/q8/src/perspective_uniform.py": "3E7F275BB42BFB07041027F118C74B8C4C16734B21C8A16984075F5E4B02ADF8",
+        "work/q8/src/perspective_uvzp.py": "08F59D43F6C5B7DCA4329654CCF17B64CB4ABB39FCEDDD79BD952D49DEC47252"
       },
       "referenceBuilds": [
         {
@@ -1088,5 +1089,18 @@
         }
       ]
     }
+  },
+  "maintenance": {
+    "base": "1.6.0",
+    "version": "1.6.1",
+    "scope": "exact paired UV division; Mode7 Q8 perspective flat/Gouraud C nonuniform only",
+    "reservedZeroPage": [
+      "$E8",
+      "$EF"
+    ],
+    "kernelBytes": 682,
+    "measuredCubeNetCodeBytes": 673,
+    "numericApproximation": false,
+    "nativeFPSBenchmark": false
   }
 }

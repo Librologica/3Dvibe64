@@ -5,6 +5,11 @@ multicolor bitmap. Version1.6.0 adds optional fixed-point projective interpolati
 in the bounded Q8 profile; it is not enabled by Q8 alone. See the complete
 [texture precision contract](TEXTURE-PRECISION.en.md) before selecting it.
 
+1.6.1 optimizes only projective flat/Gouraud C nonuniform UV division, exactly.
+Eight zero-page bytes `$E8..$EF` are reserved; external IRQs must not use them.
+The default affine renderer and lighting/output contracts remain unchanged.
+See [maintenance notes](RELEASE-NOTES-1.6.1.md) for code cost and measured scope.
+
 ## Modes and lighting
 
 | Mode | Surface rendering |
