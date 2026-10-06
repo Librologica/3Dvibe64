@@ -1,5 +1,17 @@
 # Public JSON reference scenes
 
+1.7.0: `mode7-fast-cube.json` selects the opt-in fast profile on the public
+diagnostic cube, with stationary camera. Requires explicit Q8; Gouraud C and
+perspective are specified in the scene. Eight-pixel blocks and upper-row
+duplication are deliberate quality tradeoffs, not exact per-pixel perspective.
+No private scene/LUT is bundled. Mobile camera code can exceed the memory budget.
+[EN](../MODE7-FAST.en.md) / [IT](../MODE7-FAST.it.md).
+
+1.7.0: il cubo fast pubblico usa camera stationary e richiede Q8 esplicito;
+la scena dichiara Gouraud C e perspective. Blocchi otto pixel e duplicazione
+superiore sono compromessi, non prospettiva esatta per pixel. Nessuna scena/LUT
+privata inclusa. Il codice camera mobile può superare il budget memoria.
+
 1.6.1: no new demo/scene; lit perspective UV division is optimized exactly.
 Legacy/affine/unlit/uniform reference outputs remain unchanged. Same perspective
 cube illustrates the new kernel; respect `$E8..$EF` scratch ownership.
