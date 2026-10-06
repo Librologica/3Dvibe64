@@ -1,4 +1,8 @@
-# Precisione texture Mode 7 — 1.6.0
+# Precisione texture Mode 7 — 1.7.0
+
+Il contratto esatto qui sotto descrive `textureQuality: standard` (default).
+Per sampling block8 approssimato con ricostruzione superiore selezionare
+`textureQuality: fast` e leggere [Mode 7 veloce](MODE7-FAST.it.md).
 
 ## Default e selezione esplicita
 

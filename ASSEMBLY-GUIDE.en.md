@@ -1,5 +1,14 @@
 # 3Dvibe64 — Assembly Programmer's Guide
 
+## Mode 7 fast — 1.7.0
+
+The opt-in fast Q8/perspective/Gouraud C path is specified in
+[MODE7-FAST.en.md](MODE7-FAST.en.md). It preserves full viewport dimensions but
+samples alternate logical rows and uses eight-pixel projective blocks.
+It reserves UV scratch $E8..$EF and patches scalar shader entry points between
+spans: custom IRQs must not use that scratch or reenter the renderer.
+The general legacy and other-mode contracts below remain unchanged.
+
 ## Precision profiles / Profili di precisione — 1.5.0
 
 Legacy remains the default; the metric/renderer contracts below describe legacy

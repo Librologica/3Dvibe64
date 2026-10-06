@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.6.1",
-    "version": "1.6.1",
+    "displayName": "3Dvibe64 1.7.0",
+    "version": "1.7.0",
     "distribution": "source-sdk",
-    "permanentFiles": 180,
+    "permanentFiles": 186,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -13,7 +13,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "36D9F6506E4D2EBCF92320BBDF22D65230824895848E4E8D8D8E23460876F4EC"
+    "sha256": "80D03A8CE0ED44FF742F9AF138A0DB008FDD9CFFB9F4939AC8ACF026D5939FF4"
   },
   "examples": [
     "examples/wire-two-color-multimaterial.json",
@@ -51,7 +51,8 @@
     "examples/q8/two-objects-mode5.json",
     "examples/q8/two-objects-mode6.json",
     "examples/q8/two-objects-mode7.json",
-    "examples/mode7-perspective-cube.json"
+    "examples/mode7-perspective-cube.json",
+    "examples/mode7-fast-cube.json"
   ],
   "releaseEngine": {
     "scope": "GraphicsMode 6 runtime (Mode 7 identity is recorded separately)",
@@ -723,7 +724,7 @@
       "music": false,
       "outputOutsideSDK": true,
       "backendHashes": {
-        "work/q8/build.py": "A19901D118751492406546BE379A4F1259228C7954CABFBAD3BAE270C17A2BCD",
+        "work/q8/build.py": "F22DC23CBC5FB99E7B26468E0594CF01B602B16C1B305F169BBBB26B7562937A",
         "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
         "work/q8/src/camera.py": "C1497B56E9C3325D1738C068DDED7C97BF20DB524214F2C6EF483EE3C14B5909",
         "work/q8/src/clip.asm": "69178B5C3A359F5299631CA53DEBBA7431E7AA413E3E2B5C568CA82C57CDFB5B",
@@ -748,7 +749,8 @@
         "work/q8/src/perspective_exact.py": "EEBED49EA84309E9984EC3C24D401917FC6EEB5F155BA853A3D759A6EC192B63",
         "work/q8/src/perspective_rational.py": "48AD7C4FB6BD1A684676A8913033C82A5DF7BF4EFA211C3CAF1AE75EECB7E10C",
         "work/q8/src/perspective_uniform.py": "3E7F275BB42BFB07041027F118C74B8C4C16734B21C8A16984075F5E4B02ADF8",
-        "work/q8/src/perspective_uvzp.py": "08F59D43F6C5B7DCA4329654CCF17B64CB4ABB39FCEDDD79BD952D49DEC47252"
+        "work/q8/src/perspective_uvzp.py": "08F59D43F6C5B7DCA4329654CCF17B64CB4ABB39FCEDDD79BD952D49DEC47252",
+        "work/q8/src/texture_fast.py": "1BA549A2F5902FFF9EC2B8A183A3B7686344E205A97A45583CE577A08DA381CF"
       },
       "referenceBuilds": [
         {
@@ -1102,5 +1104,27 @@
     "measuredCubeNetCodeBytes": 673,
     "numericApproximation": false,
     "nativeFPSBenchmark": false
+  },
+  "mode7Fast": {
+    "introduced": "1.7.0",
+    "option": "TextureQuality",
+    "sceneField": "textureQuality",
+    "default": "standard",
+    "values": ["standard", "fast"],
+    "requires": ["GraphicsMode 7", "Precision q8", "TexturePrecision perspective", "textureLighting gouraud", "textureCompositor C"],
+    "perspectiveBlockPixels": 8,
+    "interior": "affine",
+    "tail": "exact last one to eight samples",
+    "viewportLogical": [160,100],
+    "sampledLogical": [160,50],
+    "reconstruction": "upper logical row duplication within same VIC-II color cell",
+    "temporalInterpolation": false,
+    "sceneSpecificLUT": false,
+    "approximateImage": true,
+    "previousReferencesChanged": false,
+    "releaseScope": "Mode 7 only; standard, legacy and other modes unchanged",
+    "example": "examples/mode7-fast-cube.json",
+    "guideEn": "MODE7-FAST.en.md",
+    "guideIt": "MODE7-FAST.it.md"
   }
 }

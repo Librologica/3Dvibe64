@@ -1,15 +1,34 @@
 # Release tests
 
-## Current 1.6.1 / Attuale 1.6.1
+## 1.7.0 fast Mode 7 / Mode 7 veloce
 
-The runner contains 18 scripts. `test_texture_uvzp.py` adds 12,814 assembled
+The runner includes `test_texture_fast.py`. It builds fresh PAL/NTSC Q8
+fast PRGs and executes the actual 6502 routines: 16,416 step-eight predictions,
+131,072 U/V endpoint tests, 25,758 span samples, 37,500 edge advances, both-buffer
+duplication, scalar fallback and shader transitions. It also rejects invalid
+lighting/profile combinations. Native qualification is separate from these
+instruction-level tests; test output is not an FPS claim. Previous PRG/framebuffer
+hashes remain unchanged. See [fast contract](MODE7-FAST.en.md).
+
+Il runner include `test_texture_fast.py`: nuove build PAL/NTSC Q8 fast e routine
+6502 reali, con 16.416 previsioni carrier, 131.072 test estremi U/V, 25.758
+campioni span, 37.500 avanzamenti edge, duplicazione nei due buffer, fallback
+scalare e transizioni shader. Rifiuta combinazioni luminose/profili non validi.
+La qualificazione nativa è separata: questi test non misurano FPS. Hash PRG e
+framebuffer precedenti invariati. [Contratto](MODE7-FAST.it.md).
+
+## Inherited 1.6.1 tests / Test ereditati dalla 1.6.1
+
+The 1.6.1 runner contained 18 scripts (1.7.0 adds the nineteenth).
+`test_texture_uvzp.py` adds 12,814 assembled
 paired-divider cases, a 1,048,576-input host subset and ownership/skip checks.
 The full 16-bit triple space is not claimed exhausted: fast-domain equivalence
 follows the restoring remainder invariant; other values retain the original
 scalar fallback. No historical demo/ROM/benchmark directory is needed.
 Existing 17 contracts/reference hashes retained; py65/PowerShell/64tass required.
 
-Il runner contiene 18 script. `test_texture_uvzp.py` aggiunge 12.814 casi del
+Il runner 1.6.1 conteneva 18 script (1.7.0 aggiunge il diciannovesimo).
+`test_texture_uvzp.py` aggiunge 12.814 casi del
 divisore assemblato, 1.048.576 input host e controlli scratch/percorsi esclusi.
 Non si dichiara esaustivo l'intero spazio di triple16bit: invariante restoring
 nel dominio veloce, fallback originale negli altri casi. Nessuna demo/ROM o

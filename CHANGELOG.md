@@ -1,5 +1,25 @@
 # Changelog
 
+## 1.7.0 — 2026-10-06
+
+English: opt-in `TextureQuality fast` for Mode 7 Q8 perspective Gouraud C.
+Exact block endpoints at eight pixels, affine interior, exact short tails;
+even logical rows sampled and missing rows upper-duplicated within the same
+VIC-II color cell. Exact retained-row edge carrier DDA, full palette-claim
+order, neutral shader specialization and packed even-row carrier state.
+New general generator, public cube example, assembled regression and bilingual
+contract. Standard/legacy/affine and Modes 1–6/8 keep their previous references.
+Scene-specific development LUT, portals, baked lighting and private demo excluded.
+
+Italiano: `TextureQuality fast` opzionale per Mode 7 Q8 perspective Gouraud C.
+Estremi esatti ogni otto pixel, interno affine, code corte esatte; righe logiche
+pari campionate e righe mancanti duplicate dall'alto nella stessa cella VIC-II.
+DDA carrier esatta sulle righe conservate, ordine completo delle palette,
+specializzazione shader neutro e stato carrier compattato per righe pari.
+Generatore generale, cubo pubblico, regressione assemblata e contratto bilingue.
+Standard/legacy/affine e Mode 1–6/8 conservano i riferimenti precedenti.
+LUT, portali, luce precalcolata e demo privata di sviluppo non inclusi.
+
 ## 1.6.1 — 2026-10-04
 
 English: exact paired zero-page/unrolled UV division for nonuniform Mode 7

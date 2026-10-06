@@ -1,4 +1,14 @@
-# 3Dvibe64 1.6.1
+# 3Dvibe64 1.7.0
+
+## New in 1.7.0: optional fast Mode 7 profile
+
+`-TextureQuality fast` / `textureQuality: fast` selects explicit
+Q8 + perspective + Gouraud C: eight-pixel blocks and 50 sampled logical rows,
+upper-duplicated into the 160×100 viewport. This is true polygonal 3D, not
+raycasting, with declared sampling tradeoffs. `standard` remains the default;
+legacy/affine and other modes retain their output. No private demo, scene LUT
+or room-specific visibility assumptions are included.
+[Complete contract](MODE7-FAST.en.md) · [release notes EN/IT](RELEASE-NOTES-1.7.0.md).
 
 ## New in 1.6.1: exact paired projective UV division
 

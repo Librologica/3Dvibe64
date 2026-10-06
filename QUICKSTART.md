@@ -1,5 +1,20 @@
 # Quick start / Guida rapida
 
+## Optional fast Mode 7 / Profilo veloce opzionale — 1.7.0
+
+Read the sampling/memory tradeoffs first / Leggere prima i compromessi:
+[EN](MODE7-FAST.en.md) · [IT](MODE7-FAST.it.md).
+Standard, legacy and affine remain defaults / Default invariati.
+
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 7 -Precision q8 -TextureQuality fast -SceneFile examples/mode7-fast-cube.json -VideoStandard pal -OutputDirectory ../fast-cube-pal
+```
+
+Fast requires perspective + Gouraud C. Use a fresh directory outside the SDK.
+Fast richiede perspective + Gouraud C e una directory nuova esterna all'SDK.
+Full viewport 160×100 logical, 160×50 sampled; upper-row duplication, block8 UV.
+Viewport piena 160×100 logici, 160×50 campionati; duplicazione superiore, UV block8.
+
 ## Optional projective textures / Texture prospettiche opzionali — 1.6.1
 
 1.6.1 preserves the 1.6.0 command/profile. Lit projective samplers reserve
