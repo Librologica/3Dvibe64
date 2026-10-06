@@ -1,5 +1,10 @@
 # GraphicsMode 7 — Texture mapping
 
+La 1.7.0 aggiunge `TextureQuality fast` esplicito per Q8/perspective/Gouraud C,
+con UV block8 e duplicazione superiore. Output/default standard invariati.
+Leggere il [contratto veloce](MODE7-FAST.it.md); il profilo legacy più ampio
+descritto sotto non elimina i limiti memoria, camera o viewport fast/Q8.
+
 Il default è il renderer R1 qualificato con texture software **affini** su bitmap
 multicolor VIC-II. La1.6.0 aggiunge interpolazione prospettica fixed-point opzionale
 nel profilo Q8 limitato; Q8 da solo non la attiva. Leggere il

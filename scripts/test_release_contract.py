@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained public 3Dvibe64 1.6.1 source-SDK contract."""
+"""Self-contained public 3Dvibe64 1.7.0 source-SDK contract."""
 from __future__ import annotations
 
 import hashlib
@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.6.1"
-BUILDER_SHA256 = "36D9F6506E4D2EBCF92320BBDF22D65230824895848E4E8D8D8E23460876F4EC"
-PERMANENT_FILE_COUNT = 180
+VERSION = "1.7.0"
+BUILDER_SHA256 = "80D03A8CE0ED44FF742F9AF138A0DB008FDD9CFFB9F4939AC8ACF026D5939FF4"
+PERMANENT_FILE_COUNT = 186
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -209,7 +209,7 @@ def check_builder_and_package() -> None:
     assert sha256(builder) == BUILDER_SHA256, "builder hash changed"
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
-        "name": "3Dvibe64", "displayName": "3Dvibe64 1.6.1", "version": VERSION,
+        "name": "3Dvibe64", "displayName": "3Dvibe64 1.7.0", "version": VERSION,
         "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT,
         "precompiledPrograms": False,
         "author": "librologica.digital",
@@ -217,7 +217,11 @@ def check_builder_and_package() -> None:
         "documentationLicense": "CC-BY-NC-4.0",
     }
     assert manifest["builder"]["sha256"] == BUILDER_SHA256
-    assert len(manifest["examples"]) == 36
+    assert len(manifest["examples"]) == 37
+    fast = manifest["mode7Fast"]
+    assert fast["default"] == "standard" and fast["approximateImage"] is True
+    assert fast["perspectiveBlockPixels"] == 8 and fast["sampledLogical"] == [160,50]
+    assert fast["sceneSpecificLUT"] is False and fast["previousReferencesChanged"] is False
     assert manifest["renderer"]["graphicsModes"] == list(range(1, 9))
     assert manifest["mode7"]["defaultGouraudCompositor"] == "C"
     for relative, digest in manifest["mode7"]["backendHashes"].items():
@@ -289,7 +293,7 @@ def check_builder_and_package() -> None:
 def check_documentation() -> None:
     assert (ROOT / "VERSION").read_text(encoding="utf-8-sig").strip() == VERSION
     main = (ROOT / "README.md").read_text(encoding="utf-8-sig")
-    assert main.startswith("# 3Dvibe64 1.6.1\n")
+    assert main.startswith("# 3Dvibe64 1.7.0\n")
     for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1–8", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
         assert token in main, f"README.md does not document {token}"
     for token in ("HeaderText", "160×88", "TEXT_HEADER_SCREEN_BYTES"):

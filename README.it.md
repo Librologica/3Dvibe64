@@ -1,4 +1,14 @@
-# 3Dvibe64 1.6.1
+# 3Dvibe64 1.7.0
+
+## Novità 1.7.0: profilo veloce Mode 7
+
+`-TextureQuality fast` / `textureQuality: fast` aggiunge un profilo esplicito
+Q8 + perspective + Gouraud C: blocchi da otto pixel e 50 righe campionate,
+ricostruite per duplicazione superiore nella viewport 160×100. È vero 3D
+poligonale, non raycasting; introduce compromessi di campionamento dichiarati.
+`standard` resta default; legacy/affine e le altre modalità restano invariate.
+Non include la demo privata, la sua LUT o le sue ipotesi di visibilità.
+[Contratto completo](MODE7-FAST.it.md) · [note release EN/IT](RELEASE-NOTES-1.7.0.md).
 
 ## Novità 1.6.1: divisione UV prospettica accoppiata esatta
 

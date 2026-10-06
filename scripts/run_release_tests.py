@@ -20,6 +20,7 @@ TESTS = (
     "test_mode8_lintels.py",
     "test_texture_perspective.py",
     "test_texture_uvzp.py",
+    "test_texture_fast.py",
 )
 
 def main():
