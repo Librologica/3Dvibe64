@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Self-contained public 3Dvibe64 1.7.0 source-SDK contract."""
+"""Self-contained public source-SDK contract, including qualified 1.8.0 source additions."""
 from __future__ import annotations
 
 import hashlib
@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.7.0"
-BUILDER_SHA256 = "80D03A8CE0ED44FF742F9AF138A0DB008FDD9CFFB9F4939AC8ACF026D5939FF4"
-PERMANENT_FILE_COUNT = 186
+VERSION = "1.8.0"
+BUILDER_SHA256 = "97032B86305EFCE4BBF074966DF7CFDAC44FE1D40B1C3E9624AED501DB3327DC"
+PERMANENT_FILE_COUNT = 200
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -179,7 +179,8 @@ def check_clean_tree() -> None:
                          for family in ("perimeter", "apertures", "two-levels")
                          for run in ("auto", "interactive"))
     allowed_inputs.update('work/q8/src/'+name for name in (
-        'camera.asm','clip.asm','kernel.asm','poly.asm','wide.asm','winding.asm','wire_line.asm'))
+        'camera.asm','clip.asm','kernel.asm','poly.asm','wide.asm','winding.asm','wire_line.asm',
+        'hybrid_line.asm'))
     allowed_inputs.update(('work/subpixel-x-probe.asm','work/subpixel-mobile-x.asm'))
     forbidden_suffixes = {".asm", ".lst", ".log", ".trace", ".tmp", ".png", ".bmp", ".gif", ".vice", ".cmd", ".zip", ".pyc"}
     for path in ROOT.rglob("*"):
@@ -209,7 +210,7 @@ def check_builder_and_package() -> None:
     assert sha256(builder) == BUILDER_SHA256, "builder hash changed"
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
-        "name": "3Dvibe64", "displayName": "3Dvibe64 1.7.0", "version": VERSION,
+        "name": "3Dvibe64", "displayName": "3Dvibe64 1.8.0", "version": VERSION,
         "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT,
         "precompiledPrograms": False,
         "author": "librologica.digital",
@@ -217,7 +218,13 @@ def check_builder_and_package() -> None:
         "documentationLicense": "CC-BY-NC-4.0",
     }
     assert manifest["builder"]["sha256"] == BUILDER_SHA256
-    assert len(manifest["examples"]) == 37
+    assert len(manifest["examples"]) == 38
+    assert manifest['framePresentation']['default']=='safe' and manifest['framePresentation']['waitRaster']==252
+    assert manifest['historicalReferences']['expectedHashesChanged'] is False
+    assert manifest['lineRaster']['modes']==[1,2,5] and manifest['lineRaster']['default']=='precise'
+    assert manifest['mode7LOD']['default']=='off' and manifest['mode7LOD']['fadeWidthWU']==16
+    for lang in ('en','it'):
+        for prefix in ('LINE-RASTER','MODE7-LOD','PRESENTATION'):assert (ROOT/f'{prefix}.{lang}.md').is_file()
     fast = manifest["mode7Fast"]
     assert fast["default"] == "standard" and fast["approximateImage"] is True
     assert fast["perspectiveBlockPixels"] == 8 and fast["sampledLogical"] == [160,50]
@@ -293,10 +300,10 @@ def check_builder_and_package() -> None:
 def check_documentation() -> None:
     assert (ROOT / "VERSION").read_text(encoding="utf-8-sig").strip() == VERSION
     main = (ROOT / "README.md").read_text(encoding="utf-8-sig")
-    assert main.startswith("# 3Dvibe64 1.7.0\n")
-    for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1–8", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
+    assert main.startswith("# 3Dvibe64 1.8.0\n")
+    for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1\u20138", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
         assert token in main, f"README.md does not document {token}"
-    for token in ("HeaderText", "160×88", "TEXT_HEADER_SCREEN_BYTES"):
+    for token in ("HeaderText", "160\u00d788", "TEXT_HEADER_SCREEN_BYTES"):
         assert token in main, f"README.md does not document DEV7 token {token}"
     for relative in ("README.en.md", "README.it.md"):
         text = (ROOT / relative).read_text(encoding="utf-8-sig").lower()
@@ -311,7 +318,7 @@ def check_documentation() -> None:
         for token in ('-Precision legacy','-Precision q8','20 MHz','meshSourceSharing','96','40 WU','walkLite'):
             assert token in precision_text,(language,token)
     software_license = (ROOT / "LICENSE").read_text(encoding="utf-8-sig")
-    assert software_license.startswith("Required Notice: 3Dvibe64. Copyright © 2026 librologica.digital.\n")
+    assert software_license.startswith("Required Notice: 3Dvibe64. Copyright \u00a9 2026 librologica.digital.\n")
     assert "# PolyForm Noncommercial License 1.0.0" in software_license
     documentation_license = (ROOT / "LICENSE-DOCUMENTATION.md").read_text(encoding="utf-8-sig")
     for token in ("librologica.digital", "CC BY-NC 4.0", "CC-BY-NC-4.0"):
@@ -335,6 +342,12 @@ def check_documentation() -> None:
 
 
 def build(root: Path, scene: str, args: tuple[str, ...], expect_ok: bool = True) -> subprocess.CompletedProcess[str]:
+    # Frozen PRG references describe the historical presentation timing.
+    # New safe-default behavior is qualified separately, never by rewriting
+    # the old expected hashes to accept a divergent renderer.
+    mode = args[args.index('-GraphicsMode')+1] if '-GraphicsMode' in args else '4'
+    if mode != '8' and '-FramePresentation' not in args:
+        args = (*args, '-FramePresentation', 'legacy')
     command = [
         shutil.which("pwsh") or "powershell.exe", "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
         str(root / BUILDER_RELATIVE), "-SceneFile", str(root / scene), *args,

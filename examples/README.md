@@ -1,5 +1,17 @@
 # Public JSON reference scenes
 
+1.8.0: `mode7-fast-lod-cube.json` extends the public fast cube with gradual
+texture LOD (28–44 WU). Geometry Q8 must still be selected explicitly.
+[LOD EN](../MODE7-LOD.en.md) / [LOD IT](../MODE7-LOD.it.md).
+For hybrid Mode 1/2/5 lines, reuse `q8/two-objects-mode1.json`, `mode2.json`,
+`mode5.json` with the corresponding mode and `-LineRaster hybrid`.
+Normal builds use safe presentation; old hash checks explicitly use legacy presentation.
+
+1.8.0: il cubo fast pubblico aggiunge LOD graduale texture (28–44 WU).
+Q8 resta esplicito. Le linee ibride riusano le tre scene Q8 Mode 1/2/5 con
+modalità corrispondente e `-LineRaster hybrid`. Build normali con presentazione
+sicura; confronti hash storici con presentazione legacy esplicita.
+
 1.7.0: `mode7-fast-cube.json` selects the opt-in fast profile on the public
 diagnostic cube, with stationary camera. Requires explicit Q8; Gouraud C and
 perspective are specified in the scene. Eight-pixel blocks and upper-row

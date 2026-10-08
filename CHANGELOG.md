@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.8.0 — 2026-10-08
+
+English: safe post-visible presentation for Modes 1–7; opt-in Q8 additive hybrid line raster in Modes 1/2/5; property-derived gradual Mode 7 projective texture LOD with modal/accent far fill. Existing fast profile retained. Legacy geometry stays default; new image tradeoffs are explicit. Frozen PRG references retained with explicit historical presentation, Mode 8 untouched. No private room demo, soundtrack or scene-specific ordering promoted. New assembled tests and equivalent EN/IT contracts.
+
+Italiano: presentazione sicura dopo l'area visibile per Mode 1–7; raster linee ibrido additivo Q8 opzionale in Mode 1/2/5; LOD graduale delle texture prospettiche Mode 7 derivato dai dati, con dominante/accento lontano. Profilo fast esistente conservato. Geometria legacy default; compromessi d'immagine espliciti. Riferimenti PRG congelati conservati con presentazione storica esplicita, Mode 8 invariata. Nessuna demo privata, colonna sonora o ordinamento specifico delle stanze promosso. Nuovi test assemblati e contratti EN/IT equivalenti.
+
 ## 1.7.0 — 2026-10-06
 
 English: opt-in `TextureQuality fast` for Mode 7 Q8 perspective Gouraud C.

@@ -1,4 +1,12 @@
 param(
+ [ValidateSet('safe','legacy')]
+ [string]$FramePresentation = 'safe',
+ [ValidateSet('precise','hybrid')]
+ [string]$LineRaster = 'precise',
+ [ValidateSet('off','gradual')]
+ [string]$TextureLOD = 'off',
+ [int]$TextureLODNear = 28,
+ [int]$TextureLODFar = 44,
  [ValidateSet("legacy", "q8")]
  [string]$Precision = "legacy",
 
@@ -268,6 +276,17 @@ if ($SceneFile) {
   if ($textureScene.textureQuality -notin @('standard','fast')) { throw 'textureQuality must be standard or fast.' }
   if (-not $PSBoundParameters.ContainsKey('TextureQuality')) { $TextureQuality = $textureScene.textureQuality }
  }
+ if ($textureScene.PSObject.Properties.Name -contains 'textureLOD') {
+  if ($textureScene.textureLOD -notin @('off','gradual')) { throw 'textureLOD must be off or gradual.' }
+  if (-not $PSBoundParameters.ContainsKey('TextureLOD')) { $TextureLOD = $textureScene.textureLOD }
+ }
+ foreach ($lodPair in @(@('textureLODNear','TextureLODNear'),@('textureLODFar','TextureLODFar'))) {
+  if ($textureScene.PSObject.Properties.Name -contains $lodPair[0]) {
+   $lodValue = $textureScene.($lodPair[0])
+   if ($lodValue -isnot [int] -and $lodValue -isnot [long]) { throw 'TextureLOD distances must be integers.' }
+   if (-not $PSBoundParameters.ContainsKey($lodPair[1])) { Set-Variable -Name $lodPair[1] -Value $lodValue }
+  }
+ }
 }
 if ($TextureQuality -eq 'fast' -and ($Precision -ne 'q8' -or $GraphicsMode -ne '7' -or $TexturePrecision -ne 'perspective')) {
  throw 'TextureQuality fast requires GraphicsMode 7, -Precision q8 and -TexturePrecision perspective.'
@@ -281,9 +300,13 @@ if ($PSBoundParameters.ContainsKey('TexturePrecision') -and $GraphicsMode -ne '7
 }
 
 # Precision is an explicit opt-in, never selected from CPU speed or scene data.
+if ($PSBoundParameters.ContainsKey('LineRaster') -and ($Precision -ne 'q8' -or $GraphicsMode -notin @('1','2','5'))) { throw 'LineRaster requires Q8 GraphicsMode 1, 2 or 5.' }
+if (($TextureLOD -ne 'off' -or $PSBoundParameters.ContainsKey('TextureLOD')) -and ($Precision -ne 'q8' -or $GraphicsMode -ne '7' -or $TexturePrecision -ne 'perspective')) { throw 'TextureLOD requires Q8 perspective GraphicsMode 7.' }
+if (($PSBoundParameters.ContainsKey('TextureLODNear') -or $PSBoundParameters.ContainsKey('TextureLODFar')) -and $TextureLOD -eq 'off') { throw 'TextureLOD distances require gradual LOD.' }
+if ($TextureLOD -eq 'gradual' -and ($TextureLODNear -le 1 -or $TextureLODFar -ge 256 -or ($TextureLODFar-$TextureLODNear) -ne 16)) { throw 'TextureLOD requires 1 < near < far < 256 WU and a 16 WU fade interval.' }
 # The adapter works in a fresh output tree; legacy generation below is unchanged.
 if ($Precision -eq 'q8') {
- $allowed = @('Precision','TexturePrecision','TextureQuality','Q8Camera','GraphicsMode','SceneFile','OutputDirectory',
+ $allowed = @('Precision','TexturePrecision','TextureQuality','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','LineRaster','TextureLOD','TextureLODNear','TextureLODFar',
               'VideoStandard','CameraMode','CameraViewport','MemoryLayout','Quality',
               'Projection','NoFpsOverlay','SkipCmdUpdate')
  foreach ($key in $PSBoundParameters.Keys) {
@@ -302,6 +325,8 @@ if ($Precision -eq 'q8') {
  if (-not $OutputDirectory) { $OutputDirectory = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) '3Dvibe64-output/q8' }
  $python = if ($env:PYTHON_EXE) { $env:PYTHON_EXE } else { 'python' }
  $q8args = @('-B', (Join-Path $PSScriptRoot 'q8/build.py'), '--scene', (Resolve-Path -LiteralPath $SceneFile).Path, '--out', $OutputDirectory, '--mode', $GraphicsMode, '--standard', $VideoStandard, '--camera', $Q8Camera)
+ $q8args += @('--frame-presentation',$FramePresentation,'--line-raster',$LineRaster,'--texture-lod',$TextureLOD)
+ if ($TextureLOD -eq 'gradual') { $q8args += @('--lod-near',$TextureLODNear,'--lod-far',$TextureLODFar) }
  if ($GraphicsMode -eq '7') { $q8args += @('--texture-precision', $TexturePrecision, '--texture-quality', $TextureQuality) }
  & $python @q8args
  if ($LASTEXITCODE -ne 0) { throw "Q8 build failed with exit code $LASTEXITCODE." }
@@ -311,6 +336,7 @@ if ($PSBoundParameters.ContainsKey('Q8Camera')) { throw '-Q8Camera requires -Pre
 
 # Mode 8 is a distinct public map contract, dispatched before polygon setup.
 if ($GraphicsMode -eq "8") {
+ if ($PSBoundParameters.ContainsKey('FramePresentation') -or $PSBoundParameters.ContainsKey('LineRaster') -or $PSBoundParameters.ContainsKey('TextureLOD')) { throw 'Mode8 uses its own presentation/rendering contract.' }
  $allowed = @('GraphicsMode', 'SceneFile', 'Mode8Run', 'OutputDirectory', 'ValidateOnly', 'VideoStandard', 'Precision')
  foreach ($key in $PSBoundParameters.Keys) {
   if ($key -notin $allowed) { throw "Mode 8: explicitly requested option -$key is not applicable. See MODE8.en.md." }
@@ -9933,12 +9959,12 @@ render_scene_renderer:
  jsr vic_color_policy_overlay_conflicts
 .endif
 render_frame_end:
-.if CONTROL_LOWRES_KEY != 0
+ .if CONTROL_LOWRES_KEY != 0 && FRAME_PRESENTATION_LEGACY_PLACEHOLDER
  lda lowres_scanline_enabled
  bne ml_async_present
 .endif
  jsr wait_raster
-.if CONTROL_LOWRES_KEY != 0
+ .if CONTROL_LOWRES_KEY != 0 && FRAME_PRESENTATION_LEGACY_PLACEHOLDER
 ml_async_present:
 .endif
  jsr show_buffer
@@ -10559,7 +10585,7 @@ wait_text_charset_safe:
  ldx #TEXT_CHARSET_UPDATE_RASTER
  bne wait_raster_value
 wait_raster:
- ldx #$f0
+ ldx #FRAME_PRESENTATION_RASTER_PLACEHOLDER
 wait_raster_value:
 wr1: cpx $d012
  bne wr1
@@ -10569,10 +10595,10 @@ wr2: cpx $d012
 .else
 wait_raster:
 wr1: lda $d012
- cmp #$f0
+ cmp #FRAME_PRESENTATION_RASTER_PLACEHOLDER
  bne wr1
 wr2: lda $d012
- cmp #$f0
+ cmp #FRAME_PRESENTATION_RASTER_PLACEHOLDER
  beq wr2
  rts
 .endif
@@ -38477,6 +38503,9 @@ gate4_div16_fallback:
  $asm = [regex]::Replace($asm, '(?m)^div16u:', [System.Text.RegularExpressions.MatchEvaluator]{ param($match) $gate4DivPrefix })
 }
 
+$presentationRaster = if ($FramePresentation -eq 'safe') { '$fc' } else { '$f0' }
+$presentationLegacy = if ($FramePresentation -eq 'legacy') { '1' } else { '0' }
+$asm = $asm.Replace('FRAME_PRESENTATION_RASTER_PLACEHOLDER', $presentationRaster).Replace('FRAME_PRESENTATION_LEGACY_PLACEHOLDER', $presentationLegacy)
 Set-Content -LiteralPath $AsmPath -Encoding ASCII -Value $asm
 
 if ($ExperimentalSubpixelXProbe) {

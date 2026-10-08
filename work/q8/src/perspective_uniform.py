@@ -5,7 +5,7 @@ PolyForm Noncommercial 1.0.0.
 import re
 from perspective_exact import once
 
-def apply(source,parts,lab,byte):
+def apply(source,parts,lab,byte,force=False):
     pages=sorted((int(m[1]),name) for name in lab if (m:=re.fullmatch(r'm7_texture_(\d+)',name)))
     assert [i for i,_ in pages]==list(range(len(pages)))
     pigments=[]
@@ -13,7 +13,7 @@ def apply(source,parts,lab,byte):
         pixels=[byte(name,j) for j in range(256)]
         assert all(p in (1,2,3) for p in pixels)
         pigments.append(pixels[0] if all(p==pixels[0] for p in pixels) else 0)
-    if not any(pigments):return source,parts,pigments
+    if not any(pigments) and not force:return source,parts,pigments
     # UV loading is per original face, before clipping. Preserve Y.
     select=(' lda m7_face_texture,y\n tax\n lda pu_textures,x\n' if len(pages)>1 else f' lda #{pigments[0]}\n')+' sta pu_texel\n'
     source=once(source,'gouraud_load_face_raw_shades_y:\n','gouraud_load_face_raw_shades_y:\n'+select)

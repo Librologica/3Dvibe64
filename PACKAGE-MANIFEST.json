@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.7.0",
-    "version": "1.7.0",
+    "displayName": "3Dvibe64 1.8.0",
+    "version": "1.8.0",
     "distribution": "source-sdk",
-    "permanentFiles": 186,
+    "permanentFiles": 200,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -13,7 +13,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "80D03A8CE0ED44FF742F9AF138A0DB008FDD9CFFB9F4939AC8ACF026D5939FF4"
+    "sha256": "97032B86305EFCE4BBF074966DF7CFDAC44FE1D40B1C3E9624AED501DB3327DC"
   },
   "examples": [
     "examples/wire-two-color-multimaterial.json",
@@ -52,7 +52,8 @@
     "examples/q8/two-objects-mode6.json",
     "examples/q8/two-objects-mode7.json",
     "examples/mode7-perspective-cube.json",
-    "examples/mode7-fast-cube.json"
+    "examples/mode7-fast-cube.json",
+    "examples/mode7-fast-lod-cube.json"
   ],
   "releaseEngine": {
     "scope": "GraphicsMode 6 runtime (Mode 7 identity is recorded separately)",
@@ -421,7 +422,9 @@
           "normal",
           "-CameraMode",
           "walkLite",
-          "-FpsCounterOnly"
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
         ],
         "sha256": "6BD2E3CAFB279995003D63FA3C938971038B49EF27A205D5D5F6BF16649B1D5D"
       },
@@ -439,7 +442,9 @@
           "normal",
           "-CameraMode",
           "walkLite",
-          "-FpsCounterOnly"
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
         ],
         "sha256": "11A4B1D7C1C2D277045CBA07A6EE2620064D9A80ECD19D7DB34EB1DFC63DE66F"
       },
@@ -457,7 +462,9 @@
           "normal",
           "-CameraMode",
           "walkLite",
-          "-FpsCounterOnly"
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
         ],
         "sha256": "E375588BE4C9AC52858BD695356F8A287BBE85852FBAE072E1BAE3CEE88E53F8"
       },
@@ -475,7 +482,9 @@
           "normal",
           "-CameraMode",
           "fixed",
-          "-FpsCounterOnly"
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
         ],
         "sha256": "CCE4859399A8E7C682A8E72A1A25D54471B720C387A903B89352A55B345EB9D4"
       },
@@ -493,7 +502,9 @@
           "normal",
           "-CameraMode",
           "walkLite",
-          "-FpsCounterOnly"
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
         ],
         "sha256": "FBF9DC36241BB32FF272C437D69B0EC27764E5BBB4809A66B4CA0125E94EDA37"
       },
@@ -511,7 +522,9 @@
           "normal",
           "-CameraMode",
           "fixed",
-          "-FpsCounterOnly"
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
         ],
         "sha256": "33FE0A60F29631951C1BF50065A36202A9EC6A0F11119454681632769CAF9949"
       },
@@ -529,7 +542,9 @@
           "normal",
           "-CameraMode",
           "walkLite",
-          "-FpsCounterOnly"
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
         ],
         "sha256": "EC7546A204361AD0E39884D026798871156FDA6A15F36DA9B10F918F9652AB07"
       },
@@ -547,7 +562,9 @@
           "normal",
           "-CameraMode",
           "fixed",
-          "-FpsCounterOnly"
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
         ],
         "sha256": "CCE4859399A8E7C682A8E72A1A25D54471B720C387A903B89352A55B345EB9D4"
       }
@@ -724,7 +741,7 @@
       "music": false,
       "outputOutsideSDK": true,
       "backendHashes": {
-        "work/q8/build.py": "F22DC23CBC5FB99E7B26468E0594CF01B602B16C1B305F169BBBB26B7562937A",
+        "work/q8/build.py": "DEDB990658F018E4553C241CADB6E566DB86997EC22EA60E989D2F30B25A77E0",
         "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
         "work/q8/src/camera.py": "C1497B56E9C3325D1738C068DDED7C97BF20DB524214F2C6EF483EE3C14B5909",
         "work/q8/src/clip.asm": "69178B5C3A359F5299631CA53DEBBA7431E7AA413E3E2B5C568CA82C57CDFB5B",
@@ -740,7 +757,7 @@
         "work/q8/src/wide.asm": "6653F13A13A25F1D2C3D2B43778CF2F4096318940C0EFF4AF3C65EEB46243576",
         "work/q8/src/winding.asm": "FB40675AF44961A177856594AB462D47FDB7819667EF58E7D151E36C676A1874",
         "work/q8/src/wire.py": "AB7E272243FA35083D1A5661FFD32ABB0CC45167E3013B8DFCBE9E233D7863C4",
-        "work/q8/src/wire_build.py": "4DA1FB0560A87482D5DA4180D1105D01A2EB1F629B92574F0B88685D8D0F2624",
+        "work/q8/src/wire_build.py": "9471C659309ACF76CBAFBE9BB5A3B1A6A0AEFF65744B439AC3290B0F75AA3C52",
         "work/q8/src/wire_line.asm": "A5684C79B802B2BCA0602CB756C315F0EF55E4F1C4A695A3CBED0ECDABB232DE",
         "work/subpixel_probe.py": "261D1DD18616585C4D10BAC880ADA6950CF9B4A1593B8BE9F75DC7C064317FF9",
         "work/subpixel-x-probe.asm": "FB7113490FC125A832965F5CC5BE1BA982EF355EEDED56B3A7BD36CE35EBCEFF",
@@ -748,9 +765,12 @@
         "work/q8/src/perspective.py": "30DD70898B458C1888DDF0E14D2C3D0F1B97ABF38E5B404500EA2A222BE30EDF",
         "work/q8/src/perspective_exact.py": "EEBED49EA84309E9984EC3C24D401917FC6EEB5F155BA853A3D759A6EC192B63",
         "work/q8/src/perspective_rational.py": "48AD7C4FB6BD1A684676A8913033C82A5DF7BF4EFA211C3CAF1AE75EECB7E10C",
-        "work/q8/src/perspective_uniform.py": "3E7F275BB42BFB07041027F118C74B8C4C16734B21C8A16984075F5E4B02ADF8",
+        "work/q8/src/perspective_uniform.py": "AF25A0D9193A64F541F2B94C3236253253BC1CECDA13BA84443E8DDA69DF0398",
         "work/q8/src/perspective_uvzp.py": "08F59D43F6C5B7DCA4329654CCF17B64CB4ABB39FCEDDD79BD952D49DEC47252",
-        "work/q8/src/texture_fast.py": "1BA549A2F5902FFF9EC2B8A183A3B7686344E205A97A45583CE577A08DA381CF"
+        "work/q8/src/texture_fast.py": "1BA549A2F5902FFF9EC2B8A183A3B7686344E205A97A45583CE577A08DA381CF",
+        "work/q8/src/hybrid.py": "5BC494DA9D9348606E7FA430C0BA11FC4A840D52B4A7AFF2FBCADD3B6C9B18FC",
+        "work/q8/src/hybrid_line.asm": "54659AA0F3122B78A0AF977DA56C7ED0B5BBCC3DC8CD4B74E3E27E7E2BCAFFF9",
+        "work/q8/src/texture_lod.py": "CC127DF2B8B275064E5BC29E0916772500D488183CB9E2AF342F90E83D1C2644"
       },
       "referenceBuilds": [
         {
@@ -1110,13 +1130,28 @@
     "option": "TextureQuality",
     "sceneField": "textureQuality",
     "default": "standard",
-    "values": ["standard", "fast"],
-    "requires": ["GraphicsMode 7", "Precision q8", "TexturePrecision perspective", "textureLighting gouraud", "textureCompositor C"],
+    "values": [
+      "standard",
+      "fast"
+    ],
+    "requires": [
+      "GraphicsMode 7",
+      "Precision q8",
+      "TexturePrecision perspective",
+      "textureLighting gouraud",
+      "textureCompositor C"
+    ],
     "perspectiveBlockPixels": 8,
     "interior": "affine",
     "tail": "exact last one to eight samples",
-    "viewportLogical": [160,100],
-    "sampledLogical": [160,50],
+    "viewportLogical": [
+      160,
+      100
+    ],
+    "sampledLogical": [
+      160,
+      50
+    ],
     "reconstruction": "upper logical row duplication within same VIC-II color cell",
     "temporalInterpolation": false,
     "sceneSpecificLUT": false,
@@ -1126,5 +1161,79 @@
     "example": "examples/mode7-fast-cube.json",
     "guideEn": "MODE7-FAST.en.md",
     "guideIt": "MODE7-FAST.it.md"
+  },
+  "historicalReferences": {
+    "presentation": "legacy",
+    "additionalArguments": [
+      "-FramePresentation",
+      "legacy"
+    ],
+    "expectedHashesChanged": false,
+    "reason": "safe default changes only presentation timing; historical hashes retained explicitly"
+  },
+  "framePresentation": {
+    "option": "FramePresentation",
+    "default": "safe",
+    "values": [
+      "safe",
+      "legacy"
+    ],
+    "modes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7
+    ],
+    "waitRaster": 252,
+    "mode8Unchanged": true,
+    "legacyForDiagnosticsOnly": true,
+    "guideEn": "PRESENTATION.en.md",
+    "guideIt": "PRESENTATION.it.md"
+  },
+  "lineRaster": {
+    "option": "LineRaster",
+    "default": "precise",
+    "values": [
+      "precise",
+      "hybrid"
+    ],
+    "modes": [
+      1,
+      2,
+      5
+    ],
+    "requires": "Precision q8",
+    "geometryUnchanged": true,
+    "bitmapIdentical": false,
+    "multiplyOrDivideInWalker": false,
+    "guideEn": "LINE-RASTER.en.md",
+    "guideIt": "LINE-RASTER.it.md"
+  },
+  "mode7LOD": {
+    "option": "TextureLOD",
+    "sceneField": "textureLOD",
+    "default": "off",
+    "values": [
+      "off",
+      "gradual"
+    ],
+    "requires": [
+      "Mode7",
+      "Q8",
+      "perspective"
+    ],
+    "nearDefaultWU": 28,
+    "farDefaultWU": 44,
+    "fadeWidthWU": 16,
+    "classifier": "minimum original corner camera depth",
+    "farFill": "75% modal + 25% vivid present pigment",
+    "approximateImage": true,
+    "sceneSpecificIDs": false,
+    "uniformTexturesUnchanged": true,
+    "guideEn": "MODE7-LOD.en.md",
+    "guideIt": "MODE7-LOD.it.md"
   }
 }

@@ -11,8 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "work" / "build-3Dvibe64.ps1"
 SOURCE = BUILDER.read_text(encoding="utf-8").replace("\r\n", "\n")
-VERSION = "1.7.0"
-BUILDER_SHA256 = "80D03A8CE0ED44FF742F9AF138A0DB008FDD9CFFB9F4939AC8ACF026D5939FF4"
+VERSION = "1.8.0"
+BUILDER_SHA256 = "97032B86305EFCE4BBF074966DF7CFDAC44FE1D40B1C3E9624AED501DB3327DC"
 
 
 def sha256(path: Path) -> str:
@@ -84,7 +84,7 @@ def main() -> None:
     require("camera_plane_original_facing:")
 
     # Ground is Z-up in authored coordinates; plane Ground remains line-only
-    # in Mode 2 and uses post-clipping polygons in Modes 3–6.
+    # in Mode 2 and uses post-clipping polygons in Modes 3Ã¢â‚¬â€œ6.
     require('"world-z-up"')
     require("world ground mode 'plane' is available only in GraphicsMode 2, 3, 4, 5, or 6")
     require("ground_vside = RUNTIME_BUFFER_END")

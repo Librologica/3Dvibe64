@@ -1,5 +1,10 @@
 # Profili di precisione — 1.5.0
 
+1.8.0: [raster linee ibrido](LINE-RASTER.it.md) opzionale nelle Mode 1/2/5 Q8.
+Conserva la precisione geometrica e cambia soltanto la quantizzazione del raster.
+Restano default geometria legacy e linee Q8 precise. La presentazione sicura è
+ora default; i confronti PRG storici scelgono esplicitamente quella legacy.
+
 La1.6.0 aggiunge una selezione texture indipendente: Q8 da solo usa ancora UV
 affini. `-TexturePrecision perspective` richiede Mode7 Q8 e il contratto aggiuntivo
 di profondità limitata. Vedere [precisione texture](TEXTURE-PRECISION.it.md).

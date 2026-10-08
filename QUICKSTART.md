@@ -1,5 +1,22 @@
 # Quick start / Guida rapida
 
+## Release 1.8.0 / Versione 1.8.0
+
+Defaults: legacy geometry, precise Q8 lines, standard textures, LOD off, safe presentation.
+Default: geometria legacy, linee Q8 precise, texture standard, LOD off, presentazione sicura.
+New opt-in commands / Nuovi comandi opzionali:
+
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 2 -SceneFile examples/q8/two-objects-mode2.json -Q8Camera auto -LineRaster hybrid -OutputDirectory ../hybrid-mode2
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -SceneFile examples/mode7-fast-lod-cube.json -OutputDirectory ../fast-lod-cube
+```
+
+Hybrid: same command with matching Mode 1/5 and scene / stesso comando con Mode 1/5 e scena corrispondente.
+Read memory/quality limits / Leggere i limiti memoria/qualità:
+[lines EN](LINE-RASTER.en.md), [linee IT](LINE-RASTER.it.md), [LOD EN](MODE7-LOD.en.md), [LOD IT](MODE7-LOD.it.md), [presentation EN](PRESENTATION.en.md), [presentazione IT](PRESENTATION.it.md).
+Historical exact-PRG checks require explicit `-FramePresentation legacy`; normal builds must use the safe default.
+I confronti PRG storici richiedono `-FramePresentation legacy` esplicito; nelle build normali usare il default sicuro.
+
 ## Optional fast Mode 7 / Profilo veloce opzionale — 1.7.0
 
 Read the sampling/memory tradeoffs first / Leggere prima i compromessi:
@@ -69,7 +86,7 @@ polygonal options in the remaining Mode 1–7 examples to a Mode 8 command.
 I template hanno vincoli espliciti su geometria e camera. Non aggiungere
 alle build Mode 8 le opzioni degli esempi poligonali Mode 1–7 seguenti.
 
-3Dvibe64 1.6.1 is a source SDK. It intentionally contains no precompiled PRG:
+3Dvibe64 1.8.0 is a source SDK. It intentionally contains no precompiled PRG:
 compile a JSON scene locally with the PowerShell builder.
 
 ## Build / Compilazione

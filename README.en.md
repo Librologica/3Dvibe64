@@ -1,4 +1,8 @@
-# 3Dvibe64 1.7.0
+# 3Dvibe64 1.8.0
+
+## New in 1.8.0: texture LOD, hybrid lines, safe presentation
+
+Mode 7 adds opt-in [gradual LOD](MODE7-LOD.en.md) to the existing standard/fast projective profiles. Modes 1/2/5 gain [hybrid lines](LINE-RASTER.en.md) with unchanged Q8 camera/projection/clipping. Defaults remain legacy geometry, precise Q8 lines, standard texture quality and LOD off. [Safe presentation](PRESENTATION.en.md) is enabled by default and fixes the lower-strip scanout race. Historical PRG hashes require explicit `-FramePresentation legacy`; old unchanged-byte statements apply to their historical profiles. Mode 8 unchanged. [Release notes](RELEASE-NOTES-1.8.0.md).
 
 ## New in 1.7.0: optional fast Mode 7 profile
 
@@ -76,7 +80,7 @@ Hardware operation has not been tested; the Mode 8 qualification uses stock x64s
 and strict PNG import. Start with [Mode 7](MODE7.en.md). Modes 1–6 preserve their
 official 1.2.0 reference output; their existing API is documented below.
 
-This public 1.6.1 package is a source SDK: it contains the frozen builder,
+This public 1.8.0 package is a source SDK: it contains the frozen builder,
 documentation, JSON reference scenes, and contracts, but no precompiled PRG or
 diagnostic artifact. Build examples locally, preferably in a disposable working copy.
 The examples are executable API documentation, not bundled productions.

@@ -1,5 +1,10 @@
 # Precision profiles — 1.5.0
 
+1.8.0: optional [hybrid line raster](LINE-RASTER.en.md) in Q8 Modes 1/2/5.
+It preserves geometric precision, changing only endpoint raster quantization.
+Legacy geometry and precise Q8 lines remain defaults. Safe presentation is now
+default; historical PRG comparisons explicitly select legacy presentation.
+
 Version 1.6.0 adds an independent optional texture setting: Q8 alone still uses
 affine UV. `-TexturePrecision perspective` requires Mode 7 Q8 and its additional
 bounded-depth contract. See [texture precision](TEXTURE-PRECISION.en.md).

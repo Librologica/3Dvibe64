@@ -58,7 +58,7 @@ with tempfile.TemporaryDirectory(prefix='3dvibe64-q8-contract-') as temp:
         cmd=[shutil.which('pwsh'),'-NoProfile','-File',str(ROOT/'work/build-3Dvibe64.ps1'),
             '-Precision','q8','-Q8Camera',r['camera'],'-GraphicsMode',str(r['mode']),
             '-SceneFile',str(ROOT/f'examples/q8/two-objects-mode{r["mode"]}.json'),
-            '-VideoStandard',r['standard'],'-OutputDirectory',str(destination)]
+            '-VideoStandard',r['standard'],'-FramePresentation','legacy','-OutputDirectory',str(destination)]
         completed=subprocess.run(cmd,capture_output=True,text=True,env=dict(os.environ,PYTHONDONTWRITEBYTECODE='1'))
         assert completed.returncode==0,completed.stdout+completed.stderr
         assert sha(destination/'3Dvibe64.prg')==r['sha256'],r['name']
@@ -67,7 +67,7 @@ with tempfile.TemporaryDirectory(prefix='3dvibe64-q8-contract-') as temp:
     expected=next(r for r in references if r['name']=='stationary-m4-pal')['sha256']
     completed=subprocess.run([shutil.which('pwsh'),'-NoProfile','-File',str(ROOT/'work/build-3Dvibe64.ps1'),
         '-Precision','q8','-GraphicsMode','4','-SceneFile',str(ROOT/'examples/q8/two-objects-mode4.json'),
-        '-OutputDirectory',str(out/'q8-defaults')],capture_output=True,text=True)
+        '-FramePresentation','legacy','-OutputDirectory',str(out/'q8-defaults')],capture_output=True,text=True)
     assert completed.returncode==0,completed.stdout+completed.stderr
     assert sha(out/'q8-defaults/3Dvibe64.prg')==expected
     # CLI refusals happen before compilation; no ignored feature combinations.
