@@ -5,7 +5,7 @@ from continuous import pieces,verify_retired_state_absent
 from emit import attach
 from wire import prepare_wire,wire_pieces
 
-def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_auto=False,memory_recovery=True):
+def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_auto=False,memory_recovery=True,line_raster='precise',frame_presentation='safe'):
     source=(sdk/'work/3Dvibe64.asm').read_text(encoding='utf-8-sig')
     # Mode 1 legacy poly clipping overflows its middle segment for this profile.
     # Only this known error is allowed during source emission. Adapter removes
@@ -17,6 +17,9 @@ def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_
     lab={m[1]:int(m[2],16) for m in re.finditer(r'^(\w+) = \$([0-9a-fA-F]+)',source,re.M)}
     parts=wire_pieces(pieces(lab,music,motion),lab)
     source=prepare_wire(source,music,motion,lab['GRAPHICS_MODE'])
+    if line_raster=='hybrid':
+        from hybrid import apply
+        source,parts=apply(source,parts,lab['GRAPHICS_MODE'])
     if camera_mobile:
         from camera import adapt
         source,parts=adapt(source,parts,camera_auto)
@@ -69,6 +72,7 @@ def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_
               prgSHA256=sha(out/'3Dvibe64.prg'),bytes=len(data),legacySourceAssemblyExit=result.returncode,
               recommendation='Q8 above 20 MHz; legacy at <=20 MHz. Recommendation, not measured FPS.')
     meta['objectRanges']=object_ranges
+    meta.update(lineRaster=line_raster,framePresentation=frame_presentation)
     if camera_mobile:meta.update(cameraMobile=True,cameraAutomatic=camera_auto)
     if recovery:meta['q8MemoryRecovery']=recovery
     (out/'build.json').write_text(json.dumps(meta,indent=2));print(out.name,meta['prgSHA256'],flush=True)
