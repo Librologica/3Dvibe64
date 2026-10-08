@@ -32,7 +32,7 @@ def build(scene: Path, expect_success: bool = True, extra_args: list[str] | None
         powershell(), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(BUILDER),
         "-SceneFile", str(scene), "-GraphicsMode", "6", "-Quality", "fast",
         "-Projection", "extended-table", "-MemoryLayout", "high-basic-v2",
-        "-NoFpsOverlay", "-SkipCmdUpdate",
+        "-NoFpsOverlay", "-FramePresentation", "legacy", "-SkipCmdUpdate",
     ]
     if extra_args:
         command.extend(extra_args)
