@@ -1,4 +1,8 @@
-# 3Dvibe64 1.7.0
+# 3Dvibe64 1.8.0
+
+## Novità 1.8.0: LOD texture, linee ibride, presentazione sicura
+
+Mode 7 aggiunge [LOD graduale](MODE7-LOD.it.md) opzionale ai profili prospettici standard/fast esistenti. Mode 1/2/5 aggiungono [linee ibride](LINE-RASTER.it.md), conservando camera/proiezione/clipping Q8. Restano default geometria legacy, linee Q8 precise, qualità texture standard e LOD off. La [presentazione sicura](PRESENTATION.it.md) è attiva di default e corregge la fascia inferiore causata dalla gara fra clear e scansione video. Gli hash PRG storici richiedono `-FramePresentation legacy` esplicito; le vecchie dichiarazioni di byte invariati valgono per i profili storici. Mode 8 invariata. [Note release](RELEASE-NOTES-1.8.0.md).
 
 ## Novità 1.7.0: profilo veloce Mode 7
 
@@ -76,7 +80,7 @@ Non è stata eseguita una prova hardware: la qualificazione Mode 8 usa x64sc sto
 opzionale e import PNG rigoroso. Iniziare da [Mode 7](MODE7.it.md). Mode 1–6
 conservano l'output ufficiale 1.2.0; la loro API esistente è documentata sotto.
 
-Questo pacchetto pubblico 1.6.1 è un SDK sorgente: contiene builder congelato,
+Questo pacchetto pubblico 1.8.0 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni

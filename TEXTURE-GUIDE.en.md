@@ -1,5 +1,9 @@
 # Mode 7 Texture Format Guide
 
+1.8.0: optional [gradual LOD](MODE7-LOD.en.md) derives its modal
+and accent pigments from these same runtime texels and the face palette.
+The source format, dimensions, repeat and UV contract below are unchanged.
+
 Every texture is **16×16**, row-major, unpacked: one byte per texel, 256 bytes. No other dimensions are supported. Integer JSON values **1, 2, 3** mean VIC-II pixel codes **01, 10, 11**. Do not write binary literals or RGB values as texels. **00** is reserved for the background; zero texels are rejected, not transparent.
 
 At scene level, `texturePalette: [9,8,1]` assigns the VIC-II color indices (0–15) for Dark, High and Highlight in that order. These are the three texture pigments, not RGB colors. Multicolor cell palette sharing still applies. With lighting none they are sampled directly; flat changes lighting per face; Gouraud C modulates sampled pigments by shade vertex illumination. See [Mode 7](MODE7.en.md).

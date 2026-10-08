@@ -1,5 +1,10 @@
 # GraphicsMode 7 — Texture Mapping
 
+Release 1.8.0 adds optional [gradual texture LOD](MODE7-LOD.en.md) and
+the shared [safe presentation fix](PRESENTATION.en.md). Existing fast/standard,
+affine/projective and lighting choices remain independent. LOD defaults to off.
+Historical byte-identical statements require the historical presentation option.
+
 1.7.0 adds explicit `TextureQuality fast` for Q8/perspective/Gouraud C,
 with block8 UV and upper-row duplication. Standard output/defaults are intact.
 Read the [fast sampling contract](MODE7-FAST.en.md); the broader legacy profile

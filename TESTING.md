@@ -1,5 +1,23 @@
 # Release tests
 
+## Release 1.8.0
+
+22 scripts: the 19 inherited contracts plus `test_line_hybrid.py`,
+`test_texture_lod.py`, `test_frame_presentation.py`. Run only through
+`python -B scripts/run_release_tests.py`, which makes clean temporary SDK copies.
+Old expected PRG hashes are checked with explicit legacy presentation; native
+safe-default qualification is separate. The timing-model test is not a VIC-II
+simulation. Real VICE traces, RAM/palette replay and measurements are recorded
+in the external qualification report. New LOD and hybrid raster alter image sampling
+intentionally, so their oracles are not the original Q8 pixel hashes.
+
+22 script: 19 contratti ereditati più i tre test nuovi. Usare esclusivamente il
+runner sopra, che crea copie SDK temporanee pulite. I vecchi hash PRG sono
+verificati con presentazione legacy esplicita; la qualificazione nativa del
+default sicuro è separata. Il modello temporale non simula il VIC-II. Trace VICE,
+replay RAM/palette e misure sono nel report esterno di qualificazione. LOD e raster
+ibrido cambiano intenzionalmente il campionamento; hanno oracoli propri.
+
 ## 1.7.0 fast Mode 7 / Mode 7 veloce
 
 The runner includes `test_texture_fast.py`. It builds fresh PAL/NTSC Q8
