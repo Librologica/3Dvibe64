@@ -22,6 +22,7 @@ TESTS = (
     "test_texture_uvzp.py",
     "test_texture_fast.py",
     "test_line_hybrid.py", "test_texture_lod.py", "test_frame_presentation.py",
+    "test_normalized16.py",
 )
 
 def main():
