@@ -5,7 +5,7 @@ from continuous import pieces,verify_retired_state_absent
 from emit import attach
 from wire import prepare_wire,wire_pieces
 
-def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_auto=False,memory_recovery=True,line_raster='precise',frame_presentation='safe'):
+def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_auto=False,memory_recovery=True,line_raster='precise',frame_presentation='safe',geometry_adapter=None):
     source=(sdk/'work/3Dvibe64.asm').read_text(encoding='utf-8-sig')
     # Mode 1 legacy poly clipping overflows its middle segment for this profile.
     # Only this known error is allowed during source emission. Adapter removes
@@ -31,6 +31,8 @@ def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_
     if lab['SCENE_OBJECT_COUNT']>1:
         from multiobject import adapt
         parts=adapt(parts)
+    if geometry_adapter is not None:
+        source,parts=geometry_adapter(source,parts,lab)
     verify_retired_state_absent(source)
     sizing=assemble(attach(source,parts),out,'sizing')
     assert sizing['RUNTIME_BUFFER_COLOR_POLICY_END']<=0x9000,'wire adapter overlaps runtime state'
@@ -48,7 +50,10 @@ def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_
         if start<end:gaps.append((start,end))
     original=gaps[:];placed={}
     sizes={n:sizing[f'hp_block_{n}_end']-sizing[f'hp_block_{n}_begin'] for n in parts}
-    for n,size in sorted(sizes.items(),key=lambda p:-p[1]):
+    if geometry_adapter is not None:
+        from nf_modes import place
+        placed,gaps=place(sizes,gaps)
+    for n,size in ([] if geometry_adapter is not None else sorted(sizes.items(),key=lambda p:-p[1])):
         align=256 if n=='tables' else 2;need=size+(0 if n in ('tables','data') else 32)
         options=[]
         for i,(a,b) in enumerate(gaps):
