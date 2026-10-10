@@ -1,4 +1,14 @@
-# 3Dvibe64 1.8.0
+# 3Dvibe64 1.9.0
+
+## Novità 1.9.0: geometria sperimentale Normalized16
+
+`-Precision normalized16` è un esperimento geometrico intermedio esplicito per
+Mode 1–7, con ABI raster Q2. Legacy resta default; Q8 conserva il percorso preciso,
+incluse texture prospettiche/fast/LOD Mode 7. Il nuovo exporter limitato supporta
+al massimo 16 vertici runtime, camera walkLite stazionaria/interattiva e Mode 7
+affine. Non è l'adattamento privato della navetta né un sostituto generale di Q8.
+Leggere [contratto](NORMALIZED16.it.md), [qualificazione](NORMALIZED16-QUALIFICATION.md)
+e [note release EN/IT](RELEASE-NOTES-1.9.0.md).
 
 ## Novità 1.8.0: LOD texture, linee ibride, presentazione sicura
 
@@ -80,7 +90,7 @@ Non è stata eseguita una prova hardware: la qualificazione Mode 8 usa x64sc sto
 opzionale e import PNG rigoroso. Iniziare da [Mode 7](MODE7.it.md). Mode 1–6
 conservano l'output ufficiale 1.2.0; la loro API esistente è documentata sotto.
 
-Questo pacchetto pubblico 1.8.0 è un SDK sorgente: contiene builder congelato,
+Questo pacchetto pubblico 1.9.0 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni

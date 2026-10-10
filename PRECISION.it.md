@@ -1,5 +1,9 @@
 # Profili di precisione — 1.5.0
 
+1.9.0: `-Precision normalized16` sperimentale esplicito, non Q8 con meno bit.
+Legacy resta default; Q8 perspective/fast/LOD restano invariati.
+Vedere [ambito e aritmetica](NORMALIZED16.it.md) e [qualificazione](NORMALIZED16-QUALIFICATION.md).
+
 1.8.0: [raster linee ibrido](LINE-RASTER.it.md) opzionale nelle Mode 1/2/5 Q8.
 Conserva la precisione geometrica e cambia soltanto la quantizzazione del raster.
 Restano default geometria legacy e linee Q8 precise. La presentazione sicura è

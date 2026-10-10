@@ -1,8 +1,18 @@
-# 3Dvibe64 1.8.0
+# 3Dvibe64 1.9.0
+
+## New in 1.9.0: experimental Normalized16 geometry
+
+`-Precision normalized16` is an explicit intermediate geometry experiment for
+Modes 1–7, retaining the Q2 raster ABI. Legacy remains the default; Q8 remains
+the precise supported path, including Mode 7 perspective/fast/LOD. The new
+bounded exporter supports at most 16 runtime vertices, stationary/interactive
+walkLite cameras and affine Mode 7 only. It is not the private adaptive ship
+adapter, nor a universal Q8 replacement. Read the [contract](NORMALIZED16.en.md),
+[qualification](NORMALIZED16-QUALIFICATION.md) and [release notes EN/IT](RELEASE-NOTES-1.9.0.md).
 
 ## New in 1.8.0: gradual Mode 7 LOD, hybrid lines and safe presentation
 
-Not an official release. Mode 7 retains standard/fast projective profiles and adds explicit [gradual texture LOD](MODE7-LOD.en.md). Modes 1/2/5 Q8 gain an optional [hybrid additive line raster](LINE-RASTER.en.md), preserving precise camera/projection/clipping. Legacy geometry remains default; `LineRaster precise`, `TextureQuality standard` and `TextureLOD off` remain defaults.
+Mode 7 retains standard/fast projective profiles and adds explicit [gradual texture LOD](MODE7-LOD.en.md). Modes 1/2/5 Q8 gain an optional [hybrid additive line raster](LINE-RASTER.en.md), preserving precise camera/projection/clipping. Legacy geometry remains default; `LineRaster precise`, `TextureQuality standard` and `TextureLOD off` remain defaults.
 
 [Safe presentation](PRESENTATION.en.md) fixes the bottom-strip clear/scanout race in Modes 1–7. This timing fix is enabled by default: previous PRG hashes are retained with **explicit `-FramePresentation legacy`** for historical regression only. Statements of unchanged PRGs in the historical sections below refer to their original release/profile, not the new safe-default bytes. Mode 8 is unchanged. [EN/IT release notes](RELEASE-NOTES-1.8.0.md).
 
@@ -82,7 +92,7 @@ Hardware operation has not been tested; the Mode 8 qualification uses stock x64s
 Gouraud C lighting and PNG import. [English guide](MODE7.en.md) · [Guida italiana](MODE7.it.md).
 Modes 1–6 preserve their official 1.2.0 reference output.
 
-3Dvibe64 1.8.0 is a source SDK for creating specialized Commodore 64 3D programs
+3Dvibe64 1.9.0 is a source SDK for creating specialized Commodore 64 3D programs
 from JSON scenes. It includes the frozen PowerShell builder, engine code generation,
 technical documentation, generic executable JSON references, and reproducibility
 contracts. It deliberately ships with no precompiled PRG and no diagnostic artifacts.
@@ -186,7 +196,7 @@ sinusoidal-easing language.
 
 ## Public release contract
 
-The 1.8.0 contract requires version `1.8.0`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
+The 1.9.0 contract requires version `1.9.0`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
 build hashes generated outside the package. Invalid point-only or collinear faces are
 rejected by the builder as malformed geometry. It also runs frozen Ground-crossing
 poses for Modes 4 and 5 through at least 32 `render_frame_end` events and verifies
