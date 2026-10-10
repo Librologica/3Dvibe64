@@ -7,7 +7,7 @@ param(
  [string]$TextureLOD = 'off',
  [int]$TextureLODNear = 28,
  [int]$TextureLODFar = 44,
- [ValidateSet("legacy", "q8")]
+ [ValidateSet("legacy", "q8", "normalized16")]
  [string]$Precision = "legacy",
 
  [ValidateSet("affine", "perspective")]
@@ -305,6 +305,21 @@ if (($TextureLOD -ne 'off' -or $PSBoundParameters.ContainsKey('TextureLOD')) -an
 if (($PSBoundParameters.ContainsKey('TextureLODNear') -or $PSBoundParameters.ContainsKey('TextureLODFar')) -and $TextureLOD -eq 'off') { throw 'TextureLOD distances require gradual LOD.' }
 if ($TextureLOD -eq 'gradual' -and ($TextureLODNear -le 1 -or $TextureLODFar -ge 256 -or ($TextureLODFar-$TextureLODNear) -ne 16)) { throw 'TextureLOD requires 1 < near < far < 256 WU and a 16 WU fade interval.' }
 # The adapter works in a fresh output tree; legacy generation below is unchanged.
+if ($Precision -eq 'normalized16') {
+ $allowed = @('Precision','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','VideoStandard')
+ foreach ($key in $PSBoundParameters.Keys) {
+  if ($key -notin $allowed) { throw "Normalized16: option -$key is not supported. See NORMALIZED16.en.md." }
+ }
+ if ($GraphicsMode -eq '8' -or -not $SceneFile) { throw 'Normalized16 requires Mode1-7 and SceneFile.' }
+ if ($Q8Camera -eq 'auto') { throw 'Normalized16 automatic camera adapter is not qualified; use stationary or interactive.' }
+ if (-not $PSBoundParameters.ContainsKey('VideoStandard')) { $VideoStandard='pal' }
+ if ($VideoStandard -eq 'auto') { throw 'Normalized16 requires pal or ntsc.' }
+ if (-not $OutputDirectory) { $OutputDirectory = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) '3Dvibe64-output/normalized16' }
+ $python = if ($env:PYTHON_EXE) { $env:PYTHON_EXE } else { 'python' }
+ & $python -B (Join-Path $PSScriptRoot 'normalized_build.py') --scene (Resolve-Path -LiteralPath $SceneFile).Path --out $OutputDirectory --mode $GraphicsMode --standard $VideoStandard --camera $Q8Camera --frame-presentation $FramePresentation
+ if ($LASTEXITCODE -ne 0) { throw "Normalized16 build failed with exit code $LASTEXITCODE." }
+ return
+}
 if ($Precision -eq 'q8') {
  $allowed = @('Precision','TexturePrecision','TextureQuality','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','LineRaster','TextureLOD','TextureLODNear','TextureLODFar',
               'VideoStandard','CameraMode','CameraViewport','MemoryLayout','Quality',
