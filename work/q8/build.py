@@ -20,7 +20,7 @@ def assemble(source,out,stem):
     r=subprocess.run(cmd,capture_output=True,text=True,cwd=out);(out/(stem+'.log')).write_text(r.stdout+r.stderr)
     if r.returncode:raise RuntimeError(r.stdout+r.stderr)
     return labels(out/(stem+'.labels'))
-def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True,texture_precision=None,texture_quality=None,frame_presentation='safe',line_raster='precise',texture_lod=None,lod_near=None,lod_far=None):
+def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True,texture_precision=None,texture_quality=None,frame_presentation='safe',line_raster='precise',texture_lod=None,lod_near=None,lod_far=None,geometry_adapter=None):
     scene=Path(scene).resolve();spec=json.loads(scene.read_text(encoding='utf-8-sig'));out=Path(name).resolve()
     validate(spec,mode,standard,out)
     lod_distances_explicit=lod_near is not None or lod_far is not None or 'textureLODNear' in spec or 'textureLODFar' in spec
@@ -74,7 +74,7 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
     (out/'build.log').write_text(r.stdout+r.stderr)
     if precision=='q8' and mode<=2:
         from wire_build import finish_wire
-        return finish_wire(out,sdk,spec,cmd,r,music,motion,camera_mobile,camera_auto,memory_recovery,line_raster,frame_presentation)
+        return finish_wire(out,sdk,spec,cmd,r,music,motion,camera_mobile,camera_auto,memory_recovery,line_raster,frame_presentation,geometry_adapter)
     if r.returncode:raise RuntimeError(r.stdout+r.stderr)
     source=(sdk/'work/3Dvibe64.asm').read_text(encoding='utf-8-sig');lab=assemble(source,out,'base')
     info=dict(precision=precision,scene=spec,command=cmd,
@@ -138,6 +138,8 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
                 from texture_lod import apply as lod_apply
                 source,parts,lod_info=lod_apply(source,parts,lab,byte,lod_near,lod_far,texture_quality)
                 info['textureLOD']=lod_info
+        if geometry_adapter is not None:
+            source,parts=geometry_adapter(source,parts,lab)
         sizing_source=attach(source,parts)
         verify_retired_state_absent(sizing_source)
         sizing=assemble(sizing_source,out,'sizing')

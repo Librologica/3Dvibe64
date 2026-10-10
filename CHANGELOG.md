@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.9.0 — 2026-10-10
+
+English: explicit experimental Normalized16 homogeneous geometry for bounded
+Modes 1–7 meshes; Q8 coefficient setup, signed16 camera-space clipping and
+reciprocal projection into the existing Q2 raster. Mode 7 affine only.
+Legacy remains default; Q8, perspective, fast, LOD and Mode 8 retained.
+Maintained generator, assembled arithmetic, native qualification and EN/IT
+contract. No private demos, soundtrack or adaptive ship specialization.
+
+Italiano: geometria omogenea Normalized16 sperimentale esplicita per mesh
+limitate Mode 1–7; setup Q8, clipping camera-space signed16, proiezione reciproca
+verso raster Q2. Mode 7 solo affine. Legacy default; Q8, perspective, fast, LOD
+e Mode 8 conservati. Generatore mantenuto, test assembly, qualificazione nativa
+e contratto EN/IT. Nessuna demo privata, musica o adattamento della navetta.
+
 ## 1.8.0 — 2026-10-08
 
 English: safe post-visible presentation for Modes 1–7; opt-in Q8 additive hybrid line raster in Modes 1/2/5; property-derived gradual Mode 7 projective texture LOD with modal/accent far fill. Existing fast profile retained. Legacy geometry stays default; new image tradeoffs are explicit. Frozen PRG references retained with explicit historical presentation, Mode 8 untouched. No private room demo, soundtrack or scene-specific ordering promoted. New assembled tests and equivalent EN/IT contracts.

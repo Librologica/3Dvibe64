@@ -1,5 +1,34 @@
 # Release tests
 
+## Release 1.9.0 / Versione 1.9.0
+
+23 scripts: the 22 inherited tests, plus `test_normalized16.py`. Use the same
+clean-copy runner below. The new test rebuilds 21 PAL/NTSC programs, checks
+seven deterministic PAL regenerations and executes actual 6502 multiply,
+ratio, projection and five-plane clipping routines. Invalid profile/camera
+combinations are refused. Historical PRG/framebuffer hashes are unchanged.
+
+23 script: i 22 test ereditati più `test_normalized16.py`, sempre tramite il
+runner su copie temporanee. Il nuovo test esegue 21 build PAL/NTSC, sette
+rigenerazioni PAL deterministiche e routine 6502 reali di prodotto, rapporto,
+proiezione e clipping sui cinque piani. Combinazioni non supportate rifiutate.
+Gli hash storici PRG/framebuffer non vengono aggiornati.
+
+Native FPS and identical-pose palette/bitmap replay are separate:
+
+```powershell
+$env:VICE_TURBO6510 = 'C:\tools\turbo6510\x64sc_u.exe'
+python -B scripts/benchmark_normalized16.py --out ../normalized-qualification --standard pal
+python -B scripts/benchmark_normalized16.py --out ../normalized-qualification --standard ntsc
+python -B scripts/benchmark_normalized16.py --out ../normalized-qualification --standard pal --capture --precision normalized16
+```
+
+The native benchmark uses unchanged public scenes, Turbo6510×64, no music or
+overlay, 2s warm-up and at least 20s emulated measurement. Warp/host time is not
+an FPS source. Color RAM is captured separately from the RAM underneath I/O,
+and compared by its stored low nibble. py65 is required for the capture replay.
+See [qualification / qualificazione](NORMALIZED16-QUALIFICATION.md).
+
 ## Release 1.8.0
 
 22 scripts: the 19 inherited contracts plus `test_line_hybrid.py`,
