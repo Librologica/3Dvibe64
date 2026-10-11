@@ -1,6 +1,6 @@
 # Public JSON reference scenes
 
-## RC1 Q8 scalability / Scalabilità Q8 RC1
+## 1.10.0 Q8 scalability / Scalabilità Q8 1.10.0
 
 `q8/scalability/` contains matching affine scenes for 3 and 13 objects,
 and a single 129-vertex transformation stress case (one face).
