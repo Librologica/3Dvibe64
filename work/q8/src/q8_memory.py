@@ -40,7 +40,7 @@ qm_scale_loop:
 
 
 def recover(source,lab):
-    if lab.get('SCENE_OBJECT_COUNT') not in (1,2):raise ValueError('Q8_OBJECT_BUDGET: 1..2')
+    if not 1<=lab.get('SCENE_OBJECT_COUNT',0)<=255:raise ValueError('Q8_OBJECT_BUDGET: 1..255')
     for key,value in {'EXPLORER_MATRIX_FOLD':1,
                       'STABLE_FACE_CULL_PROFILE':0,'WORLD_GROUND_OCCLUDE':0,
                       'CAMERA_ROLL_ACTIVE':0,'CAMERA_WALK_LITE':1,'CAMERA_MOVABLE':1,

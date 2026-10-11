@@ -1,4 +1,4 @@
-"""Two-object opt-in. Keep all single-object emissions byte-identical."""
+"""Disjoint-object adapter. Preserve existing one/two-object emissions."""
 import math
 
 

@@ -15,7 +15,7 @@ def combine(a,b,out,sub=False):
 
 def validate(lab):
     if lab.get('GRAPHICS_MODE') not in (1,2,3,4,5,6,7):raise ValueError('Q8_MODE_UNQUALIFIED: requires Mode 1..7')
-    if lab.get('SCENE_OBJECT_COUNT') not in (1,2):raise ValueError('Q8_OBJECT_BUDGET: 1..2')
+    if not 1<=lab.get('SCENE_OBJECT_COUNT',0)<=255:raise ValueError('Q8_OBJECT_BUDGET: 1..255')
     needed={'MESH_SOURCE_SHARING_RUNTIME':0,
             'CAMERA_RUNTIME_CONTROLS':0,'EXPLORER_MATRIX_FOLD':1,'WORLD_GROUND_OCCLUDE':0,
             'STABLE_FACE_CULL_PROFILE':0,'CAMERA_WALK_LITE':1,'EXPLORER_CAMERA_YAW':0,
@@ -23,7 +23,7 @@ def validate(lab):
             'PROJ_CENTER_Y':50,'PROJ_FOCAL':170}
     for n,v in needed.items():
         if lab.get(n)!=v:raise ValueError(f'Q8_PROFILE_UNQUALIFIED: {n}={lab.get(n)} (requires {v})')
-    if not 1<=lab['VERT_COUNT']<=96:raise ValueError('Q8_VERTEX_BUDGET: 1..96 vertices in this gate')
+    if not 1<=lab['VERT_COUNT']<=255:raise ValueError('Q8_VERTEX_BUDGET: 1..255 runtime vertices; RAM fit is checked separately')
 
 def chunks(lab):
     validate(lab)
