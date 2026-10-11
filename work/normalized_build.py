@@ -12,6 +12,8 @@ from normalized import make_parts
 
 def validate(spec,mode,standard,out):
     q8_validate(spec,mode,standard,Path(out).resolve())
+    if len(spec['objects'])>2:
+        raise ValueError('NORMALIZED_OBJECT_BUDGET: this experimental profile supports at most 2 objects')
     if spec.get('texturePrecision','affine')!='affine' or spec.get('textureQuality','standard')!='standard' or spec.get('textureLOD','off')!='off':
         raise ValueError('NORMALIZED_PROFILE: Mode7 affine only; perspective/fast/LOD remain Q8')
     if any(k in spec for k in ('textureLODNear','textureLODFar')):
