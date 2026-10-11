@@ -43,3 +43,48 @@ part of the project being changed:
 
 The required author attribution for the original project remains
 `librologica.digital`. A contribution does not grant commercial-use rights.
+
+## Italiano — contribuire a 3Dvibe64
+
+Grazie per il contributo a 3Dvibe64. Il progetto è un engine con sorgenti
+disponibili per uso non commerciale. Prima di contribuire, leggere
+[LICENSE](LICENSE) e [LICENSE-DOCUMENTATION.md](LICENSE-DOCUMENTATION.md).
+
+### Segnalare un problema
+
+Aprire un'issue GitHub con:
+
+- versione di 3Dvibe64;
+- scena JSON e comando di compilazione completo;
+- GraphicsMode, camera, viewport, projection e layout memoria scelti;
+- messaggio di errore esatto o risultato osservato;
+- versioni 64tass e VICE, quando rilevanti;
+- scena riproducibile più piccola che conservi il problema.
+
+Non pubblicare dettagli sensibili di sicurezza in un'issue normale:
+seguire [SECURITY.md](SECURITY.md).
+
+### Proporre una modifica
+
+1. Creare un branch dal branch attualmente mantenuto.
+2. Mantenere le modifiche mirate; evitare commit di PRG, ASM generati, log o screenshot.
+3. Preservare compatibilità JSON pubblica e CLI, salvo proposta esplicita di
+   aggiornamento del contratto documentato e versionato.
+4. Aggiornare documentazione italiana e inglese quando cambia il comportamento pubblico.
+5. Eseguire `python scripts/test_world_metrics.py`.
+6. Eseguire `python scripts/test_release_contract.py`; il contratto completo
+   richiede64tass e VICE x64sc come descritto nel README.
+7. Spiegare motivazione, implementazione e verifiche nella pull request.
+
+### Licenza dei contributi
+
+Inviando un contributo, si conferma di avere il diritto di inviarlo e si accetta
+che sia distribuito sotto la stessa licenza della parte del progetto modificata:
+
+- software, script, esempi JSON, materiale di validazione e codice engine generato:
+  PolyForm Noncommercial License1.0.0;
+- documentazione Markdown e manuali: Creative Commons
+  Attribution-NonCommercial4.0 International.
+
+L'attribuzione obbligatoria dell'autore del progetto originale resta
+`librologica.digital`. Un contributo non concede diritti d'uso commerciale.

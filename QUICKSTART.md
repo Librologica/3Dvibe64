@@ -107,6 +107,7 @@ compile a JSON scene locally with the PowerShell builder.
 ## Build / Compilazione
 
 From a disposable working copy of the package root:
+Dalla radice di una copia di lavoro del pacchetto:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps1 `
@@ -125,6 +126,7 @@ Use a separate copy when you want the source SDK itself to remain free of genera
 artifacts.
 
 For Gouraud rendering, build a Mode 6 reference with the required segmented layout:
+Per Gouraud compilare un riferimento Mode6 con il layout segmentato obbligatorio:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps1 `
@@ -153,6 +155,16 @@ curved boundaries, or compare the hard/smooth cube examples. The silhouette does
 not change. The runtime limit is 255 shade vertices. Materials provide
 Dark/High/Highlight; reflectivity is satin/gloss/reflective/mirror.
 See [TESTING.md](TESTING.md) to verify a clean SDK without generating files inside it.
+Vedere [examples/README.md](examples/README.md) per tutte le scene pubbliche e
+i comandi completi. I README localizzati descrivono renderer, schema JSON,
+controlli camera, limiti e opzioni CLI pubbliche.
+
+Mode6 è Gouraud ordered-dithered per VIC-II e usa l'engine Gate5 validato.
+`gouraud.creaseAngle` ha default60 gradi: usare180 nel toro grossolano per
+smussare i confini curvi oppure confrontare i cubi hard/smooth. La silhouette
+non cambia. Il limite runtime è255 shade vertices. I materiali forniscono
+Dark/High/Highlight; reflectivity è satin/gloss/reflective/mirror.
+Vedere [TESTING.md](TESTING.md) per verificare l'SDK pulito senza generarvi file.
 
 ## Official Mode 7 in 1.3.0
 
