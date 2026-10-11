@@ -1,6 +1,9 @@
 # 3Dvibe64 1.10.0-rc1 — Q8 scalability / scalabilità Q8
 
-Release candidate; official 1.9.0 remains stable. Legacy remains the default.
+Historical RC notes: this candidate was promoted to [official 1.10.0](RELEASE-NOTES-1.10.0.md).
+Note storiche RC: candidata promossa alla 1.10.0 ufficiale.
+
+At candidate publication: release candidate; official 1.9.0 remains stable. Legacy remains the default.
 Q8 accepts disjoint object ranges beyond the former two-object/96-vertex gates,
 up to the existing 255 object/runtime-vertex encoding ceilings. Every scene
 must pass real source/runtime face, edge, shade-buffer and RAM guards.

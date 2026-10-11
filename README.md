@@ -1,6 +1,6 @@
-# 3Dvibe64 1.10.0-rc1
+# 3Dvibe64 1.10.0
 
-## Candidate 1.10.0-rc1: Q8 scene scalability
+## Release 1.10.0: Q8 scene scalability
 
 Q8 now accepts disjoint objects and runtime vertices up to the existing
 255-entry byte-index ceiling. The former two-object/96-vertex qualification
@@ -8,8 +8,8 @@ gates are removed. Every scene must still pass actual buffer, segment and
 geometry-domain checks; 255 is not a guaranteed capacity in every mode.
 Shared source meshes, Ground, timeline and camera roll remain unsupported
 by this Q8 exporter. Normalized16 remains experimental, two objects/16 vertices.
-See [candidate contract](Q8-SCALABILITY.md). Legacy stays the default.
-[RC notes / Note RC](RELEASE-NOTES-1.10.0-rc1.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
+See [release contract](Q8-SCALABILITY.md). Legacy stays the default.
+[Release notes / Note di versione](RELEASE-NOTES-1.10.0.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
 
 ## New in 1.9.0: experimental Normalized16 geometry
 
@@ -103,7 +103,7 @@ Hardware operation has not been tested; the Mode 8 qualification uses stock x64s
 Gouraud C lighting and PNG import. [English guide](MODE7.en.md) · [Guida italiana](MODE7.it.md).
 Modes 1–6 preserve their official 1.2.0 reference output.
 
-3Dvibe64 1.10.0-rc1 is a source SDK for creating specialized Commodore 64 3D programs
+3Dvibe64 1.10.0 is a source SDK for creating specialized Commodore 64 3D programs
 from JSON scenes. It includes the frozen PowerShell builder, engine code generation,
 technical documentation, generic executable JSON references, and reproducibility
 contracts. It deliberately ships with no precompiled PRG and no diagnostic artifacts.
@@ -207,7 +207,7 @@ sinusoidal-easing language.
 
 ## Public release contract
 
-The candidate contract requires version `1.10.0-rc1`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
+The release contract requires version `1.10.0`, immutable builder/backend hashes, a complete permanent-file inventory, no permanent `.prg`, a valid manifest, generic examples, and reference
 build hashes generated outside the package. Invalid point-only or collinear faces are
 rejected by the builder as malformed geometry. It also runs frozen Ground-crossing
 poses for Modes 4 and 5 through at least 32 `render_frame_end` events and verifies

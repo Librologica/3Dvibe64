@@ -1,6 +1,6 @@
-# 3Dvibe64 1.10.0-rc1
+# 3Dvibe64 1.10.0
 
-## Candidate 1.10.0-rc1: scene Q8 con più oggetti
+## Release 1.10.0: scene Q8 con più oggetti
 
 Q8 accetta oggetti disgiunti e vertici runtime fino al tetto di 255 elementi
 degli indici a byte. Rimossi i precedenti limiti di qualificazione di due
@@ -8,8 +8,8 @@ oggetti e 96 vertici. Ogni scena deve comunque superare i controlli effettivi
 di buffer, segmenti e dominio geometrico: 255 non è una capienza garantita.
 Mesh sorgenti condivise, Ground, timeline e roll camera restano esclusi da
 questo exporter Q8. Normalized16 resta sperimentale: due oggetti/16 vertici.
-Vedere [contratto della candidate](Q8-SCALABILITY.md). Legacy resta default.
-[RC notes / Note RC](RELEASE-NOTES-1.10.0-rc1.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
+Vedere [contratto della release](Q8-SCALABILITY.md). Legacy resta default.
+[Release notes / Note di versione](RELEASE-NOTES-1.10.0.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
 
 ## Novità 1.9.0: geometria sperimentale Normalized16
 
@@ -101,7 +101,7 @@ Non è stata eseguita una prova hardware: la qualificazione Mode 8 usa x64sc sto
 opzionale e import PNG rigoroso. Iniziare da [Mode 7](MODE7.it.md). Mode 1–6
 conservano l'output ufficiale 1.2.0; la loro API esistente è documentata sotto.
 
-Questa candidata 1.10.0-rc1 è un SDK sorgente: contiene builder congelato,
+Questa release ufficiale 1.10.0 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni

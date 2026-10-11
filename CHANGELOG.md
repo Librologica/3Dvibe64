@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.10.0 — 2026-10-11
+
+Official promotion of qualified 1.10.0-rc1. Q8 scene scalability is now released:
+encoding ceilings 255 objects/255 runtime vertices with real buffer/RAM guards.
+Engine and measured PRGs are unchanged; package identity and current guides
+now identify the stable release. Legacy remains default, Normalized16 experimental.
+See [official release notes](RELEASE-NOTES-1.10.0.md).
+
+Italiano: promozione ufficiale della RC qualificata; engine e PRG misurati
+invariati, manifest e guide allineati alla release stabile 1.10.0.
+
 ## 1.10.0-rc1 — 2026-10-11
 
 Candidate: remove Q8 two-object/96-vertex gates, retaining byte-index ceilings

@@ -9,7 +9,7 @@ It reserves UV scratch $E8..$EF and patches scalar shader entry points between
 spans: custom IRQs must not use that scratch or reenter the renderer.
 The general legacy and other-mode contracts below remain unchanged.
 
-## Precision profiles / Profili di precisione — 1.10.0-rc1
+## Precision profiles / Profili di precisione — 1.10.0
 
 Q8: byte-index ceilings of 255 disjoint objects/runtime vertices, subject to real RAM guards.
 Normalized16: experimental, at most two objects/16 runtime vertices.

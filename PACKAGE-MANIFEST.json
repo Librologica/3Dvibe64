@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.10.0-rc1",
-    "version": "1.10.0-rc1",
+    "displayName": "3Dvibe64 1.10.0",
+    "version": "1.10.0",
     "distribution": "source-sdk",
-    "permanentFiles": 232,
+    "permanentFiles": 233,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -1129,7 +1129,7 @@
       ],
       "budgetPolicy": "byte-index ceiling; per-scene guarded RAM allocation required",
       "meshSourceSharing": false,
-      "releaseCandidate": true
+      "releaseCandidate": false
     },
     "normalized16": {
       "introduced": "1.9.0",

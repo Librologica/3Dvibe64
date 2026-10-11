@@ -1,6 +1,6 @@
 # Manuale pratico per creare demo e PRG con 3Dvibe64 usando Codex
 
-## Precision profiles / Profili di precisione — 1.10.0-rc1
+## Precision profiles / Profili di precisione — 1.10.0
 
 Q8: byte-index ceilings of 255 disjoint objects/runtime vertices, subject to real RAM guards.
 Normalized16: experimental, at most two objects/16 runtime vertices.

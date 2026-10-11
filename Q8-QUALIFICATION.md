@@ -1,4 +1,9 @@
-# Q8 scalability qualification / qualificazione — 1.10.0-rc1
+# Q8 scalability qualification / qualificazione — 1.10.0
+
+Official promotion preserves the qualified RC engine, scenes and all 23 measured
+PRG hashes. No new native benchmark is needed for documentation/package identity
+changes. Raw case names retain their original RC provenance.
+La promozione conserva engine, scene e hash dei 23 PRG misurati della RC.
 
 23 delivered builds measured in native VICE Turbo6510 ×64, explicit PAL/NTSC,
 normal viewport, no SID or overlay (public Q8 launcher). These figures are not

@@ -1,9 +1,9 @@
 # Precisione texture Mode 7 — 1.7.0
 
-Candidate 1.10.0-rc1 / Candidata: Q8 encoding ceilings are extended;
-new multiobject native qualification covers affine Modes1–7. The perspective/
-fast/LOD measurements below remain inherited tests on the original scenes.
-See [candidate scope](Q8-SCALABILITY.md). RAM/depth guards remain mandatory.
+Release 1.10.0: i tetti di codifica Q8 sono estesi; la nuova qualificazione
+nativa con più oggetti copre i Modes 1–7 affine. Le misure perspective/fast/LOD
+seguenti restano quelle ereditate sulle scene originali.
+Vedere [ambito della release](Q8-SCALABILITY.md). I controlli RAM/depth restano obbligatori.
 
 Il contratto esatto qui sotto descrive `textureQuality: standard` (default).
 Per sampling block8 approssimato con ricostruzione superiore selezionare

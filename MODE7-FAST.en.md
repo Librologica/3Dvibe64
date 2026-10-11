@@ -1,9 +1,9 @@
 # Mode 7 fast profile — 1.7.0
 
-Candidate 1.10.0-rc1 / Candidata: Q8 encoding ceilings are extended;
+Release 1.10.0: Q8 encoding ceilings are extended;
 new multiobject native qualification covers affine Modes1–7. The perspective/
 fast/LOD measurements below remain inherited tests on the original scenes.
-See [candidate scope](Q8-SCALABILITY.md). RAM/depth guards remain mandatory.
+See [release scope](Q8-SCALABILITY.md). RAM/depth guards remain mandatory.
 
 ## Selection and defaults
 
