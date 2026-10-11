@@ -1,5 +1,21 @@
 # Public JSON reference scenes
 
+## 1.10.0 Q8 scalability / Scalabilità Q8 1.10.0
+
+`q8/scalability/` contains matching affine scenes for 3 and 13 objects,
+and a single 129-vertex transformation stress case (one face).
+Select explicit Q8 and the scene's GraphicsMode. The 13-object scenes are
+qualified in Modes 1–5; eight objects in Mode 6; three objects in Modes 1–7.
+The eight-object Mode6 variant is in the separate evidence scenes directory.
+`13-objects-mode6.json`, `13-objects-mode7.json`, `single-255-mode3.json`
+and `single-256-mode3.json` are expected rejection cases with these settings.
+Scene affini con 3 e 13 oggetti; stress a 129 vertici con una sola faccia.
+Selezionare Q8 esplicito e la GraphicsMode della scena. Qualificati 13 oggetti
+in Mode 1–5, otto in Mode 6, tre in Mode 1–7. La variante a otto oggetti è
+nel pacchetto prove separato. I casi 13-objects-mode6/mode7 e single-255/single-256
+sono rifiuti attesi con questi parametri, non demo compilabili.
+[Contract / Contratto](../Q8-SCALABILITY.md) · [Qualification / Qualificazione](../Q8-QUALIFICATION.md).
+
 1.8.0: `mode7-fast-lod-cube.json` extends the public fast cube with gradual
 texture LOD (28–44 WU). Geometry Q8 must still be selected explicitly.
 [LOD EN](../MODE7-LOD.en.md) / [LOD IT](../MODE7-LOD.it.md).

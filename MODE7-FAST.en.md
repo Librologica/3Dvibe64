@@ -1,5 +1,10 @@
 # Mode 7 fast profile — 1.7.0
 
+Release 1.10.0: Q8 encoding ceilings are extended;
+new multiobject native qualification covers affine Modes1–7. The perspective/
+fast/LOD measurements below remain inherited tests on the original scenes.
+See [release scope](Q8-SCALABILITY.md). RAM/depth guards remain mandatory.
+
 ## Selection and defaults
 
 `-TextureQuality fast`, or scene `"textureQuality":"fast"`, selects the fast
@@ -58,8 +63,8 @@ Uniform textures are recognized by actual page contents, not texture IDs.
 ## Memory, limits and interrupts
 
 All [Q8/perspective limits](TEXTURE-PRECISION.en.md) still apply: explicit
-PAL/NTSC, normal viewport, walkLite, one or two nonshared objects, at most 96
-vertices, scaled radius up to 40 WU/object, no Ground/timeline/roll. Depth along
+PAL/NTSC, normal viewport, walkLite, disjoint nonshared objects, byte-index ceilings of 255 objects/
+vertices subject to actual RAM fit, scaled radius up to 40 WU/object, no Ground/timeline/roll. Depth along
 the camera axis is 1–256 WU after clipping. A sticky `ps_fault` prevents an
 invalid view from being published and stops with a red border.
 

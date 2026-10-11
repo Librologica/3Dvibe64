@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "name": "q8-single-129-vertices",
+  "graphicsMode": 3,
+  "axisConvention": "world-z-up",
+  "world": {
+    "backgroundColor": 0,
+    "grounds": []
+  },
+  "camera": {
+    "id": "camera",
+    "position": [
+      0,
+      0,
+      4
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "mode": "walkLite"
+  },
+  "lights": [
+    {
+      "id": "key",
+      "mode": "static",
+      "position": [
+        -30,
+        28,
+        48
+      ],
+      "intensity": 10
+    }
+  ],
+  "meshes": [
+    {
+      "id": "large",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "meshFile": "vertices-129.json"
+    }
+  ],
+  "objects": [
+    {
+      "id": "front",
+      "mesh": "large",
+      "position": [
+        0,
+        100,
+        4
+      ],
+      "rotation": [
+        24,
+        32,
+        8
+      ],
+      "angularVelocity": [
+        0.28,
+        0.4,
+        0.36
+      ],
+      "scale": 0.5,
+      "visible": true,
+      "material": "blue",
+      "reflectivity": "satin"
+    }
+  ],
+  "contract": {
+    "version": 1,
+    "viewportProfile": "normal",
+    "ground": false
+  }
+}

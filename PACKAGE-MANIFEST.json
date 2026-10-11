@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.9.0",
-    "version": "1.9.0",
+    "displayName": "3Dvibe64 1.10.0",
+    "version": "1.10.0",
     "distribution": "source-sdk",
-    "permanentFiles": 209,
+    "permanentFiles": 233,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -53,7 +53,24 @@
     "examples/q8/two-objects-mode7.json",
     "examples/mode7-perspective-cube.json",
     "examples/mode7-fast-cube.json",
-    "examples/mode7-fast-lod-cube.json"
+    "examples/mode7-fast-lod-cube.json",
+    "examples/q8/scalability/13-objects-mode1.json",
+    "examples/q8/scalability/13-objects-mode2.json",
+    "examples/q8/scalability/13-objects-mode3.json",
+    "examples/q8/scalability/13-objects-mode4.json",
+    "examples/q8/scalability/13-objects-mode5.json",
+    "examples/q8/scalability/13-objects-mode6.json",
+    "examples/q8/scalability/13-objects-mode7.json",
+    "examples/q8/scalability/3-objects-mode1.json",
+    "examples/q8/scalability/3-objects-mode2.json",
+    "examples/q8/scalability/3-objects-mode3.json",
+    "examples/q8/scalability/3-objects-mode4.json",
+    "examples/q8/scalability/3-objects-mode5.json",
+    "examples/q8/scalability/3-objects-mode6.json",
+    "examples/q8/scalability/3-objects-mode7.json",
+    "examples/q8/scalability/single-129-mode3.json",
+    "examples/q8/scalability/single-255-mode3.json",
+    "examples/q8/scalability/single-256-mode3.json"
   ],
   "releaseEngine": {
     "scope": "GraphicsMode 6 runtime (Mode 7 identity is recorded separately)",
@@ -729,8 +746,8 @@
         "ntsc"
       ],
       "defaultVideoStandard": "pal",
-      "maxObjects": 2,
-      "maxVertices": 96,
+      "maxObjects": 255,
+      "maxVertices": 255,
       "maxScaledRadiusWU": 40,
       "maxScale": 1,
       "ground": false,
@@ -741,23 +758,23 @@
       "music": false,
       "outputOutsideSDK": true,
       "backendHashes": {
-        "work/q8/build.py": "1530DC82C222D71AF877DAB32FBD1670C9CB50BA2ED26D832489FF0674AFF2A4",
+        "work/q8/build.py": "EFD5D982C730EDF5E9A93330643951A955A9CDC3E9A4AB176BAB2C19AAEA3AAC",
         "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
         "work/q8/src/camera.py": "C1497B56E9C3325D1738C068DDED7C97BF20DB524214F2C6EF483EE3C14B5909",
         "work/q8/src/clip.asm": "69178B5C3A359F5299631CA53DEBBA7431E7AA413E3E2B5C568CA82C57CDFB5B",
         "work/q8/src/continuous.py": "17A6D2EF36589C355365B4077ED70B034F342993EF2FA51B9EA798D4B4FEDFBF",
-        "work/q8/src/emit.py": "0CDE991A855A38F4DD532F440DA8D3890783CA29DFDAE30CE8BE27CFE3F89253",
+        "work/q8/src/emit.py": "1F110E24BC7635E9D26805E595F6D80FA9F06D087FFF4C897CE9FA2475258C6B",
         "work/q8/src/kernel.asm": "CD303516ACC6DB1F6C8DA8D51DE5651B3B3D312D4009B1A0794287C7636D5CE2",
-        "work/q8/src/multiobject.py": "6EC12BCDF25DAE21EC9DC7AFFD89842592E3910EF50538800EF46C62D109D0F8",
+        "work/q8/src/multiobject.py": "BF9EAFD743D88FA198E1D4F3D1BCE388ABE6EEE10693F42D0234EAD2A592DE6D",
         "work/q8/src/poly.asm": "0DD6DCA989124EF45DB67FF49007CF8E8EFF2E4545256F312FA30F416B6A1078",
-        "work/q8/src/q8_memory.py": "688F08E564EB1557F23EF180E251C9D916DB21C1D919800E04F0159DD58F83CF",
+        "work/q8/src/q8_memory.py": "9C8B1335810AD0F121F9E9653D090ADDF25285E231C9D32FDDE30D4E4022ED46",
         "work/q8/src/screen.py": "189CB3FB05B012128336AD10036CFD1F12CB6A0D41E2D746A878D654D6B0F102",
         "work/q8/src/texture.py": "F201EC1DB196A4F631D17BE15548D9E42A4F5F1682F3A5E5EE0ADA8F06DDD349",
         "work/q8/src/texture_edges.py": "3651778944E12E95E6873AF82DD9143C271737B11196F80303CD70CC3C14961F",
         "work/q8/src/wide.asm": "6653F13A13A25F1D2C3D2B43778CF2F4096318940C0EFF4AF3C65EEB46243576",
         "work/q8/src/winding.asm": "FB40675AF44961A177856594AB462D47FDB7819667EF58E7D151E36C676A1874",
         "work/q8/src/wire.py": "AB7E272243FA35083D1A5661FFD32ABB0CC45167E3013B8DFCBE9E233D7863C4",
-        "work/q8/src/wire_build.py": "E47ADEB7CD14CAC2032C0BADE710436A0C319CF4ECD88376CBA1CEE1120F2DF8",
+        "work/q8/src/wire_build.py": "812400B42C3DE0EF09719F608EE278C8D3F22DDE237152348BFACCC50C63D541",
         "work/q8/src/wire_line.asm": "A5684C79B802B2BCA0602CB756C315F0EF55E4F1C4A695A3CBED0ECDABB232DE",
         "work/subpixel_probe.py": "261D1DD18616585C4D10BAC880ADA6950CF9B4A1593B8BE9F75DC7C064317FF9",
         "work/subpixel-x-probe.asm": "FB7113490FC125A832965F5CC5BE1BA982EF355EEDED56B3A7BD36CE35EBCEFF",
@@ -1109,7 +1126,10 @@
           "sha256": "6F9D7DF0A6464BB8F21E531606F69BB9C228C704E46FE55AF3E97900C6EB00CD",
           "byteIdentical": true
         }
-      ]
+      ],
+      "budgetPolicy": "byte-index ceiling; per-scene guarded RAM allocation required",
+      "meshSourceSharing": false,
+      "releaseCandidate": false
     },
     "normalized16": {
       "introduced": "1.9.0",
@@ -1139,7 +1159,7 @@
       "guideIt": "NORMALIZED16.it.md",
       "qualification": "NORMALIZED16-QUALIFICATION.md",
       "backendHashes": {
-        "work/normalized_build.py": "46EC7FDC53D36CEC6DEA8C49A1635EC3DE0FD109045E2419DC286195DD888F35",
+        "work/normalized_build.py": "57CEC9E1AA48DDAF0A687BB0ADCBF56051B2F318B9B355E8F00D380AADE4A6FC",
         "work/q8/src/normalized.py": "F13D888302D8F51B5C6099036F62B9A7C1EB13954FC9A48A9F363DDA8D498DE3",
         "work/q8/src/nf_modes.py": "C9F8F333917F6F16BC85669515CF488CAC421EC435A42B15961CE3DCC29AECF6"
       }

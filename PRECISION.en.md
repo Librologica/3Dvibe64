@@ -1,4 +1,15 @@
-# Precision profiles — 1.5.0
+# Precision profiles — 1.10.0
+
+## Release 1.10.0: Q8 scene scalability
+
+Q8 now accepts disjoint objects and runtime vertices up to the existing
+255-entry byte-index ceiling. The former two-object/96-vertex qualification
+gates are removed. Every scene must still pass actual buffer, segment and
+geometry-domain checks; 255 is not a guaranteed capacity in every mode.
+Shared source meshes, Ground, timeline and camera roll remain unsupported
+by this Q8 exporter. Normalized16 remains experimental, two objects/16 vertices.
+See [release contract](Q8-SCALABILITY.md). Legacy stays the default.
+[Release notes / Note di versione](RELEASE-NOTES-1.10.0.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
 
 1.9.0: explicit experimental `-Precision normalized16`, not Q8 with fewer bits.
 Legacy stays default; Q8 perspective/fast/LOD remain unchanged.
@@ -45,7 +56,7 @@ guarantee correct occlusion for intersecting solids.
 - Mode 1-7; normal viewport, 160×100 logical pixels without text/FPS split.
 - `walkLite`, `high-basic-v2`, `fast`, `extended-table`. These are selected inside
   the Q8 adapter; explicitly conflicting CLI options are rejected.
-- One or two objects with disjoint mesh vertex/face ranges; up to 96 total
+- Objects with disjoint mesh vertex/face ranges; up to 255 total
   runtime vertices, compiled scaled radius <=40 WU per object, 0 < scale <=1.
   These limits do not guarantee a fit: allocation still checks all RAM guards.
 - No Ground, meshSourceSharing, scene timeline, small viewport or camera roll.
@@ -103,5 +114,6 @@ clipped faces, 112 primary CPU-rendered views and 22 native paired frames.
 Release tests additionally compare silent public builds against silent rebuilds
 of that frozen source, test defaults/refusals and rerun release runtime checks.
 See [testing](TESTING.md) and [release notes](RELEASE-NOTES-1.5.0.md).
-No hardware test or new FPS guarantee is claimed. Legacy reference hashes are
-retained; only version/source-package identities change with this release.
+The paragraph above describes historical Q8 qualification. Release 1.10.0 adds the
+[scalability qualification](Q8-QUALIFICATION.md) and [release notes](RELEASE-NOTES-1.10.0.md).
+Legacy reference hashes are retained. No hardware test or universal FPS guarantee is claimed.

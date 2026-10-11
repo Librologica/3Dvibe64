@@ -50,7 +50,7 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
         near='poly'
         if mode not in (1,2,3,4,5,6,7):raise ValueError('Q8_MODE_UNQUALIFIED: Mode 1..7 only in this family gate')
         if mode==7 and spec.get('textureLighting')=='gouraud' and spec.get('textureCompositor','C')!='C':raise ValueError('Q8_TEXTURE_COMPOSITOR: C only')
-        if not 1<=len(spec['objects'])<=2:raise ValueError('Q8_OBJECT_BUDGET: one or two objects in this gate')
+        if not 1<=len(spec['objects'])<=255:raise ValueError('Q8_OBJECT_BUDGET: 1..255 objects; scene must fit indexed buffers and RAM')
         if len(spec['objects'])>1 and motion:raise ValueError('Q8_MULTIOBJECT_SWEEP_UNQUALIFIED')
         if any(not 0<obj['scale']<=1 for obj in spec['objects']):raise ValueError('Q8_SCALE_DOMAIN: 0 < scale <= 1')
         if spec['camera']['rotation']!=[0,0,0]:raise ValueError('Q8_CAMERA_ROTATION_UNQUALIFIED')
@@ -110,9 +110,9 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
             from q8_memory import recover,compact_matrix
             source,info['q8MemoryRecovery']=recover(source,lab)
             parts=compact_matrix(parts)
-        if lab['SCENE_OBJECT_COUNT']>1:
+        if lab['SCENE_OBJECT_COUNT']>1 or lab['VERT_COUNT']>128:
             parts=multi_adapt(parts)
-            info['precisionContract']['multiobject']='two disjoint nonshared objects, Mode 1-7'
+            info['precisionContract']['multiobject']='disjoint nonshared objects, Mode 1-7; byte indices and guarded RAM allocation'
         if mode==5 and line_raster=='hybrid':
             from hybrid import apply as hybrid_apply
             source,parts=hybrid_apply(source,parts,mode)
@@ -164,7 +164,7 @@ def validate(spec,mode,standard,out):
     if spec.get('timeline'):raise ValueError('Q8_TIMELINE: scene timeline is not qualified')
     if spec.get('camera',{}).get('mode','walkLite')!='walkLite':raise ValueError('Q8_CAMERA: scene camera must use walkLite, not fixed or walkFull')
     if spec.get('contract',{}).get('viewportProfile','normal')!='normal':raise ValueError('Q8_VIEWPORT: normal only')
-    if not isinstance(spec.get('objects'),list) or not 1<=len(spec['objects'])<=2:raise ValueError('Q8_OBJECT_BUDGET: one or two objects')
+    if not isinstance(spec.get('objects'),list) or not 1<=len(spec['objects'])<=255:raise ValueError('Q8_OBJECT_BUDGET: 1..255 objects; scene must fit indexed buffers and RAM')
     if spec.get('world',{}).get('grounds'):raise ValueError('Q8_GROUND: no Ground in this profile')
     if spec.get('camera',{}).get('rotation')!=[0,0,0]:raise ValueError('Q8_CAMERA_ROTATION: initial rotation must be zero; runtime yaw/pitch is supported')
     for obj in spec['objects']:

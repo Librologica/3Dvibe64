@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.10.0 — 2026-10-11
+
+Official promotion of qualified 1.10.0-rc1. Q8 scene scalability is now released:
+encoding ceilings 255 objects/255 runtime vertices with real buffer/RAM guards.
+Engine and measured PRGs are unchanged; package identity and current guides
+now identify the stable release. Legacy remains default, Normalized16 experimental.
+See [official release notes](RELEASE-NOTES-1.10.0.md).
+
+Italiano: promozione ufficiale della RC qualificata; engine e PRG misurati
+invariati, manifest e guide allineati alla release stabile 1.10.0.
+
+## 1.10.0-rc1 — 2026-10-11
+
+Candidate: remove Q8 two-object/96-vertex gates, retaining byte-index ceilings
+and guarded memory allocation. Range invalidation supports large single meshes.
+Normalized16 keeps its own two-object/16-vertex experimental contract.
+See [RC notes and qualification](RELEASE-NOTES-1.10.0-rc1.md).
+
+Italiano: candidata separata dalla release ufficiale; Q8 supera i limiti di
+due oggetti/96 vertici, mantenendo tetti di codifica e controlli RAM reali.
+L'invalidazione per intervallo copre anche mesh singole oltre 128 vertici.
+Normalized16 conserva il contratto sperimentale di due oggetti/16 vertici.
+Guide EN/IT, CLI, quickstart e istruzioni dei test allineati alla candidata.
+
 ## 1.9.0 — 2026-10-10
 
 English: explicit experimental Normalized16 homogeneous geometry for bounded

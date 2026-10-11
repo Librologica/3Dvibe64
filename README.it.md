@@ -1,4 +1,15 @@
-# 3Dvibe64 1.9.0
+# 3Dvibe64 1.10.0
+
+## Release 1.10.0: scene Q8 con più oggetti
+
+Q8 accetta oggetti disgiunti e vertici runtime fino al tetto di 255 elementi
+degli indici a byte. Rimossi i precedenti limiti di qualificazione di due
+oggetti e 96 vertici. Ogni scena deve comunque superare i controlli effettivi
+di buffer, segmenti e dominio geometrico: 255 non è una capienza garantita.
+Mesh sorgenti condivise, Ground, timeline e roll camera restano esclusi da
+questo exporter Q8. Normalized16 resta sperimentale: due oggetti/16 vertici.
+Vedere [contratto della release](Q8-SCALABILITY.md). Legacy resta default.
+[Release notes / Note di versione](RELEASE-NOTES-1.10.0.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
 
 ## Novità 1.9.0: geometria sperimentale Normalized16
 
@@ -55,7 +66,7 @@ Vedere [note 1.5.5](RELEASE-NOTES-1.5.5.md).
 
 ## Novità 1.5.0: precisione Q8 opzionale
 
-**Legacy resta sempre il default.** Q8 si attiva solo con `-Precision q8`; nessuna selezione automatica in base alla CPU. Consigliato Q8 sopra 20 MHz, legacy a 20 MHz o meno. Legacy non è deprecato. Il profilo Q8 qualificato è limitato a normal/walkLite e massimo due oggetti; leggere [limiti e comandi](PRECISION.it.md). Mode 8 invariata.
+**Legacy resta sempre il default.** Q8 si attiva solo con `-Precision q8`; nessuna selezione automatica in base alla CPU. Consigliato Q8 sopra 20 MHz, legacy a 20 MHz o meno. Legacy non è deprecato. Il profilo Q8 qualificato è limitato a normal/walkLite e oggetti disgiunti entro i budget degli indici e della RAM; leggere [limiti e comandi](PRECISION.it.md). Mode 8 invariata.
 
 ## Novità della 1.4.0: GraphicsMode 8 — 2.5D
 
@@ -90,7 +101,7 @@ Non è stata eseguita una prova hardware: la qualificazione Mode 8 usa x64sc sto
 opzionale e import PNG rigoroso. Iniziare da [Mode 7](MODE7.it.md). Mode 1–6
 conservano l'output ufficiale 1.2.0; la loro API esistente è documentata sotto.
 
-Questo pacchetto pubblico 1.9.0 è un SDK sorgente: contiene builder congelato,
+Questa release ufficiale 1.10.0 è un SDK sorgente: contiene builder congelato,
 documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
 artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
 copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni
@@ -290,7 +301,7 @@ Se `-ControlRotation` e `-ControlReflectivity` vengono forzati insieme, entrambi
 
 | Opzione | Valori | Default / effetto |
 |---|---|---|
-| `-Precision` | `legacy`, `q8` | **legacy**; Q8 solo su richiesta esplicita; [limiti qualificati](PRECISION.it.md) |
+| `-Precision` | `legacy`, `q8`, `normalized16` | **legacy**; Q8 e Normalized16 sperimentale richiedono selezione esplicita; [limiti qualificati](PRECISION.it.md) |
 | `-Q8Camera` | `stationary`, `interactive`, `auto` | `stationary`; solo con Q8 |
 | `-GraphicsMode` | `1`-`8` | `4`; Mode 8 usa la propria API mappe separata |
 | `-CameraMode` | `fixed`, `walkLite`, `walkFull` | modo della camera nella scena, altrimenti `fixed`; il valore CLI esplicito prevale |

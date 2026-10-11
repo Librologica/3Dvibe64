@@ -1,5 +1,10 @@
 # Profilo veloce Mode 7 — 1.7.0
 
+Release 1.10.0: i tetti di codifica Q8 sono estesi; la nuova qualificazione
+nativa con più oggetti copre i Modes 1–7 affine. Le misure perspective/fast/LOD
+seguenti restano quelle ereditate sulle scene originali.
+Vedere [ambito della release](Q8-SCALABILITY.md). I controlli RAM/depth restano obbligatori.
+
 ## Selezione e default
 
 `-TextureQuality fast`, oppure scena `"textureQuality":"fast"`, seleziona il
@@ -58,7 +63,7 @@ Le texture uniformi sono riconosciute dal contenuto della pagina, non dall'ID.
 ## Memoria, limiti e interrupt
 
 Restano tutti i [limiti Q8/prospettiva](TEXTURE-PRECISION.it.md): PAL/NTSC
-esplicito, normal, walkLite, uno o due oggetti non condivisi, massimo 96 vertici,
+esplicito, normal, walkLite, oggetti non condivisi entro il tetto a byte di 255 oggetti/vertici e la RAM,
 raggio scalato fino a 40 WU/oggetto, niente Ground/timeline/roll. Profondità
 lungo l'asse camera 1–256 WU dopo il clipping. `ps_fault` persistente impedisce
 di pubblicare una vista non valida e ferma il rendering con bordo rosso.

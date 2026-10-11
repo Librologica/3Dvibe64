@@ -28,7 +28,7 @@ def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_
         from q8_memory import recover,compact_matrix
         source,recovery=recover(source,lab)
         parts=compact_matrix(parts)
-    if lab['SCENE_OBJECT_COUNT']>1:
+    if lab['SCENE_OBJECT_COUNT']>1 or lab['VERT_COUNT']>128:
         from multiobject import adapt
         parts=adapt(parts)
     if geometry_adapter is not None:
