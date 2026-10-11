@@ -1,4 +1,4 @@
-# Public JSON reference scenes
+# Public JSON reference scenes / Scene JSON pubbliche di riferimento
 
 ## 1.10.0 Q8 scalability / Scalabilità Q8 1.10.0
 
@@ -100,14 +100,22 @@ Do not add polygonal switches below to Mode 8 commands.
 Usare `-Mode8Run auto` e altra directory vuota per i giri automatici.
 Non aggiungere ai comandi Mode 8 le opzioni poligonali seguenti.
 
-## Gate 5 release references
+## Gate 5 release references / Riferimenti release Gate5
 
 `mode6-gouraud-cube-hard.json` and `mode6-gouraud-cube-smooth.json` have identical
 geometry, pose, light and material. Only creaseAngle changes 0 to 180 (plus the
 descriptive scene name). Compile either with `-GraphicsMode 6 -MemoryLayout
 high-basic-v2 -Quality fast -Projection extended-table -NoFpsOverlay -SkipCmdUpdate`.
 
+`mode6-gouraud-cube-hard.json` e `mode6-gouraud-cube-smooth.json` hanno
+geometria, posa, luce e materiale identici. Cambiano soltanto creaseAngle da0
+a180 e nome descrittivo. Compilare entrambi con `-GraphicsMode 6 -MemoryLayout
+high-basic-v2 -Quality fast -Projection extended-table -NoFpsOverlay -SkipCmdUpdate`.
+
 Reproduce the exact frozen Gate 5 torus/FPS build in a disposable SDK copy:
+
+Riprodurre la build esatta Gate5 toro/FPS congelata in una copia di lavoro
+dell'SDK con il comando condiviso seguente:
 
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps1 `
@@ -122,20 +130,32 @@ Expected PRG SHA-256:
 Keys 1–0 select material; R cycles reflectivity 0, 1, 2; F toggles the FPS/text header.
 Do not also enable ControlRotation when R is reserved for reflectivity.
 
-## Other references
+SHA-256 PRG atteso: lo stesso hash riportato sopra. I tasti1–0 selezionano
+il materiale; R cicla reflectivity0,1,2; F commuta l'header testo/FPS.
+Non abilitare anche ControlRotation quando R è riservato alla reflectivity.
+
+## Other references / Altri riferimenti
 
 These files are executable documentation for the public 3Dvibe64 1.4.0 builder. They
 are generic technical references, not distributed productions. The package includes
 no PRG; run commands in a disposable working copy if you want the source tree to
 remain artifact-free.
 
+Questi file sono documentazione eseguibile del builder pubblico3Dvibe64
+1.4.0: riferimenti tecnici generici, non produzioni distribuite. Il pacchetto
+non include PRG; eseguire i comandi in una copia di lavoro per conservare
+l'albero sorgente senza artefatti.
+
 All commands start from the package root:
+
+Tutti i comandi partono dalla radice del pacchetto, con la variabile `$build`
+definita nel blocco condiviso seguente.
 
 ```powershell
 $build = '.\work\build-3Dvibe64.ps1'
 ```
 
-## Wire and solid references
+## Wire and solid references / Riferimenti wire e solid
 
 ```powershell
 & $build -SceneFile .\examples\wire-two-color-multimaterial.json -GraphicsMode 1 -CameraMode fixed -CameraViewport normal -Quality balanced -Projection table -MemoryLayout stable -NoFpsOverlay -SkipCmdUpdate
@@ -151,7 +171,12 @@ The last command exercises the DEV7/DEV7.1 same-bank Generic Text and FPS header
 The 3D body is 160×88 while the split is compiled in; add `-NoFpsOverlay` for the
 byte-compatible 1.1.0 bitmap-only path and legacy 160×100 normal viewport.
 
-## Dynamic camera and materials
+L'ultimo comando verifica l'header Generic Text/FPS DEV7/DEV7.1 nella stessa
+banca. Con lo split compilato il body3D è160×88; aggiungere `-NoFpsOverlay`
+per il percorso bitmap-only byte-compatibile1.1.0 e la viewport normal
+storica160×100.
+
+## Dynamic camera and materials / Camera e materiali dinamici
 
 ```powershell
 & $build -SceneFile .\examples\mode4-walkfull-reference.json -GraphicsMode 4 -CameraMode walkLite -CameraViewport normal -Quality balanced -Projection table -MemoryLayout stable -SkipCmdUpdate
@@ -162,7 +187,7 @@ byte-compatible 1.1.0 bitmap-only path and legacy 160×100 normal viewport.
 & $build -SceneFile .\examples\dynamic-reflective-material-reference.json -GraphicsMode 4 -CameraMode walkFull -CameraViewport normal -Quality balanced -Projection table -MemoryLayout stable -SkipCmdUpdate
 ```
 
-## Near profiles, stable culling, Ground, sharing, timeline, and outlines
+## Near profiles, stable culling, Ground, sharing, timeline, and outlines / Near, culling, Ground, sharing, timeline e bordi
 
 ```powershell
 & $build -SceneFile .\examples\ground-plane-near-clip.json -GraphicsMode 4 -CameraMode fixed -CameraViewport normal -Quality balanced -Projection table -MemoryLayout high-basic-v2 -Mode4NearProfile clip -NoFpsOverlay -SkipCmdUpdate
@@ -180,10 +205,21 @@ shows shared instances, solid face pigment, and the final clipped outline.
 `ground-plane-near-clip.json` demonstrates the Mode 3–5 `clip` profile with a plane
 Ground configuration.
 
-## GraphicsMode 6 Gouraud references
+`shared-instances-timeline-static-light.json` dimostra source sharing con
+`materialOverride`/`reflectivityOverride`/`colorOverride` documentati per l'aspetto
+per istanza. `material` semplice non è un override d'istanza condivisa. La scena
+copre anche override facce locali alla sorgente, `light.type: "static"`, timeline
+dichiarativa a50 Hz e `resetKey: "SPACE"`. `mode5-solid-color-outline.json`
+mostra istanze condivise, pigmenti solidi e outline finale clippato.
+`ground-plane-near-clip.json` mostra il profilo `clip` Mode3–5 con Ground plane.
+
+## GraphicsMode 6 Gouraud references / Riferimenti Gouraud Mode6
 
 Mode 6 requires `high-basic-v2` and accepts `gouraud.creaseAngle` from 0 through
 180 degrees on each mesh (default 60):
+
+Mode6 richiede `high-basic-v2`; ogni mesh accetta `gouraud.creaseAngle`
+da0 a180 gradi, default60.
 
 ```powershell
 & $build -SceneFile .\examples\mode6-gouraud-torus.json -GraphicsMode 6 -CameraMode walkFull -CameraViewport normal -Quality balanced -Projection table -MemoryLayout high-basic-v2 -SkipCmdUpdate
@@ -197,6 +233,12 @@ scene covers source sharing, per-instance materials/reflectivity, and a source f
 whose explicit pigment bypasses dynamic shading. The complete algorithm, limits,
 test matrix, and benchmark are in
 [GOURAUD-MODE6-REPORT.md](../GOURAUD-MODE6-REPORT.md).
+
+Il toro mostra normali smooth e luce animata; la scena mixed copre triangoli
+e quadrilateri nativi con più famiglie materiali; la scena shared mostra source
+sharing, materiali/reflectivity per istanza e una faccia sorgente il cui pigmento
+esplicito evita lo shading dinamico. Algoritmo completo, limiti, matrice test
+e benchmark sono in [GOURAUD-MODE6-REPORT.md](../GOURAUD-MODE6-REPORT.md).
 
 ## Mode 7 — public examples / esempi pubblici
 
