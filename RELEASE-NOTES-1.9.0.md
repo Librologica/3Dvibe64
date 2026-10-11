@@ -18,5 +18,6 @@ Legacy default, vecchi hash di riferimento invariati. Generatore mantenuto,
 validazione rigorosa,test assembly,contratto bilingue e misure native separate.
 Nessuna demo privata o musica. Adattamento navetta e fix screen-Q8 unsigned
 documentati separatamente, non promossi implicitamente a exporter generale.
+Questa release non afferma che Normalized16 sia universalmente intercambiabile con Q8.
 
 See NORMALIZED16.en.md / NORMALIZED16.it.md and NORMALIZED16-QUALIFICATION.md.

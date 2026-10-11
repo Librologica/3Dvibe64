@@ -8,8 +8,20 @@ Engine and measured PRGs are unchanged; package identity and current guides
 now identify the stable release. Legacy remains default, Normalized16 experimental.
 See [official release notes](RELEASE-NOTES-1.10.0.md).
 
-Italiano: promozione ufficiale della RC qualificata; engine e PRG misurati
-invariati, manifest e guide allineati alla release stabile 1.10.0.
+Italiano: promozione ufficiale della1.10.0-rc1 qualificata. Scalabilità
+scene Q8 rilasciata: tetti di codifica255 oggetti/255 vertici runtime, con
+controlli effettivi buffer/RAM. Engine e PRG misurati invariati; identità
+pacchetto e guide correnti indicano la release stabile. Legacy default,
+Normalized16 sperimentale. Vedere le [note ufficiali](RELEASE-NOTES-1.10.0.md).
+
+Repository documentation maintenance: complete EN/IT coverage of shared reports,
+contracts, examples and policies; regenerate the documentation manifest.
+Version remains1.10.0; the published tag and release archive remain frozen.
+No engine, scene, test implementation or measured-program changes.
+Manutenzione documentazione repository: copertura EN/IT completa dei rapporti
+condivisi, contratti, esempi e policy; manifest documentale rigenerato.
+Versione ancora1.10.0; tag pubblicato e archivio release restano congelati.
+Nessuna modifica a engine, scene, implementazione dei test o programmi misurati.
 
 ## 1.10.0-rc1 — 2026-10-11
 
@@ -17,6 +29,7 @@ Candidate: remove Q8 two-object/96-vertex gates, retaining byte-index ceilings
 and guarded memory allocation. Range invalidation supports large single meshes.
 Normalized16 keeps its own two-object/16-vertex experimental contract.
 See [RC notes and qualification](RELEASE-NOTES-1.10.0-rc1.md).
+EN/IT guides, CLI, quickstart and test instructions aligned to the candidate.
 
 Italiano: candidata separata dalla release ufficiale; Q8 supera i limiti di
 due oggetti/96 vertici, mantenendo tetti di codifica e controlli RAM reali.
@@ -131,7 +144,8 @@ Italiano: Q8 esplicito per geometria/clipping Mode 1-7; legacy sempre default e
 non deprecato, riferimenti e Mode 8 invariati. Q8 consigliato sopra 20 MHz,
 legacy fino a 20 MHz. Profilo limitato normal/walkLite, uno/due oggetti,
 validazione rigorosa, output isolato, camera ferma/interattiva/automatica,
-guide e test. Nessuna nuova ottimizzazione o colonna sonora pubblica.
+guide e test. Nessuna nuova ottimizzazione, colonna sonora pubblica o
+file generato incluso nell'SDK sorgente.
 
 ## 1.4.0 — 2026-09-19
 
@@ -145,12 +159,15 @@ guide e test. Nessuna nuova ottimizzazione o colonna sonora pubblica.
 - Preserve Mode 1–7 reference PRGs and public commands; no new rendering
   optimization. Source SDK and six-program demo archive are separate.
 
-Italiano: Mode 8 ufficiale con backend distinti selezionati dalle proprietà,
-viewport bitmap 128×144, aperture/spessori e rampe qualificate.
-Builder pubblico, contratto rigoroso, sorgenti autosufficienti, tre mappe
-originali e tre tutorial, guide IT/EN equivalenti e analisi costi opzionale.
-PRG di riferimento e comandi Mode 1–7 invariati; nessuna nuova ottimizzazione.
-SDK sorgente e archivio delle sei demo rimangono separati.
+Italiano: promozione GraphicsMode8,2.5D con backend bitmap distinti per
+monolivello e heightfield selezionati dalle proprietà, viewport logica128×144,
+raffinamento adattivo delle discontinuità, aperture statiche/spessori e rampe
+continue qualificate. Dispatch pubblico `-GraphicsMode 8 -SceneFile`, contratto
+mappe rigoroso, template assembly autosufficienti, dipendenze build portabili
+e output esterno. Tre mappe originali complete, tre tutorial completi,
+guide architettura/mappe IT/EN equivalenti e analisi costi scena opzionale.
+PRG di riferimento, opzioni e default Mode1–7 preservati; nessuna nuova
+ottimizzazione. SDK sorgente e archivio delle sei demo separati.
 
 ## 1.3.0 — 2026-09-12
 
@@ -201,6 +218,33 @@ The legacy Mode 1–5 reference programs retain their frozen SHA-256 values. New
 host and x64sc/xscpu64/Turbo6510 tests, executable Mode 6 JSON references, and
 `GOURAUD-MODE6-REPORT.md` document the implementation and its limits.
 
+Italiano: prima release Gouraud ufficiale, promossa dal builder Gate5 validato
+senza modifiche engine. Include LUT Gouraud/Bayer esatta e clear viewport
+specializzato (Gate1), kernel span byte-oriented (Gate3), divisione esatta
+inizializzata per byte (Gate4, senza reciproco approssimato) e aggregazione
+esatta span a byte parziali (Gate5). Nessuna Edge Fusion o implementazione
+ibrida flat/Gouraud. Metadata e contratti identificano il builder Gate5;
+prodotti benchmark storici non distribuiti. Vedere TESTING.md per copie pulite.
+
+Aggiunge GraphicsMode6: illuminazione Gouraud reale per vertice attraverso
+dither Bayer4×4 opaco, ancorato allo schermo. Il builder genera normali smooth
+pesate per area con `gouraud.creaseAngle` configurabile, separa gli shade
+vertices sugli spigoli duri, calcola33 livelli, applica bias reflectivity e
+limita le variazioni temporali a quattro livelli per tick dopo il primo campione.
+
+Triangoli e quad nativi interpolano shade sui poligoni finali clippati.
+Intersezioni piano camera, screen, frustum e Ground portano lo stesso attributo
+shade affine. Ogni pixel coperto usa codici bitmap VIC-II `01`,`10`,`11`;
+`00` è solo sfondo. Supportati source sharing, override materiali/reflectivity
+per istanza, `solidColor`/`shading:false` sulle facce sorgenti, entrambi i buffer,
+camere fixed/walkLite/walkFull e tre profili near.
+
+Mode6 richiede `high-basic-v2` e limita a255 gli shade vertices runtime.
+Temporal Scanline Mode (`H`) resta compilata soltanto nelle GraphicsMode4/5.
+I programmi legacy Mode1–5 mantengono gli SHA-256 congelati. Nuovi test host e
+x64sc/xscpu64/Turbo6510, riferimenti JSON Mode6 eseguibili e
+`GOURAUD-MODE6-REPORT.md` documentano implementazione e limiti.
+
 ## 1.1.2 — 2026-08-18
 
 Fixes runtime `F` toggling for the DEV7 Generic Text/FPS split. Bitmap-only frames
@@ -221,6 +265,23 @@ Camera Control & Navigation block to the relocated segment ($9B80), preventing
 low-segment overflow in dense WalkFull configurations while preserving full runtime
 margins and zero per-frame cycle overhead.
 
+Italiano: corregge la commutazione runtime `F` dello split Generic Text/FPS
+DEV7. I frame bitmap-only selezionano banca VIC, Screen RAM e puntatore bitmap
+dal buffer visualizzato; il charset compatto è azzerato e ricostruito con
+lunghezza derivata dai glifi emessi, eliminando pixel raw senza ipotesi fissa
+di96 byte. `F` resta compatibile e commuta l'intero header Generic Text/FPS.
+
+Le istanze condivise Mode4/5 mantengono il percorso materiali al draw quando
+usano `materialOverride`: ogni istanza conserva la famiglia documentata nel
+framebuffer. Il percorso equivalente `reflectivityOverride` resta indipendente.
+La copertura runtime verifica cubi condivisi rossi/verdi/blu in Mode4 e Mode5;
+nessuna modifica a proiezione, clipping, culling o timing raster.
+
+Le build high-basic-v2 con camera mobile ricollocano strutturalmente il blocco
+contiguo Camera Control & Navigation nel segmento$9B80, evitando overflow del
+segmento basso nelle configurazioni WalkFull dense, con margini runtime completi
+e senza costo aggiuntivo di cicli per frame.
+
 ## 1.1.1 — 2026-08-15
 
 Consolidates the validated DEV7 same-bank split-screen path into the canonical
@@ -231,6 +292,15 @@ keeps the FPS counter double-buffered. Material application preserves the first
 mapping correction adds `$FF` termination and the correct compact indices for
 the supported Generic Text glyphs. Builds made with `-NoFpsOverlay` retain the
 1.1.0 binaries byte for byte. Non-engine development material is excluded.
+
+Italiano: consolida nel builder canonico lo split-screen DEV7 nella stessa
+banca, validato. Il testo opzionale riserva tre righe carattere sopra il body3D,
+supporta una stringa Generic Text compatta su entrambi gli screen e mantiene
+FPS in double buffer. I materiali preservano i primi120 byte screen;
+lo switch raster finale usa timing `$4A`/`$4B`. La correzione mapping DEV7.1
+aggiunge terminazione `$FF` e indici compatti corretti per i glifi supportati.
+Le build `-NoFpsOverlay` conservano i binari1.1.0 byte per byte. Materiale di
+sviluppo estraneo all'engine escluso.
 
 ## 1.1.0 — 2026-08-08
 
@@ -251,6 +321,23 @@ verification, and private vulnerability reporting. The package contract now
 covers 44 permanent files. All text files use deterministic LF line endings,
 the builder remains byte-identical to 1.0.1, and release hashes are refreshed.
 
+Italiano: prepara la distribuzione pubblica dei sorgenti su GitHub senza
+modificare builder, runtime generato, API JSON, PRG di riferimento o firme
+framebuffer. Aggiunge guide complete assembly in italiano/inglese e manuali
+completi di vibe coding assistito da Codex in entrambe le lingue.
+
+Software, builder, script, esempi JSON, materiale di validazione e codice engine
+generato sono distribuiti per uso non commerciale con PolyForm Noncommercial
+License1.0.0. La documentazione usa Creative Commons Attribution-NonCommercial
+4.0 International. Copyright e attribuzione obbligatoria identificano
+librologica.digital come autore e licenziante.
+
+`.gitignore` e `.gitattributes` definiscono l'igiene del repository;
+`CONTRIBUTING.md` e `SECURITY.md` descrivono licenze dei contributi, verifiche
+release e segnalazione privata di vulnerabilità. Il contratto copre44 file
+permanenti. I testi usano terminatori LF deterministici, il builder è
+byte-identico alla1.0.1 e gli hash release sono aggiornati.
+
 ## 1.0.1 — 2026-08-04
 
 Synchronizes the public package version and release metadata, refreshes release
@@ -258,6 +345,12 @@ documentation, and records the final Ground validation status. Ground
 projection, polygon-integrity, and roll-aware rendering fixes are retained
 unchanged. Rendering pipelines, JSON 1.0 compatibility, and runtime behavior
 are unchanged; the source package remains 34 permanent files.
+
+Italiano: sincronizza versione pubblica e metadata del pacchetto, aggiorna
+la documentazione release e registra lo stato finale della validazione Ground.
+Conserva senza modifiche le correzioni di proiezione Ground, integrità del
+poligono e rendering che tiene conto del roll. Pipeline, compatibilità JSON1.0
+e runtime invariati; il pacchetto sorgente resta di34 file permanenti.
 
 ## Ground plane roll-aware rendering
 
@@ -269,6 +362,14 @@ remains line-only. The Ground projection and polygon-integrity fixes are
 preserved, and a deterministic 32-frame multi-roll runtime regression covers
 roll 0, 32, 64, and 224 in Modes 3–5.
 
+Italiano: il piano Ground visivo deriva il confine viewport clippato dalla
+stessa equazione del piano con roll usata da clipping e occlusione Ground.
+Mode3–5 usano il percorso masked-span condiviso per orizzonti positivi,
+negativi e verticali, selezionando il semipiano coerente sui due lati.
+Mode2 resta a sole linee. Correzioni proiezione/integrità poligono preservate;
+una regressione runtime deterministica di32 frame copre roll0,32,64,224
+nelle Mode3–5.
+
 ## Ground polygon integrity
 
 Ground-clipped polygons no longer overwrite the cached projected coordinates of
@@ -278,6 +379,15 @@ faces retain their original projected vertices. This preserves the clipped
 polygon's vertex order and count for Mode 4/5 rasterization; Mode 5 continues
 to outline the final post-clipping polygon. The runtime framebuffer regression
 uses a deterministic multi-instance crossing pose in both affected modes.
+
+Italiano: i poligoni clippati da Ground non sovrascrivono più le coordinate
+proiettate in cache del vertice sorgente usato come storage temporaneo.
+La cache è preservata e ogni vertice generato mantiene la propria depth
+camera-space; le facce successive conservano i vertici proiettati originali.
+Sono preservati ordine e conteggio del poligono clippato nella rasterizzazione
+Mode4/5; Mode5 continua a bordare il poligono finale dopo clipping.
+La regressione framebuffer usa una posa deterministica con più istanze che
+attraversano Ground in entrambe le modalità interessate.
 
 ## 1.0.0 — Public stable release
 
@@ -315,6 +425,39 @@ outlines, and Ground camera-plane clipping. Their documented commands compile th
 locally; they are technical examples and executable API documentation, not bundled
 productions.
 
+Italiano: 3Dvibe64 1.0 è il primo SDK sorgente pubblico stabile. Raccoglie
+builder congelato, generazione sorgenti engine, documentazione, esempi JSON
+eseguibili e test contrattuali. Nessun PRG precompilato distribuito: i riferimenti
+sono generati localmente in directory temporanee durante la validazione.
+
+L'helper unsigned-divide condiviso è emesso da un unico punto di gestione.
+Ground `plane` e piano camera `clip` compilano insieme con camere fixed o
+mobili senza duplicare `div16u`. Matematica della divisione, chiamate,
+clipping, proiezione, culling, rasterizzazione e output visivo invariati.
+
+Le facce clippate Ground sono riproiettate usando la depth propria di ogni
+vertice `clip_a`. La depth fissa1 resta riservata alle vere intersezioni col
+piano camera. Elimina triangoli allungati e nastri negli attraversamenti Ground
+Mode4/5, senza cambiare matematica clipping, painter ordering, culling,
+rasterizzazione o outline Mode5. Un contratto VICE deterministico32 frame
+calcola hash bitmap/screen generate in entrambe le modalità.
+
+L'API pubblica comprende GraphicsMode1–5, camere fixed/walkLite/walkFull,
+viewport normal/small, layout stable/high-basic-v2, Ground simple/plane,
+profili near `default`,`late`,`clip` Mode3–5 e face culling `default`,`stable`
+Mode4/5.
+
+Mode4/5 supportano sorgenti mesh condivise, buffer runtime distinti per istanza,
+ordinamento painter globale per bucket depth, override materiali/reflectivity/
+colori per istanza, colori faccia solidi locali alla sorgente, luci realmente
+statiche e timeline dichiarative deterministiche a50 Hz. Mode5 applica un
+outline di un pixel al poligono finale dopo clipping.
+
+Il pacchetto include scene JSON generiche di riferimento per wire, materiali
+statici/dinamici, istanze condivise con luce statica e timeline, outline solidi
+e clipping Ground/piano camera. I comandi documentati le compilano localmente:
+sono esempi tecnici/documentazione API eseguibile, non produzioni incluse.
+
 ## Earlier development history
 
 The pre-1.0 development series established the renderer, clipping, one-sided
@@ -322,3 +465,9 @@ culling, static and dynamic material paths, Ground profiles, source-mesh sharing
 and the validation contracts now consolidated in this release. Historical
 production-specific names and packaged binaries are intentionally not part of the
 public 1.0 source SDK.
+
+Italiano: la serie di sviluppo pre-1.0 ha definito renderer, clipping, culling
+monofacciale, materiali statici/dinamici, profili Ground, condivisione delle
+mesh sorgenti e contratti di validazione consolidati nella release.
+Nomi storici specifici di produzioni e binari confezionati sono intenzionalmente
+esclusi dall'SDK sorgente pubblico1.0.

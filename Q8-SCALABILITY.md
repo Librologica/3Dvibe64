@@ -36,7 +36,38 @@ Requires Python 3, PowerShell 7, 64tass. Tests additionally require py65.
 Output must be new and outside this SDK. Qualification raw commands and
 native data are shipped separately with the qualification evidence package.
 
-Italiano: i limiti di due oggetti e 96 vertici vengono sostituiti dai tetti
-degli indici a byte e dai controlli reali della memoria. Non si promettono
-255 oggetti con 255 vertici per qualsiasi modalità: ogni scena deve entrare
-nei buffer e nei segmenti disponibili. Il backend preciso resta invariato.
+## Italiano — contratto completo
+
+La 1.10.0 ufficiale deriva dalla 1.10.0-rc1 qualificata. La promozione modifica
+soltanto documentazione e identità del pacchetto. Aritmetica Q8, arrotondamento,
+proiezione, clipping near/screen, raster Q2 e modalità di rendering ereditate
+restano invariati.
+
+Il builder Q8 pubblico accetta 1..255 oggetti e 1..255 vertici runtime. Sono
+tetti di codifica, non dimensioni garantite per una scena. Vertici sorgenti,
+facce, facce runtime, shade vertices/edge specifici della modalità e RAM
+mantengono i propri vincoli. Assemblatore e allocatore rifiutano sovrapposizioni
+non sicure e gap esauriti. Non esiste fallback a una precisione inferiore.
+
+Ogni oggetto possiede intervalli disgiunti di vertici e facce della mesh.
+L'adapter di trasformazione per oggetto esistente viene ora abilitato per
+qualsiasi numero di oggetti accettato. Nelle mesh singole oltre 128 vertici,
+lo stesso adapter per intervalli sostituisce anche il ciclo di invalidazione
+discendente signed: i vertici non validi vengono azzerati su tutto l'intervallo.
+I binari storici con uno/due oggetti restano invariati.
+
+Questa release non aggiunge MeshSourceSharing, Ground, timeline o roll camera.
+La rotazione iniziale della camera è zero; restano supportati yaw/pitch runtime
+e i profili camera stationary, interactive e auto esistenti. Sono ancora
+vincolanti raggio scalato <=40 WU e domini di coordinate/scala già previsti.
+
+Normalized16 conserva il proprio ambito sperimentale separato di due oggetti/
+16 vertici runtime, con controllo esplicito del numero di oggetti. Ampliare Q8
+non amplia implicitamente NF.
+
+Per compilare, usare il comando PowerShell condiviso nella sezione precedente.
+Servono Python 3, PowerShell 7 e 64tass; i test richiedono anche py65.
+L'output deve essere nuovo ed esterno a questo SDK. Comandi grezzi e dati nativi
+della qualificazione sono distribuiti separatamente nel pacchetto delle prove.
+Vedere [qualificazione](Q8-QUALIFICATION.md) e
+[note di versione](RELEASE-NOTES-1.10.0.md).

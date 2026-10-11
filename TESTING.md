@@ -31,6 +31,7 @@ proiezione e clipping sui cinque piani. Combinazioni non supportate rifiutate.
 Gli hash storici PRG/framebuffer non vengono aggiornati.
 
 Native FPS and identical-pose palette/bitmap replay are separate:
+FPS nativi e replay palette/bitmap alla stessa posa sono verifiche separate:
 
 ```powershell
 $env:VICE_TURBO6510 = 'C:\tools\turbo6510\x64sc_u.exe'
@@ -43,7 +44,11 @@ The native benchmark uses unchanged public scenes, Turbo6510×64, no music or
 overlay, 2s warm-up and at least 20s emulated measurement. Warp/host time is not
 an FPS source. Color RAM is captured separately from the RAM underneath I/O,
 and compared by its stored low nibble. py65 is required for the capture replay.
-See [qualification / qualificazione](NORMALIZED16-QUALIFICATION.md).
+Il benchmark nativo usa scene pubbliche invariate, Turbo6510×64, senza
+musica/overlay, warm-up2s e almeno20s emulati di misura. Warp/tempo host non
+forniscono FPS. La Color RAM è catturata separatamente dalla RAM sotto I/O e
+confrontata per nibble basso memorizzato. Il replay delle catture richiede py65.
+See / Vedere [qualification / qualificazione](NORMALIZED16-QUALIFICATION.md).
 
 ## Release 1.8.0
 
@@ -102,9 +107,10 @@ Native DEV qualification: 2,610 real KERNAL/raster IRQ instruction-boundary
 injections and 32 same-pose bitmap/color A/B comparisons PAL/NTSC across
 x64sc/xscpu64/Turbo6510, zero differences. Separate from public arithmetic
 tests; captures are not shipped, hardware and a new native FPS curve not claimed.
-Qualificazione DEV: 2.610 interruzioni reali e 32 confronti bitmap/colori alla
-stessa posa PAL/NTSC nei tre emulatori, zero differenze. Prove separate dai test
-CPU pubblici; catture non distribuite, hardware/nuova curva FPS non dichiarati.
+Qualificazione nativa DEV:2.610 iniezioni reali di IRQ KERNAL/raster ai
+confini delle istruzioni e32 confronti A/B bitmap/colori alla stessa posa
+PAL/NTSC su x64sc/xscpu64/Turbo6510, zero differenze. Sono separati dai test
+aritmetici pubblici; catture non distribuite, hardware/nuova curva FPS non dichiarati.
 
 ## Historical 1.6.0 / Storico 1.6.0
 
@@ -264,7 +270,32 @@ qualified Mode 7 R1 backend. Final release qualification compares Mode 6 with
 Gate 5 and Mode 7 with R1;
 raw snapshots, profiler data and historical source copies remain outside the SDK.
 
-Italiano: eseguire la suite tramite il runner per mantenere pulito il pacchetto.
+Italiano: eseguire da un SDK sorgente pulito con Python3, PowerShell,
+64tass, Pillow e NumPy. VICE e Turbo6510 sono dipendenze esterne, non distribuite.
+Configurare i percorsi eseguibili con il blocco PowerShell condiviso sopra.
+
+Il runner crea un SDK temporaneo nuovo per ogni test, propaga gli errori e
+rimuove i prodotti temporanei. Non modifica l'albero distribuito. I singoli
+test possono scrivere file generati nel proprio SDK di lavoro: invocarli
+tramite il runner per preservare il manifest. Il secondo comando condiviso
+mostra come selezionare un sottoinsieme di test.
+
+Il contratto release controlla manifest completo, pulizia del pacchetto, hash
+builder immutabile, build Mode1–5 congelate e framebuffer Ground/materiali
+condivisi. Test separati coprono normali/crease/duplicati Gouraud, clipping,
+33 livelli, stabilizzazione temporale, LUT Bayer emessa esatta da528 elementi,
+modelli esaustivi di byte-span/divisione, camere, domini depth e commutazione
+A/B testo/FPS. La matrice emulatori compila PAL/NTSC × normal/small per
+x64sc, xscpu64 e Turbo6510. Sono smoke test, non sostituti dei confronti pixel.
+
+Nessun test richiede directory benchmark interna o copia di un builder storico.
+Il modello byte-span verifica equivalenza scalare esatta, non FPS. Il builder
+conserva Mode1–6 sull'output1.2.0 validato e aggiunge il backend Mode7 R1
+qualificato. La qualificazione finale confronta Mode6 con Gate5 e Mode7 con
+R1; snapshot grezzi, profiler e sorgenti storiche restano fuori dall'SDK.
+
+Full tests require the listed emulators and may take several minutes. A missing
+tool or divergent comparison is an error, not a skipped PASS.
 I test completi richiedono gli emulatori indicati e possono durare diversi minuti.
 Un tool mancante o un confronto divergente è un errore, non un PASS saltato.
 
@@ -286,11 +317,19 @@ R1 edge inclusion applies to Gouraud C; none/flat and A/B retain their reference
 output. Public reference SHA-256 values are qualified R1 outputs, not new baselines
 silently learned from a failing test.
 
-Italiano: installare le dipendenze host con requirements-tests.txt. test_mode7.py
-verifica parser, UV Q4.4, repeat, triangolazione quad, multi-texture, default C,
-PNG rigoroso ed equivalente ai texel inline, 1.610.631 incrementi edge esatti e
-otto PRG congelati. Il manifest identifica tutti i moduli Python/ASM sorgenti.
-La qualificazione release aggiunge gli oracoli edge/span/clipping assemblati,
-double buffering e confronti dello stesso frame logico nei tre emulatori.
-I dump interni non sono distribuiti. R1 riguarda Gouraud C; none/flat e A/B
-mantengono l'output precedente. Gli hash non vengono aggiornati per mascherare test falliti.
+Italiano: installare le dipendenze host con
+`python -m pip install -r requirements-tests.txt`. `test_mode7.py` verifica
+rifiuti parser, UV Q4.4, indirizzamento repeat, triangolazione quad,
+multi-texture, default luce C, input PNG rigoroso, equivalenza PNG/inline,
+1.610.631 incrementi edge R1 esatti e otto PRG congelati. Per questo sottoinsieme
+eseguire `python -B scripts/run_release_tests.py test_mode7.py`.
+Gli hash backend in PACKAGE-MANIFEST.json identificano tutti i moduli Python
+e ASM sorgenti, non soltanto l'ingresso PowerShell. Kernel ASM sorgenti e PNG
+di esempio sono input intenzionali; ASM generati/PRG/screenshot non sono distribuiti.
+
+La qualificazione release riesegue anche oracoli assemblati edge/span/clipping
+R1, test double-buffer e confronti dello stesso frame logico su x64sc, xscpu64
+e Turbo6510. Le catture interne restano esterne all'SDK pubblico. L'inclusione
+edge R1 riguarda Gouraud C; none/flat e A/B conservano l'output di riferimento.
+Gli SHA-256 pubblici sono output R1 qualificati, non nuove baseline apprese
+silenziosamente da un test fallito.

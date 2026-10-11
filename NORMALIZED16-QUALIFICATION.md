@@ -7,7 +7,8 @@ measurements below use SDK `examples/q8/two-objects-modeN.json`, unchanged.
 Mode 7 here is **affine**, not perspective/fast/LOD. Legacy remains default.
 Normalized16 is an **opt-in experiment**, not an exact replacement for Q8.
 Nuovo exporter pubblico mantenuto, non l'adattamento privato della navetta.
-Esempi SDK invariati; Mode 7 **affine**, non perspective/fast/LOD. Legacy default.
+Tutte le misure usano gli esempi SDK `examples/q8/two-objects-modeN.json`
+invariati; Mode7 **affine**, non perspective/fast/LOD. Legacy default.
 Normalized16 è sperimentale esplicito, non un sostituto esatto di Q8.
 
 ## Native FPS / FPS nativi
@@ -22,11 +23,16 @@ stopwatch is emulated base-clock time, not host time or CPU replay cycles.
 Warp speeds up the test on the host only. Results are scene-specific. Several
 examples are limited by refresh cadence: equality there is not a CPU cost claim.
 
-VICE Turbo6510×64, PRG senza strumentazione aggiunta, senza musica/overlay,
-presentazione sicura. Camera interattiva senza input iniettato, rotazioni
-originali ai tick logici. Warm-up almeno2s, misura almeno20s emulati.
-Solo nuove viste complete pubblicate; niente FPS dal tempo host o dal replay.
-Risultati specifici degli esempi: alcune configurazioni sono limitate dal refresh.
+VICE Turbo6510 3.10, moltiplicatore64, build consegnate senza strumentazione,
+silenziose, senza overlay visivo, presentazione sicura con double buffer.
+Camera interattiva senza input iniettato; gli oggetti originali ruotano ai
+tick logici invariati. PAL: warm-up101 refresh (2,014981s), misura1003
+(20,010158s); NTSC: warm-up120 (2,005814s), misura1197 (20,007993s).
+Si conta `fps_frame_done` soltanto dopo la pubblicazione di una nuova immagine
+completa. Lo stopwatch nativo usa tempo dei clock base emulati, non tempo
+host o cicli di replay CPU. Warp accelera solo il test sull'host. Risultati
+specifici della scena; diversi esempi sono limitati dal refresh: l'uguaglianza
+in quei casi non è una dichiarazione sul costo CPU.
 
 | Mode | PAL Q8 FPS | PAL NF FPS | PAL gain | NTSC Q8 FPS | NTSC NF FPS |
 |---|---:|---:|---:|---:|---:|
@@ -91,12 +97,21 @@ The first DRAM-only color capture was rejected: RAM underneath I/O is not the
 Color RAM chip. The tool now captures that chip separately; the rejected raw
 diagnostic remains local, never recategorized as a passing engine test.
 
-PASS23/23 script pubblici su copie pulite; hash PRG/framebuffer storici invariati.
-42 configurazioni Q8 storiche rigenerate. Nuovo test NF:21 build,7 rigenerazioni
-identiche,512 prodotti,512 rapporti,504 proiezioni,10 passate clipping eseguite
-dal6502;0 differenze dal modello fixed. PASS14/14 confronti frame VICE/py65 alla
-stessa posa su PAL/NTSC, incluse entrambe le bitmap, Screen RAM, Color RAM reale
-a4bit e vertici. Non significa pixel identici a Q8.
+PASS23/23 script pubblici tramite runner su copie temporanee; hash golden
+PRG/framebuffer ereditati **invariati**. Il test Q8 rigenera42 configurazioni
+PAL/NTSC storiche. Nuovo test Normalized16:21 build,7 rigenerazioni PAL
+byte-identiche,512 prodotti unsigned assemblati,512 rapporti,504 proiezioni,
+10 passate clipping su tutti i cinque piani omogenei e nei due standard,
+0 differenze dal modello fixed. Combinazioni camera/profilo non valide rifiutate.
+
+PASS14/14 confronti completi nativo/py65 alla posa identica yaw8/pitch4:
+tutte le Mode1–7, PAL/NTSC, entrambe le bitmap da8000 byte, entrambi gli screen
+da1000 byte, nibble bassi reali Color RAM e buffer vertici live;0 differenze
+e0 flag fault. Verifica l'ABI pubblico della build assemblata/replay, non
+l'uguaglianza ai pixel Q8. La prima cattura colori solo DRAM è stata rifiutata:
+la RAM sotto I/O non è il chip Color RAM. Lo strumento cattura ora il chip
+separatamente; la diagnostica raw rifiutata resta locale e non viene mai
+riclassificata come test engine superato.
 
 ## Actual memory / Memoria reale
 
@@ -110,10 +125,17 @@ Both bitmaps occupy separate8192-byte allocations (8000 active each), Screen
 RAM1000 active bytes per buffer, no added REU/ROM/hardware expansion. RAM under
 BASIC/KERNAL remains banked as before. Private scratch is not shared with IRQ.
 
-Mappe/layout emessi per build. I byte PRG includono buchi, non equivalgono alla
-RAM viva. Blocchi=summa di codice/dati/LUT dell'adapter, senza guardie. Tutte le
-guardie overlap restano attive; helper NF raggruppati sotto una guardia esterna.
-Bitmap2×8192 allocati,2×8000 attivi; Screen RAM2×1000 attivi. Nessuna REU/ROM nuova.
+Ogni build emette mappa assemblatore e allocazione protetta. `PRG bytes`
+include i gap del file e **non** è RAM viva. `NF/Q8 blocks` somma le dimensioni
+effettive codice/dati/LUT dell'adapter, senza guardie. Tutte le regioni
+protette conservano i controlli overlap finali dell'assemblatore. Gli helper
+facce NF combinati usano una regione con una guardia esterna da32 byte,
+senza spill non sicuri nella grafica. Mode6 NTSC inizialmente falliva la
+collocazione nei gap: raggruppare quelle istruzioni invariate ha risolto la build.
+Bitmap in allocazioni separate da8192 byte,8000 attivi ciascuna; Screen RAM
+1000 byte attivi per buffer. Nessuna REU/ROM/espansione hardware aggiunta.
+La RAM sotto BASIC/KERNAL resta banked come prima. Lo scratch privato non è
+condiviso con gli IRQ.
 
 | Mode, PAL | Profile | PRG bytes | Adapter blocks bytes | Remaining placement gaps | Runtime array range |
 |---|---|---:|---:|---:|---|
@@ -137,6 +159,9 @@ Bitmap2×8192 allocati,2×8000 attivi; Screen RAM2×1000 attivi. Nessuna REU/ROM
 Python3.13.14, PowerShell7.6.5,64tass1.60.3243,py65 1.2.0,Pillow12.3.0;
 stock VICE3.10 used by inherited emulator regressions, Turbo6510 VICE3.10 for
 these new native measurements. Configure external tool paths as in TESTING.md.
+Python3.13.14, PowerShell7.6.5,64tass1.60.3243,py65 1.2.0,Pillow12.3.0;
+VICE stock3.10 nelle regressioni emulatori ereditate, VICE Turbo6510 3.10
+nelle nuove misure native. Configurare i tool esterni come in TESTING.md.
 
 ```powershell
 python -B scripts/run_release_tests.py
@@ -152,8 +177,11 @@ dumps, host diagnostic time and PRG hashes are saved outside the SDK in the
 chosen output folder. Source-only package: no private scenes, binary demo or
 soundtrack. The builder selects Normalized16 only explicitly. Unselected
 Q8/legacy/Mode8 outputs retain inherited references.
-Dati grezzi e comandi nel percorso output esterno. Pacchetto solo sorgenti,
-senza scene private, demo binarie o musica. Nessuna selezione automatica.
+Comandi monitor grezzi, stopwatch/eventi frame nativi, dump completi RAM/colori,
+tempo host diagnostico e hash PRG sono salvati fuori dall'SDK nella cartella
+output scelta. Pacchetto solo sorgenti: nessuna scena privata, demo binaria o
+musica. Il builder seleziona Normalized16 solo esplicitamente. Gli output
+Q8/legacy/Mode8 non selezionati conservano i riferimenti ereditati.
 
 ## Historical evidence and limits / Evidenze storiche e limiti
 
@@ -178,7 +206,8 @@ NOT EXECUTED: new Normalized16 FPS on stock1MHz/real hardware; exhaustive
 arbitrary meshes; perspective/fast/LOD NF (explicitly refused), automatic
 fractional camera NF (refused). No missing emulator blocks this qualification.
 NON ESEGUITI: FPS NF stock1MHz/hardware reale, mesh arbitrarie esaustive;
-NF perspective/fast/LOD e camera automatica sono rifiutati, non qualificati.
+NF perspective/fast/LOD e camera automatica frazionaria sono esplicitamente
+rifiutati, non qualificati. Nessun emulatore mancante blocca questa qualificazione.
 
 Recommendation: legacy stays default, Q8 remains the precise supported path,
 Normalized16 for bounded experiments where its measured benefit outweighs

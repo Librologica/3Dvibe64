@@ -13,8 +13,15 @@ PAL: 101 refresh warm-up, 2.014981 s; 1024 measured refresh, 20.429114 s.
 NTSC: 120 refresh warm-up, 2.005814 s; 1197 measured refresh, 20.007993 s.
 Automatic yaw/pitch and rotating objects; no stationary phase. The PAL window
 nominally spans the 1024-tick camera cycle; NTSC covers part of that cycle.
-23 build consegnate misurate con lo stesso protocollo nativo. Solo viste nuove
-complete; tempi host/warp esclusi. Nessuna fase stazionaria. Nessuna misura SID.
+Le 23 build consegnate sono misurate in VICE Turbo6510 nativo ×64, PAL/NTSC
+esplicito, viewport normal, senza SID o overlay, con il launcher Q8 pubblico.
+Questi numeri non riguardano la demo privata della navetta con musica.
+Si conta solo fps_frame_done dopo show_buffer, quindi nuove viste complete;
+warp e tempo host non misurano la velocità della macchina emulata.
+PAL: 101 refresh di warm-up, 2,014981 s; 1024 refresh misurati, 20,429114 s.
+NTSC: 120 refresh di warm-up, 2,005814 s; 1197 refresh misurati, 20,007993 s.
+Yaw/pitch automatici e oggetti in rotazione, senza fase stazionaria. La finestra
+PAL copre nominalmente il ciclo camera di 1024 tick; NTSC ne copre una parte.
 
 ## Native FPS / FPS nativi
 
@@ -46,7 +53,8 @@ complete; tempi host/warp esclusi. Nessuna fase stazionaria. Nessuna misura SID.
 
 Before/after two-object Mode5: 27.02026 FPS, identical program hash and frame
 intervals. Different scene workloads are not before/after comparisons.
-Prima/dopo due oggetti Mode5: 27,02026 FPS, hash e intervalli identici.
+Prima/dopo due oggetti Mode5: 27,02026 FPS, hash del programma e intervalli
+identici. Carichi di scene differenti non sono confronti prima/dopo.
 
 ## Correctness and scope / Correttezza e ambito
 
@@ -57,9 +65,14 @@ pixel; not a theoretical bound or raster/clipping proof. Fractional camera XYZ
 and object Z rotation included. Invalid camera-domain tests cover every vertex,
 including indices above 127. Single-129 has one face: its FPS is a transform
 stress measurement, not a complex 129-vertex solid benchmark.
-16 confronti della stessa posa senza differenze; 8224 proiezioni indipendenti,
-errore massimo osservato 0,46923 pixel logici, senza garanzia teorica globale.
-Single-129 ha una sola faccia: non misura una mesh complessa di 129 vertici.
+16 confronti nativi/6502 alla stessa posa: zero differenze in bitmap, Screen RAM,
+Color RAM o cache dei vertici. Oracolo indipendente di proiezione in double:
+32 pose in ciascuna di tre scene, 8224 vertici proiettati, errore massimo
+osservato 0,46923 pixel logici. Non è un limite teorico né una prova del raster
+o del clipping. Incluse coordinate frazionarie XYZ della camera e rotazione Z
+dell'oggetto. I test di dominio camera non valido coprono ogni vertice,
+compresi gli indici oltre 127. Single-129 ha una sola faccia: i suoi FPS
+misurano uno stress di trasformazione, non un solido complesso di 129 vertici.
 
 42 historical Q8 PRGs unchanged; seven implicit/explicit legacy modes identical;
 11 frozen legacy references; 21 Normalized16 builds. Twelve public scripts ran:
@@ -68,8 +81,18 @@ The runner offers 23 inherited scripts; all 23 are not claimed freshly rerun.
 Enlarged object-count qualification covers affine Modes1–7. Perspective/fast/LOD
 retain original-scene regression coverage; enlarged combinations are not newly
 qualified. Rejection cases preserve actual allocation/encoding guards.
-Qualificazione estesa affine Mode1–7; perspective/fast/LOD verificati sulle
-scene originali. Non si dichiarano nuovi test per tutte le combinazioni estese.
+42 PRG Q8 storici invariati; sette modalità legacy implicite/esplicite identiche;
+11 riferimenti legacy congelati; 21 build Normalized16. Sono stati eseguiti
+dodici script pubblici: `test_release_contract.py`, `test_world_metrics.py`,
+`test_gouraud_mode6.py`, `test_gouraud_mode6_emulators.py`, `test_precision_q8.py`,
+`test_normalized16.py`, `test_texture_perspective.py`, `test_texture_uvzp.py`,
+`test_texture_fast.py`, `test_texture_lod.py`, `test_line_hybrid.py`,
+`test_frame_presentation.py`. Il runner offre 23 script ereditati: non si
+dichiara una nuova esecuzione di tutti e 23. La qualificazione del numero
+ampliato di oggetti copre Mode1–7 affini. Perspective/fast/LOD conservano le
+regressioni sulle scene originali; le combinazioni ampliate non sono
+nuovamente qualificate. I casi di rifiuto preservano i controlli effettivi
+di allocazione e codifica.
 
 ## Reproduction / Riproduzione
 
@@ -80,9 +103,20 @@ reports/ build commands, artifacts/<case>/AVVIA-64MHZ.cmd exact launchers.
 Use Python3, PowerShell7, 64tass, VICE Turbo6510, py65==1.2.0 and Pillow.
 Set VICE_TURBO6510 to your emulator. Existing results are preserved: rerun in
 a disposable evidence copy with new output directories. Tools are outside the SDK.
-Il pacchetto prove RC separato conserva comandi, dati grezzi, hash e launcher.
-La revisione documentale conserva tutti i 23 PRG e le condizioni misurate:
-non richiede un nuovo benchmark degli stessi programmi.
+Il pacchetto separato delle prove RC conserva QUALIFICATION.md,
+QUALIFICATION-DATA.json, FPS.csv, raw/<case>/command.json e commands.mon,
+log del monitor e RAM. capture/ contiene i dati alla stessa posa; precision/
+i risultati di proiezione per vertice; reports/ i comandi di build;
+artifacts/<case>/AVVIA-64MHZ.cmd i launcher esatti.
+Usare Python3, PowerShell7, 64tass, VICE Turbo6510, py65==1.2.0 e Pillow.
+Impostare VICE_TURBO6510 sul proprio emulatore. Preservare i risultati esistenti:
+rieseguire in una copia di lavoro delle prove con nuove directory output.
+Gli strumenti sono esterni all'SDK.
+
+Documentation-only revisions preserve all 23 measured PRGs and their measurement
+conditions; they do not require a new benchmark of those same programs.
+Le revisioni esclusivamente documentali conservano i 23 PRG e le condizioni
+misurate: non richiedono un nuovo benchmark degli stessi programmi.
 
 ```powershell
 python -B scripts/run_release_tests.py test_release_contract.py test_world_metrics.py
