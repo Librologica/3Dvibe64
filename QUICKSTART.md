@@ -1,6 +1,21 @@
 # Quick start / Guida rapida
 
-## Release 1.8.0 / Versione 1.8.0
+## Candidate 1.10.0-rc1 / Candidata 1.10.0-rc1
+
+Q8 removes the two-object/96-runtime-vertex gates. The 255 byte-index ceilings
+remain subject to per-scene RAM, face, edge and shade-buffer checks.
+Normalized16 remains explicit and experimental: two objects/16 runtime vertices.
+Q8 elimina i limiti di due oggetti/96 vertici runtime; i tetti di codifica 255
+restano subordinati ai controlli RAM, facce, edge e shade della singola scena.
+Normalized16 resta esplicito e sperimentale: due oggetti/16 vertici runtime.
+[Contract / Contratto](Q8-SCALABILITY.md) · [RC notes / Note RC](RELEASE-NOTES-1.10.0-rc1.md).
+
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 5 -SceneFile examples/q8/scalability/13-objects-mode5.json -Q8Camera auto -VideoStandard pal -OutputDirectory ../q8-scalability-first
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision normalized16 -GraphicsMode 4 -SceneFile examples/q8/two-objects-mode4.json -Q8Camera stationary -VideoStandard pal -OutputDirectory ../normalized-first
+```
+
+## Features introduced in 1.8.0 / Funzioni introdotte nella 1.8.0
 
 Defaults: legacy geometry, precise Q8 lines, standard textures, LOD off, safe presentation.
 Default: geometria legacy, linee Q8 precise, texture standard, LOD off, presentazione sicura.
@@ -86,7 +101,7 @@ polygonal options in the remaining Mode 1–7 examples to a Mode 8 command.
 I template hanno vincoli espliciti su geometria e camera. Non aggiungere
 alle build Mode 8 le opzioni degli esempi poligonali Mode 1–7 seguenti.
 
-3Dvibe64 1.8.0 is a source SDK. It intentionally contains no precompiled PRG:
+3Dvibe64 1.10.0-rc1 is a candidate source SDK. It intentionally contains no precompiled PRG:
 compile a JSON scene locally with the PowerShell builder.
 
 ## Build / Compilazione
@@ -118,7 +133,7 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps
   -Quality balanced -Projection table -MemoryLayout high-basic-v2 -SkipCmdUpdate
 ```
 
-Il pacchetto 3Dvibe64 1.6.1 contiene solo sorgenti: compilare localmente una scena JSON
+Il pacchetto candidato 3Dvibe64 1.10.0-rc1 contiene solo sorgenti: compilare localmente una scena JSON
 con il builder PowerShell. Il comando precedente genera `work/3Dvibe64.prg`.
 Con lo split Generic Text/FPS predefinito, `normal` offre un body 3D 160×88 sotto
 tre righe di testo e `small` un body 128×80. Usare

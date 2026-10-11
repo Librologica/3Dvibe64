@@ -1,4 +1,15 @@
-# 3Dvibe64 1.9.0
+# 3Dvibe64 1.10.0-rc1
+
+## Candidate 1.10.0-rc1: Q8 scene scalability
+
+Q8 now accepts disjoint objects and runtime vertices up to the existing
+255-entry byte-index ceiling. The former two-object/96-vertex qualification
+gates are removed. Every scene must still pass actual buffer, segment and
+geometry-domain checks; 255 is not a guaranteed capacity in every mode.
+Shared source meshes, Ground, timeline and camera roll remain unsupported
+by this Q8 exporter. Normalized16 remains experimental, two objects/16 vertices.
+See [candidate contract](Q8-SCALABILITY.md). Legacy stays the default.
+[RC notes / Note RC](RELEASE-NOTES-1.10.0-rc1.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
 
 ## New in 1.9.0: experimental Normalized16 geometry
 
@@ -55,7 +66,7 @@ See [1.5.5 release notes](RELEASE-NOTES-1.5.5.md).
 
 ## New in 1.5.0: optional Q8 precision
 
-**Legacy always remains the default.** Q8 requires `-Precision q8`; there is no CPU-based automatic selection. Recommend Q8 above 20 MHz, legacy at 20 MHz or below. Legacy is not deprecated. The qualified Q8 profile is limited to normal/walkLite and at most two objects; read the [limits and commands](PRECISION.en.md). Mode 8 is unchanged.
+**Legacy always remains the default.** Q8 requires `-Precision q8`; there is no CPU-based automatic selection. Recommend Q8 above 20 MHz, legacy at 20 MHz or below. Legacy is not deprecated. The qualified Q8 profile is limited to normal/walkLite and disjoint objects subject to byte-index and RAM budgets; read the [limits and commands](PRECISION.en.md). Mode 8 is unchanged.
 
 ## New in 1.4.0: GraphicsMode 8 — 2.5D
 
@@ -90,7 +101,7 @@ Hardware operation has not been tested; the Mode 8 qualification uses stock x64s
 and strict PNG import. Start with [Mode 7](MODE7.en.md). Modes 1–6 preserve their
 official 1.2.0 reference output; their existing API is documented below.
 
-This public 1.9.0 package is a source SDK: it contains the frozen builder,
+This 1.10.0-rc1 candidate package is a source SDK: it contains the frozen builder,
 documentation, JSON reference scenes, and contracts, but no precompiled PRG or
 diagnostic artifact. Build examples locally, preferably in a disposable working copy.
 The examples are executable API documentation, not bundled productions.
@@ -288,7 +299,7 @@ If `-ControlRotation` and `-ControlReflectivity` are forced together, both handl
 
 | Option | Values | Default / effect |
 |---|---|---|
-| `-Precision` | `legacy`, `q8` | **legacy**; Q8 only on explicit request; [qualified limits](PRECISION.en.md) |
+| `-Precision` | `legacy`, `q8`, `normalized16` | **legacy**; Q8 and experimental Normalized16 require explicit selection; [qualified limits](PRECISION.en.md) |
 | `-Q8Camera` | `stationary`, `interactive`, `auto` | `stationary`; only with Q8 |
 | `-GraphicsMode` | `1`-`8` | `4`; Mode 8 uses its separate map API |
 | `-CameraMode` | `fixed`, `walkLite`, `walkFull` | scene camera mode, otherwise `fixed`; an explicit CLI value wins |

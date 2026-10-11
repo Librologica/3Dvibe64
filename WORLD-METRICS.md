@@ -1,6 +1,12 @@
 # 3Dvibe64 world metrics / Metrica del mondo 3Dvibe64
 
-## Precision profiles / Profili di precisione — 1.5.0
+## Precision profiles / Profili di precisione — 1.10.0-rc1
+
+Q8: byte-index ceilings of 255 disjoint objects/runtime vertices, subject to real RAM guards.
+Normalized16: experimental, at most two objects/16 runtime vertices.
+Q8: tetti di codifica di 255 oggetti disgiunti/vertici runtime, con controlli RAM reali.
+Normalized16: sperimentale, massimo due oggetti/16 vertici runtime.
+See / Vedere [RC contract](Q8-SCALABILITY.md) and [qualification](Q8-QUALIFICATION.md).
 
 Legacy remains the default; the metric/renderer contracts below describe legacy
 unless explicitly stated otherwise. Optional Q8 has a narrower qualified scope,

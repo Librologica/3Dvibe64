@@ -1,4 +1,15 @@
-# Profili di precisione — 1.5.0
+# Profili di precisione — 1.10.0-rc1
+
+## Candidate 1.10.0-rc1: scene Q8 con più oggetti
+
+Q8 accetta oggetti disgiunti e vertici runtime fino al tetto di 255 elementi
+degli indici a byte. Rimossi i precedenti limiti di qualificazione di due
+oggetti e 96 vertici. Ogni scena deve comunque superare i controlli effettivi
+di buffer, segmenti e dominio geometrico: 255 non è una capienza garantita.
+Mesh sorgenti condivise, Ground, timeline e roll camera restano esclusi da
+questo exporter Q8. Normalized16 resta sperimentale: due oggetti/16 vertici.
+Vedere [contratto della candidate](Q8-SCALABILITY.md). Legacy resta default.
+[RC notes / Note RC](RELEASE-NOTES-1.10.0-rc1.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
 
 1.9.0: `-Precision normalized16` sperimentale esplicito, non Q8 con meno bit.
 Legacy resta default; Q8 perspective/fast/LOD restano invariati.
@@ -45,7 +56,7 @@ Z-buffer né garantisce occlusione esatta fra solidi che si intersecano.
 - Mode 1-7; viewport normal, 160×100 pixel logici senza split testo/FPS.
 - `walkLite`, `high-basic-v2`, `fast`, `extended-table`, selezionati internamente
   dall'adattatore Q8. Opzioni CLI esplicite incompatibili vengono rifiutate.
-- Uno o due oggetti con intervalli vertici/facce disgiunti; fino a 96 vertici
+- Oggetti con intervalli vertici/facce disgiunti; fino a 255 vertici
   runtime totali, raggio compilato scalato <=40 WU per oggetto, 0 < scala <=1.
   Non è una garanzia di capienza: l'allocatore controlla tutti i limiti RAM.
 - Niente Ground, meshSourceSharing, timeline scena, viewport small o roll camera.
@@ -104,5 +115,6 @@ clippate, 112 viste CPU primarie e 22 coppie di frame nativi. I test release
 aggiungono il confronto fra build pubbliche silenziose e ricompilazioni silenziose
 di quella sorgente congelata, default/rifiuti e nuove verifiche runtime.
 Vedere [test](TESTING.md) e [note di release](RELEASE-NOTES-1.5.0.md).
-Non si dichiarano test hardware o nuove garanzie FPS. Gli hash PRG legacy restano
-invariati; cambiano soltanto identità della versione e del pacchetto sorgente.
+Il paragrafo sopra descrive la qualificazione Q8 storica. La RC aggiunge la
+[qualificazione di scalabilità](Q8-QUALIFICATION.md) e le [note RC](RELEASE-NOTES-1.10.0-rc1.md).
+Gli hash PRG legacy restano invariati. Nessun test hardware o garanzia FPS universale dichiarata.

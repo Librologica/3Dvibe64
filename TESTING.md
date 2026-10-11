@@ -1,6 +1,20 @@
 # Release tests
 
-## Release 1.9.0 / Versione 1.9.0
+## Candidate 1.10.0-rc1 / Candidata 1.10.0-rc1
+
+The runner still offers 23 inherited public scripts. This RC qualification ran
+12 selected scripts, plus 23 native PAL/NTSC builds, 16 same-pose comparisons
+and independent projection checks. It does not claim a fresh run of all 23 scripts.
+The documentation revision changes no builder, backend, scene or measured PRG.
+Il runner offre ancora 23 script pubblici ereditati. La qualificazione RC ne ha
+eseguiti 12, oltre a 23 build native PAL/NTSC, 16 confronti della stessa posa
+e verifiche indipendenti di proiezione. Non dichiara una nuova esecuzione di tutti
+i 23 script. La revisione documentale conserva builder, backend, scene e PRG misurati.
+[Scope, native FPS and hashes / Ambito, FPS nativi e hash](Q8-QUALIFICATION.md).
+Raw commands, monitor traces, RAM captures and launchers are in the separate
+RC evidence package / Comandi grezzi, trace, catture RAM e launcher nel pacchetto prove RC separato.
+
+## Inherited 1.9.0 / Ereditato dalla 1.9.0
 
 23 scripts: the 22 inherited tests, plus `test_normalized16.py`. Use the same
 clean-copy runner below. The new test rebuilds 21 PAL/NTSC programs, checks

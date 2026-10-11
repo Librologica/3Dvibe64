@@ -1,5 +1,18 @@
 # Changelog
 
+## 1.10.0-rc1 — 2026-10-11
+
+Candidate: remove Q8 two-object/96-vertex gates, retaining byte-index ceilings
+and guarded memory allocation. Range invalidation supports large single meshes.
+Normalized16 keeps its own two-object/16-vertex experimental contract.
+See [RC notes and qualification](RELEASE-NOTES-1.10.0-rc1.md).
+
+Italiano: candidata separata dalla release ufficiale; Q8 supera i limiti di
+due oggetti/96 vertici, mantenendo tetti di codifica e controlli RAM reali.
+L'invalidazione per intervallo copre anche mesh singole oltre 128 vertici.
+Normalized16 conserva il contratto sperimentale di due oggetti/16 vertici.
+Guide EN/IT, CLI, quickstart e istruzioni dei test allineati alla candidata.
+
 ## 1.9.0 — 2026-10-10
 
 English: explicit experimental Normalized16 homogeneous geometry for bounded

@@ -1,5 +1,10 @@
 # Precisione texture Mode 7 — 1.7.0
 
+Candidate 1.10.0-rc1 / Candidata: Q8 encoding ceilings are extended;
+new multiobject native qualification covers affine Modes1–7. The perspective/
+fast/LOD measurements below remain inherited tests on the original scenes.
+See [candidate scope](Q8-SCALABILITY.md). RAM/depth guards remain mandatory.
+
 Il contratto esatto qui sotto descrive `textureQuality: standard` (default).
 Per sampling block8 approssimato con ricostruzione superiore selezionare
 `textureQuality: fast` e leggere [Mode 7 veloce](MODE7-FAST.it.md).
@@ -29,8 +34,8 @@ musica. L'esempio deriva dal cubo diagnostico pubblico, non dalla scena di svilu
 ## Profilo supportato
 
 Restano tutti i vincoli Q8: viewport normal 160×100 logici senza split header/FPS;
-walkLite stationary/interactive/auto; PAL/NTSC esplicito; uno o due oggetti con
-geometria non condivisa; massimo 96 vertici; raggio scalato <=40 WU per oggetto;
+walkLite stationary/interactive/auto; PAL/NTSC esplicito; oggetti con geometria non
+condivisa; tetto a byte di 255 oggetti/vertici subordinato alla RAM; raggio scalato <=40 WU per oggetto;
 scala>0 e<=1; niente Ground, timeline, small o roll della camera. L'allocatore
 può respingere la scena prima dei limiti geometrici. Vedere [Q8](PRECISION.it.md).
 
