@@ -40,7 +40,8 @@ with tempfile.TemporaryDirectory(prefix='3dvibe64-q8-contract-') as temp:
         s=copy.deepcopy(base);s['camera']['rotation']=rotation;invalid.append(s)
     s=copy.deepcopy(base);s['world']['grounds']=[{'mode':'plane'}];invalid.append(s)
     s=copy.deepcopy(base);s['contract']['viewportProfile']='small';invalid.append(s)
-    s=copy.deepcopy(base);s['objects']*=2;invalid.append(s)
+    s=copy.deepcopy(base);s['objects']*=128;invalid.append(s)
+    s=copy.deepcopy(base);s['objects']*=2;module.validate(s,4,'pal',out/'four-objects-valid')
     for scale in (0,1.01,float('nan')):
         s=copy.deepcopy(base);s['objects'][0]['scale']=scale;invalid.append(s)
     s=copy.deepcopy(base);s['objects'][0]['position'][0]=5000;invalid.append(s)
