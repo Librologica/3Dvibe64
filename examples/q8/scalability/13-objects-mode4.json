@@ -1,0 +1,474 @@
+{
+  "schema": 1,
+  "name": "q8-13-objects-mode4",
+  "graphicsMode": 4,
+  "axisConvention": "world-z-up",
+  "world": {
+    "backgroundColor": 0,
+    "grounds": []
+  },
+  "camera": {
+    "id": "camera",
+    "position": [
+      0,
+      0,
+      4
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "mode": "walkLite"
+  },
+  "lights": [
+    {
+      "id": "key",
+      "mode": "static",
+      "position": [
+        -30,
+        28,
+        48
+      ],
+      "intensity": 10
+    }
+  ],
+  "meshes": [
+    {
+      "id": "mesh0",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh1",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh2",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh3",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh4",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh5",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh6",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh7",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh8",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh9",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh10",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh11",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    },
+    {
+      "id": "mesh12",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "object0",
+      "mesh": "mesh0",
+      "position": [
+        -30,
+        100,
+        4
+      ],
+      "rotation": [
+        24,
+        32,
+        8
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "blue",
+      "reflectivity": "satin"
+    },
+    {
+      "id": "object1",
+      "mesh": "mesh1",
+      "position": [
+        -15,
+        100,
+        10
+      ],
+      "rotation": [
+        50,
+        12,
+        40
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "red",
+      "reflectivity": "gloss"
+    },
+    {
+      "id": "object2",
+      "mesh": "mesh2",
+      "position": [
+        0,
+        100,
+        16
+      ],
+      "rotation": [
+        24,
+        32,
+        8
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "blue",
+      "reflectivity": "satin"
+    },
+    {
+      "id": "object3",
+      "mesh": "mesh3",
+      "position": [
+        15,
+        100,
+        4
+      ],
+      "rotation": [
+        50,
+        12,
+        40
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "red",
+      "reflectivity": "gloss"
+    },
+    {
+      "id": "object4",
+      "mesh": "mesh4",
+      "position": [
+        30,
+        100,
+        10
+      ],
+      "rotation": [
+        24,
+        32,
+        8
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "blue",
+      "reflectivity": "satin"
+    },
+    {
+      "id": "object5",
+      "mesh": "mesh5",
+      "position": [
+        -30,
+        145,
+        16
+      ],
+      "rotation": [
+        50,
+        12,
+        40
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "red",
+      "reflectivity": "gloss"
+    },
+    {
+      "id": "object6",
+      "mesh": "mesh6",
+      "position": [
+        -15,
+        145,
+        4
+      ],
+      "rotation": [
+        24,
+        32,
+        8
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "blue",
+      "reflectivity": "satin"
+    },
+    {
+      "id": "object7",
+      "mesh": "mesh7",
+      "position": [
+        0,
+        145,
+        10
+      ],
+      "rotation": [
+        50,
+        12,
+        40
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "red",
+      "reflectivity": "gloss"
+    },
+    {
+      "id": "object8",
+      "mesh": "mesh8",
+      "position": [
+        15,
+        145,
+        16
+      ],
+      "rotation": [
+        24,
+        32,
+        8
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "blue",
+      "reflectivity": "satin"
+    },
+    {
+      "id": "object9",
+      "mesh": "mesh9",
+      "position": [
+        30,
+        145,
+        4
+      ],
+      "rotation": [
+        50,
+        12,
+        40
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "red",
+      "reflectivity": "gloss"
+    },
+    {
+      "id": "object10",
+      "mesh": "mesh10",
+      "position": [
+        -30,
+        190,
+        10
+      ],
+      "rotation": [
+        24,
+        32,
+        8
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "blue",
+      "reflectivity": "satin"
+    },
+    {
+      "id": "object11",
+      "mesh": "mesh11",
+      "position": [
+        -15,
+        190,
+        16
+      ],
+      "rotation": [
+        50,
+        12,
+        40
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "red",
+      "reflectivity": "gloss"
+    },
+    {
+      "id": "object12",
+      "mesh": "mesh12",
+      "position": [
+        0,
+        190,
+        4
+      ],
+      "rotation": [
+        24,
+        32,
+        8
+      ],
+      "angularVelocity": [
+        0.17,
+        -0.21,
+        0.13
+      ],
+      "scale": 0.25,
+      "visible": true,
+      "material": "blue",
+      "reflectivity": "satin"
+    }
+  ],
+  "contract": {
+    "version": 1,
+    "viewportProfile": "normal",
+    "ground": false
+  }
+}
