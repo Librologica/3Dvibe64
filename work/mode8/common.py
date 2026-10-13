@@ -1,7 +1,16 @@
 """Optional qualification tools: external outputs, no SDK mutation."""
 from pathlib import Path
-import hashlib,json,statistics
+import hashlib,json,statistics,os,sys
 ROOT=Path(__file__).resolve().parents[2]
+
+def require_qualification_checks():
+    """Qualification relies on assertions; reject optimized interpreters explicitly.
+
+    Also reject a late environment change before any input or capture is read.
+    Map validation remains independently usable under optimized Python.
+    """
+    if sys.flags.optimize or not __debug__ or os.environ.get('PYTHONOPTIMIZE','') not in ('','0'):
+        raise RuntimeError('QUALIFICATION_OPTIMIZED_PYTHON: qualification requires enabled checks; remove -O, -OO and PYTHONOPTIMIZE.')
 def sha(p):return hashlib.sha256(Path(p).read_bytes()).hexdigest().upper()
 def digest(o):return hashlib.sha256(json.dumps(o,sort_keys=True,separators=(',',':')).encode()).hexdigest().upper()
 def writable(p):

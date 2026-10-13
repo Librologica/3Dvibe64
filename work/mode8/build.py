@@ -79,7 +79,9 @@ def validate(data,route=True):
         'multi':'ramps or multiple free-cell floor values; validated heightfield'}[c['backend']])
     return c
 
-def build(scene,out,run='interactive',validate_only=False):
+def build(scene,out,run='interactive',validate_only=False,engine_experiments=None):
+    from experiments import parse
+    parse(engine_experiments,'mode8') # none/omission only; retired requests fail explicitly
     data=load(scene);c=validate(data)
     print('Mode 8 backend:',c['backend'],'—',c['reason'],flush=True)
     if validate_only:
@@ -131,6 +133,7 @@ def main():
     p=argparse.ArgumentParser(description=__doc__)
     p.add_argument('--scene',required=True);p.add_argument('--out',required=True)
     p.add_argument('--run',choices=['auto','interactive'],default='interactive');p.add_argument('--validate-only',action='store_true')
+    p.add_argument('--engine-experiments',default=None)
     a=p.parse_args()
-    try:build(a.scene,a.out,a.run,a.validate_only)
+    try:build(a.scene,a.out,a.run,a.validate_only,a.engine_experiments)
     except (ValueError,OSError,json.JSONDecodeError) as e:p.exit(2,str(e)+'\n')
