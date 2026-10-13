@@ -1,4 +1,5 @@
 param(
+ [string]$EngineExperiments = 'none',
  [ValidateSet('safe','legacy')]
  [string]$FramePresentation = 'safe',
  [ValidateSet('precise','hybrid')]
@@ -331,6 +332,7 @@ if (($PSBoundParameters.ContainsKey('TextureLODNear') -or $PSBoundParameters.Con
 if ($TextureLOD -eq 'gradual' -and ($TextureLODNear -le 1 -or $TextureLODFar -ge 256 -or ($TextureLODFar-$TextureLODNear) -ne 16)) { throw 'TextureLOD requires 1 < near < far < 256 WU and a 16 WU fade interval.' }
 # The adapter works in a fresh output tree; legacy generation below is unchanged.
 if ($Precision -eq 'normalized16') {
+ if ($PSBoundParameters.ContainsKey('EngineExperiments')) { throw '-EngineExperiments requires Q8 or Mode8.' }
  $allowed = @('Precision','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','VideoStandard')
  foreach ($key in $PSBoundParameters.Keys) {
   if ($key -notin $allowed) { throw "Normalized16: option -$key is not supported. See NORMALIZED16.en.md." }
@@ -346,7 +348,7 @@ if ($Precision -eq 'normalized16') {
  return
 }
 if ($Precision -eq 'q8') {
- $allowed = @('Precision','TexturePrecision','TextureQuality','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','LineRaster','TextureLOD','TextureLODNear','TextureLODFar',
+ $allowed = @('EngineExperiments','Precision','TexturePrecision','TextureQuality','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','LineRaster','TextureLOD','TextureLODNear','TextureLODFar',
               'VideoStandard','CameraMode','CameraViewport','MemoryLayout','Quality',
               'Projection','NoFpsOverlay','SkipCmdUpdate')
  foreach ($key in $PSBoundParameters.Keys) {
@@ -366,6 +368,7 @@ if ($Precision -eq 'q8') {
  $python = if ($env:PYTHON_EXE) { $env:PYTHON_EXE } else { 'python' }
  $q8args = @('-B', (Join-Path $PSScriptRoot 'q8/build.py'), '--scene', (Resolve-Path -LiteralPath $SceneFile).Path, '--out', $OutputDirectory, '--mode', $GraphicsMode, '--standard', $VideoStandard, '--camera', $Q8Camera)
  $q8args += @('--frame-presentation',$FramePresentation,'--line-raster',$LineRaster,'--texture-lod',$TextureLOD)
+ if ($PSBoundParameters.ContainsKey('EngineExperiments')) { $q8args += @('--engine-experiments',$EngineExperiments) }
  if ($TextureLOD -eq 'gradual') { $q8args += @('--lod-near',$TextureLODNear,'--lod-far',$TextureLODFar) }
  if ($GraphicsMode -eq '7') { $q8args += @('--texture-precision', $TexturePrecision, '--texture-quality', $TextureQuality) }
  & $python @q8args
@@ -377,7 +380,7 @@ if ($PSBoundParameters.ContainsKey('Q8Camera')) { throw '-Q8Camera requires -Pre
 # Mode 8 is a distinct public map contract, dispatched before polygon setup.
 if ($GraphicsMode -eq "8") {
  if ($PSBoundParameters.ContainsKey('FramePresentation') -or $PSBoundParameters.ContainsKey('LineRaster') -or $PSBoundParameters.ContainsKey('TextureLOD')) { throw 'Mode8 uses its own presentation/rendering contract.' }
- $allowed = @('GraphicsMode', 'SceneFile', 'Mode8Run', 'OutputDirectory', 'ValidateOnly', 'VideoStandard', 'Precision')
+ $allowed = @('EngineExperiments','GraphicsMode', 'SceneFile', 'Mode8Run', 'OutputDirectory', 'ValidateOnly', 'VideoStandard', 'Precision')
  foreach ($key in $PSBoundParameters.Keys) {
   if ($key -notin $allowed) { throw "Mode 8: explicitly requested option -$key is not applicable. See MODE8.en.md." }
  }
@@ -387,6 +390,7 @@ if ($GraphicsMode -eq "8") {
  $python = if ($env:PYTHON_EXE) { $env:PYTHON_EXE } else { 'python' }
  $arguments = @('-B', (Join-Path $PSScriptRoot 'mode8_build.py'), '--scene', (Resolve-Path -LiteralPath $SceneFile).Path, '--out', $OutputDirectory, '--run', $Mode8Run)
  if ($ValidateOnly) { $arguments += '--validate-only' }
+ if ($PSBoundParameters.ContainsKey('EngineExperiments')) { $arguments += @('--engine-experiments',$EngineExperiments) }
  & $python @arguments
  if ($LASTEXITCODE -ne 0) { throw "Mode 8 build/validation failed with exit code $LASTEXITCODE." }
  return
@@ -394,6 +398,7 @@ if ($GraphicsMode -eq "8") {
 foreach ($key in @('Mode8Run', 'OutputDirectory', 'ValidateOnly')) {
  if ($PSBoundParameters.ContainsKey($key)) { throw "-$key is only applicable to GraphicsMode 8." }
 }
+if ($PSBoundParameters.ContainsKey('EngineExperiments')) { throw '-EngineExperiments requires Q8 or Mode8.' }
 
 # Public API note: a feature is promoted only when it is visible at all three
 # levels: parameter/build-script surface, generated ASM, and linked runtime

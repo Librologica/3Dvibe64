@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.10.1"
-BUILDER_SHA256 = "75E180FB30FEACBDA28A93A43223DFCE9A646BCB4F53671D8298C203C4EBDFD1"
-PERMANENT_FILE_COUNT = 244
+VERSION = "1.10.2"
+BUILDER_SHA256 = "79510B085B6B786A87F2F2814B2BED0FE2C95313EDAF0A3C121B89EA02C9C14F"
+PERMANENT_FILE_COUNT = 258
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -210,7 +210,7 @@ def check_builder_and_package() -> None:
     assert sha256(builder) == BUILDER_SHA256, "builder hash changed"
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
-        "name": "3Dvibe64", "displayName": "3Dvibe64 1.10.1", "version": VERSION,
+        "name": "3Dvibe64", "displayName": "3Dvibe64 " + VERSION, "version": VERSION,
         "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT, "prerelease": False,
         "precompiledPrograms": False,
         "author": "librologica.digital",
@@ -218,7 +218,7 @@ def check_builder_and_package() -> None:
         "documentationLicense": "CC-BY-NC-4.0",
     }
     assert manifest["builder"]["sha256"] == BUILDER_SHA256
-    assert len(manifest["examples"]) == 55
+    assert len(manifest["examples"]) == 57
     assert manifest['framePresentation']['default']=='safe' and manifest['framePresentation']['waitRaster']==252
     assert manifest['historicalReferences']['expectedHashesChanged'] is False
     assert manifest['lineRaster']['modes']==[1,2,5] and manifest['lineRaster']['default']=='precise'
@@ -311,7 +311,9 @@ def check_builder_and_package() -> None:
 def check_documentation() -> None:
     assert (ROOT / "VERSION").read_text(encoding="utf-8-sig").strip() == VERSION
     main = (ROOT / "README.md").read_text(encoding="utf-8-sig")
-    assert main.startswith("# 3Dvibe64 1.10.1\n")
+    assert main.startswith("# 3Dvibe64 " + VERSION + "\n")
+    for language in ('en','it'):
+        assert (ROOT/f'DEV-NOTES.{language}.md').is_file()
     for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1\u20138", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
         assert token in main, f"README.md does not document {token}"
     for token in ("HeaderText", "160\u00d788", "TEXT_HEADER_SCREEN_BYTES"):

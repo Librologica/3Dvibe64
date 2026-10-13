@@ -1,12 +1,13 @@
 """Stock x64sc complete-frame qualification; no FPS from host elapsed time."""
 import argparse,sys,re,importlib.util
 from pathlib import Path
-from .common import ROOT,load,save,sha,stats
+from .common import ROOT,load,save,sha,stats,require_qualification_checks
 from .reference import adapter
 from .navigation import simulate
 from .build import labels
 
 def run(scene,build,out,standard='pal',reuse=False,short=False,interactive=False):
+    require_qualification_checks()
     data=load(scene);c,oracle,meta=adapter(data);multi=c['backend']=='multi';b=Path(build);out=Path(out);lab=labels(b)
     if out.resolve().is_relative_to(ROOT):raise ValueError('Native output must be outside SDK')
     if load(b/'scene.json')!=data:raise ValueError('BUILD_SCENE_MISMATCH: build and scene must match')

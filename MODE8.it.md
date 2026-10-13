@@ -1,5 +1,6 @@
 # GraphicsMode 8 — 2.5D
 
+Stabile 1.10.2: resta il percorso bitmap qualificato. EngineExperiments omesso/none è accettato; all e i flag Mode8 ritirati/combinazioni sono rifiutati. Vedere [note di rilascio](RELEASE-NOTES-1.10.2.it.md).
 <!-- maintenance-1.10.1 -->
 La 1.10.1 ufficiale richiede provenienza acquisizione per riuso nativo e mantiene i vincoli input con Python ottimizzato. Heading coincidente 64. Il renderer adattivo può perdere discontinuità interne: vedere [diagnostica, costo misurato e limite noto](QUALIFICATION-1.10.1-rc1.it.md). Campionamento runtime invariato.
 

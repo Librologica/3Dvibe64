@@ -1,5 +1,7 @@
 # Profilo veloce Mode 7 — 1.7.0
 
+Dev sperimentale 1.10.2-dev1: stato dei carrier ai confini dei blocchi; vedere [note dev](DEV-NOTES.it.md). Le misure seguenti appartengono alle versioni storiche indicate.
+
 Release 1.10.0: i tetti di codifica Q8 sono estesi; la nuova qualificazione
 nativa con più oggetti copre i Modes 1–7 affine. Le misure perspective/fast/LOD
 seguenti restano quelle ereditate sulle scene originali.

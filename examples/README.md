@@ -266,3 +266,15 @@ Install Pillow for the PNG example; keep `textures/bricks.png` beside the scene 
 Installare Pillow per il PNG; mantenere `textures/bricks.png` nella posizione distribuita. La coppia PNG/inline deve produrre byte identici. Gli esempi dimostrano il renderer R1 esistente, non perspective correction o nuovi riferimenti con più poligoni.
 
 [English contract](../MODE7.en.md) · [Contratto italiano](../MODE7.it.md)
+
+## Local engine experiments / Esperimenti locali dell’engine
+
+`experiments/visibility-sparse.json` probes pre-transform object rejection;
+`experiments/duplicate-overdraw.json` probes exact opaque duplicate-face removal.
+Their explicit `engineExperiments` selection can be overridden with CLI `none`.
+See [dev notes EN](../DEV-NOTES.en.md).
+
+`experiments/visibility-sparse.json` verifica lo scarto degli oggetti prima dei
+vertici; `experiments/duplicate-overdraw.json` verifica l’eliminazione delle
+facce opache duplicate. La selezione esplicita `engineExperiments` può essere
+disattivata con `none` da CLI. Vedere [note dev IT](../DEV-NOTES.it.md).

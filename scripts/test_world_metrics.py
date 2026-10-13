@@ -11,8 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "work" / "build-3Dvibe64.ps1"
 SOURCE = BUILDER.read_text(encoding="utf-8").replace("\r\n", "\n")
-VERSION = "1.10.1"
-BUILDER_SHA256 = "75E180FB30FEACBDA28A93A43223DFCE9A646BCB4F53671D8298C203C4EBDFD1"
+VERSION = "1.10.2"
+BUILDER_SHA256 = "79510B085B6B786A87F2F2814B2BED0FE2C95313EDAF0A3C121B89EA02C9C14F"
 
 
 def sha256(path: Path) -> str:
@@ -84,7 +84,7 @@ def main() -> None:
     require("camera_plane_original_facing:")
 
     # Ground is Z-up in authored coordinates; plane Ground remains line-only
-    # in Mode 2 and uses post-clipping polygons in Modes 3Ã¢â‚¬â€œ6.
+    # in Mode 2 and uses post-clipping polygons in Modes 3ÃƒÆ’Ã†â€™Ãƒâ€ Ã¢â‚¬â„¢ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â‚¬Å¡Ã‚Â¬Ãƒâ€¦Ã‚Â¡ÃƒÆ’Ã¢â‚¬Å¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã†â€™Ãƒâ€šÃ‚Â¢ÃƒÆ’Ã‚Â¢ÃƒÂ¢Ã¢â€šÂ¬Ã…Â¡Ãƒâ€šÃ‚Â¬ÃƒÆ’Ã¢â‚¬Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã…â€œ6.
     require('"world-z-up"')
     require("world ground mode 'plane' is available only in GraphicsMode 2, 3, 4, 5, or 6")
     require("ground_vside = RUNTIME_BUFFER_END")

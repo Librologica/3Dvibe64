@@ -1,5 +1,6 @@
 # GraphicsMode 8 — 2.5D
 
+Stable 1.10.2: only the qualified bitmap path remains. EngineExperiments omission/none is accepted; all and retired Mode8 flags/combinations are rejected. See [release notes](RELEASE-NOTES-1.10.2.en.md).
 <!-- maintenance-1.10.1 -->
 Official 1.10.1 requires capture acquisition provenance for native reuse and retains mandatory input checks under optimized Python. Coincident heading is 64. The adaptive renderer can miss interior discontinuities: see [diagnostic, measured cost and known limit](QUALIFICATION-1.10.1-rc1.en.md). Runtime sampling is unchanged.
 

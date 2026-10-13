@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.10.2 — 2026-10-14
+
+Stable local promotion of qualified dev3 and the corrected performance report. Runtime/defaults/options unchanged; inherited dev1 fast block-state optimization and optional dev2 Q8 UV/arithmetic/camera/visibility retained. Mode8 remains restored bitmap, retired options rejected. Host qualification guard preserved. Stock and Turbo6510 ×64 results separated; 17 reporting regressions and full measurement identities. No new runtime experiment or GitHub publication.
+
+Promozione stabile locale della dev3 qualificata e del rapporto corretto. Runtime/default/opzioni invariati; conservati fast dev1 e migliorie Q8 UV/aritmetica/camera/visibilità opzionali. Mode8 bitmap ripristinato, opzioni ritirate rifiutate, guardia host conservata. Prove stock e Turbo6510 ×64 separate, 17 regressioni reportistiche e identità complete. Nessun nuovo esperimento runtime o pubblicazione GitHub.
+
+[EN](RELEASE-NOTES-1.10.2.en.md) · [IT](RELEASE-NOTES-1.10.2.it.md). Windows/VICE qualified; Linux and physical hardware untested / Linux e hardware reale non testati.
+
 ## 1.10.1 — 2026-10-13
 
 Official maintenance source SDK, promoted from qualified 1.10.1-rc1. Engine, examples and measured PRGs unchanged by promotion. Corrected Mode7 Q8 projection sign loss, flat-light overflow, configuration/viewport, Mode8 validation/navigation and native evidence provenance, package-exact runner/native labels paths and bounded aligned allocation. Standard release contents retained; generated programs and raw qualification data remain external. Windows qualification inherited; Linux execution remains unverified. No GitHub publication in this local preparation.
