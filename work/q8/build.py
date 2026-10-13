@@ -20,9 +20,14 @@ def assemble(source,out,stem):
     r=subprocess.run(cmd,capture_output=True,text=True,cwd=out);(out/(stem+'.log')).write_text(r.stdout+r.stderr)
     if r.returncode:raise RuntimeError(r.stdout+r.stderr)
     return labels(out/(stem+'.labels'))
-def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True,texture_precision=None,texture_quality=None,frame_presentation='safe',line_raster='precise',texture_lod=None,lod_near=None,lod_far=None,geometry_adapter=None):
+def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True,texture_precision=None,texture_quality=None,frame_presentation='safe',line_raster='precise',texture_lod=None,lod_near=None,lod_far=None,geometry_adapter=None,engine_experiments=None):
     scene=Path(scene).resolve();spec=json.loads(scene.read_text(encoding='utf-8-sig'));out=Path(name).resolve()
     validate(spec,mode,standard,out)
+    sys.path.insert(0,str(ROOT.parent))
+    from experiments import parse as parse_experiments
+    experiments=parse_experiments(engine_experiments if engine_experiments is not None else spec.get('engineExperiments'),'q8')
+    if experiments and (mode<3 or precision!='q8'):
+        raise ValueError('ENGINE_EXPERIMENTS: Q8 polygon Modes3..7 required')
     lod_distances_explicit=lod_near is not None or lod_far is not None or 'textureLODNear' in spec or 'textureLODFar' in spec
     texture_lod=texture_lod if texture_lod is not None else spec.get('textureLOD','off')
     lod_near=lod_near if lod_near is not None else spec.get('textureLODNear',28)
@@ -138,6 +143,25 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
                 from texture_lod import apply as lod_apply
                 source,parts,lod_info=lod_apply(source,parts,lab,byte,lod_near,lod_far,texture_quality)
                 info['textureLOD']=lod_info
+        applied={}
+        if 'camera-table' in experiments:
+            from experimental_camera import apply as ex_camera
+            applied['camera-table']=ex_camera(parts)
+        if 'q8-arithmetic' in experiments:
+            from experimental_arithmetic import apply as ex_arithmetic
+            applied['q8-arithmetic']=ex_arithmetic(parts)
+        if 'uv-texel' in experiments:
+            if mode!=7 or texture_precision!='perspective' or texture_quality=='fast' or 'perspective_uv_pair' not in parts:
+                raise ValueError('ENGINE_UV_TEXEL: standard paired lit perspective sampler required; fast endpoints and unlit recurrence retain all bits')
+            bits=tuple(max(3+int(math.log2(t.get('repeat',[1,1])[axis])) for t in spec['textures']) for axis in range(2))
+            from perspective_uvzp import kernel as uv_kernel
+            parts['perspective_uv_pair']=uv_kernel(bits)
+            applied['uv-texel']=dict(fractionalBits=bits,lowBits='discarded only in final texel addressing')
+        if 'visibility' in experiments:
+            from experimental_visibility import apply as ex_visibility
+            source,applied['visibility']=ex_visibility(source,parts,object_ranges,lab,byte)
+        if set(applied)!=experiments:raise ValueError('ENGINE_EXPERIMENTS: requested experiment not applied')
+        info['engineExperiments']=dict(requested=sorted(experiments),applied=applied)
         if geometry_adapter is not None:
             source,parts=geometry_adapter(source,parts,lab)
         sizing_source=attach(source,parts)
@@ -178,7 +202,8 @@ if __name__=='__main__':
     p.add_argument('--camera',choices=['stationary','interactive','auto'],default='stationary')
     p.add_argument('--texture-precision',choices=['affine','perspective'],default=None)
     p.add_argument('--texture-quality',choices=['standard','fast'],default=None)
+    p.add_argument('--engine-experiments',default=None)
     p.add_argument('--frame-presentation',choices=['safe','legacy'],default='safe');p.add_argument('--line-raster',choices=['precise','hybrid'],default='precise')
     p.add_argument('--texture-lod',choices=['off','gradual'],default=None);p.add_argument('--lod-near',type=int,default=None);p.add_argument('--lod-far',type=int,default=None);a=p.parse_args()
-    try:build(a.out,a.scene,standard=a.standard,mode=a.mode,camera_mobile=a.camera!='stationary',camera_auto=a.camera=='auto',texture_precision=getattr(a,'texture_precision',None),texture_quality=a.texture_quality,frame_presentation=a.frame_presentation,line_raster=a.line_raster,texture_lod=a.texture_lod,lod_near=a.lod_near,lod_far=a.lod_far)
+    try:build(a.out,a.scene,standard=a.standard,mode=a.mode,camera_mobile=a.camera!='stationary',camera_auto=a.camera=='auto',texture_precision=getattr(a,'texture_precision',None),texture_quality=a.texture_quality,frame_presentation=a.frame_presentation,line_raster=a.line_raster,texture_lod=a.texture_lod,lod_near=a.lod_near,lod_far=a.lod_far,engine_experiments=a.engine_experiments)
     except (ValueError,KeyError,TypeError) as e:raise SystemExit(f'Q8 validation/build refused: {e}')
