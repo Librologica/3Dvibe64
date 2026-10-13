@@ -1,5 +1,7 @@
 # Mode 7 fast profile — 1.7.0
 
+Experimental 1.10.2-dev1: block-boundary carrier state; see [dev notes](DEV-NOTES.en.md). The following measurements refer to their historical versions.
+
 Release 1.10.0: Q8 encoding ceilings are extended;
 new multiobject native qualification covers affine Modes1–7. The perspective/
 fast/LOD measurements below remain inherited tests on the original scenes.

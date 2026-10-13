@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.10.1",
-    "version": "1.10.1",
+    "displayName": "3Dvibe64 1.10.2",
+    "version": "1.10.2",
     "distribution": "source-sdk",
-    "permanentFiles": 244,
+    "permanentFiles": 258,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -14,7 +14,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "75E180FB30FEACBDA28A93A43223DFCE9A646BCB4F53671D8298C203C4EBDFD1"
+    "sha256": "79510B085B6B786A87F2F2814B2BED0FE2C95313EDAF0A3C121B89EA02C9C14F"
   },
   "examples": [
     "examples/wire-two-color-multimaterial.json",
@@ -71,7 +71,9 @@
     "examples/q8/scalability/3-objects-mode7.json",
     "examples/q8/scalability/single-129-mode3.json",
     "examples/q8/scalability/single-255-mode3.json",
-    "examples/q8/scalability/single-256-mode3.json"
+    "examples/q8/scalability/single-256-mode3.json",
+    "examples/experiments/duplicate-overdraw.json",
+    "examples/experiments/visibility-sparse.json"
   ],
   "releaseEngine": {
     "scope": "GraphicsMode 6 runtime (Mode 7 identity is recorded separately)",
@@ -695,15 +697,15 @@
       "work/mode8/asm/perimeter-interactive.asm": "8DB36FDE1A9C85B3BE546E7048260DC4304EA10C5236D964469BC2A4172963DC",
       "work/mode8/asm/two-levels-auto.asm": "539D1D15D55E6C7DB0DEE31F0D699156D01FF31EDCCB312FBE06426B97F79207",
       "work/mode8/asm/two-levels-interactive.asm": "F78CC063D1CAE9E95F13F88FA7360F3B88140A1F7F43D045D32539C9094911D0",
-      "work/mode8/build.py": "1D58EB987708AC7646D3A0885177F99581F6C22773D5C387697FB04457E7FCCC",
-      "work/mode8/common.py": "E381BCA41F8443F2AD15F638AB771D1C0CBBE4AE1510283833D3445783D0B096",
+      "work/mode8/build.py": "57BE68CC567A77388756F541990134FE8CB9A2C902BAB4DDD96AF2D091D8BBEC",
+      "work/mode8/common.py": "5540C8F5D03ACEC80FE495814ECBB16412D7596C101F42CB7FB3584B27FCE0AD",
       "work/mode8/contract.py": "5EF28DE6D85EAF7B0FEF848D84B683F03C11697A018E40B753EF9E4F5F6248BF",
       "work/mode8/directions.py": "A31912E4C6943AA4DBC6C176F9E05DF2E87A28B731085ABC42F5E597819F5C86",
       "work/mode8/font.bin": "B7605C10D1DED50F00726E37B204A12B247AB48A8D05DA9038CC1F954684DF94",
       "work/mode8/font.py": "5EE8C5B7030455293E54C33662CA6C4AB6854283F567DA516DBB54AF6EDE6491",
       "work/mode8/model.py": "5076E8C90500F9712A6E3F00D456B47B4F9967303B8A769167AFA29227CC3BF1",
       "work/mode8/mono.py": "A505C1885B96271DD6B788157C00B39EA401A6AA8ED2FF901EA2D9A949AC2E7A",
-      "work/mode8/native.py": "459C968BCBC03F45DC647CB4CB7ED428A2AF30C3AA149FB19888081A002931B3",
+      "work/mode8/native.py": "7E0DF5AB95B2FC1E6814123455D4B523E41FE13049622B3ECB004D061ECB80D6",
       "work/mode8/navigation.py": "B809E452BD36D1ECD6FA53F3E180A7C0608980227DB4FB5710A2735640CCA9E7",
       "work/mode8/profile-groups.json": "DFBCA4B5C226281DEB9CF21056331571A5A9AA99178AAA081BC1CAC946B85C6E",
       "work/mode8/reference.py": "7F38E776B5158426789C627A3E41297E74AB24CC0B643A0AE5AE78438E3FDE0E",
@@ -763,7 +765,7 @@
       "music": false,
       "outputOutsideSDK": true,
       "backendHashes": {
-        "work/q8/build.py": "6F39028B4E1EE2A0BFD2FFFE4C8E9916929C463C740293360EA814487029FB3F",
+        "work/q8/build.py": "713D39CACFCA0E451084075CB98AD87D4C4B3B4DD57D7DA46ED19E41CD6B97D4",
         "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
         "work/q8/src/camera.py": "C1497B56E9C3325D1738C068DDED7C97BF20DB524214F2C6EF483EE3C14B5909",
         "work/q8/src/clip.asm": "69178B5C3A359F5299631CA53DEBBA7431E7AA413E3E2B5C568CA82C57CDFB5B",
@@ -788,8 +790,8 @@
         "work/q8/src/perspective_exact.py": "EEBED49EA84309E9984EC3C24D401917FC6EEB5F155BA853A3D759A6EC192B63",
         "work/q8/src/perspective_rational.py": "48AD7C4FB6BD1A684676A8913033C82A5DF7BF4EFA211C3CAF1AE75EECB7E10C",
         "work/q8/src/perspective_uniform.py": "AF25A0D9193A64F541F2B94C3236253253BC1CECDA13BA84443E8DDA69DF0398",
-        "work/q8/src/perspective_uvzp.py": "08F59D43F6C5B7DCA4329654CCF17B64CB4ABB39FCEDDD79BD952D49DEC47252",
-        "work/q8/src/texture_fast.py": "1BA549A2F5902FFF9EC2B8A183A3B7686344E205A97A45583CE577A08DA381CF",
+        "work/q8/src/perspective_uvzp.py": "FB01814A1743D98E52BBA5E216D8783BF93FE473DBBD6A9ADCC5281475CD9372",
+        "work/q8/src/texture_fast.py": "3760C94B8666EB7DDC59410790BC48937CADCF0D33B6482B8633D5F6D3F6E7D7",
         "work/q8/src/hybrid.py": "5BC494DA9D9348606E7FA430C0BA11FC4A840D52B4A7AFF2FBCADD3B6C9B18FC",
         "work/q8/src/hybrid_line.asm": "54659AA0F3122B78A0AF977DA56C7ED0B5BBCC3DC8CD4B74E3E27E7E2BCAFFF9",
         "work/q8/src/texture_lod.py": "CC127DF2B8B275064E5BC29E0916772500D488183CB9E2AF342F90E83D1C2644",
@@ -1845,5 +1847,57 @@
     "uniformTexturesUnchanged": true,
     "guideEn": "MODE7-LOD.en.md",
     "guideIt": "MODE7-LOD.it.md"
+  },
+  "experimentalDevelopment": {
+    "baseOfficialVersion": "1.10.1",
+    "baseDevCommit": "26ba9ae13fd1b43bf0a09bf6aacf13b1f88e9f86",
+    "published": false,
+    "scope": "Mode8 qualified bitmap restored; reusable opt-in Q8 arithmetic, UV addressing, camera tables, visibility retained from dev2; fast block state inherited from dev1",
+    "default": "none; inherited fast optimization remains enabled",
+    "option": "EngineExperiments",
+    "q8Flags": [
+      "q8-arithmetic",
+      "uv-texel",
+      "camera-table",
+      "visibility"
+    ],
+    "mode8Flags": [],
+    "retiredMode8Flags": [
+      "mode8-regions",
+      "mode8-rays",
+      "mode8-chars"
+    ],
+    "mode8All": "rejected: experimental family retired",
+    "backendHashes": {
+      "work/experiments.py": "1BD7DEE449A9D0F9CF83942E8DDA3CF08F2B361D96D5E735CEF69D7F4FB5C0E0",
+      "work/q8/src/experimental_arithmetic.py": "4B5B0199081ABA482A9E6AFCC8BF7358E99ED30A5D47B3CD45DFBE5DF4D7A11E",
+      "work/q8/src/experimental_camera.py": "C932B9816104E7FB093B0B6D8CFA4E30A86431C78B08F35AF1533C982339048E",
+      "work/q8/src/experimental_visibility.py": "1AC9A17FDF84962BB9CE9327649F22E84DB244BB0003A6ACC06701D48E24AD44",
+      "work/q8/src/texture_fast.py": "3760C94B8666EB7DDC59410790BC48937CADCF0D33B6482B8633D5F6D3F6E7D7"
+    },
+    "notes": [
+      "DEV-NOTES.en.md",
+      "DEV-NOTES.it.md"
+    ],
+    "nativeEvidence": "../evidence",
+    "nativeSummary": "../RESULTS.md",
+    "inheritedQualification": "Historical records qualify only their named builds",
+    "platform": "Windows; Linux and physical hardware not tested"
+  },
+  "stablePromotion": {
+    "version": "1.10.2",
+    "baseOfficialVersion": "1.10.1",
+    "qualifiedDevCommit": "799be44544933aa759111748b9dc68accaab5da7",
+    "runtimeAndDefaultsUnchanged": true,
+    "optionsUnchanged": true,
+    "reportCorrection": "CC72EA225E21117CFC16BB792EB85EEF28AE9A62802BF0F594C94AE5B7D6D813",
+    "notes": [
+      "RELEASE-NOTES-1.10.2.en.md",
+      "RELEASE-NOTES-1.10.2.it.md"
+    ],
+    "developmentCycle": "closed; no further experiment added",
+    "publication": "local only; GitHub authorization separate",
+    "qualifications": "Windows/VICE named profiles; Linux and physical hardware untested",
+    "evidenceArchive": "3Dvibe64_1.10.2_evidence.zip"
   }
 }

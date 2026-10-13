@@ -1,8 +1,17 @@
-# 3Dvibe64 1.10.1
+# 3Dvibe64 1.10.2
 
-Official 1.10.1 source SDK, promoted from the qualified RC without engine changes. Standard release contents: sources, examples/textures, tests, EN/IT documentation, licenses and manifests. See [official notes](RELEASE-NOTES-1.10.1.md) and [numeric changes](NUMERIC-CORRECTNESS.en.md). Windows verified; Linux execution not qualified.
+Stable local source SDK. Qualified dev3 runtime, defaults and options unchanged.
+Opt-in Q8 improvements and inherited fast block state; Mode8 bitmap retained.
+[Release notes EN](RELEASE-NOTES-1.10.2.en.md).
 
-Historical note: the published 1.10.0 tag and archive retain their original contents. The current version is 1.10.1.
+SDK sorgente stabile locale: runtime, default e opzioni della dev3 qualificata
+invariati. Migliorie Q8 opzionali e fast a blocchi; Mode8 bitmap conservato.
+[Note di rilascio IT](RELEASE-NOTES-1.10.2.it.md).
+
+GitHub publication requires separate authorization. Historical documentation
+follows; current scope and qualification are defined by the 1.10.2 release notes.
+Pubblicazione GitHub soggetta ad autorizzazione separata. Documentazione storica
+di seguito; ambito e qualificazione correnti nelle note 1.10.2.
 
 ## Release 1.10.0: Q8 scene scalability
 
