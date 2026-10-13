@@ -99,7 +99,7 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
         elif mode==7:
             from texture import prepare_texture,texture_pieces
             source=prepare_texture(source,music,motion)
-            parts=texture_pieces(parts,lab)
+            parts=texture_pieces(parts,lab,guard_outcodes=geometry_adapter is None)
         else:source=prepare(source,music,motion,mode)
         if camera_mobile:
             from camera import adapt

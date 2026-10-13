@@ -11,8 +11,8 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "work" / "build-3Dvibe64.ps1"
 SOURCE = BUILDER.read_text(encoding="utf-8").replace("\r\n", "\n")
-VERSION = "1.10.0"
-BUILDER_SHA256 = "CDFF3AF3184C729CDF9CBF81C7B41337B4EC390A5F6358BB8E8722F67BD4BC26"
+VERSION = "1.10.1"
+BUILDER_SHA256 = "75E180FB30FEACBDA28A93A43223DFCE9A646BCB4F53671D8298C203C4EBDFD1"
 
 
 def sha256(path: Path) -> str:

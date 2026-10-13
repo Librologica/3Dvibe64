@@ -72,17 +72,20 @@ def floorq(s,x,y):
     f=s['floor'][(y>>8)*32+(x>>8)]
     return (y-RAMPS[f]*256)*8 if f in RAMPS else f*256
 
+def _geometry_require(ok,detail='invalid multilevel geometry'):
+    if not ok:raise ValueError('MULTI_GEOMETRY: '+str(detail))
+
 def validate(s):
-    assert s['size']==[32,32]
-    for k in ('floor','ceiling','solid'):assert len(s[k])==1024
+    _geometry_require(s['size']==[32,32])
+    for k in ('floor','ceiling','solid'):_geometry_require(len(s[k])==1024,k+' requires1024 entries')
     for i,(v,f,c) in enumerate(zip(s['solid'],s['floor'],s['ceiling'])):
         x,y=i%32,i//32
-        assert v in (0,1) and f in (0,32,64,254,255) and 0<c<=192
-        if x in (0,31) or y in (0,31):assert v==1
+        _geometry_require(v in (0,1) and f in (0,32,64,254,255) and 0<c<=192)
+        if x in (0,31) or y in (0,31):_geometry_require(v==1)
         if not v:
-            assert c-(64 if f in RAMPS else f)>=48
-            if f==255:assert 8<=x<11 and 11<=y<15
-            if f==254:assert 14<=x<17 and 18<=y<22
+            _geometry_require(c-(64 if f in RAMPS else f)>=48)
+            if f==255:_geometry_require(8<=x<11 and 11<=y<15)
+            if f==254:_geometry_require(14<=x<17 and 18<=y<22)
             # Every traversable join is continuous. Collision can therefore
             # test footprint/clearance without an artificial per-cell step.
             for dx,dy in ((1,0),(0,1)):
@@ -93,7 +96,7 @@ def validate(s):
                 f0=(yy-RAMPS[f]*256)*8 if f in RAMPS else f*256
                 nf=s['floor'][ni]
                 f1=(yy-RAMPS[nf]*256)*8 if nf in RAMPS else nf*256
-                assert f0==f1,('discontinuous traversable join',i,ni,f0,f1)
+                _geometry_require(f0==f1,('discontinuous traversable join',i,ni,f0,f1))
     return s
 
 def tick(s,p,k):

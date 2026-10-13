@@ -211,33 +211,13 @@ def pack(sizes,lab):
               (lab['mode3_high_basic_middle_end'],0x5c00),
               (lab['mode3_high_basic_relocated_code_end'],0xa000),
               (lab['mode3_high_basic_high_code_end'],0xd000)]
-        items=sorted(sizes.items(),key=lambda x:-x[1]);seen=set();nodes=0
-        def search(i,free,placed):
-            nonlocal nodes
-            nodes+=1
-            if nodes>60000:return None
-            if i==len(items):return placed,free
-            state=(i,tuple(sorted(free)))
-            if state in seen:return None
-            seen.add(state)
-            name,size=items[i];align=256 if name=='tables' else 2
-            need=size+(0 if name in ('tables','data') else 32)
-            remaining=sum(s+(0 if n in ('tables','data') else 32) for n,s in items[i:])
-            if sum(b-a for a,b in free)<remaining:return None
-            options=[]
-            for gi,(a,b) in enumerate(free):
-                start=(a+align-1)//align*align
-                if start+need<=b:options.append((b-start-need,gi,start))
-            for _,gi,start in sorted(options):
-                a,b=free[gi];nextfree=free[:gi]+free[gi+1:]
-                if a<start:nextfree.append((a,start))
-                if start+need<b:nextfree.append((start+need,b))
-                result=search(i+1,nextfree,{**placed,name:(start,start+need)})
-                if result:return result
-            return None
-        result=search(0,gaps,{})
-        if result:return result[0],gaps,result[1]
-        raise ValueError(f'{initial}; exact-placement fallback exhausted {nodes} states') from initial
+        from allocation import bounded_place,PlacementFailure
+        try:
+            result,search=bounded_place(sizes,gaps,60000)
+        except PlacementFailure as error:
+            raise ValueError(f'Q8_MEMORY_BUDGET: {error.reason}; searched {error.nodes}/{error.budget} states') from initial
+        return result[0],gaps,result[1]
+
 
 def attach(source,parts,placed=None):
     assert source.count('hp_legacy_transform_project_vertices = hp_unreachable')==1

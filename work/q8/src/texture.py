@@ -39,7 +39,7 @@ tq_span_right_ready:
 '''+source[end:]
     return source
 
-def texture_pieces(p,lab):
+def texture_pieces(p,lab,guard_outcodes=True):
     shaded='m3_q0' in lab
     attrs=[('s','gouraud_vshade0'),('v','m7_v0')]+([('q','m3_q0')] if shaded else [])
     p={n:code.replace('GOURAUD_MODE6','MODE7_UV_CARRIER') for n,code in p.items()}
@@ -115,6 +115,30 @@ def texture_pieces(p,lab):
         helper+=helper[a:b].replace('_s','_'+att)
     if 'sxq2_lo' not in lab:extra+='sxq2_lo: .fill VERT_COUNT,0\nsxq2_hi: .fill VERT_COUNT,0\n'
     p['clip']=clip;p['clip_helpers']=helper;p['data']+=extra
+    if guard_outcodes:
+        # Classify the complete unsigned48 quotient BEFORE signed24 reduction.
+        # Near-clipped vertices have positive Z, so these true projected
+        # half-space signs are also homogeneous frustum outcodes. Reject only
+        # an AND-common side plane; a single exterior vertex never rejects a
+        # crossing face. The existing public radius<=40 WU bounds contributing
+        # polygons and their screen deltas within the signed24 clip domain.
+        p['projection']=replace(p['projection'],'hc_pv_loop:\n ldx hp_idx\n',
+            'hc_pv_loop:\n lda #0\n sta tq_point_code\n ldx hp_idx\n')
+        p['projection']=replace(p['projection'],'hc_pv_next:\n inc hp_idx\n',
+            'hc_pv_next:\n ldx hp_idx\n lda tq_point_code\n sta tq_vertex_code,x\n inc hp_idx\n')
+        p['full_projection']=replace(p['full_projection'],'tq_full_sign:\n cmp #128\n',
+            'tq_full_sign:\n jsr tq_classify_projection\n cmp #128\n')+OUTCODE
+        p['clip']=replace(p['clip'],'load_face_y:\n sty sortj\n',
+            'load_face_y:\n sty sortj\n lda #15\n sta tq_face_code\n')
+        p['clip']=replace(p['clip'],'hc_near_intersection:\n',
+            'hc_near_intersection:\n lda #0\n sta tq_point_code\n')
+        original=' sta hc_out_y+2\n jsr hc_append_a\n'
+        p['clip']=replace(p['clip'],original,' sta hc_out_y+2\n ldx hc_current\n lda hc_face_vertices,x\n tax\n lda tq_vertex_code,x\n sta tq_point_code\n jsr hc_append_a\n')
+        original=' lda hc_count\n cmp #3\n bcc hc_face_empty\n lda #0\n sta hc_plane\n'
+        p['clip']=replace(p['clip'],original,' lda tq_face_code\n bne hc_face_empty\n'+original)
+        p['clip_helpers']=replace(p['clip_helpers'],'hc_append_a:\n',
+            'hc_append_a:\n lda tq_face_code\n and tq_point_code\n sta tq_face_code\n')
+        p['data']+='tq_point_code: .byte 0\ntq_face_code: .byte 15\ntq_vertex_code: .fill VERT_COUNT,0\n'
     from texture_edges import generate
     edge,edge_data=generate(shaded)
     p['poly_draw']=edge;p['data']+=edge_data
@@ -122,3 +146,33 @@ def texture_pieces(p,lab):
     a=p['clip_helpers'].index('hc_near_x:')
     p['texture_helpers']=p['clip_helpers'][a:];p['clip_helpers']=p['clip_helpers'][:a]
     return p
+
+OUTCODE='''; A is the true screen-offset sign (Y already inverted).
+; Preserve A for tq_full_projection; hc_num still holds the entire quotient.
+tq_classify_projection:
+ pha
+ asl
+ lda hc_axis
+ rol
+ tax
+ lda hc_num+2
+ ora hc_num+3
+ ora hc_num+4
+ ora hc_num+5
+ bne tq_projection_outside
+ lda hc_num+1
+ cmp tq_projection_limit,x
+ bcc tq_projection_inside
+ bne tq_projection_outside
+ lda hc_num
+ beq tq_projection_inside
+tq_projection_outside:
+ lda tq_point_code
+ ora tq_projection_bit,x
+ sta tq_point_code
+tq_projection_inside:
+ pla
+ rts
+tq_projection_limit: .byte PROJ_SCREEN_MAX_X-PROJ_CENTER_X,PROJ_CENTER_X,PROJ_SCREEN_MAX_Y-PROJ_CENTER_Y,PROJ_CENTER_Y
+tq_projection_bit: .byte 2,1,8,4
+'''

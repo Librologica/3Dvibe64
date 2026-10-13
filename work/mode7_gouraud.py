@@ -89,27 +89,8 @@ def emit_gouraud(s, carrier, compositor='A'):
     if light.count(' jsr mul_s6\n') != 9:
         raise ValueError('LightFix requires nine object-light matrix products')
     s=s[:a]+light.replace(' jsr mul_s6\n',' jsr m31_light_mul_s6\n')+s[b:]
-    code += '''
-; Saturated signed-byte result for A=-128..127, X=-64..64 (Q6 matrix).
-; mulsign retains the mathematical sign, including a result truncated to zero.
-m31_light_mul_s6:
- jsr mul_s6
- bit mulsign
- bmi m31_light_mul_negative
- cmp #$80
- bcc m31_light_mul_done
- lda #$7f
- rts
-m31_light_mul_negative:
- cmp #$80
- bcs m31_light_mul_done
- cmp #0
- beq m31_light_mul_done
- lda #$80
-m31_light_mul_done:
- rts
-m31_light_mul_s6_end = *
-'''
+    from mode7_light_product import code as light_product
+    code += light_product('m31')
     # The middle entry is not executed by fall-through. Keep all additions
     # before its end marker so the existing builder bounds check covers them.
     s=replace_once(s,'mode3_high_basic_middle_end = *\n',

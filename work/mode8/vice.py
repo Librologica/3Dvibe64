@@ -9,13 +9,15 @@ def canonical(p):
 ROOT=canonical(__file__).parents[2]
 VICE=Path(os.environ.get('VICE_X64SC') or shutil.which('x64sc') or shutil.which('x64sc.exe') or 'x64sc')
 
-def capture(build,out,standard='pal',cycles=8000000,points=None,pose=None,keys=None,initial_pose=None,warp=True,extra=None,turbo=None,capture_once=False):
+def capture(build,out,standard='pal',cycles=8000000,points=None,pose=None,keys=None,initial_pose=None,warp=True,extra=None,turbo=None,capture_once=False,qualification=None):
     build=canonical(build);out=canonical(out)
     if out.is_relative_to(ROOT):raise ValueError('VICE output must be outside SDK')
     out.mkdir(parents=True,exist_ok=True)
+    from .provenance import identity,record,MANIFEST
+    acquisition_identity=identity(build,standard,qualification)
     # VICE appends monitor logs. Preserve prior attempts, never combine runs or
     # accidentally accept a stale snapshot after a failed invocation.
-    prior=[out/n for n in ('trace.log','capture.vsf','color.bin','vic.bin','cia2.bin','screen.png','late.png','run.json','capture.mon','console.log') if (out/n).exists()]+list(out.glob('frame-*'))
+    prior=[out/n for n in ('trace.log','capture.vsf','color.bin','vic.bin','cia2.bin','screen.png','late.png','run.json','capture.mon','console.log','capture-manifest.json') if (out/n).exists()]+list(out.glob('frame-*'))
     prior+=list(out.glob('tick-*.vsf'))
     prior+=list(out.glob('phase-*.vsf'))
     if (out/'tour-end.vsf').exists():prior.append(out/'tour-end.vsf')
@@ -60,6 +62,7 @@ def capture(build,out,standard='pal',cycles=8000000,points=None,pose=None,keys=N
     # requires completed capture/trace outputs and checks their contents.
     if p.returncode not in (0,1) or not all((out/n).is_file() for n in ('trace.log','capture.vsf','screen.png')):
         raise RuntimeError('VICE failed or incomplete capture; inspect console.log')
+    record(build,out,standard,qualification,acquisition_identity)
     return out
 
 def ram(snapshot):

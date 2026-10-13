@@ -6,6 +6,8 @@ from .model import floorq
 ATAN=bytes(round(math.atan(i/128)*512/math.tau) for i in range(129))
 
 def heading(dx,dy):
+    # Match nav_equal in the qualified runtime, preserving ordinary headings.
+    if dx==0 and dy==0:return 64
     ax,ay=abs(dx),abs(dy)
     while max(ax,ay)>255:ax>>=1;ay>>=1
     a=128-ATAN[ay*128//ax] if ax>ay else ATAN[ax*128//ay] if ay else 0

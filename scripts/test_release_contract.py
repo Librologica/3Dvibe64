@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.10.0"
-BUILDER_SHA256 = "CDFF3AF3184C729CDF9CBF81C7B41337B4EC390A5F6358BB8E8722F67BD4BC26"
-PERMANENT_FILE_COUNT = 233
+VERSION = "1.10.1"
+BUILDER_SHA256 = "75E180FB30FEACBDA28A93A43223DFCE9A646BCB4F53671D8298C203C4EBDFD1"
+PERMANENT_FILE_COUNT = 244
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -210,8 +210,8 @@ def check_builder_and_package() -> None:
     assert sha256(builder) == BUILDER_SHA256, "builder hash changed"
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
-        "name": "3Dvibe64", "displayName": "3Dvibe64 1.10.0", "version": VERSION,
-        "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT,
+        "name": "3Dvibe64", "displayName": "3Dvibe64 1.10.1", "version": VERSION,
+        "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT, "prerelease": False,
         "precompiledPrograms": False,
         "author": "librologica.digital",
         "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -311,7 +311,7 @@ def check_builder_and_package() -> None:
 def check_documentation() -> None:
     assert (ROOT / "VERSION").read_text(encoding="utf-8-sig").strip() == VERSION
     main = (ROOT / "README.md").read_text(encoding="utf-8-sig")
-    assert main.startswith("# 3Dvibe64 1.10.0\n")
+    assert main.startswith("# 3Dvibe64 1.10.1\n")
     for token in ("source SDK", "no precompiled PRG", "GraphicsMode 1\u20138", "meshSourceSharing", "FaceCullProfile", "Mode4NearProfile", "GOURAUD-MODE6-REPORT.md"):
         assert token in main, f"README.md does not document {token}"
     for token in ("HeaderText", "160\u00d788", "TEXT_HEADER_SCREEN_BYTES"):

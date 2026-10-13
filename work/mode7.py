@@ -493,7 +493,7 @@ def emit(doc, asm):
     s,m1_removed=remove_unused_gouraud_state(s)
     if meta.get('flatLighting'):
         from mode7_lighting import emit_flat_lighting
-        s = emit_flat_lighting(s, meta['flatLighting']['faceSources'])
+        s = emit_flat_lighting(s, meta['flatLighting']['faceSources'], saturated_products=m3_carrier is None)
     if m3_carrier is not None:
         from mode7_gouraud import emit_gouraud
         s = emit_gouraud(s, m3_carrier, meta.get('compositor', 'A'))
@@ -508,10 +508,21 @@ def emit(doc, asm):
 
 
 if __name__ == '__main__':
-    action, src, dst = sys.argv[1:]
+    import argparse
+    parser=argparse.ArgumentParser()
+    parser.add_argument('action',choices=['prepare','emit'])
+    parser.add_argument('src');parser.add_argument('dst');parser.add_argument('--config',type=Path)
+    args=parser.parse_args();action,src,dst=args.action,args.src,args.dst
     if action == 'prepare':
         try:
-            result = prepare_scene(json.loads(Path(src).read_text(encoding='utf-8-sig')), Path(src).resolve().parent)
+            document=json.loads(Path(src).read_text(encoding='utf-8-sig'))
+            if args.config:
+                config=json.loads(args.config.read_text(encoding='utf-8-sig'))
+                allowed={'texturePrecision':('affine','perspective'),'textureQuality':('standard','fast'),'textureLOD':('off','gradual')}
+                if not isinstance(config,dict) or any(k not in allowed or v not in allowed[k] for k,v in config.items()):
+                    raise ValueError('Invalid effective texture configuration')
+                document.update(config)
+            result = prepare_scene(document, Path(src).resolve().parent)
         except (ValueError, OSError) as error:
             print(f'Mode 7 scene {src}: {error}', file=sys.stderr)
             sys.exit(2)

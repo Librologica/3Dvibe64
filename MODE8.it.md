@@ -1,5 +1,8 @@
 # GraphicsMode 8 — 2.5D
 
+<!-- maintenance-1.10.1 -->
+La 1.10.1 ufficiale richiede provenienza acquisizione per riuso nativo e mantiene i vincoli input con Python ottimizzato. Heading coincidente 64. Il renderer adattivo può perdere discontinuità interne: vedere [diagnostica, costo misurato e limite noto](QUALIFICATION-1.10.1-rc1.it.md). Campionamento runtime invariato.
+
 Nella 1.5.5 mono-portals azzera lo stato all'uscita e include l'identità del piano
 frontale nel raffinamento adattivo. Mappe ammesse e API sotto restano invariati:
 non aggiunge mondi procedurali né architravi multiple arbitrarie per raggio.

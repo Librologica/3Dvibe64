@@ -1,5 +1,8 @@
 # Precisione texture Mode 7 — 1.7.0
 
+<!-- maintenance-1.10.1 -->
+La 1.10.1 ufficiale corregge casi numerici Mode7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
+
 Release 1.10.0: i tetti di codifica Q8 sono estesi; la nuova qualificazione
 nativa con più oggetti copre i Modes 1–7 affine. Le misure perspective/fast/LOD
 seguenti restano quelle ereditate sulle scene originali.

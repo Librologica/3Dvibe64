@@ -23,7 +23,10 @@ def run(scene,build,out,standard='pal',reuse=False,short=False,interactive=False
     frames=list(range(1,9));pages=[] if short or interactive else list(range(1,(lap+300)//256+1))
     for n in frames:extra.append((f'presentation_done if (@ram:$0012 == ${n:02x}) && (@ram:$0013 == $00)',f'dump {q}{out.as_posix()}/frame-{n:04d}.vsf{q}'))
     for page in pages:extra.append((f'presentation_done if (@ram:$0015 == ${page:02x})',f'dump {q}{out.as_posix()}/phase-{page:02d}.vsf{q}'))
-    if not reuse:v.capture(b,out,standard,int(hz*(30 if short or interactive else (lap+800)/50+6)),points=['render_frame_begin','render_frame_end','presentation_done'],extra=extra,capture_once=True)
+    qualification=dict(sceneSHA256=sha(scene),run=expected_run,short=bool(short),interactive=bool(interactive))
+    if not reuse:v.capture(b,out,standard,int(hz*(30 if short or interactive else (lap+800)/50+6)),points=['render_frame_begin','render_frame_end','presentation_done'],extra=extra,capture_once=True,qualification=qualification)
+    from .provenance import verify
+    provenance=verify(b,out,standard,qualification)
     word=lambda m,a:m[a]+256*m[a+1]
     pose=lambda m:tuple(word(m,a) for a in (0x26,0x28,0x2a))+((m[0x2d],m[0x2f]) if multi else ())
     views=[]
@@ -77,7 +80,7 @@ def run(scene,build,out,standard='pal',reuse=False,short=False,interactive=False
         colors=[(0,0,0),(119,83,0),(183,99,30),(255,255,70)] if standard=='pal' else [(0,0,0),(143,68,0),(195,96,69),(255,248,148)]
         physical=sum(im.getpixel((32+x,top+y))!=colors[pixels[(y-16)*128+(x-32)//2] if 16<=y<160 and 32<=x<288 else 0] for y in range(176) for x in range(320))
         assert physical==0,('VIC physical pixels',physical)
-    result=dict(sceneSHA256=sha(scene),prgSHA256=sha(b/'3Dvibe64.prg'),standard=standard,stock=True,interactive=interactive,physicalPixelDifferences=physical,
+    result=dict(captureProvenanceVerified=True,acquisitionManifest='capture-manifest.json',sceneSHA256=sha(scene),prgSHA256=sha(b/'3Dvibe64.prg'),standard=standard,stock=True,interactive=interactive,physicalPixelDifferences=physical,
                 warmupSeconds=2,short=window(20),tour=None if short or interactive else window(lap/50),lapTicks=lap,
                 views=views,bitmapDifferentBytes=0,VICRegisters=True,colorRAM=True,font=True,UITextAndFPS=True,doubleBuffer=True,
                 shownPoseCount=len(shown),presentedClocks=pub,shownPoses=shown,

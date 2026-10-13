@@ -22,8 +22,29 @@ TESTS = (
     "test_texture_uvzp.py",
     "test_texture_fast.py",
     "test_line_hybrid.py", "test_texture_lod.py", "test_frame_presentation.py",
-    "test_normalized16.py",
+    "test_normalized16.py", "test_maintenance_host.py", "test_maintenance_numeric.py",
 )
+
+def copy_package(root,dest):
+    """Copy exactly the current package bytes, including uncommitted candidate edits.
+
+    The manifest is the distribution file list. Do not use git archive HEAD:
+    that could silently test a different revision from the current candidate.
+    """
+    root=root.resolve();dest=dest.resolve();dest.mkdir(parents=True,exist_ok=True)
+    entries=['MANIFEST.sha256']
+    for line in (root/'MANIFEST.sha256').read_text(encoding='utf-8-sig').splitlines():
+        digest,separator,name=line.partition('  ')
+        if not separator or len(digest)!=64 or not name:raise ValueError('Malformed source manifest')
+        source=(root/name).resolve()
+        if not source.is_relative_to(root) or '.git' in Path(name).parts or not source.is_file():
+            raise ValueError('Invalid package input: '+name)
+        entries.append(name)
+    if len(set(entries))!=len(entries):raise ValueError('Duplicate package entry')
+    for name in entries:
+        target=dest/name;target.parent.mkdir(parents=True,exist_ok=True)
+        shutil.copy2(root/name,target)
+
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
@@ -40,7 +61,7 @@ def main():
         print(f"START {name}", flush=True)
         with tempfile.TemporaryDirectory(prefix="3dvibe64-release-test-") as temporary:
             sdk = Path(temporary) / "sdk"
-            shutil.copytree(ROOT, sdk, ignore=shutil.ignore_patterns("__pycache__"))
+            copy_package(ROOT,sdk)
             result = subprocess.run([sys.executable, "-B", str(sdk / "scripts" / name)], cwd=sdk, env=env)
         print(f"{'PASS' if result.returncode == 0 else 'FAIL'} {name} elapsed={time.monotonic()-started:.1f}s", flush=True)
         if result.returncode:

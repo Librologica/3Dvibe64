@@ -264,6 +264,31 @@ param(
 $ErrorActionPreference = "Stop"
 Set-StrictMode -Version Latest
 
+function Has-Property([object]$Object, [string]$Name) {
+ if ($null -eq $Object) {
+ return $false
+ }
+ $propertyNames = @($Object.PSObject.Properties | ForEach-Object { $_.Name })
+ return ($propertyNames -contains $Name)
+}
+
+function Get-PropertyValue([object]$Object, [string]$Name, [object]$Default = $null) {
+ if (Has-Property $Object $Name) {
+ return $Object.$Name
+ }
+ return $Default
+}
+
+function Get-SceneContractObject([object]$Doc) {
+ if (Has-Property $Doc "contract") {
+ return Get-PropertyValue $Doc "contract"
+ }
+ if (Has-Property $Doc "objectModel") {
+ return Get-PropertyValue $Doc "objectModel"
+ }
+ return [pscustomobject]@{}
+}
+
 # Texture interpolation is independent of geometric precision. Never silently
 # accept a perspective request in the legacy generator or another mode.
 if ($SceneFile) {
@@ -436,7 +461,11 @@ if ($Mode7Experimental) {
  if ($Mode4NearProfile -ne 'clip') { throw 'Mode 7 v1 requires the camera-plane clipping profile' }
  $mode7SceneInput = (Resolve-Path -LiteralPath $SceneFile).Path
  $mode7Prepared = Join-Path $Root 'build/mode7-scene.json'
- & python -B (Join-Path $Root 'mode7.py') prepare $mode7SceneInput $mode7Prepared
+ # Share resolved JSON/CLI texture settings with preparation. Keep the
+ # original scene path so relative PNG assets resolve in its directory.
+ $mode7Config = Join-Path $Root 'build/mode7-effective-config.json'
+ @{ texturePrecision=$TexturePrecision; textureQuality=$TextureQuality; textureLOD=$TextureLOD } | ConvertTo-Json | Set-Content -LiteralPath $mode7Config -Encoding utf8
+ & python -B (Join-Path $Root 'mode7.py') prepare $mode7SceneInput $mode7Prepared --config $mode7Config
  if ($LASTEXITCODE -ne 0) { throw 'Mode 7 texture/UV validation failed' }
  $SceneFile = $mode7Prepared
  # Reuse geometry/clipping generation only; the final pass removes lighting
@@ -455,8 +484,9 @@ if (-not $PSBoundParameters.ContainsKey("CameraViewport") -and $SceneFile.Trim()
  }
  if (Test-Path -LiteralPath $viewportScenePath -PathType Leaf) {
   $viewportSceneDoc = Get-Content -LiteralPath $viewportScenePath -Raw | ConvertFrom-Json
-  if ($null -ne $viewportSceneDoc.contract -and ($viewportSceneDoc.contract.PSObject.Properties.Name -contains "viewportProfile")) {
-   $viewportSceneProfile = ([string]$viewportSceneDoc.contract.viewportProfile).Trim().ToLowerInvariant()
+  $viewportContract = Get-SceneContractObject $viewportSceneDoc
+  if (Has-Property $viewportContract "viewportProfile") {
+   $viewportSceneProfile = ([string](Get-PropertyValue $viewportContract "viewportProfile")).Trim().ToLowerInvariant()
    if ($viewportSceneProfile -ne "normal" -and $viewportSceneProfile -ne "small") {
     throw "Scene contract viewportProfile must be normal or small"
    }
@@ -835,21 +865,6 @@ function Read-CameraObjects([string]$path) {
  return @($doc.cameras)
 }
 
-function Has-Property([object]$Object, [string]$Name) {
- if ($null -eq $Object) {
- return $false
- }
- $propertyNames = @($Object.PSObject.Properties | ForEach-Object { $_.Name })
- return ($propertyNames -contains $Name)
-}
-
-function Get-PropertyValue([object]$Object, [string]$Name, [object]$Default = $null) {
- if (Has-Property $Object $Name) {
- return $Object.$Name
- }
- return $Default
-}
-
 function Apply-GouraudMeshSettings([object]$Object, [string]$Context) {
  if (-not (Has-Property $Object "gouraud")) {
   return
@@ -879,16 +894,6 @@ function Get-SceneAxisConvention([object]$Doc) {
  throw "Scene axisConvention/worldAxes must be engine-y-up or world-z-up, got '$raw'"
  }
  }
-}
-
-function Get-SceneContractObject([object]$Doc) {
- if (Has-Property $Doc "contract") {
- return Get-PropertyValue $Doc "contract"
- }
- if (Has-Property $Doc "objectModel") {
- return Get-PropertyValue $Doc "objectModel"
- }
- return [pscustomobject]@{}
 }
 
 function Validate-SceneObjectModelContract([object]$Doc, [string]$AxisConvention) {
@@ -38536,10 +38541,10 @@ if ($Mode7Experimental) {
 $tassArgs = @("-a", "-B", "-o", $PrgPath)
 if ($StableRelocatedCodeFlag -ne 0) {
  Remove-Item -LiteralPath $Mode5StableSegmentLabelsPath -Force -ErrorAction SilentlyContinue
- $tassArgs += "--labels=build\mode5-stable-segments.labels.tmp"
+ $tassArgs += ("--labels=" + $Mode5StableSegmentLabelsPath)
 } elseif ($Mode3HighBasicFullRasterRelocationFlag -ne 0) {
  Remove-Item -LiteralPath $Mode3HighBasicSegmentLabelsPath -Force -ErrorAction SilentlyContinue
- $tassArgs += "--labels=build\mode3-high-basic-segments.labels.tmp"
+ $tassArgs += ("--labels=" + $Mode3HighBasicSegmentLabelsPath)
 }
 $tassArgs += $AsmPath
 Push-Location $Root

@@ -1,5 +1,24 @@
 # Changelog
 
+## 1.10.1 — 2026-10-13
+
+Official maintenance source SDK, promoted from qualified 1.10.1-rc1. Engine, examples and measured PRGs unchanged by promotion. Corrected Mode7 Q8 projection sign loss, flat-light overflow, configuration/viewport, Mode8 validation/navigation and native evidence provenance, package-exact runner/native labels paths and bounded aligned allocation. Standard release contents retained; generated programs and raw qualification data remain external. Windows qualification inherited; Linux execution remains unverified. No GitHub publication in this local preparation.
+
+Italiano: SDK sorgente ufficiale di manutenzione, promosso dalla 1.10.1-rc1 qualificata. Engine, esempi e PRG misurati invariati dalla promozione. Corretti segno proiezione Q8 e overflow luce flat Mode7, configurazione/viewport, validazione/navigazione Mode8 e provenienza catture native, runner identico al pacchetto/percorsi etichette nativi e allocazione allineata con budget. Conservato il materiale standard; programmi generati e dati grezzi restano esterni. Qualificazione Windows ereditata; esecuzione Linux non verificata. Nessuna pubblicazione GitHub nella preparazione locale.
+
+[Official notes / Note ufficiali](RELEASE-NOTES-1.10.1.md).
+
+
+<!-- maintenance-1.10.1 -->
+## 1.10.1-rc1 — 2026-10-13
+
+Local maintenance prerelease: correct Mode7 Q8 projection sign loss and flat lighting overflow; configuration precedence and optional viewport; verified capture provenance; optimized Mode8 validation and coincident heading; package-exact public runner, native labels paths, bounded allocator fallback. Preserve historical references and stock Mode8 runtime. Separate LF normalization. Native qualification and known adaptive limit are documented. No GitHub publication.
+
+Italiano: prerelease locale di manutenzione per overflow proiezione Q8/luce flat Mode7, configurazione e viewport opzionale, provenienza catture, validazione Mode8 ottimizzata e heading coincidente, runner identico al pacchetto, percorsi etichette nativi e fallback allocatore con budget. Conservati riferimenti storici e runtime Mode8 stock. Normalizzazione LF separata. Documentate prove native e limite adattivo noto. Nessuna pubblicazione GitHub.
+
+See / Vedere [release notes / note](RELEASE-NOTES-1.10.1-rc1.md).
+
+
 ## 1.10.0 — 2026-10-11
 
 Official promotion of qualified 1.10.0-rc1. Q8 scene scalability is now released:
