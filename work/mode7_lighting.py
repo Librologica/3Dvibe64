@@ -3,7 +3,7 @@ from pathlib import Path
 import re
 
 
-def emit_flat_lighting(s, sources):
+def emit_flat_lighting(s, sources, saturated_products=True):
     from mode7 import replace_once, byte_table
     for flag in ('MODE4_OBJECT_LIGHT_CACHE', 'DYNAMIC_LIGHT'):
         if not re.search(r'(?m)^'+flag+r' = \$01$', s):
@@ -23,6 +23,13 @@ def emit_flat_lighting(s, sources):
     vector += (' ldx light_phase\n lda light_pos_z,x\n ldx obj_depth_lo\n'
                ' ldy obj_depth_hi\n jsr m2_relative_s8\n sta rz0\n\n')
     s = s[:a]+vector+s[b:]
+    if saturated_products:
+        # The saturated displacement can be -128. Multiplication by -64 then
+        # produces +128, which must be saturated before add_s8_sat sees a byte.
+        a=s.index('prepare_object_light_for_shade:\n');b=s.index('\n rts\n',a)
+        light=s[a:b]
+        if light.count(' jsr mul_s6\n')!=9:raise ValueError('Flat light requires nine matrix products')
+        s=s[:a]+light.replace(' jsr mul_s6\n',' jsr m2_light_mul_s6\n')+s[b:]
     # Cache before culling/projection reuse the sh_n* zero page registers.
     hook = ' jsr prepare_object_light_for_shade\n'
     if not s.count(hook):
@@ -37,6 +44,8 @@ def emit_flat_lighting(s, sources):
     # New routines fit the existing low segment; the layout boundaries and
     # texture page alignment are unchanged. No new segment or relocation.
     code = Path(__file__).with_name('mode7-lighting.asm').read_text()
+    from mode7_light_product import code as light_product
+    if saturated_products:code=code.replace('m2_code_end = *',light_product('m2')+'m2_code_end = *')
     # walkFull has a tighter low segment (especially small viewport). Keep
     # its 63-byte relative-vector helper in the EXISTING middle segment.
     # No segment boundaries/layout are changed; walkLite output is untouched.
