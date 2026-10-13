@@ -8,29 +8,12 @@ def change(s,a,b):
     assert s.count(a)==1,(a,s.count(a));return s.replace(a,b)
 
 def place(sizes,gaps):
-    items=sorted(sizes.items(),key=lambda p:-p[1]);seen=set();nodes=0
-    def solve(i,free,placed):
-        nonlocal nodes
-        nodes+=1
-        if nodes>100000:return None
-        if i==len(items):return placed,free
-        key=(i,tuple(sorted(free)))
-        if key in seen:return None
-        seen.add(key);name,size=items[i];align=256 if name=='tables' else 2
-        need=size+(0 if name in ('tables','data') else 32);choices=[]
-        for j,(a,b) in enumerate(free):
-            start=(a+align-1)//align*align
-            if start+need<=b:choices.append((b-start-need,j,start))
-        for _,j,start in sorted(choices):
-            a,b=free[j];rest=free[:j]+free[j+1:]
-            if a<start:rest.append((a,start))
-            if start+need<b:rest.append((start+need,b))
-            result=solve(i+1,rest,{**placed,name:(start,start+need)})
-            if result:return result
-        return None
-    result=solve(0,gaps,{})
-    if result:return result
-    raise ValueError(('NF allocation cannot fit',sizes,gaps))
+    from allocation import bounded_place,PlacementFailure
+    try:result,search=bounded_place(sizes,gaps,100000)
+    except PlacementFailure as error:
+        raise ValueError(f'NF allocation {error.reason}: searched {error.nodes}/{error.budget} states') from error
+    return result
+
 
 def extend(p,lab):
     mode=lab['GRAPHICS_MODE']
