@@ -25,6 +25,7 @@ def carriers(k,rng):
                     a=rng.randrange(65536);k.put('ps_cur0',a&255,off=ch);k.put('ps_cur1',a>>8,off=ch)
                     k.put('ps_err',e,off=ch);k.cpu.x=ch;k.call('bk_predict')
                     assert k.get('bk_future',2)==(a+8*step+(e+8*r)//d)&65535
+                    assert k.get('ps_err',off=ch)==(e+8*r)%d
                     tested+=1
     return tested
 
@@ -77,8 +78,12 @@ def spans(k,rng):
                 (starts if block_start==x else cycles).append(t);samples+=1
                 if x<n:
                     k.cpu.x=53;k.call('ps_advance');assert k.cpu.x==53
+                    # Prediction stores the next boundary immediately; block
+                    # interiors leave it untouched. Exact tails advance per pixel.
+                    state_x=block_start+8 if block_start is not None else x+1
                     for ch in range(3):
-                        assert k.get('ps_cur0',off=ch)+256*k.get('ps_cur1',off=ch)==a[ch]+(b[ch]-a[ch])*(x+1)//n
+                        assert k.get('ps_cur0',off=ch)+256*k.get('ps_cur1',off=ch)==a[ch]+(b[ch]-a[ch])*state_x//n
+                        assert k.get('ps_err',off=ch)==((b[ch]-a[ch])%n)*state_x%n
     assert k.get('ps_fault')==0
     return dict(samples=samples,sampleCyclesMean=statistics.mean(cycles),blockSetupCyclesMean=statistics.mean(starts))
 

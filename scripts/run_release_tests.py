@@ -10,6 +10,8 @@ import tempfile
 import time
 
 ROOT = Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(ROOT/'work'))
+from mode8.common import require_qualification_checks
 TESTS = (
     "test_release_contract.py", "test_world_metrics.py", "test_gouraud_mode6.py",
     "test_optimization_gate1_lut.py", "test_optimization_gate3_span.py",
@@ -23,6 +25,7 @@ TESTS = (
     "test_texture_fast.py",
     "test_line_hybrid.py", "test_texture_lod.py", "test_frame_presentation.py",
     "test_normalized16.py", "test_maintenance_host.py", "test_maintenance_numeric.py",
+    "test_engine_experiments.py", "test_mode8_retirement.py", "test_qualification_guard.py",
 )
 
 def copy_package(root,dest):
@@ -47,6 +50,7 @@ def copy_package(root,dest):
 
 
 def main():
+    require_qualification_checks()
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("tests", nargs="*", help="Optional test filenames; omit to run all")
     args = parser.parse_args()
