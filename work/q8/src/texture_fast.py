@@ -133,6 +133,8 @@ bk_correct:
  bne bk_predict_done
  inc bk_future+1
 bk_predict_done:
+ ; Keep the future boundary residue together with the future carrier value.
+ sta ps_err,x
  rts
 '''
 
@@ -475,9 +477,16 @@ def apply(source,parts):
     end=head.rindex(' rts\n')
     head=head[:end]+' jsr bk_setup_carriers\n'+head[end:]
     p=head+p[a:]
-    a=p.index('ps_advance:\n');b=p.index(' inc gouraud_scan_x\n rts\n',a)
-    # Preserve X ABI and Q advancement; uniform path never consumes block state.
-    p=p[:b]+' stx bk_saved_x\n jsr bk_advance_uv\n ldx bk_saved_x\n'+p[b:]
+    # Uniform dispatch remains first. Prediction advances each carrier directly
+    # to the next boundary. Interiors consume cached UV, so the future state
+    # remains untouched until the next block or exact tail. Both paths advance
+    # shade/screen X once per pixel and restore the caller's X register.
+    p=once(p,' stx ps_saved_x\n ldx #0\nps_advance_loop:\n',
+           ' stx ps_saved_x\n lda bk_count\n beq bk_scalar_advance\n'
+           ' jsr bk_advance_uv\n jmp bk_advance_shade\n'
+           'bk_scalar_advance:\n ldx #0\nps_advance_loop:\n')
+    p=once(p,' bne ps_advance_loop\n ldx ps_saved_x\n',
+           ' bne ps_advance_loop\nbk_advance_shade:\n ldx ps_saved_x\n')
     parts['perspective_span']=p
     parts['fast_carriers']=carriers()
     e=parts['poly_draw']
@@ -531,8 +540,8 @@ bk_cur1: .fill 2,0
 bk_next: .fill 2,0
 bk_step0: .fill 2,0
 bk_step1: .fill 2,0
-bk_look0: .fill 3,0
-bk_look1: .fill 3,0
+bk_look0 = ps_cur0
+bk_look1 = ps_cur1
 bk_future: .word 0
 bk_step8lo: .fill 3,0
 bk_step8hi: .fill 3,0

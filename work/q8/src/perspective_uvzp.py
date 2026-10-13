@@ -6,7 +6,7 @@ Unlit rational recurrence retains its full quotient/remainder scalar contract.
 """
 import re
 
-def kernel():
+def kernel(bits=(7,7)):
     s='''up_pair:
  lda ps_den
  ora ps_den+1
@@ -53,6 +53,7 @@ uz_init_next:
 '''
     for bit in range(7):
         for channel,off in (('u',''),('v','+1')):
+            if bit>=bits[0 if channel=='u' else 1]:continue
             tag=f'uz_b{bit}_{channel}'
             s+=f''' asl uz_remlo{off}
  rol uz_remhi{off}
