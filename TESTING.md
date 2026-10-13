@@ -1,5 +1,26 @@
 # Release tests
 
+## Official 1.10.1 / Ufficiale 1.10.1
+
+Promotion modifies package identity, documentation and identity assertions only. All 25 functional public gates remain qualified from the RC: first full run 24 PASS/one host-test helper setup FAIL, then corrected official host rerun PASS. Four frozen extracted-package gates and ten representative deterministic rebuilds also passed. Rerun official package contract and world metrics through the clean-copy runner; record extraction and representative binary identity separately. No new FPS measurement is required while engine, PRG hashes and launch conditions remain identical. Original raw evidence is retained outside this source distribution.
+
+La promozione modifica solo identità pacchetto, documentazione e relative asserzioni. Restano qualificati i 25 gate funzionali della RC: primo run 24 PASS/un FAIL nel helper del test host, seguito dal suo rerun ufficiale corretto PASS. Superati anche quattro gate su pacchetto congelato estratto e dieci rigenerazioni rappresentative. Rieseguire contratto ufficiale e world metrics col runner su copie pulite; registrare estrazione e identità binaria separatamente. Nessuna nuova misura FPS se engine, hash PRG e condizioni di lancio restano identici. Prove grezze originali conservate fuori dalla distribuzione sorgente.
+
+Linux execution is unverified; Windows is the evaluated host. / Esecuzione Linux non verificata; Windows è l’host valutato.
+
+
+<!-- maintenance-1.10.1 -->
+## Maintenance candidate 1.10.1-rc1 / Candidata di manutenzione
+
+25 scripts: all 23 inherited scripts plus `test_maintenance_host.py` and `test_maintenance_numeric.py`. Run `python -B scripts/run_release_tests.py` from the Git clone or extracted source package. The runner copies the current manifest list and actual bytes, excludes `.git`, and uses a separate clean SDK per test. No historical HEAD export.
+
+25 script: tutti i 23 ereditati più i due test di manutenzione. Eseguire il runner da clone Git o pacchetto sorgente estratto: copia elenco manifest e byte correnti, esclude `.git` e prepara un SDK pulito per ogni test.
+
+The numeric test executes assembled routines with independent geometry/UV arithmetic. The host test includes the 100-tick coincident route and independent adaptive/full diagnostic. CPU replay is not an FPS measurement. Native matrix, scope, commands, limits and Linux open gate: [English](QUALIFICATION-1.10.1-rc1.en.md), [Italiano](QUALIFICATION-1.10.1-rc1.it.md).
+
+Il test numerico esegue routine assemblate con aritmetica geometria/UV indipendente. Quello host comprende percorso coincidente di 100 tick e diagnostica adattivo/fine indipendente. Il replay CPU non misura FPS. Matrice nativa, ambito, comandi, limiti e gate Linux aperto nei documenti sopra.
+
+
 ## Official 1.10.0 / Ufficiale 1.10.0
 
 The runner still offers 23 inherited public scripts. This RC qualification ran

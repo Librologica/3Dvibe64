@@ -1,5 +1,8 @@
 # GraphicsMode 7 — Texture Mapping
 
+<!-- maintenance-1.10.1 -->
+Official 1.10.1 delivers bounded Mode7 numeric fixes and a guarded aligned allocator fallback. See [numeric behavior](NUMERIC-CORRECTNESS.en.md) and [qualification](QUALIFICATION-1.10.1-rc1.en.md); historical contracts and measurements below retain their versioned scope.
+
 Release 1.8.0 adds optional [gradual texture LOD](MODE7-LOD.en.md) and
 the shared [safe presentation fix](PRESENTATION.en.md). Existing fast/standard,
 affine/projective and lighting choices remain independent. LOD defaults to off.

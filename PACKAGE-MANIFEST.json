@@ -2,18 +2,19 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.10.0",
-    "version": "1.10.0",
+    "displayName": "3Dvibe64 1.10.1",
+    "version": "1.10.1",
     "distribution": "source-sdk",
-    "permanentFiles": 233,
+    "permanentFiles": 244,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
-    "documentationLicense": "CC-BY-NC-4.0"
+    "documentationLicense": "CC-BY-NC-4.0",
+    "prerelease": false
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "CDFF3AF3184C729CDF9CBF81C7B41337B4EC390A5F6358BB8E8722F67BD4BC26"
+    "sha256": "75E180FB30FEACBDA28A93A43223DFCE9A646BCB4F53671D8298C203C4EBDFD1"
   },
   "examples": [
     "examples/wire-two-color-multimaterial.json",
@@ -412,9 +413,9 @@
     "pngHostDependency": "Pillow",
     "pngInlineRuntimeEquivalent": true,
     "backendHashes": {
-      "work/mode7_gouraud.py": "158EC940AA4BEA8B14BE948178C4AABF960A2AC016D55C6B78309189317D496C",
+      "work/mode7_gouraud.py": "A20578199282132C5DF640FB998F95A5BDC69BFE3AB69AB67DF425BD3C1C587D",
       "work/mode7_layout.py": "8F79FA71A5407AB531145A74DF79B76FABD1A0E93501367D5354361BED1D5EDB",
-      "work/mode7_lighting.py": "9E8C708B6619D261A32D68ACEEA763BB9B0A344CB659A5AF9B9E91B5F57CB64C",
+      "work/mode7_lighting.py": "72AE1B8043FB951406A55B1523B35901DBCDFC415938359CA8284DB9AE285080",
       "work/mode7_png.py": "E8EF15B42F1F04D65F423E2702DD7E3E459EABF7959B7F177E949F26E1B25038",
       "work/mode7_raster.py": "DE1AE3727A92ECBF403BFD52F1E5147D341017E10C940391119D478E55E84193",
       "work/mode7-compositor-b.asm": "35D5EED91766980BBEE41515303DDBA366E4E0E258483B0B60F2226A4B150225",
@@ -422,7 +423,8 @@
       "work/mode7-gouraud.asm": "1734DD130773E99887010B1A03614F9B422C631D3121257A2CB73BCB752456C4",
       "work/mode7-kernel.asm": "BDF4F341DC8D2826EFFED58A5E1D315BBE371A7815F2257A6C4C1FB253E9B010",
       "work/mode7-lighting.asm": "9406D3746529420712FA97268EA535BD2B8326A290F77A8BB3E207FC0ED139DC",
-      "work/mode7.py": "0DAF55C5A28749ECFC6DF43E75FCDE2179E43AB7A279ED2F3A47BBD476B7850C"
+      "work/mode7.py": "4FE27B2F06218C58883D27D57D8E5F50E93399038091A6139D3116F40895649C",
+      "work/mode7_light_product.py": "80DFEEF5C3DABFEB814EE6943AFB55260495DF8130299952605705DD122C394C"
     },
     "referenceBuilds": [
       {
@@ -483,7 +485,9 @@
           "-FramePresentation",
           "legacy"
         ],
-        "sha256": "E375588BE4C9AC52858BD695356F8A287BBE85852FBAE072E1BAE3CEE88E53F8"
+        "sha256": "AA397B6687E3FDDFEDDCB198E986EB4FC748E2C03F382969A887362FDC49F4A1",
+        "historicalSHA256": "E375588BE4C9AC52858BD695356F8A287BBE85852FBAE072E1BAE3CEE88E53F8",
+        "qualifiedIn": "1.10.1-rc1"
       },
       {
         "label": "mode7-cube-gouraud",
@@ -683,31 +687,32 @@
       }
     ],
     "backendHashes": {
-      "work/mode8/__init__.py": "66A552BFC3D42316FCDB80B9B43E386D3670EE9779CF21E8E23634DDC47FF43B",
-      "work/mode8/analyze.py": "B3FDE8DCDA66242E05D33EAD250873E7D1EC995DD78A1E3AFDBEDB9DA4851330",
-      "work/mode8/asm/apertures-auto.asm": "09CFEBCA24F5B1F2FFA304D98088295B381619ADA7C65E734CEB288788EB3F2E",
-      "work/mode8/asm/apertures-interactive.asm": "B48AE881F08FD099971A9CDD4D2EAFF7841EFD06A62F8B6CA196B101F85AF6D0",
-      "work/mode8/asm/perimeter-auto.asm": "229DD62932C471A5B42B357BD2A1D14E3A1AF69FF43479411EB8DB6DCE4B2803",
-      "work/mode8/asm/perimeter-interactive.asm": "986EC1CA84CD572D05EAEB2DE1F12385274BC9E74E9063F99F20199DA2888336",
-      "work/mode8/asm/two-levels-auto.asm": "D041C9DD998F08F63BE4CDFAF6BD3667F27F6D2C533D15C38E7585D9127126CB",
-      "work/mode8/asm/two-levels-interactive.asm": "34A9044DBCEA61017A84F3956DDCB95F46A0F67CB5DBAC0B05485CD67ECEFF7A",
+      "work/mode8/__init__.py": "82DC6002877FD7691492A495097667D100C75CB240974B2227F582A768AE4D7B",
+      "work/mode8/analyze.py": "496D43EC9FCEFC935912BE81FB6489F840ADF96C7407B95D388AE35D90BF7596",
+      "work/mode8/asm/apertures-auto.asm": "AEF3E285406B4B67ADB3FF092B8D8D2C50807F4C46D8C81A74E9DF018BA0D850",
+      "work/mode8/asm/apertures-interactive.asm": "A1CAB36B68A0C23F54EFEF69CB5FA9CBBB79D87547310290EA3B1185DD9AEA8F",
+      "work/mode8/asm/perimeter-auto.asm": "077DB9A83F12922DE9C75B960333009DF38CC67CF66A242B014433DBEA3234EB",
+      "work/mode8/asm/perimeter-interactive.asm": "8DB36FDE1A9C85B3BE546E7048260DC4304EA10C5236D964469BC2A4172963DC",
+      "work/mode8/asm/two-levels-auto.asm": "539D1D15D55E6C7DB0DEE31F0D699156D01FF31EDCCB312FBE06426B97F79207",
+      "work/mode8/asm/two-levels-interactive.asm": "F78CC063D1CAE9E95F13F88FA7360F3B88140A1F7F43D045D32539C9094911D0",
       "work/mode8/build.py": "1D58EB987708AC7646D3A0885177F99581F6C22773D5C387697FB04457E7FCCC",
       "work/mode8/common.py": "E381BCA41F8443F2AD15F638AB771D1C0CBBE4AE1510283833D3445783D0B096",
-      "work/mode8/contract.py": "43B22FE7EEE365085A7E1B8E615C41DCBC7F018CED0C622AE70DF9BBAD582EC6",
-      "work/mode8/directions.py": "1CCE354DB9284B1B8AB55FD4B06AE81ED55D4A15ED44F7249D5D63BA4C1C2870",
+      "work/mode8/contract.py": "5EF28DE6D85EAF7B0FEF848D84B683F03C11697A018E40B753EF9E4F5F6248BF",
+      "work/mode8/directions.py": "A31912E4C6943AA4DBC6C176F9E05DF2E87A28B731085ABC42F5E597819F5C86",
       "work/mode8/font.bin": "B7605C10D1DED50F00726E37B204A12B247AB48A8D05DA9038CC1F954684DF94",
-      "work/mode8/font.py": "79B6CA4CE54CD35B58E67E4A629D658FBCA9F8357A96DFCCAD7E7AB9BE524C8C",
-      "work/mode8/model.py": "CE7A7F1A79A7958867D91D766AB8CCD920F54CFD1D6FBE42DACCADE7FEAB949E",
-      "work/mode8/mono.py": "C300DF793D2F511878FAA86007A06DE01B53F4378A53211BEE019825D6EB9FD2",
-      "work/mode8/native.py": "DF16E91A07A5E27C0AC38AF34E33FD25ADAC36C3322694B82D0C26BE973F036D",
-      "work/mode8/navigation.py": "3F6775270005529979F735D460702AB3F462EB4DE7A88ED3579E26685D73E70C",
-      "work/mode8/profile-groups.json": "841CFBD7EDF682CD615012075005DE39692E2157C2A192BC19C41FB3209017D6",
+      "work/mode8/font.py": "5EE8C5B7030455293E54C33662CA6C4AB6854283F567DA516DBB54AF6EDE6491",
+      "work/mode8/model.py": "5076E8C90500F9712A6E3F00D456B47B4F9967303B8A769167AFA29227CC3BF1",
+      "work/mode8/mono.py": "A505C1885B96271DD6B788157C00B39EA401A6AA8ED2FF901EA2D9A949AC2E7A",
+      "work/mode8/native.py": "459C968BCBC03F45DC647CB4CB7ED428A2AF30C3AA149FB19888081A002931B3",
+      "work/mode8/navigation.py": "B809E452BD36D1ECD6FA53F3E180A7C0608980227DB4FB5710A2735640CCA9E7",
+      "work/mode8/profile-groups.json": "DFBCA4B5C226281DEB9CF21056331571A5A9AA99178AAA081BC1CAC946B85C6E",
       "work/mode8/reference.py": "7F38E776B5158426789C627A3E41297E74AB24CC0B643A0AE5AE78438E3FDE0E",
-      "work/mode8/tables.py": "DF10D3159DAD11CEEB1120A55F24678336782D08BF1C515F5BFA52AC722B51BD",
-      "work/mode8/templates.json": "8BAC36E44E31A7C5DC08654D0DEC6F9424C37548E375942EB7282E7E5FCF8227",
-      "work/mode8/trace.py": "C29733D9764E93ED9654021DD5D84AF90708A25FC0978B658D50218D4DBE9EB8",
-      "work/mode8/vice.py": "A592E4D9F0CC384B39F71E24813410B4EBC8E5F7974B21F1806A80325DDC3DAB",
-      "work/mode8/walls.py": "153DD137C9390253BEAA297FF51B9FDE6831E7228A8DDB0FB4030E25D66D1A09"
+      "work/mode8/tables.py": "B27377894F659DD3CACFA174DC632AD40033399C9B04D2B81054C56B351DC4F9",
+      "work/mode8/templates.json": "7B7C7BC849D9142CF068E00792C43000A4F5F492DF58CB2BDF637375293D3697",
+      "work/mode8/trace.py": "36EE1BEF07E48917D4894173464D6BC8022B94F815631F531FB0CCF6D0268789",
+      "work/mode8/vice.py": "0B95CDF1FEC4D3327620666F930F5B13268B93FD0E706D3077CEB60DA005A2DA",
+      "work/mode8/walls.py": "CAB801EB268AFB8BEE866E02D5A0439325992301A7D343D1B881AB850772D66A",
+      "work/mode8/provenance.py": "529F5BB85C0795C4455CF9616E653245AC5FD3AE412E4C333D62522924F8587F"
     }
   },
   "precision": {
@@ -758,23 +763,23 @@
       "music": false,
       "outputOutsideSDK": true,
       "backendHashes": {
-        "work/q8/build.py": "EFD5D982C730EDF5E9A93330643951A955A9CDC3E9A4AB176BAB2C19AAEA3AAC",
+        "work/q8/build.py": "6F39028B4E1EE2A0BFD2FFFE4C8E9916929C463C740293360EA814487029FB3F",
         "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
         "work/q8/src/camera.py": "C1497B56E9C3325D1738C068DDED7C97BF20DB524214F2C6EF483EE3C14B5909",
         "work/q8/src/clip.asm": "69178B5C3A359F5299631CA53DEBBA7431E7AA413E3E2B5C568CA82C57CDFB5B",
         "work/q8/src/continuous.py": "17A6D2EF36589C355365B4077ED70B034F342993EF2FA51B9EA798D4B4FEDFBF",
-        "work/q8/src/emit.py": "1F110E24BC7635E9D26805E595F6D80FA9F06D087FFF4C897CE9FA2475258C6B",
+        "work/q8/src/emit.py": "1B68D24D2D8C24EE08C1A911EBC0750E84595401A1C5115B2B4FD38DCFE6EFCD",
         "work/q8/src/kernel.asm": "CD303516ACC6DB1F6C8DA8D51DE5651B3B3D312D4009B1A0794287C7636D5CE2",
-        "work/q8/src/multiobject.py": "BF9EAFD743D88FA198E1D4F3D1BCE388ABE6EEE10693F42D0234EAD2A592DE6D",
+        "work/q8/src/multiobject.py": "00322059EFBB878FE31B944CCCC5D80F1236C81FEA7029B84BC9D5C8229B6BA7",
         "work/q8/src/poly.asm": "0DD6DCA989124EF45DB67FF49007CF8E8EFF2E4545256F312FA30F416B6A1078",
-        "work/q8/src/q8_memory.py": "9C8B1335810AD0F121F9E9653D090ADDF25285E231C9D32FDDE30D4E4022ED46",
+        "work/q8/src/q8_memory.py": "A138B8839D1B85BB8FBAF2182B03061FD222F66099DD304B381041CCC645BEFE",
         "work/q8/src/screen.py": "189CB3FB05B012128336AD10036CFD1F12CB6A0D41E2D746A878D654D6B0F102",
-        "work/q8/src/texture.py": "F201EC1DB196A4F631D17BE15548D9E42A4F5F1682F3A5E5EE0ADA8F06DDD349",
+        "work/q8/src/texture.py": "EB43DEDCAAEF44EA1326475DEE99FD46CAD521D4A869C1B14852E1FEDA127EFF",
         "work/q8/src/texture_edges.py": "3651778944E12E95E6873AF82DD9143C271737B11196F80303CD70CC3C14961F",
         "work/q8/src/wide.asm": "6653F13A13A25F1D2C3D2B43778CF2F4096318940C0EFF4AF3C65EEB46243576",
         "work/q8/src/winding.asm": "FB40675AF44961A177856594AB462D47FDB7819667EF58E7D151E36C676A1874",
         "work/q8/src/wire.py": "AB7E272243FA35083D1A5661FFD32ABB0CC45167E3013B8DFCBE9E233D7863C4",
-        "work/q8/src/wire_build.py": "812400B42C3DE0EF09719F608EE278C8D3F22DDE237152348BFACCC50C63D541",
+        "work/q8/src/wire_build.py": "294B1F7E4AFAF8178552F9094C6C6153234F6AC60844ECA9D364B74532001A2C",
         "work/q8/src/wire_line.asm": "A5684C79B802B2BCA0602CB756C315F0EF55E4F1C4A695A3CBED0ECDABB232DE",
         "work/subpixel_probe.py": "261D1DD18616585C4D10BAC880ADA6950CF9B4A1593B8BE9F75DC7C064317FF9",
         "work/subpixel-x-probe.asm": "FB7113490FC125A832965F5CC5BE1BA982EF355EEDED56B3A7BD36CE35EBCEFF",
@@ -787,7 +792,8 @@
         "work/q8/src/texture_fast.py": "1BA549A2F5902FFF9EC2B8A183A3B7686344E205A97A45583CE577A08DA381CF",
         "work/q8/src/hybrid.py": "5BC494DA9D9348606E7FA430C0BA11FC4A840D52B4A7AFF2FBCADD3B6C9B18FC",
         "work/q8/src/hybrid_line.asm": "54659AA0F3122B78A0AF977DA56C7ED0B5BBCC3DC8CD4B74E3E27E7E2BCAFFF9",
-        "work/q8/src/texture_lod.py": "CC127DF2B8B275064E5BC29E0916772500D488183CB9E2AF342F90E83D1C2644"
+        "work/q8/src/texture_lod.py": "CC127DF2B8B275064E5BC29E0916772500D488183CB9E2AF342F90E83D1C2644",
+        "work/q8/src/allocation.py": "F0B6BB8F3ADAD81950B9F87C2676A138A1D6F2868DBFAF261D686B1E62E031C0"
       },
       "referenceBuilds": [
         {
@@ -891,16 +897,20 @@
           "mode": 7,
           "standard": "pal",
           "camera": "auto",
-          "sha256": "165405EA8D2BABDD95A4D6FCCFAC3003A392C548D0D877704730C370A4950BAB",
-          "byteIdentical": true
+          "sha256": "FBECBBAD8AB5B668E137022D6D533325858857472FC1C493217D0DDABB8A524B",
+          "byteIdentical": false,
+          "historicalSHA256": "165405EA8D2BABDD95A4D6FCCFAC3003A392C548D0D877704730C370A4950BAB",
+          "qualifiedIn": "1.10.1-rc1"
         },
         {
           "name": "family-m7-ntsc",
           "mode": 7,
           "standard": "ntsc",
           "camera": "auto",
-          "sha256": "A20DD39B5C5187A56F5F6B5C142275977520B43622D302608F633BBECA49EF3B",
-          "byteIdentical": true
+          "sha256": "EBC6F324A22DF276B4E98CC2CCD624CCCE67B1904A822A593773A4B8F6D74F7E",
+          "byteIdentical": false,
+          "historicalSHA256": "A20DD39B5C5187A56F5F6B5C142275977520B43622D302608F633BBECA49EF3B",
+          "qualifiedIn": "1.10.1-rc1"
         },
         {
           "name": "stationary-m1-pal",
@@ -1003,16 +1013,20 @@
           "mode": 7,
           "standard": "pal",
           "camera": "stationary",
-          "sha256": "F5EDEA09D3F4C826A3EE20A2942037938DB1A1054CA2D939CEC9E3AF33331003",
-          "byteIdentical": true
+          "sha256": "20EC575E9AD224CF1DDE99F9DD73B03519498E5726171432172171B64D6B8699",
+          "byteIdentical": false,
+          "historicalSHA256": "F5EDEA09D3F4C826A3EE20A2942037938DB1A1054CA2D939CEC9E3AF33331003",
+          "qualifiedIn": "1.10.1-rc1"
         },
         {
           "name": "stationary-m7-ntsc",
           "mode": 7,
           "standard": "ntsc",
           "camera": "stationary",
-          "sha256": "B30F46ADD573593D4051BC08073B0C5C9FCE994CB1DEC0864923781FD34E7C71",
-          "byteIdentical": true
+          "sha256": "EB630E15FF56A714DC6C32EFA7B484F9F5F882C7BD4914B84B856756B66F3B7E",
+          "byteIdentical": false,
+          "historicalSHA256": "B30F46ADD573593D4051BC08073B0C5C9FCE994CB1DEC0864923781FD34E7C71",
+          "qualifiedIn": "1.10.1-rc1"
         },
         {
           "name": "interactive-m1-pal",
@@ -1115,16 +1129,20 @@
           "mode": 7,
           "standard": "pal",
           "camera": "interactive",
-          "sha256": "929C412C8718CC5E57279B1289E9C3F45C06AA4E4D6F37EA317768BFFD7C7F00",
-          "byteIdentical": true
+          "sha256": "E3EAEBD9CDD415D20EFF29185AFCD07E7663562BA6DDAA1106A3CE87AB7273C5",
+          "byteIdentical": false,
+          "historicalSHA256": "929C412C8718CC5E57279B1289E9C3F45C06AA4E4D6F37EA317768BFFD7C7F00",
+          "qualifiedIn": "1.10.1-rc1"
         },
         {
           "name": "interactive-m7-ntsc",
           "mode": 7,
           "standard": "ntsc",
           "camera": "interactive",
-          "sha256": "6F9D7DF0A6464BB8F21E531606F69BB9C228C704E46FE55AF3E97900C6EB00CD",
-          "byteIdentical": true
+          "sha256": "D47EE697C48113FCBE7B771132C1E0E713B857B9C21133B8799A2E9F1712001E",
+          "byteIdentical": false,
+          "historicalSHA256": "6F9D7DF0A6464BB8F21E531606F69BB9C228C704E46FE55AF3E97900C6EB00CD",
+          "qualifiedIn": "1.10.1-rc1"
         }
       ],
       "budgetPolicy": "byte-index ceiling; per-scene guarded RAM allocation required",
@@ -1159,9 +1177,10 @@
       "guideIt": "NORMALIZED16.it.md",
       "qualification": "NORMALIZED16-QUALIFICATION.md",
       "backendHashes": {
-        "work/normalized_build.py": "57CEC9E1AA48DDAF0A687BB0ADCBF56051B2F318B9B355E8F00D380AADE4A6FC",
+        "work/normalized_build.py": "69A929406460C3A101B1A2E44F25D246089017889979CDC5DE37360433B0E9A7",
         "work/q8/src/normalized.py": "F13D888302D8F51B5C6099036F62B9A7C1EB13954FC9A48A9F363DDA8D498DE3",
-        "work/q8/src/nf_modes.py": "C9F8F333917F6F16BC85669515CF488CAC421EC435A42B15961CE3DCC29AECF6"
+        "work/q8/src/nf_modes.py": "DFE6D771D5AAB0EB4D8D6FE85E794E50DA949928B86BCE080B8250BAA7C8C490",
+        "work/q8/src/allocation.py": "F0B6BB8F3ADAD81950B9F87C2676A138A1D6F2868DBFAF261D686B1E62E031C0"
       }
     }
   },
@@ -1176,7 +1195,45 @@
     "kernelBytes": 682,
     "measuredCubeNetCodeBytes": 673,
     "numericApproximation": false,
-    "nativeFPSBenchmark": false
+    "nativeFPSBenchmark": false,
+    "numericAudit": {
+      "baseCommit": "388595adcf49436a437f65b184d52149e8a2b80e",
+      "candidate": "1.10.1-rc1",
+      "publicAPICompatible": true,
+      "legacyGeometryMultiplyUnchanged": true,
+      "currentReferencesChangedOnlyFor": [
+        "legacy Mode7 flat",
+        "Q8 Mode7"
+      ],
+      "historicalReferencesPreserved": true,
+      "mode8RuntimeUnchanged": true,
+      "knownMode8AdaptiveSamplingLimit": true,
+      "Q8AndNormalized16AllocationSearchBudgets": [
+        60000,
+        100000
+      ],
+      "retiredCoordinateCacheRelayoutDelivered": false,
+      "LinuxExecutionGate": "blocked: Linux/WSL unavailable",
+      "qualifications": [
+        "QUALIFICATION-1.10.1-rc1.en.md",
+        "QUALIFICATION-1.10.1-rc1.it.md"
+      ]
+    },
+    "officialPromotion": {
+      "version": "1.10.1",
+      "qualifiedCandidate": "1.10.1-rc1",
+      "candidateCommit": "4a89725db1ecbc72c71fc2ae916b12b167df6741",
+      "engineAndExamplesUnchanged": true,
+      "publicQualification": "25/25 final gates: 24 first-run passes plus corrected host test official rerun; 4 frozen extracted-package gates",
+      "nativeQualificationInherited": true,
+      "measuredMode7Builds": 32,
+      "ordinaryPairedNativeViews": 16,
+      "representativeDeterministicRebuilds": 10,
+      "distribution": "standard source SDK; raw evidence and generated programs external",
+      "testedHostPlatform": "Windows",
+      "LinuxExecution": "not executed; portability qualification remains unavailable",
+      "GitHubPublication": false
+    }
   },
   "mode7Fast": {
     "introduced": "1.7.0",
@@ -1222,7 +1279,507 @@
       "legacy"
     ],
     "expectedHashesChanged": false,
-    "reason": "safe default changes only presentation timing; historical hashes retained explicitly"
+    "reason": "safe default changes only presentation timing; historical hashes retained explicitly",
+    "mode7_1_10_0": [
+      {
+        "label": "mode7-triangle",
+        "scene": "examples/mode7-triangle.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
+        ],
+        "sha256": "6BD2E3CAFB279995003D63FA3C938971038B49EF27A205D5D5F6BF16649B1D5D"
+      },
+      {
+        "label": "mode7-cube",
+        "scene": "examples/mode7-cube.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
+        ],
+        "sha256": "11A4B1D7C1C2D277045CBA07A6EE2620064D9A80ECD19D7DB34EB1DFC63DE66F"
+      },
+      {
+        "label": "mode7-cube-flat",
+        "scene": "examples/mode7-cube-flat.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
+        ],
+        "sha256": "E375588BE4C9AC52858BD695356F8A287BBE85852FBAE072E1BAE3CEE88E53F8"
+      },
+      {
+        "label": "mode7-cube-gouraud",
+        "scene": "examples/mode7-cube-gouraud.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "fixed",
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
+        ],
+        "sha256": "CCE4859399A8E7C682A8E72A1A25D54471B720C387A903B89352A55B345EB9D4"
+      },
+      {
+        "label": "mode7-torus-gouraud",
+        "scene": "examples/mode7-torus-gouraud.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
+        ],
+        "sha256": "FBF9DC36241BB32FF272C437D69B0EC27764E5BBB4809A66B4CA0125E94EDA37"
+      },
+      {
+        "label": "mode7-uvsphere-gouraud",
+        "scene": "examples/mode7-uvsphere-gouraud.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "fixed",
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
+        ],
+        "sha256": "33FE0A60F29631951C1BF50065A36202A9EC6A0F11119454681632769CAF9949"
+      },
+      {
+        "label": "mode7-multi-texture",
+        "scene": "examples/mode7-multi-texture.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "walkLite",
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
+        ],
+        "sha256": "EC7546A204361AD0E39884D026798871156FDA6A15F36DA9B10F918F9652AB07"
+      },
+      {
+        "label": "mode7-cube-png",
+        "scene": "examples/mode7-cube-png.json",
+        "arguments": [
+          "-GraphicsMode",
+          "7",
+          "-MemoryLayout",
+          "high-basic-v2",
+          "-VideoStandard",
+          "pal",
+          "-CameraViewport",
+          "normal",
+          "-CameraMode",
+          "fixed",
+          "-FpsCounterOnly",
+          "-FramePresentation",
+          "legacy"
+        ],
+        "sha256": "CCE4859399A8E7C682A8E72A1A25D54471B720C387A903B89352A55B345EB9D4"
+      }
+    ],
+    "q8_1_10_0": [
+      {
+        "name": "family-m1-pal",
+        "mode": 1,
+        "standard": "pal",
+        "camera": "auto",
+        "sha256": "F14859B94CA284DBFCC34FF991AA7ABF339EAFA7EF6A58FAD42C576700C07F28",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m1-ntsc",
+        "mode": 1,
+        "standard": "ntsc",
+        "camera": "auto",
+        "sha256": "1E66414B1C27DEF56F9909F6D21F9DEC02DC7AAA0D9CEEB9D00BDC1778DE221F",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m2-pal",
+        "mode": 2,
+        "standard": "pal",
+        "camera": "auto",
+        "sha256": "80650A22DB04D13DCED8A74CCB6BFDE2EB64406B7EAD7A4C39D3277199F502D3",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m2-ntsc",
+        "mode": 2,
+        "standard": "ntsc",
+        "camera": "auto",
+        "sha256": "9467FB707E38F72AF2E1F53E22210CA50BB2E481788FDF36F47099858908A5AE",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m3-pal",
+        "mode": 3,
+        "standard": "pal",
+        "camera": "auto",
+        "sha256": "F4BE00010E70081B6931F40EF11DA5D63EDA859ACA974775E613E453879F7EE6",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m3-ntsc",
+        "mode": 3,
+        "standard": "ntsc",
+        "camera": "auto",
+        "sha256": "BBD2D6A91FDC035AF3E79363C0A55B2128CF9004A68A48A991195DB908F2E180",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m4-pal",
+        "mode": 4,
+        "standard": "pal",
+        "camera": "auto",
+        "sha256": "58DC0A09E3B3EEC0C59767F0362BF44094F1BA28993B1C1F1DD0631D242C4A5E",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m4-ntsc",
+        "mode": 4,
+        "standard": "ntsc",
+        "camera": "auto",
+        "sha256": "3592CB7E46E4A02773115A8C1F9068FA57FFCB1880BD791A12FAB383D4FE9E91",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m5-pal",
+        "mode": 5,
+        "standard": "pal",
+        "camera": "auto",
+        "sha256": "A7446DBBF038925D5D5EAF4D5A282A4A4D5006904A5467892DED5DA3198ACA01",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m5-ntsc",
+        "mode": 5,
+        "standard": "ntsc",
+        "camera": "auto",
+        "sha256": "52A7EAB289C0A2B4677CEED9D5B49484056EF267D6D1BABF51419B8848F51F7B",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m6-pal",
+        "mode": 6,
+        "standard": "pal",
+        "camera": "auto",
+        "sha256": "B0F174F02B4BDF53C3AC23D2144FA2499C35AE7C2DF7AB6607BCCDDAD2C34C42",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m6-ntsc",
+        "mode": 6,
+        "standard": "ntsc",
+        "camera": "auto",
+        "sha256": "6373F0242FE9B1ABA5AD27C01C19FD824C540B1874F18811777276DD7518F800",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m7-pal",
+        "mode": 7,
+        "standard": "pal",
+        "camera": "auto",
+        "sha256": "165405EA8D2BABDD95A4D6FCCFAC3003A392C548D0D877704730C370A4950BAB",
+        "byteIdentical": true
+      },
+      {
+        "name": "family-m7-ntsc",
+        "mode": 7,
+        "standard": "ntsc",
+        "camera": "auto",
+        "sha256": "A20DD39B5C5187A56F5F6B5C142275977520B43622D302608F633BBECA49EF3B",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m1-pal",
+        "mode": 1,
+        "standard": "pal",
+        "camera": "stationary",
+        "sha256": "302092036B8A1DAC4CA72A7AEE7971C755775520B27CFBACE146B22EAB4ECB19",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m1-ntsc",
+        "mode": 1,
+        "standard": "ntsc",
+        "camera": "stationary",
+        "sha256": "565DB0015B3D2DF786C0DB40D84E93011DA5EC8955B88CDB720C5FE08B58C7BA",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m2-pal",
+        "mode": 2,
+        "standard": "pal",
+        "camera": "stationary",
+        "sha256": "AA7AEF3873A24978FD119B2B461CC2CC74AD585EBCE988934E8FE779F1DF7D19",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m2-ntsc",
+        "mode": 2,
+        "standard": "ntsc",
+        "camera": "stationary",
+        "sha256": "FC4121369BCA506C63FB9A1C39D13BE902D83CB4E66A22749F3F01AC3BFE4C95",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m3-pal",
+        "mode": 3,
+        "standard": "pal",
+        "camera": "stationary",
+        "sha256": "53BB0184B86C5B5B3DB60D5EA6DE6DD65B0DA6AB6A2BC4AAA18EA04487E85121",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m3-ntsc",
+        "mode": 3,
+        "standard": "ntsc",
+        "camera": "stationary",
+        "sha256": "C19891DE6740ED9E2A8504AA5305EE44D11D19309D4FAE6BC77B3086497A8F16",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m4-pal",
+        "mode": 4,
+        "standard": "pal",
+        "camera": "stationary",
+        "sha256": "661A4714FCF88043EC56B396A3367B061CDADBD3C27324744EBE1C709A8B2656",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m4-ntsc",
+        "mode": 4,
+        "standard": "ntsc",
+        "camera": "stationary",
+        "sha256": "B4DC1D5D07E7D1AA888287949331EA0F32E7573DAFDDF7F93283D097296D6AE6",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m5-pal",
+        "mode": 5,
+        "standard": "pal",
+        "camera": "stationary",
+        "sha256": "7B7167B7F73FCD60C6DDE8CF45A88C3913D6384B9A2DCD3A367B0F0F2F0FCF80",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m5-ntsc",
+        "mode": 5,
+        "standard": "ntsc",
+        "camera": "stationary",
+        "sha256": "2C1B8F9CB4AEBF2101AAB7126F7164E7B46A95A43B759A31D43012C329D45337",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m6-pal",
+        "mode": 6,
+        "standard": "pal",
+        "camera": "stationary",
+        "sha256": "54BAEBE6DF36D90796A6E850BBE3C5BE03A38ED9870BB7904C2F2D1E609B594D",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m6-ntsc",
+        "mode": 6,
+        "standard": "ntsc",
+        "camera": "stationary",
+        "sha256": "69B09B9C4226A684BF2A9EBD62B1C7E9BA7DB5726DD3E8220F36309F9E6C2FB4",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m7-pal",
+        "mode": 7,
+        "standard": "pal",
+        "camera": "stationary",
+        "sha256": "F5EDEA09D3F4C826A3EE20A2942037938DB1A1054CA2D939CEC9E3AF33331003",
+        "byteIdentical": true
+      },
+      {
+        "name": "stationary-m7-ntsc",
+        "mode": 7,
+        "standard": "ntsc",
+        "camera": "stationary",
+        "sha256": "B30F46ADD573593D4051BC08073B0C5C9FCE994CB1DEC0864923781FD34E7C71",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m1-pal",
+        "mode": 1,
+        "standard": "pal",
+        "camera": "interactive",
+        "sha256": "E77F4A76520B7BE33755BB2E6A439436C142C7AB145FFFB767A429DD4A174CED",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m1-ntsc",
+        "mode": 1,
+        "standard": "ntsc",
+        "camera": "interactive",
+        "sha256": "6F9F3AE728BF1310CFF21230B9A21EE5F8AB94525F45572C11D1E43F07A2991E",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m2-pal",
+        "mode": 2,
+        "standard": "pal",
+        "camera": "interactive",
+        "sha256": "21B415D6BE4A657936242700D5550CA102E9690CF01C1185A88592576755F78F",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m2-ntsc",
+        "mode": 2,
+        "standard": "ntsc",
+        "camera": "interactive",
+        "sha256": "7C50729AC2EB88AB96E969C62F6E80826B7D2B2E5B4F24D561865882506107EC",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m3-pal",
+        "mode": 3,
+        "standard": "pal",
+        "camera": "interactive",
+        "sha256": "8D5BECA718EF8950D29660A8137DC75C936E0368E157F785476D7B72871982E6",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m3-ntsc",
+        "mode": 3,
+        "standard": "ntsc",
+        "camera": "interactive",
+        "sha256": "E91A70C4284068DC75258132E6620AE323AEB22C53C848A2C1483BD8C7E2B0AD",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m4-pal",
+        "mode": 4,
+        "standard": "pal",
+        "camera": "interactive",
+        "sha256": "E537C4E2C7A2B6C9C2640DA23B5C7DFED428140813730042B1FA367EFC184CED",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m4-ntsc",
+        "mode": 4,
+        "standard": "ntsc",
+        "camera": "interactive",
+        "sha256": "A60D70FA78B20A03D5B7B34C64D34B0822D5CF7B17BD0F8F43CF2627C1BC4918",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m5-pal",
+        "mode": 5,
+        "standard": "pal",
+        "camera": "interactive",
+        "sha256": "7636E766DF693610AF28B66B3149753E0AED1DB930CD07D193EB093E08EA6222",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m5-ntsc",
+        "mode": 5,
+        "standard": "ntsc",
+        "camera": "interactive",
+        "sha256": "D31946BB15F7EFDD7FBB07AC6B9C00DCB20E32722F0EB749738C263578EDEF2E",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m6-pal",
+        "mode": 6,
+        "standard": "pal",
+        "camera": "interactive",
+        "sha256": "5A9BB71844865BB38572C0F11AE707513EE39C7018C0C3C9600C3898AF75FA42",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m6-ntsc",
+        "mode": 6,
+        "standard": "ntsc",
+        "camera": "interactive",
+        "sha256": "CD6BB0CD5BA48175FD862B73BB5B99886BDBC077969BED8BC9FCB3959A8E490F",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m7-pal",
+        "mode": 7,
+        "standard": "pal",
+        "camera": "interactive",
+        "sha256": "929C412C8718CC5E57279B1289E9C3F45C06AA4E4D6F37EA317768BFFD7C7F00",
+        "byteIdentical": true
+      },
+      {
+        "name": "interactive-m7-ntsc",
+        "mode": 7,
+        "standard": "ntsc",
+        "camera": "interactive",
+        "sha256": "6F9D7DF0A6464BB8F21E531606F69BB9C228C704E46FE55AF3E97900C6EB00CD",
+        "byteIdentical": true
+      }
+    ]
   },
   "framePresentation": {
     "option": "FramePresentation",

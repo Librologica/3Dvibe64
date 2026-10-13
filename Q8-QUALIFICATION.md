@@ -1,5 +1,8 @@
 # Q8 scalability qualification / qualificazione — 1.10.0
 
+<!-- maintenance-1.10.1 -->
+Current 1.10.1-rc1 matched native matrix and memory changes: [English](QUALIFICATION-1.10.1-rc1.en.md), [Italiano](QUALIFICATION-1.10.1-rc1.it.md). Matrice nativa e costi memoria correnti nei documenti bilingui; il rapporto seguente resta storico.
+
 Official promotion preserves the qualified RC engine, scenes and all 23 measured
 PRG hashes. No new native benchmark is needed for documentation/package identity
 changes. Raw case names retain their original RC provenance.

@@ -1,5 +1,8 @@
 # Mode 7 texture precision — 1.7.0
 
+<!-- maintenance-1.10.1 -->
+Official 1.10.1 delivers bounded Mode7 numeric fixes and a guarded aligned allocator fallback. See [numeric behavior](NUMERIC-CORRECTNESS.en.md) and [qualification](QUALIFICATION-1.10.1-rc1.en.md); historical contracts and measurements below retain their versioned scope.
+
 Release 1.10.0: Q8 encoding ceilings are extended;
 new multiobject native qualification covers affine Modes1–7. The perspective/
 fast/LOD measurements below remain inherited tests on the original scenes.

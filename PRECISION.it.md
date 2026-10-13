@@ -1,5 +1,8 @@
 # Profili di precisione — 1.10.0
 
+<!-- maintenance-1.10.1 -->
+La 1.10.1 ufficiale corregge casi numerici Mode7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
+
 ## Release 1.10.0: scene Q8 con più oggetti
 
 Q8 accetta oggetti disgiunti e vertici runtime fino al tetto di 255 elementi

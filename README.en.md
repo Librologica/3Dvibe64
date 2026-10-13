@@ -1,13 +1,8 @@
-# 3Dvibe64 1.10.0
+# 3Dvibe64 1.10.1
 
-Documentation maintenance on the repository branch completes the English/
-Italian shared reports, policies and examples. Version remains1.10.0; the
-published `v1.10.0` tag and its release archive retain their original contents.
-Engine sources, scene JSON and measured-program identities are unchanged.
-La manutenzione documentale del branch repository completa rapporti condivisi,
-policy ed esempi in inglese/italiano. Versione ancora1.10.0; tag `v1.10.0`
-pubblicato e archivio release conservano il contenuto originale. Sorgenti
-engine, JSON delle scene e identità dei programmi misurati restano invariati.
+Official 1.10.1 source SDK, promoted from the qualified RC without engine changes. Standard release contents: sources, examples/textures, tests, EN/IT documentation, licenses and manifests. See [official notes](RELEASE-NOTES-1.10.1.md) and [numeric changes](NUMERIC-CORRECTNESS.en.md). Windows verified; Linux execution not qualified.
+
+Historical note: the published 1.10.0 tag and archive retain their original contents. The current version is 1.10.1.
 
 ## Release 1.10.0: Q8 scene scalability
 

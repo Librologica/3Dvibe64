@@ -1,5 +1,8 @@
 # GraphicsMode 8 — 2.5D
 
+<!-- maintenance-1.10.1 -->
+Official 1.10.1 requires capture acquisition provenance for native reuse and retains mandatory input checks under optimized Python. Coincident heading is 64. The adaptive renderer can miss interior discontinuities: see [diagnostic, measured cost and known limit](QUALIFICATION-1.10.1-rc1.en.md). Runtime sampling is unchanged.
+
 In 1.5.5, mono-portals clears exit state and includes front-plane identity in
 adaptive refinement. The map subset and build API below are unchanged; this
 does not add procedural worlds or arbitrary multiple lintels per ray.

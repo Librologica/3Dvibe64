@@ -1,5 +1,8 @@
 # Mode 8 qualification / Qualificazione Mode 8
 
+<!-- maintenance-1.10.1 -->
+Current 1.10.1-rc1 provenance checks and independent fine diagnostics: [English](QUALIFICATION-1.10.1-rc1.en.md), [Italiano](QUALIFICATION-1.10.1-rc1.it.md). Riuso catture con provenienza e diagnostica fine nella qualificazione corrente; il rapporto storico seguente conserva il proprio ambito.
+
 ## 1.5.5 lintel update / Aggiornamento architravi 1.5.5
 
 Qualified unchanged DEV source promoted into 1.5.5: 189 persistent-RAM

@@ -1,5 +1,8 @@
 # Precision profiles — 1.10.0
 
+<!-- maintenance-1.10.1 -->
+Official 1.10.1 delivers bounded Mode7 numeric fixes and a guarded aligned allocator fallback. See [numeric behavior](NUMERIC-CORRECTNESS.en.md) and [qualification](QUALIFICATION-1.10.1-rc1.en.md); historical contracts and measurements below retain their versioned scope.
+
 ## Release 1.10.0: Q8 scene scalability
 
 Q8 now accepts disjoint objects and runtime vertices up to the existing
