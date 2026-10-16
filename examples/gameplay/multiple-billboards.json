@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "profile": "multiple-billboards",
+  "extends": "door-entity",
+  "engineVersion": "1.11.0",
+  "generatorFoundation": "1.10.2",
+  "buildName": "multiple-billboards",
+  "expectedCheckpointPRGSHA256": "8AFE14994B96CB48E6607487050C7DFD9CDB11A311282C93BC00E833B71CF280",
+  "distributionPRG": "artifacts/room-skeleton-billboard-precise-pal-multiple-billboards.prg",
+  "standard": "pal",
+  "multiplier": 64,
+  "music": false,
+  "viewportLogical": [
+    96,
+    60
+  ],
+  "textureQuality": "precise",
+  "textureLOD": [
+    14,
+    22
+  ],
+  "billboardImplementation": "outlined",
+  "routeRefreshes": 3072,
+  "scope": "two shared-asset screen-aligned billboards; exact Q8 mutual depth, bounded divider and native clipping proof"
+}

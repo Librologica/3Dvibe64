@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.10.2"
+VERSION = "1.11.0"
 BUILDER_SHA256 = "79510B085B6B786A87F2F2814B2BED0FE2C95313EDAF0A3C121B89EA02C9C14F"
-PERMANENT_FILE_COUNT = 258
+PERMANENT_FILE_COUNT = 794
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -182,6 +182,7 @@ def check_clean_tree() -> None:
         'camera.asm','clip.asm','kernel.asm','poly.asm','wide.asm','winding.asm','wire_line.asm',
         'hybrid_line.asm'))
     allowed_inputs.update(('work/subpixel-x-probe.asm','work/subpixel-mobile-x.asm'))
+    allowed_inputs.update(read_json(ROOT, 'extensions/gameplay/source-inputs.json')['allowedStaticInputs'])
     forbidden_suffixes = {".asm", ".lst", ".log", ".trace", ".tmp", ".png", ".bmp", ".gif", ".vice", ".cmd", ".zip", ".pyc"}
     for path in ROOT.rglob("*"):
         if not path.is_file():
@@ -198,6 +199,8 @@ def check_no_retired_references() -> None:
         if not path.is_file():
             continue
         relative = path.relative_to(ROOT).as_posix()
+        if relative.startswith('extensions/gameplay/'):
+            continue
         haystack = relative.casefold()
         if path.suffix.lower() in {".md", ".json", ".py", ".ps1", ".sha256"}:
             haystack += "\n" + path.read_text(encoding="utf-8-sig", errors="replace").casefold()

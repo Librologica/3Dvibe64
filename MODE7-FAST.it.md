@@ -1,5 +1,9 @@
 # Profilo veloce Mode 7 — 1.7.0
 
+Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
+in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
+
 Dev sperimentale 1.10.2-dev1: stato dei carrier ai confini dei blocchi; vedere [note dev](DEV-NOTES.it.md). Le misure seguenti appartengono alle versioni storiche indicate.
 
 Release 1.10.0: i tetti di codifica Q8 sono estesi; la nuova qualificazione
@@ -16,7 +20,7 @@ default e conserva l'output precedente. Geometria `legacy` e precisione texture
 automatica in base alla CPU. Q8 è consigliato sopra 20 MHz; legacy fino a 20 MHz.
 
 `TextureQuality` è distinto dal preset di build esistente `Quality fast`:
-quel preset da solo non attiva sampling block8 o ricostruzione delle righe.
+quel preset da solo non attiva sampling block 8 o ricostruzione delle righe.
 
 Fast richiede **Mode 7 + Q8 + perspective + Gouraud compositor C**. Combinazioni
 non valide sono respinte, non declassate. È vero 3D poligonale, non raycasting.
@@ -35,10 +39,10 @@ PRG, ASM generato, label, mappa memoria e `build.json` restano fuori dal pacchet
 
 ## Contratto di rendering e compromessi visivi
 
-La viewport Q8 normal resta **160×100 logici / 320×200 fisici**. Solo le righe
+La viewport Q8 normal resta **160 × 100 logici / 320 × 200 fisici**. Solo le righe
 logiche pari vengono ombreggiate/campionate; il passaggio finale copia ciascuna
 riga superiore nella successiva omessa, comprese entrambe le scanline fisiche.
-Il campionamento verticale effettivo è **160×50**, non 160×100 campioni distinti.
+Il campionamento verticale effettivo è **160 × 50**, non 160 × 100 campioni distinti.
 Niente interlacciamento temporale, riuso fra frame o interpolazione del movimento.
 
 Blocchi di otto pixel ricostruiscono le UV prospettiche esattamente agli estremi
@@ -46,7 +50,7 @@ nel precedente contratto fixed-point dei carrier. I campioni interni interpolano
 affinemente gli estremi a otto bit. Gli ultimi uno–otto campioni usano il sampler
 esatto; gli estremi non superano lo span. È prospettiva approssimata a blocchi,
 non correzione prospettica esatta per ogni pixel. Nearest-neighbor, UV Q4.4,
-repeat e texture 16×16 unpacked sono invariati. Repeat può amplificare gli errori
+repeat e texture 16 × 16 unpacked sono invariati. Repeat può amplificare gli errori
 interni; prospettiva forte e wrapping possono produrre deformazioni visibili.
 
 Geometria Q8, clipping near/screen, edge semiaperti, maschere byte e double

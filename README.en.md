@@ -1,133 +1,73 @@
-# 3Dvibe64 1.10.2
+# 3Dvibe64 1.11.0
 
-Stable local source SDK. Qualified dev3 runtime, defaults and options unchanged.
-Opt-in Q8 improvements and inherited fast block state; Mode8 bitmap retained.
-[Release notes EN](RELEASE-NOTES-1.10.2.en.md).
+[Italiano](README.it.md) · [Documentation index](DOCS.md) · [Release notes](RELEASE-NOTES-1.11.0.en.md) · [Quick start](QUICKSTART.md)
 
-SDK sorgente stabile locale: runtime, default e opzioni della dev3 qualificata
-invariati. Migliorie Q8 opzionali e fast a blocchi; Mode8 bitmap conservato.
-[Note di rilascio IT](RELEASE-NOTES-1.10.2.it.md).
+Official **local source SDK** release, prepared on 2026-10-16 from the qualified
+1.11.0-dev13 line. This delivery contains **no precompiled PRG**, video, music
+or demo archives. Source scenes, profile adapters and test inputs are included
+so that the engine features can be rebuilt. Online publication is deferred.
 
-GitHub publication requires separate authorization. Historical documentation
-follows; current scope and qualification are defined by the 1.10.2 release notes.
-Pubblicazione GitHub soggetta ad autorizzazione separata. Documentazione storica
-di seguito; ambito e qualificazione correnti nelle note 1.10.2.
+The ordinary GraphicsMode 1–8 builder retains its 1.10.2 runtime and defaults:
+legacy geometry, standard textures, precise lines, texture LOD off and safe
+presentation. Q8 remains opt-in (`-Precision q8`); Mode 8 is the separate bitmap
+2.5D backend. Historical 20 MHz Q8 guidance and exact domain restrictions are
+in [precision](PRECISION.en.md); the new gameplay profiles target PAL× 64.
 
-## Release 1.10.0: Q8 scene scalability
+## New source modules
 
-Q8 now accepts disjoint objects and runtime vertices up to the existing
-255-entry byte-index ceiling. The former two-object/96-vertex qualification
-gates are removed. Every scene must still pass actual buffer, segment and
-geometry-domain checks; 255 is not a guaranteed capacity in every mode.
-Shared source meshes, Ground, timeline and camera roll remain unsupported
-by this Q8 exporter. Normalized16 remains experimental, two objects/16 vertices.
-See [release contract](Q8-SCALABILITY.md). Legacy stays the default.
-[Release notes / Note di versione](RELEASE-NOTES-1.10.0.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
+Use [the gameplay guide](GAMEPLAY.en.md) to choose an entry point and compatible
+profile. These modules are included in the official release with their
+**bounded experimental contracts**; they do not turn every ordinary scene
+into a combined game engine. Unsupported integrations are rejected explicitly.
 
-## New in 1.9.0: experimental Normalized16 geometry
+| ID | Included capability | Detailed contract |
+|---|---|---|
+| BB-01 | Imported masked/outlined billboard profiles | [contract](extensions/gameplay/CONTRACT.en.md) |
+| BB-02 / ENT-01 | Configured billboard, use events and local collision | [contract](extensions/gameplay/entities/DEV.en.md) |
+| ENT-01 door | Sliding polygonal door and safe passage | [contract](extensions/gameplay/entities/DOOR-DEV.en.md) |
+| BB-03 | One/two shared-asset billboard instances | [contract](extensions/gameplay/billboards/MULTIPLE-DEV.en.md) |
+| MAT-01 | Per-face texture, flat and Gouraud selection | [contract](extensions/gameplay/materials/DEV.en.md) |
+| TEX-01 | Texture frames and signed integer UV scroll | [contract](extensions/gameplay/materials/ANIMATION-DEV.en.md) |
+| LIGHT-01 | Deterministic host-side static vertex lighting | [contract](extensions/gameplay/materials/LIGHT-DEV.en.md) |
+| VIS-01 | Conservative sector/portal connectivity | [contract](extensions/gameplay/visibility/VISIBILITY-DEV.en.md) |
+| Q8-01 | Shared source mesh, independent instance caches | [contract](extensions/gameplay/meshes/SHARED-DEV.en.md) |
+| Q8-02 | Controlled clips and Q8 camera roll | [contract](extensions/gameplay/motion/CONTROLLED-DEV.en.md) |
+| WORLD-01 | External room groups and per-group state | [contract](extensions/gameplay/world/WORLD-DEV.en.md) |
+| LEVEL-01 | Common level authoring and exact assembled budget | [contract](extensions/gameplay/level/LEVEL-DEV.en.md) |
+| Integration | Bounded three-room actors/cubes and phased memory reuse | [contract](extensions/gameplay/experiments/underworld/README.en.md) |
 
-`-Precision normalized16` is an explicit intermediate geometry experiment for
-Modes 1–7, retaining the Q2 raster ABI. Legacy remains the default; Q8 remains
-the precise supported path, including Mode 7 perspective/fast/LOD. The new
-bounded exporter supports at most 16 runtime vertices, stationary/interactive
-walkLite cameras and affine Mode 7 only. It is not the private adaptive ship
-adapter, nor a universal Q8 replacement. Read the [contract](NORMALIZED16.en.md),
-[qualification](NORMALIZED16-QUALIFICATION.md) and [release notes EN/IT](RELEASE-NOTES-1.9.0.md).
+`work/build-gameplay.py` selects 13 named profiles. `work/build-level.py`
+validates/compiles `3Dvibe64.level/1` through the bounded WORLD-01 adapter and
+checks actual memory allocation. `work/build-underworld.py` is a separate
+integration experiment. Features proven in different profiles are not silently
+combined. General topology, arbitrary billboard intersections, animated shadows,
+disk saves and the combined WORLD-01 lifetime allocator remain future work.
 
-## New in 1.8.0: texture LOD, hybrid lines, safe presentation
+## Build and verification
 
-Mode 7 adds opt-in [gradual LOD](MODE7-LOD.en.md) to the existing standard/fast projective profiles. Modes 1/2/5 gain [hybrid lines](LINE-RASTER.en.md) with unchanged Q8 camera/projection/clipping. Defaults remain legacy geometry, precise Q8 lines, standard texture quality and LOD off. [Safe presentation](PRESENTATION.en.md) is enabled by default and fixes the lower-strip scanout race. Historical PRG hashes require explicit `-FramePresentation legacy`; old unchanged-byte statements apply to their historical profiles. Mode 8 unchanged. [Release notes](RELEASE-NOTES-1.8.0.md).
-
-## New in 1.7.0: optional fast Mode 7 profile
-
-`-TextureQuality fast` / `textureQuality: fast` selects explicit
-Q8 + perspective + Gouraud C: eight-pixel blocks and 50 sampled logical rows,
-upper-duplicated into the 160×100 viewport. This is true polygonal 3D, not
-raycasting, with declared sampling tradeoffs. `standard` remains the default;
-legacy/affine and other modes retain their output. No private demo, scene LUT
-or room-specific visibility assumptions are included.
-[Complete contract](MODE7-FAST.en.md) · [release notes EN/IT](RELEASE-NOTES-1.7.0.md).
-
-## New in 1.6.1: exact paired projective UV division
-
-Mode 7 Q8 perspective flat/Gouraud C now uses an exact zero-page, unrolled
-U/V divider for nonuniform textures. Rendering quality is unchanged. Legacy,
-affine, unlit recurrence and all-uniform fast paths keep their existing output.
-The measured public cube pose saves 16.30% Gouraud / 17.36% flat CPU instruction
-cycles; these are not native FPS measurements or universal speedup promises.
-Cost: +673 code bytes on that cube, eight reserved zero-page bytes `$E8..$EF`.
-External IRQ code must respect that scratch ownership. Existing memory/profile
-limits remain. [Release notes EN/IT](RELEASE-NOTES-1.6.1.md).
-
-## New in 1.6.0: optional projective Mode 7 textures
-
-`-TexturePrecision perspective` / scene `texturePrecision` enables fixed-point
-projective UV only with `-Precision q8 -GraphicsMode 7`. Legacy geometry and
-affine textures remain defaults; old outputs retain their reference hashes.
-None/flat/Gouraud C, exact arithmetic specializations and builder-detected uniform
-textures are supported in the bounded profile. Extra RAM/CPU cost and runtime
-fault behavior are described in [texture precision](TEXTURE-PRECISION.en.md).
-No development demo or soundtrack is included. [Release notes](RELEASE-NOTES-1.6.0.md).
-
-## New in 1.5.5: Mode 8 lintel correctness
-
-The `mono-portals` backend clears its inside state on lintel exit and
-also recognizes front-plane identity during adaptive edge refinement. The
-map contract is unchanged; infinite worlds and distance shading are not
-included. Modes 1–7, Q8 and the other two Mode 8 backends are unchanged.
-See [1.5.5 release notes](RELEASE-NOTES-1.5.5.md).
-
-## New in 1.5.0: optional Q8 precision
-
-**Legacy always remains the default.** Q8 requires `-Precision q8`; there is no CPU-based automatic selection. Recommend Q8 above 20 MHz, legacy at 20 MHz or below. Legacy is not deprecated. The qualified Q8 profile is limited to normal/walkLite and disjoint objects subject to byte-index and RAM budgets; read the [limits and commands](PRECISION.en.md). Mode 8 is unchanged.
-
-## New in 1.4.0: GraphicsMode 8 — 2.5D
-
-The public SDK supports **GraphicsMode 1–8**. Mode 8 promotes the qualified
-128×144 logical-pixel VIC-II multicolor bitmap renderer, with separate
-single-level and heightfield backends selected from map properties.
-It is not the historical character-cell renderer. It has orientation pigments,
-a ceiling stipple, static openings with thickness, and the documented continuous
-ramps. Wall UV textures and room-over-room are not supported.
-
-Start with the [architecture and option table](MODE8.en.md), then the
-[complete map authoring guide](MAPS-2.5D.en.md). Camera initialization,
-single-level tours and ramp footprints have explicit template restrictions.
-The guides describe those restrictions before the editing tutorials.
+Verified host: Windows, PowerShell 7 (`pwsh`), Python 3.13 and64tass 1.60.3243.
+Pillow is used for PNG/UI inputs; py65 is required by routine tests. Install
+these external dependencies separately. Set `TASS64_EXE` and the appropriate
+VICE executable variables described in [testing](TESTING.md). They are not
+bundled. Use a new output directory outside the source checkout.
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../perimeter-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -SceneFile examples/mode7-perspective-cube.json -GraphicsMode 7 -Precision q8 -TexturePrecision perspective -TextureQuality standard -Q8Camera stationary -OutputDirectory ../mode7-build
+python -B work/build-gameplay.py --profile controlled-animation --out ../motion-build
+python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
+python -B scripts/run_release_tests.py
 ```
 
-Use W/S to move and A/D to turn. PAL/NTSC is detected at runtime. PowerShell,
-Python 3 and 64tass suffice to build Mode 8; optional analysis tools add py65 and
-Pillow. Build products go outside the SDK. The three maps each support automatic
-and interactive builds; this source SDK contains no precompiled PRG.
+Do not run qualification with `-O`, `-OO` or `PYTHONOPTIMIZE`. Source package
+integrity is defined by `MANIFEST.sha256`. Read [qualification](QUALIFICATION-1.11.0.en.md)
+for inherited native evidence, release checks and the limits of performance
+claims. Linux and physical C64 execution are not newly qualified by this release.
 
-Modes 1–7 retain their qualified references and existing commands. Their mesh
-JSON, cameras, layouts, metrics and text split described below do **not** configure
-Mode 8. The two pipelines cannot be composited in one view through this API.
-See [release notes](RELEASE-NOTES-1.5.5.md) and [tests](TESTING.md).
-Hardware operation has not been tested; the Mode 8 qualification uses stock x64sc.
+## Ordinary builder contract
 
-**Retained: official GraphicsMode 7 affine textures**, optional flat/Gouraud C lighting
-and strict PNG import. Start with [Mode 7](MODE7.en.md). Modes 1–6 preserve their
-official 1.2.0 reference output; their existing API is documented below.
-
-This official 1.10.0 package is a source SDK: it contains the frozen builder,
-documentation, JSON reference scenes, and contracts, but no precompiled PRG or
-diagnostic artifact. Build examples locally, preferably in a disposable working copy.
-The examples are executable API documentation, not bundled productions.
-
-The spatial, angular, and temporal contract is documented in [WORLD-METRICS.md](WORLD-METRICS.md).
-
-The generator architecture, emitted 6510/6502 source, memory layout, and professional
-modification/debugging workflow are documented in
-[ASSEMBLY-GUIDE.en.md](ASSEMBLY-GUIDE.en.md).
-
-The practical Codex-assisted workflow—environment preparation, scene creation,
-building, VICE testing, and preservation of approved versions—is documented in
-[VIBE-CODING-GUIDE.en.md](VIBE-CODING-GUIDE.en.md).
+The following options configure the ordinary exporter. The gameplay modules
+above use separate configuration files and entry points. `meshSourceSharing`
+in an ordinary Q8 scene remains unsupported; Q8-01 uses its own profile adapter.
 
 ## Stable culling and shared Mode 4/5/6 instances
 
@@ -236,17 +176,17 @@ GraphicsMode 5 inherits the complete Mode 4 pipeline and adds a one-lowres-pixel
 The outline has a measurable cost. The pre-1.0 performance audit did not promote risky changes or changes with insufficient impact: Mode 5 preserves Mode 4 dynamic rendering, shading, and materials and adds only the post-fill outline to the post-clipping polygon.
 
 GraphicsMode 6 calculates a 33-level shade per runtime shade vertex and interpolates
-it across the final clipped polygon. A screen-anchored 4x4 Bayer matrix selects
+it across the final clipped polygon. A screen-anchored 4 x 4 Bayer matrix selects
 among the material's three VIC-II pigments using only opaque bitmap codes. Mesh
 property `gouraud.creaseAngle` (0–180, default 60 degrees) controls area-weighted
 normal smoothing and hard-edge splits. Mode 6 requires `high-basic-v2`; after the
 first sample, shade changes are limited to four levels per simulation tick. See
-[GOURAUD-MODE6-REPORT.md](GOURAUD-MODE6-REPORT.md) for the exact algorithm,
+[GOURAUD-MODE 6-REPORT.md](GOURAUD-MODE6-REPORT.md) for the exact algorithm,
 limitations, validation, and benchmark.
 
 Dense stable-layout builds remain subject to the existing `$5C00` video-buffer boundary. The reference Mode 5 scene fits with the FPS overlay enabled; the full near-plane stress scene uses the existing `high-basic-v2` layout.
 
-Mode 4 uses X LegacyDirect and the XY-Q2 builder, integral and fractional Y traces, the 11×8 divisor, fast pixel conversion, inline bounds, Mode4ShadeStepLimit and signed saturated light-vector addition. With the default DEV7 text split, `normal` renders a 160×88 body at low-resolution Y=12 and `small` renders 128×80 at Y=12. `-NoFpsOverlay` removes the split and restores the legacy 160×100 normal body; small remains 128×80 and is centered.
+Mode 4 uses X LegacyDirect and the XY-Q2 builder, integral and fractional Y traces, the 11 × 8 divisor, fast pixel conversion, inline bounds, Mode 4 ShadeStepLimit and signed saturated light-vector addition. With the default DEV7 text split, `normal` renders a 160 × 88 body at low-resolution Y=12 and `small` renders 128 × 80 at Y=12. `-NoFpsOverlay` removes the split and restores the legacy 160 × 100 normal body; small remains 128 × 80 and is centered.
 
 ### Generic Text and FPS header
 
@@ -290,7 +230,7 @@ Clipped geometry retains the compatible legacy fallback. The `normal` and `small
 
 ## Materials
 
-Satin and gloss retain the historical shading path. In scenes whose faces are entirely reflective or mirror, the raw material selector feeds Mode4ShadeStepLimit directly. Mixed-profile scenes retain the historical behavior. Reflective materials can reach the maximum defined by their material table; mirror reaches white for every family whose table defines the white maximum.
+Satin and gloss retain the historical shading path. In scenes whose faces are entirely reflective or mirror, the raw material selector feeds Mode 4 ShadeStepLimit directly. Mixed-profile scenes retain the historical behavior. Reflective materials can reach the maximum defined by their material table; mirror reaches white for every family whose table defines the white maximum.
 
 The VIC-II legally accepts every color index from 0-15, including black, and duplicate Dark, High, and Highlight values. 3Dvibe64 deliberately excludes black from face ramps as the engine lighting model's minimum ambient-illumination floor: this is engine policy, not a hardware limit. D/H/L ramps reach runtime unchanged; the required packing is `screenByte = (Dark << 4) | High` and `colorRam = Highlight`. `VicColorPolicy` handles palette conflicts within the same bitmap cell and does not normally filter or remap material ramps. Orange satin remains `9,8,10` with `$98/$0A`; Brown satin remains `2,9,8` with `$29/$08`.
 
@@ -312,7 +252,7 @@ If `-ControlRotation` and `-ControlReflectivity` are forced together, both handl
 
 | Option | Values | Default / effect |
 |---|---|---|
-| `-Precision` | `legacy`, `q8`, `normalized16` | **legacy**; Q8 and experimental Normalized16 require explicit selection; [qualified limits](PRECISION.en.md) |
+| `-Precision` | `legacy`, `q8`, `normalized16` | **legacy**; Q8 and experimental Normalized 16 require explicit selection; [qualified limits](PRECISION.en.md) |
 | `-Q8Camera` | `stationary`, `interactive`, `auto` | `stationary`; only with Q8 |
 | `-GraphicsMode` | `1`-`8` | `4`; Mode 8 uses its separate map API |
 | `-CameraMode` | `fixed`, `walkLite`, `walkFull` | scene camera mode, otherwise `fixed`; an explicit CLI value wins |
@@ -364,9 +304,9 @@ and remain subject to their respective authors' licenses.
 
 Use Windows PowerShell and 64tass 1.60 or newer. Put `64tass.exe` on `PATH`, set `TASS64_EXE`/`TASS64_PATH`, or place it below `work/tools/64tass`. Build commands are listed in [examples/README.md](examples/README.md). The full release contract also requires VICE x64sc; put it on `PATH` or set `VICE_X64SC`/`VICE_EXE` before running `python scripts/test_release_contract.py`.
 
-## Official Mode 7 in 1.3.0
+## Mode 7 pipeline
 
-GraphicsMode 1–8 are available. GraphicsMode 1–6 retain their 1.2.0 reference output; the older API sections below still apply to those modes.
+GraphicsMode 1–8 are available. Historical reference hashes use their recorded options, including explicit legacy presentation where required; the current default is safe.
 
 Mode 4 is dynamic flat shading. Mode 6 is ordered-dithered Gouraud shading.
 Mode 7 is **affine texture mapping**, optionally with flat or Gouraud lighting:
@@ -374,12 +314,12 @@ Mode 7 is **affine texture mapping**, optionally with flat or Gouraud lighting:
 The official Gouraud compositor is `textureCompositor: "C"` (texel-first + LightFix; now the Gouraud default). R1 corrects edge inclusion in this C path. A/B remain compatibility options, not the recommended renderer.
 
 Mode 7 requires `high-basic-v2`, Python 3, `fast` quality and `extended-table` projection.
-Textures are 16×16, nearest-neighbor, three pigment codes 1/2/3, with UV Q4.4 and optional repeat 1/2/4/8/16. It supports per-vertex or corner UVs, seams, per-face textures, triangulated quads (0→2), near/screen clipping, byte-oriented fill, partial bytes, double buffering, PAL/NTSC, normal/small and fixed/walkLite/walkFull.
+Textures are 16 × 16, nearest-neighbor, three pigment codes 1/2/3, with UV Q4.4 and optional repeat 1/2/4/8/16. It supports per-vertex or corner UVs, seams, per-face textures, triangulated quads (0→2), near/screen clipping, byte-oriented fill, partial bytes, double buffering, PAL/NTSC, normal/small and fixed/walkLite/walkFull.
 
 PNG import is host-side, through Pillow: `source` and mandatory ordered `sourceColors` map exactly three opaque RGB colors to Dark/High/Highlight texels. `texturePalette` separately selects three VIC-II colors. No resizing, quantization or transparency. Inline texels remain supported and runtime-equivalent.
 
-Textured Gouraud uses `gouraud.creaseAngle` (default60°, range0–180°) for hard edges or smooth normals, with the applicable255-shade-vertex limit. Mode 7 has its own memory/geometry constraints and does not inherit every Mode 6 override/source-sharing API.
+Textured Gouraud uses `gouraud.creaseAngle` (default 60°, range 0–180°) for hard edges or smooth normals, with the applicable 255-shade-vertex limit. Mode 7 has its own memory/geometry constraints and does not inherit every Mode 6 override/source-sharing API.
 
 The default affine path has no perspective correction. Optional projective interpolation requires the bounded Q8 profile; see [texture precision](TEXTURE-PRECISION.en.md). No bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Sampling aliasing remains.
 
-Read the [complete Mode7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](examples/README.md). The paired Italian guides cover the same contract.
+Read the [complete Mode 7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](examples/README.md). The paired Italian guides cover the same contract.

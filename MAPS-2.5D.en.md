@@ -1,6 +1,10 @@
 # Building Mode 8 maps
 
-This guide describes the **implemented, deliberately restricted** 1.4.0 map contract. Use [MODE8.en.md](MODE8.en.md) for runtime architecture and [QUICKSTART.md](QUICKSTART.md) for SDK setup. Mode 8 is a separate 2.5D bitmap renderer, not a polygon importer.
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
+This guide describes the **implemented, deliberately restricted** 1.4.0 map contract. Use [MODE 8.en.md](MODE8.en.md) for runtime architecture and [QUICKSTART.md](QUICKSTART.md) for SDK setup. Mode 8 is a separate 2.5D bitmap renderer, not a polygon importer.
 
 ## 1. Choose the right complete template
 
@@ -12,7 +16,7 @@ This guide describes the **implemented, deliberately restricted** 1.4.0 map cont
 
 These are not three freely configurable general-purpose level editors. In particular, moving a monolevel aperture, changing its thickness, adding arbitrary ramps or moving a template's initial camera is rejected. Multi-level means a single floor/ceiling pair at each XY position: **no room-over-room**. No animated doors or opening/closing command exist.
 
-All scenes are complete 32×32 maps. Generated [coordinate plans](examples/mode8/PLANS.md) show the exact source cells and tutorial changes. A successful build checks syntax, geometry, selected backend, capacities and the automatic route; it does not prove every possible interactive view has been exhaustively sampled.
+All scenes are complete 32 × 32 maps. Generated [coordinate plans](examples/mode8/PLANS.md) show the exact source cells and tutorial changes. A successful build checks syntax, geometry, selected backend, capacities and the automatic route; it does not prove every possible interactive view has been exhaustively sampled.
 
 ## 2. Public coordinates and units
 
@@ -62,7 +66,7 @@ The author writes cell arrays and aperture/ramp metadata. Owner IDs, directional
 
 ### Opaque monolevel
 
-Any supported solid/free arrangement must retain the closed border and free route. Each contiguous, collinear exposed wall boundary becomes an owner; at most **96 owners plus sentinel 0** fit the qualified layout. More obstacles can exceed this budget even on a 32×32 map. There is no overhead volume in this family.
+Any supported solid/free arrangement must retain the closed border and free route. Each contiguous, collinear exposed wall boundary becomes an owner; at most **96 owners plus sentinel 0** fit the qualified layout. More obstacles can exceed this budget even on a 32 × 32 map. There is no overhead volume in this family.
 
 ### Monolevel static apertures
 
@@ -70,7 +74,7 @@ Any supported solid/free arrangement must retain the closed border and free rout
 
 ```text
 Plan, separator row 14 (X increasing):
-  … # # [10 D][11 D] # … # [22 D][23 D] # …
+  … # # [10 D][11 D] # … # [22 D][23D] # …
   thickness: y=14 to y=15, exactly one horizontal cell
 
 Vertical section through an aperture:
@@ -126,7 +130,7 @@ Use the supplied full final scenes; no missing array elements or assembly edits 
 | Tutorial | Exact edits | Full final file | What the earlier map study actually found |
 |---|---|---|---|
 | Move one pillar | `solid[15*32+21]=0`; `solid[16*32+21]=1` | [perimeter-tutorial.json](examples/mode8/perimeter-tutorial.json) | No practically significant tour improvement; not a recommended performance optimization |
-| Move a 2×2 pillar | Clear x=15..16 at y=18; set x=15..16 at y=20; y=19 stays solid | [apertures-tutorial.json](examples/mode8/apertures-tutorial.json) | Local CPU reduction, no material improvement of tour p95; not a general speed recommendation |
+| Move a 2 × 2 pillar | Clear x=15..16 at y=18; set x=15..16 at y=20; y=19 stays solid | [apertures-tutorial.json](examples/mode8/apertures-tutorial.json) | Local CPU reduction, no material improvement of tour p 95; not a general speed recommendation |
 | Narrow a lower aperture | Set `solid[6*32+16]=1`; in the y=6 aperture whose start is 16, change start to 17 | [two-levels-tutorial.json](examples/mode8/two-levels-tutorial.json) | Opening width 3→2 cells; partial improvement of long pauses, upper-level worst remains |
 
 From the extracted SDK root, with Python, PowerShell and 64tass available:
@@ -155,7 +159,7 @@ Use a new empty output directory for each build. Output inside the SDK is reject
 | `BORDER` | Free cell on outside edge | Restore solid border at reported cell |
 | `INITIAL_POSE`, `CAMERA`, `TEMPLATE_CAMERA` | Blocked footprint, wrong eye, camera mismatch or changed template start | Restore exact template camera and free its collision footprint |
 | `MONO_CEILING`, `MONO_QUOTE`, `MONO_FLOOR` | Unsupported constant-room heights | Restore family values |
-| `MONO_APERTURES`, `MONO_SEPARATOR` | Moved/resized slot or breached separator | Restore the two one-cell-thick qualified apertures and row14 |
+| `MONO_APERTURES`, `MONO_SEPARATOR` | Moved/resized slot or breached separator | Restore the two one-cell-thick qualified apertures and row 14 |
 | `RAMP_FORMULA`, `MULTI_GEOMETRY` | Wrong marker, footprint or discontinuous join | Restore supported ramps and continuous adjacent floor heights |
 | `HEADROOM`, `DOOR_CELL`, `DOOR_METADATA` | Insufficient vertical clearance or metadata/array disagreement | Correct the identified cell and associated descriptor |
 | `OWNER_CAPACITY`, `EVENT_CAPACITY`, `PATH_CAPACITY` | Distinct numeric budgets exceeded | Simplify geometry appropriate to the reported budget; no silent precision reduction |
@@ -173,7 +177,7 @@ Install optional dependencies separately: `python -m pip install py65==1.2.0 Pil
 python -B scripts/analyze_mode8.py --scene examples/mode8/perimeter.json --build ../perimeter-reference-build --sampling examples/mode8/sampling/perimeter.json --out ../perimeter-cost
 ```
 
-Use a build of that **same** scene (for example the public command in [MODE8.en.md](MODE8.en.md)). The sampling document contains `poses`, each `[xQ8,yQ8,yaw,eyeInteger,eyeFraction]`, evaluated in order with persistent RAM. For another map check every sampling pose; invalid footprint/eye/range samples are explicitly recorded and skipped, not converted.
+Use a build of that **same** scene (for example the public command in [MODE 8.en.md](MODE8.en.md)). The sampling document contains `poses`, each `[xQ8,yQ8,yaw,eyeInteger,eyeFraction]`, evaluated in order with persistent RAM. For another map check every sampling pose; invalid footprint/eye/range samples are explicitly recorded and skipped, not converted.
 
 Outputs: `poses.json`, `poses.csv`, `REPORT.md`, `atlas-host.png`. Mean and worst observed cell costs are separate; the arrow marks the costliest sampled yaw. Grey is unsampled, blue unreachable, pink invalid, black solid. This is a **host-generated map atlas**, not a VICE screenshot. Every valid render compares all 7,040 bitmap bytes (viewport plus margins) with the independent fixed oracle.
 

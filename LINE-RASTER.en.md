@@ -1,5 +1,9 @@
 # Hybrid lines: Q8 geometry, additive integer raster
 
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
 `-Precision q8 -LineRaster hybrid` is supported in GraphicsMode 1, 2 and 5. It retains the Q8 camera, mesh transforms, endpoint projection and near/screen clipping. Only the final clipped line raster changes. `precise` remains the Q8 line default; geometry `legacy` remains the engine default. Hybrid is not a simplified projection or a change to solid-fill shading.
 
 ```powershell

@@ -1,0 +1,24 @@
+{
+  "schema": 1,
+  "name": "mode5_cube_walkfull_near_plane_crossing",
+  "graphicsMode": 5,
+  "axisConvention": "world-z-up",
+  "world": { "backgroundColor": 6, "grounds": [] },
+  "camera": { "id": "near_crossing_camera", "position": [0, -20, 8], "rotation": [0, 0, 0], "mode": "walkFull" },
+  "lights": [{ "id": "near_crossing_key", "mode": "static", "position": [40, 24, 48], "phaseCount": 32, "tickDiv": 2, "staticPhase": 0, "intensity": 10, "pulse": false }],
+  "meshes": [{ "id": "near_cube", "type": "mesh", "geometry": "solid", "materialProfile": "single", "builtin": "cube" }],
+  "objects": [{
+    "id": "near_plane_crossing_cube",
+    "mesh": "near_cube",
+    "position": [0, 8, 8],
+    "rotation": [24, 18, 0],
+    "angularVelocity": [0.04, 0.06, 0.10],
+    "scale": 1.05,
+    "visible": true,
+    "geometry": "solid",
+    "materialProfile": "single",
+    "material": "yellow",
+    "reflectivity": "satin"
+  }],
+  "contract": { "version": 1, "viewportProfile": "normal", "ground": false, "runtimeControls": { "camera": "WASD,Q/E,cursors", "roll": "N/M", "rotation": "R" } }
+}

@@ -1,0 +1,6 @@
+{
+  "profile": "bounded Underworld adventure",
+  "base": "latest polished precise3-room1.10.3-dev1 scene, reconstructed with dev12",
+  "inheritedPreciseSpanSHA256": "EF3BDEABB9978BEA9B99AC162CF4D5CEFDEDD374A3E0C661D2D1CF5339476D67",
+  "scope": "private native integration; ordinary/foundation/Mode8 unmodified"
+}

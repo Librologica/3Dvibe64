@@ -1,207 +1,167 @@
-# Quick start / Guida rapida
+# Quick start / Guida rapida — 1.11.0
 
-## Official 1.10.0 / Ufficiale 1.10.0
+[English](#english) · [Italiano](#italiano) · [Documentation / Documentazione](DOCS.md)
 
-Q8 removes the two-object/96-runtime-vertex gates. The 255 byte-index ceilings
-remain subject to per-scene RAM, face, edge and shade-buffer checks.
-Normalized16 remains explicit and experimental: two objects/16 runtime vertices.
-Q8 elimina i limiti di due oggetti/96 vertici runtime; i tetti di codifica 255
-restano subordinati ai controlli RAM, facce, edge e shade della singola scena.
-Normalized16 resta esplicito e sperimentale: due oggetti/16 vertici runtime.
-[Contract / Contratto](Q8-SCALABILITY.md) · [Release notes / Note di versione](RELEASE-NOTES-1.10.0.md).
+## English
 
-```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 5 -SceneFile examples/q8/scalability/13-objects-mode5.json -Q8Camera auto -VideoStandard pal -OutputDirectory ../q8-scalability-first
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision normalized16 -GraphicsMode 4 -SceneFile examples/q8/two-objects-mode4.json -Q8Camera stationary -VideoStandard pal -OutputDirectory ../normalized-first
-```
+This is the official local source release. Online publication is deferred.
+No precompiled programs, demo archives, video or music are supplied. Keep an
+untouched source copy and use new build directories outside the checkout.
 
-## Features introduced in 1.8.0 / Funzioni introdotte nella 1.8.0
+### 1. Prepare the tools
 
-Defaults: legacy geometry, precise Q8 lines, standard textures, LOD off, safe presentation.
-Default: geometria legacy, linee Q8 precise, texture standard, LOD off, presentazione sicura.
-New opt-in commands / Nuovi comandi opzionali:
+Verified host: Windows, PowerShell 7 (`pwsh`), Python 3.13,64tass 1.60.3243.
+Pillow 12.3.0 and py65 1.2.0 are the evaluated image/test libraries. External
+tools are installed separately. Use a virtual environment for Python tools:
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 2 -SceneFile examples/q8/two-objects-mode2.json -Q8Camera auto -LineRaster hybrid -OutputDirectory ../hybrid-mode2
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -SceneFile examples/mode7-fast-lod-cube.json -OutputDirectory ../fast-lod-cube
+python -m venv ../3dvibe64-tools
+& ../3dvibe64-tools/Scripts/Activate.ps1
+python -m pip install Pillow==12.3.0 py65==1.2.0
+$env:TASS64_EXE='C:\Tools\64tass\64tass.exe'
+$env:VICE_X64SC='C:\Tools\VICE\bin\x64sc.exe'
+$env:VICE_XSCPU64='C:\Tools\VICE\bin\xscpu64.exe'
+$env:VICE_TURBO6510='C:\Tools\Turbo6510\bin\x64sc_u.exe'
 ```
 
-Hybrid: same command with matching Mode 1/5 and scene / stesso comando con Mode 1/5 e scena corrispondente.
-Read memory/quality limits / Leggere i limiti memoria/qualità:
-[lines EN](LINE-RASTER.en.md), [linee IT](LINE-RASTER.it.md), [LOD EN](MODE7-LOD.en.md), [LOD IT](MODE7-LOD.it.md), [presentation EN](PRESENTATION.en.md), [presentazione IT](PRESENTATION.it.md).
-Historical exact-PRG checks require explicit `-FramePresentation legacy`; normal builds must use the safe default.
-I confronti PRG storici richiedono `-FramePresentation legacy` esplicito; nelle build normali usare il default sicuro.
+Replace these illustrative paths with installed tools. TASS 64_PATH/PATH also
+work for the ordinary exporter; set TASS 64_EXE for gameplay packaging.
+VICE is needed for native execution/tests, not data-only level validation.
+Do not enable Python optimization for qualification. Compare the source ZIP
+SHA 256 with the delivery checksum; every extracted input is in MANIFEST.sha 256.
 
-## Optional fast Mode 7 / Profilo veloce opzionale — 1.7.0
+### 2. Pick the pipeline
 
-Read the sampling/memory tradeoffs first / Leggere prima i compromessi:
-[EN](MODE7-FAST.en.md) · [IT](MODE7-FAST.it.md).
-Standard, legacy and affine remain defaults / Default invariati.
+Ordinary polygonal scene, inherited API. For legacy, first extract a separate
+source working copy and run the first command there. Its result is
+`work/3Dvibe64.prg`. Legacy does not accept `-OutputDirectory`; that option
+belongs to Q8, Normalized 16 and Mode 8. The second command uses Q8 and an
+external output directory. The stationary camera keeps this first precise
+textured example within its checked RAM budget; do not assume every automatic
+camera/scene combination fits.
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 7 -Precision q8 -TextureQuality fast -SceneFile examples/mode7-fast-cube.json -VideoStandard pal -OutputDirectory ../fast-cube-pal
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -SceneFile examples/basic-solid-reference.json -GraphicsMode 4
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -SceneFile examples/mode7-perspective-cube.json -GraphicsMode 7 -Precision q8 -TexturePrecision perspective -TextureQuality standard -Q8Camera stationary -OutputDirectory ../first-texture
 ```
 
-Fast requires perspective + Gouraud C. Use a fresh directory outside the SDK.
-Fast richiede perspective + Gouraud C e una directory nuova esterna all'SDK.
-Full viewport 160×100 logical, 160×50 sampled; upper-row duplication, block8 UV.
-Viewport piena 160×100 logici, 160×50 campionati; duplicazione superiore, UV block8.
-
-## Optional projective textures / Texture prospettiche opzionali — 1.6.1
-
-1.6.1 preserves the 1.6.0 command/profile. Lit projective samplers reserve
-`$E8..$EF` zero-page scratch; respect this in custom IRQs. Legacy and affine
-remain defaults. [Notes EN/IT](RELEASE-NOTES-1.6.1.md).
-La 1.6.1 conserva comandi/profilo 1.6.0. I sampler prospettici illuminati
-riservano `$E8..$EF`: rispettarli negli IRQ personalizzati. Default invariati.
-
-Legacy/affine remain defaults / Legacy/affine restano default.
-The bounded profile requires explicit Q8; leggere i limiti prima della build:
-[EN](TEXTURE-PRECISION.en.md) · [IT](TEXTURE-PRECISION.it.md).
+Standard is exact textured sampling; `TextureQuality fast` is a different
+declared block/row reconstruction profile, not a synonym for precise.
+TextureLOD defaults off in the ordinary exporter. Never assume gameplay
+profile defaults change that ordinary API. For Mode 8 use its own map contract:
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -TexturePrecision perspective -SceneFile examples/mode7-perspective-cube.json -VideoStandard pal -OutputDirectory ../perspective-cube-pal
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../first-map
 ```
 
-## Precision / Precisione — 1.5.0
-
-Legacy is always the default; Q8 is explicit, not CPU-selected. Recommend Q8
-above 20 MHz and legacy at <=20 MHz. No deprecation. See [EN](PRECISION.en.md).
-Legacy è sempre il default; Q8 è esplicito, non selezionato dalla CPU. Consigliato
-sopra 20 MHz; legacy fino a 20 MHz, non deprecato. Vedere [IT](PRECISION.it.md).
+Experimental source modules and common level:
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 4 -SceneFile examples/q8/two-objects-mode4.json -Q8Camera auto -VideoStandard pal -OutputDirectory ../q8-first
+python -B work/build-gameplay.py --profile controlled-animation --out ../first-motion
+python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
+python -B work/build-level.py --level examples/levels/integrated-foundation.json --out ../first-level
 ```
 
-New external output directory required / Serve una nuova directory esterna.
-Restricted normal/walkLite profile / Profilo limitato normal/walkLite.
+Read [GAMEPLAY](GAMEPLAY.en.md) before editing profile-specific configurations.
+The common level backend is WORLD-01's bounded template. Planning data can
+be valid but unsupported; `--plan-only` is not a native program/memory result.
+For generated group outputs retain all media files with their launcher.
 
-## Mode 8 — 2.5D / 1.4.0
+### 3. Verify the result
 
-Build dependencies: Python 3, PowerShell, 64tass on PATH (or
-`TASS64_EXE`). No optional analysis packages are needed for this command.
-Dipendenze: Python 3, PowerShell, 64tass nel PATH (o `TASS64_EXE`).
-Gli strumenti di analisi opzionali non servono per compilare.
+Inspect build.json, command, hashes and memory report. Launch generated output
+through its actual launcher/PRG, preserving target/options. Gameplay checks:
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -ValidateOnly
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../mode8-start
-x64sc -default -pal -autostartprgmode 1 ../mode8-start/3Dvibe64.prg
+python -B work/qualify-gameplay.py --out ../first-motion --checks --benchmark --launcher
+python -B scripts/run_release_tests.py test_documentation.py test_dev_gameplay.py test_common_level.py
 ```
 
-W/S move, A/D turn; use `-Mode8Run auto` with a different empty output directory
-for the automatic itinerary. PAL/NTSC detection is automatic.
-W/S per muoversi, A/D per ruotare; `-Mode8Run auto` con altra directory vuota
-produce il percorso automatico. PAL/NTSC viene rilevato automaticamente.
+Full regression/native requirements: [TESTING](TESTING.md). FPS counts only new
+complete native views, after warm-up over at least 20 emulated seconds/full
+route; preserve raw commands, hashes and p 95/worst. Host time, warp and CPU
+routine replay are not machine FPS. Historical proof is reusable only when
+program bytes and launch conditions match. All compiled/check outputs remain
+outside the source release. Keep older releases/foundation immutable.
 
-[Map authoring EN](MAPS-2.5D.en.md) · [Creazione mappe IT](MAPS-2.5D.it.md).
-These templates have explicit geometry/camera restrictions. Do not add the
-polygonal options in the remaining Mode 1–7 examples to a Mode 8 command.
-I template hanno vincoli espliciti su geometria e camera. Non aggiungere
-alle build Mode 8 le opzioni degli esempi poligonali Mode 1–7 seguenti.
+## Italiano
 
-3Dvibe64 1.10.0 is an official source SDK. It intentionally contains no precompiled PRG:
-compile a JSON scene locally with the PowerShell builder.
+Release ufficiale locale dei sorgenti, con pubblicazione online rinviata.
+Nessun programma precompilato, archivio demo, video o musica. Conservare una
+copia intatta e compilare in cartelle nuove fuori dal checkout.
 
-## Build / Compilazione
+### 1. Preparare gli strumenti
 
-From a disposable working copy of the package root:
-Dalla radice di una copia di lavoro del pacchetto:
+Host verificato: Windows, PowerShell 7 (`pwsh`), Python 3.13,64tass 1.60.3243.
+Librerie valutate: Pillow 12.3.0 e py65 1.2.0. Installazione esterna separata,
+preferibilmente in un ambiente virtuale:
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps1 `
-  -SceneFile .\examples\mode4-walkfull-reference.json `
-  -GraphicsMode 4 -CameraMode walkFull -CameraViewport normal `
-  -Quality balanced -Projection table -MemoryLayout stable -SkipCmdUpdate
+python -m venv ../3dvibe64-tools
+& ../3dvibe64-tools/Scripts/Activate.ps1
+python -m pip install Pillow==12.3.0 py65==1.2.0
+$env:TASS64_EXE='C:\Tools\64tass\64tass.exe'
+$env:VICE_X64SC='C:\Tools\VICE\bin\x64sc.exe'
+$env:VICE_XSCPU64='C:\Tools\VICE\bin\xscpu64.exe'
+$env:VICE_TURBO6510='C:\Tools\Turbo6510\bin\x64sc_u.exe'
 ```
 
-The local build product is `work/3Dvibe64.prg`. With the default Generic Text/FPS
-split, `normal` has a 160×88 3D body below three character rows and `small` has a
-128×80 body. Add `-HeaderText "SCRITTA DI ESEMPIO" -FpsOverlayOnStart` to show a
-header at startup. Pass `-NoFpsOverlay` for the legacy 160×100 normal viewport.
-At runtime, `F` hides or restores the complete Generic Text/FPS header; it does not
-toggle the FPS digits independently.
-Use a separate copy when you want the source SDK itself to remain free of generated
-artifacts.
+Sostituire i percorsi illustrativi con quelli installati. TASS 64_PATH/PATH
+valgono anche per l’exporter ordinario; TASS 64_EXE per il packaging gameplay.
+VICE serve ai test/esecuzione nativi, non alla sola validazione del livello.
+Qualifica senza ottimizzazioni Python. Confrontare SHA 256 dello ZIP con la
+consegna; ogni sorgente estratto è elencato in MANIFEST.sha 256.
 
-For Gouraud rendering, build a Mode 6 reference with the required segmented layout:
-Per Gouraud compilare un riferimento Mode6 con il layout segmentato obbligatorio:
+### 2. Scegliere la pipeline
+
+Scena poligonale ordinaria, API ereditata. Per legacy estrarre prima una
+copia di lavoro separata dei sorgenti ed eseguire lì il primo comando:
+il risultato è `work/3Dvibe64.prg`. Legacy non accetta `-OutputDirectory`,
+riservato a Q8, Normalized 16 e Mode 8. Il secondo comando usa Q8 con output
+esterno. La camera stationary mantiene questo primo esempio texturizzato
+preciso nel suo budget RAM verificato: non ogni scena/camera automatica
+ha necessariamente memoria sufficiente.
 
 ```powershell
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\work\build-3Dvibe64.ps1 `
-  -SceneFile .\examples\mode6-gouraud-torus.json `
-  -GraphicsMode 6 -CameraMode walkFull -CameraViewport normal `
-  -Quality balanced -Projection table -MemoryLayout high-basic-v2 -SkipCmdUpdate
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -SceneFile examples/basic-solid-reference.json -GraphicsMode 4
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -SceneFile examples/mode7-perspective-cube.json -GraphicsMode 7 -Precision q8 -TexturePrecision perspective -TextureQuality standard -Q8Camera stationary -OutputDirectory ../first-texture
 ```
 
-Il pacchetto ufficiale 3Dvibe64 1.10.0 contiene solo sorgenti: compilare localmente una scena JSON
-con il builder PowerShell. Il comando precedente genera `work/3Dvibe64.prg`.
-Con lo split Generic Text/FPS predefinito, `normal` offre un body 3D 160×88 sotto
-tre righe di testo e `small` un body 128×80. Usare
-`-HeaderText "SCRITTA DI ESEMPIO" -FpsOverlayOnStart` per mostrare l’header
-dall’avvio; `-NoFpsOverlay` ripristina la viewport normal storica 160×100.
-Durante l’esecuzione, `F` nasconde o ripristina l’intero header Generic Text/FPS,
-non le sole cifre FPS. Per mantenere pulito l'SDK, eseguire le build in una copia
-di lavoro separata.
+Standard conserva il campionamento preciso; `TextureQuality fast` è un altro
+profilo con blocchi/ricostruzione righe dichiarati. TextureLOD resta off nel
+builder ordinario: i default dei profili gameplay non cambiano quell’API.
+Mode 8 usa un contratto di mappa separato:
 
-See [examples/README.md](examples/README.md) for all public reference scenes and
-their complete commands.  The localized README files document the renderer, JSON
-schema, camera controls, limits, and public command-line options.
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../first-map
+```
 
-Mode 6 is ordered-dithered Gouraud for VIC-II and uses the validated Gate 5 engine.
-`gouraud.creaseAngle` defaults to 60 degrees; use 180 on the coarse torus to smooth
-curved boundaries, or compare the hard/smooth cube examples. The silhouette does
-not change. The runtime limit is 255 shade vertices. Materials provide
-Dark/High/Highlight; reflectivity is satin/gloss/reflective/mirror.
-See [TESTING.md](TESTING.md) to verify a clean SDK without generating files inside it.
-Vedere [examples/README.md](examples/README.md) per tutte le scene pubbliche e
-i comandi completi. I README localizzati descrivono renderer, schema JSON,
-controlli camera, limiti e opzioni CLI pubbliche.
+Moduli sperimentali e formato comune:
 
-Mode6 è Gouraud ordered-dithered per VIC-II e usa l'engine Gate5 validato.
-`gouraud.creaseAngle` ha default60 gradi: usare180 nel toro grossolano per
-smussare i confini curvi oppure confrontare i cubi hard/smooth. La silhouette
-non cambia. Il limite runtime è255 shade vertices. I materiali forniscono
-Dark/High/Highlight; reflectivity è satin/gloss/reflective/mirror.
-Vedere [TESTING.md](TESTING.md) per verificare l'SDK pulito senza generarvi file.
+```powershell
+python -B work/build-gameplay.py --profile controlled-animation --out ../first-motion
+python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
+python -B work/build-level.py --level examples/levels/integrated-foundation.json --out ../first-level
+```
 
-## Official Mode 7 in 1.3.0
+Leggere [GAMEPLAY](GAMEPLAY.it.md) prima di modificare le configurazioni.
+Il backend del formato comune è il template WORLD-01 delimitato. Dati di
+pianificazione validi possono non essere supportati; `--plan-only` non misura
+RAM né genera programmi. Conservare tutti i file media dei gruppi col launcher.
 
-GraphicsMode 1–8 are available. GraphicsMode 1–6 retain their 1.2.0 reference output; the older API sections below still apply to those modes.
+### 3. Verificare
 
-Mode 4 is dynamic flat shading. Mode 6 is ordered-dithered Gouraud shading.
-Mode 7 is **affine texture mapping**, optionally with flat or Gouraud lighting:
-`textureLighting` absent/`"none"`, `"flat"`, or `"gouraud"`.
-The official Gouraud compositor is `textureCompositor: "C"` (texel-first + LightFix; now the Gouraud default). R1 corrects edge inclusion in this C path. A/B remain compatibility options, not the recommended renderer.
+Controllare build.json, comando, hash e mappa RAM. Avviare l’output reale con
+launcher/PRG e target/opzioni corretti. Per i profili gameplay:
 
-Mode 7 requires `high-basic-v2`, Python 3, `fast` quality and `extended-table` projection.
-Textures are 16×16, nearest-neighbor, three pigment codes 1/2/3, with UV Q4.4 and optional repeat 1/2/4/8/16. It supports per-vertex or corner UVs, seams, per-face textures, triangulated quads (0→2), near/screen clipping, byte-oriented fill, partial bytes, double buffering, PAL/NTSC, normal/small and fixed/walkLite/walkFull.
+```powershell
+python -B work/qualify-gameplay.py --out ../first-motion --checks --benchmark --launcher
+python -B scripts/run_release_tests.py test_documentation.py test_dev_gameplay.py test_common_level.py
+```
 
-PNG import is host-side, through Pillow: `source` and mandatory ordered `sourceColors` map exactly three opaque RGB colors to Dark/High/Highlight texels. `texturePalette` separately selects three VIC-II colors. No resizing, quantization or transparency. Inline texels remain supported and runtime-equivalent.
-
-Textured Gouraud uses `gouraud.creaseAngle` (default60°, range0–180°) for hard edges or smooth normals, with the applicable255-shade-vertex limit. Mode 7 has its own memory/geometry constraints and does not inherit every Mode 6 override/source-sharing API.
-
-The default affine path has no perspective correction. Optional projective interpolation requires the bounded Q8 profile; see [texture precision](TEXTURE-PRECISION.en.md). No bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Sampling aliasing remains.
-
-Read the [complete Mode7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](examples/README.md). The paired Italian guides cover the same contract.
-
-## Mode 7 ufficiale nella 1.3.0
-
-Sono disponibili GraphicsMode 1–8. Le GraphicsMode 1–6 conservano l'output di riferimento della 1.2.0; le sezioni API precedenti continuano a descrivere quelle modalità.
-
-Mode 4 è flat shading dinamico. Mode 6 è Gouraud ordered-dithered.
-Mode 7 è **texture mapping affine**, con luce flat o Gouraud opzionale:
-`textureLighting` assente/`"none"`, `"flat"` oppure `"gouraud"`.
-Il compositor Gouraud ufficiale è `textureCompositor: "C"` (texel-first + LightFix; ora default Gouraud). R1 corregge l'inclusione degli edge in questo percorso C. A/B restano opzioni di compatibilità, non il renderer consigliato.
-
-Mode 7 richiede `high-basic-v2`, Python 3, qualità `fast` e proiezione `extended-table`.
-Le texture sono 16×16, nearest-neighbor, con tre codici pigmento1/2/3, UV Q4.4 e repeat opzionale1/2/4/8/16. Supporta UV per vertice o corner, seam, texture per faccia, quad triangolati(0→2), clipping near/screen, fill byte-oriented, byte parziali, double buffering, PAL/NTSC, normal/small e fixed/walkLite/walkFull.
-
-L'import PNG è host-side tramite Pillow: `source` e `sourceColors` obbligatorio ordinato convertono esattamente tre RGB opachi nei texel Dark/High/Highlight. `texturePalette` sceglie separatamente tre colori VIC-II. Niente resizing, quantizzazione o trasparenza. I texel inline restano supportati ed equivalenti a runtime.
-
-Il Gouraud textured usa `gouraud.creaseAngle` (default60°, intervallo0–180°) per spigoli duri o normali smussate, con il limite di255 shade vertices dove applicabile. Mode 7 ha vincoli propri di memoria/geometria e non eredita tutte le API override/source-sharing della Mode 6.
-
-Il default affine non corregge la prospettiva. L’interpolazione prospettica opzionale richiede il profilo Q8 limitato: vedere [precisione texture](TEXTURE-PRECISION.it.md). Niente bilinear, mipmapping, texture runtime packed o quad mapper nativo. Resta l’aliasing di campionamento.
-
-Leggere il [contratto Mode7 completo](MODE7.it.md), la [guida texture](TEXTURE-GUIDE.it.md), la [guida PNG](PNG-TEXTURES.it.md) e gli [otto esempi pubblici](examples/README.md). Le guide inglesi equivalenti coprono lo stesso contratto.
+Requisiti completi in [TESTING](TESTING.md). Gli FPS contano nuove viste
+complete native, dopo warm-up e almeno 20 secondi emulati/giro completo,
+con raw/comandi/hash/p 95/peggiore. Tempo host, warp e replay di routine CPU
+non sono FPS della macchina. Il riuso delle prove richiede hash e condizioni
+coincidenti. Output compilati/test restano fuori dal pacchetto. Preservare
+release precedenti e fondazione.

@@ -1,5 +1,9 @@
 # Linee ibride: geometria Q8, raster intero additivo
 
+Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
+in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
+
 `-Precision q8 -LineRaster hybrid` è supportato nelle GraphicsMode 1, 2 e 5. Conserva camera Q8, trasformazioni mesh, proiezione degli estremi e clipping near/schermo. Cambia soltanto il raster finale della linea clippata. `precise` resta il default delle linee Q8; la geometria `legacy` resta il default dell'engine. Hybrid non semplifica la proiezione né modifica lo shading del fill solido.
 
 ```powershell

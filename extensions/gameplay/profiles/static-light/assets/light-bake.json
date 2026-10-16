@@ -1,0 +1,62 @@
+{
+  "schema": 1,
+  "enabled": true,
+  "ambient": 3,
+  "biasWU": 0.00390625,
+  "receivers": [
+    8,
+    9,
+    10,
+    11
+  ],
+  "occluders": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23,
+    24,
+    25,
+    26,
+    27
+  ],
+  "lights": [
+    {
+      "id": "front-lamp",
+      "position": [
+        -18,
+        -16,
+        0
+      ],
+      "radiusWU": 48,
+      "strength": 48
+    },
+    {
+      "id": "rear-lamp",
+      "position": [
+        14,
+        16,
+        3
+      ],
+      "radiusWU": 30,
+      "strength": 32
+    }
+  ]
+}

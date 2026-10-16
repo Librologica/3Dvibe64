@@ -1,5 +1,71 @@
 # Changelog
 
+## 1.11.0 — 2026-10-16 — official local source release / release sorgente ufficiale locale
+
+- Promote the qualified dev13/cubes-restored line with all bounded gameplay modules, common level authoring and exact assembled memory checks. Promote tutti i moduli delimitati e il formato/budget di livello qualificati.
+- Keep ordinary1.10.2 renderer/defaults, Mode8 and sealed foundation unchanged. Conservati renderer/default ordinari, Mode8 e fondazione.
+- Complete current English/Italian manuals, module contracts, feature/CLI matrix, roadmap, quick start, test inventory and link/coverage audit. Documentazione corrente completa nelle due lingue.
+- Honor configured assembler/emulator paths in host packaging/capture helpers; qualify binary identity separately. Percorsi host configurabili, identità dei programmi verificata.
+- Source distribution only; no precompiled PRG, demo archive, video or music. Local delivery; online publication deferred. Solo sorgenti, pubblicazione online rinviata.
+
+[Release EN](RELEASE-NOTES-1.11.0.en.md) · [Release IT](RELEASE-NOTES-1.11.0.it.md) · [Qualification EN](QUALIFICATION-1.11.0.en.md) · [Qualificazione IT](QUALIFICATION-1.11.0.it.md).
+
+## Historical development and releases / Sviluppo e release precedenti
+
+
+Deterministic host-only static vertex lighting with Lambert/radius falloff,
+static triangle occlusion and a compact LB01 bake artifact. Selected existing
+Gouraud receivers reuse resident shade tables: twelve data bytes change,
+no runtime code or extra RAM. Independent analytical/manual-reference and
+native image/regression proofs; official release documentation deferred.
+See extensions/gameplay/materials/LIGHT-DEV.it.md.
+
+# Development checkpoint 1.11.0-dev6
+
+Optional resident texture frame pages and signed integer UV scrolling per
+material group, exact perspective sampling and unchanged LOD14..22.
+Native timing/page-integrity, independent pre-baked pixel oracles and
+active/frozen route benchmarks; dev5 capabilities preserved. Empty animation
+configuration reconstructs the dev5 PRG. See materials/ANIMATION-DEV.it.md
+under the gameplay extension. Official release documentation deferred.
+
+# Development checkpoint 1.11.0-dev5
+
+Two shared-asset billboard instances with independent animation, exact Q8
+mutual depth ordering, screen clipping and explicit near-plane4WU behavior.
+Native pixel/animation/door regression checks and equal-condition one/two
+instance benchmarks. See extensions/gameplay/billboards/MULTIPLE-DEV.it.md.
+
+# Development checkpoint 1.11.0-dev4
+
+Guardian-operated polygonal door with progressive four-state motion,
+height clearance, bidirectional passage, safe closure reversal and bounded
+half-space occlusion. Existing profiles preserved. See
+extensions/gameplay/entities/DOOR-DEV.it.md. General levels remain planned.
+
+# Development checkpoint 1.11.0-dev3
+
+Experimental single-billboard scene configuration, native animation timing,
+a usable entity with persistent state/events and local XY box collision.
+ENT-01 remains partial: moving doors and general level entities are planned.
+See extensions/gameplay/entities/DEV.it.md and ROADMAP.md.
+
+# Development checkpoint 1.11.0-dev2
+
+Experimental per-face texture, flat and Gouraud rendering in the Q8 comparison
+room, with native pixel oracles and equal-condition route benchmarks.
+See ROADMAP.md and extensions/gameplay/materials/DEV.it.md. Official release
+documentation remains deferred to release preparation.
+
+# Development checkpoint 1.11.0-dev1
+
+- Import and consolidate two bounded billboard prototypes, with common sources.
+- Add the experimental gameplay builder, presets, native checker and roadmap.
+- Preserve stable1.10.2, the ordinary renderer, Mode8 and frozen demos.
+- General public billboard API and the remaining gameplay roadmap are pending.
+
+# Changelog
+
 ## 1.10.2 — 2026-10-14
 
 Stable local promotion of qualified dev3 and the corrected performance report. Runtime/defaults/options unchanged; inherited dev1 fast block-state optimization and optional dev2 Q8 UV/arithmetic/camera/visibility retained. Mode8 remains restored bitmap, retired options rejected. Host qualification guard preserved. Stock and Turbo6510 ×64 results separated; 17 reporting regressions and full measurement identities. No new runtime experiment or GitHub publication.
@@ -498,3 +564,53 @@ monofacciale, materiali statici/dinamici, profili Ground, condivisione delle
 mesh sorgenti e contratti di validazione consolidati nella release.
 Nomi storici specifici di produzioni e binari confezionati sono intenzionalmente
 esclusi dall'SDK sorgente pubblico1.0.
+
+## 1.11.0-dev8 — VIS-01 sperimentale
+
+- Compilatore PVS conservativo per settori rettangolari, portali e stati delle porte, incluse aperture alternative.
+- Profilo sector-visibility con selezione nativa prima della raccolta delle facce; apertura anche minima e casi vicini/esterni/obliqui mantengono i settori necessari.
+- Confronti pixel nativi attivo/disattivo, regressioni delle capacità precedenti e FPS del percorso completo a condizioni uguali, con dati grezzi conservati.
+- Nessun taglio angolare generale; scena, renderer ordinario, Mode8 e checkpoint precedenti conservano i rispettivi contratti.
+
+## 1.11.0-dev9 — Q8-01 sperimentale
+
+- Profilo shared-meshes: asset geometrico unico e 2–4 istanze native con posizione Q8, scala Q6, yaw a 16 bit, visibilità e ombreggiatura distinti.
+- Topologia e coordinate locali condivise, cache e metadati delle facce individuali. Quattro solidi: 50 contro 200 byte sorgenti; 150 byte di RAM liberati nel confronto equivalente.
+- Equivalenza pixel con controllo duplicato e stanza indipendente, trasformazioni e isolamento dei buffer verificati su VICE; FPS misurati sul giro completo a condizioni uguali.
+- Renderer ordinario, Mode8 e programmi dei nove profili precedenti preservati. API generale, animazioni applicative e roll restano fuori da questa prova.
+
+## 1.11.0-dev10 — Q8-02 sperimentale
+
+- Clip indipendenti con comandi nativi di pausa, ripresa, stop, seek, velocità, loop, passo e riavvio; tick di simulazione indipendenti dalle viste completate.
+- Roll camera di16bit sulle coordinate camera a24bit, dopo yaw/pitch e prima di proiezione/clipping; profili distinti dungeon e volo con controlli da tastiera.
+- Regressioni native separate, oracoli geometrici/pixel, sorgenti immutabili, UI originale, confronto FPS a parità di percorso/qualità e budget RAM:1979byte aggiuntivi,3302liberi.
+- Opzione disabled ricostruisce la dev9; i dieci profili precedenti, fondazione, engine ordinario e Mode8 restano invariati. API generale e fisica di volo restano fuori dalla prova.
+
+## 1.11.0-dev11 — WORLD-01 sperimentale
+
+- Caricamento reale di gruppi da file esterni tramite KERNAL e device8 filesystem di VICE; un solo gruppo attivo, staging1024byte e formato762byte con canali residenti fissi e CRC atteso.
+- Transazioni esplicite e controllo errori prima dell'installazione; porte, animazioni ed eventi conservati separatamente in RAM. Due gruppi di due stanze, ritorno e variante a8gruppi qualificati nativamente.
+- Preciso/LOD e UI originale; riferimenti statici indipendenti, rifiuto file errati, ripristino IRQ/zero page, confronto FPS nativo.1006byte liberi nella demo predefinita.
+- I dodici profili precedenti e l'engine ordinario mantengono identità. Topologie arbitrarie, persistenza su disco, tempi1541 e integrazione pubblica restano da qualificare.
+
+## 1.11.0-dev12 — formato comune e budget
+
+- Formato3Dvibe64.level/1 per risorse, gruppi, stanze, oggetti, collegamenti, ingressi ed eventi; ID verificati, IR numerico, schema e asset portabili.
+- Nuovo build-level.py traduce il sottoinsieme supportato su WORLD-01. Richieste future producono un piano esplicito e vengono rifiutate dal build nativo.
+- Budget ricavato dall'assemblato, guardie e partizione della memoria, soglie su totale e blocchi allineati; rifiuto reale del livello8gruppi con460byte liberi e margine richiesto512.
+- Stesso PRG/RAM della dev11,1006byte liberi. Individuati3759byte della UI di avvio come recupero futuro; nessun overlay attivato in questa dev. Engine ordinario, fondazione,13profili e Mode8 preservati.
+
+## 1.11.0-dev13 — integrazione Underworld
+
+- Tre stanze nella UI LABIRINTO, rendering preciso per pixel e60 righe, LOD14–22.
+- Skeleton originale38vertici/52segmenti senza LOD geometrico e billboard contornato16x32, stessa altezza corporea15WU.
+- Configurazione BB-02, animazioni a tick, eventi persistenti di prossimità/SPACE e clip cammino/attacco controllate dall'entità.
+- Riuso a fasi di1516byte UI dopo init; RLE senza perdita per i frame; pose sotto I/O.
+- Scarto conservativo delle stanze interamente dietro la camera, confronto nativo con lo stesso profilo senza lo scarto.
+- Engine ordinario, fondazione, Mode8 e profili precedenti conservati; nessuna nuova API generale o integrazione WORLD-01 implicita.
+
+### Correzione dev13 — cubi nella nuova Underworld
+
+- Ripristinati i tre cubi insieme a skeleton e billboard. Dimensioni e posizioni originali; il cubo sospeso di questa variante è statico.
+- Riutilizzati2904byte dopo l’avvio della UI, con coordinate Q8/schermo in aree disgiunte. Ordine compatto175byte e banda di profondità condivisa dai solidi.
+- Il percorso e la qualità prospettica restano identici al precedente esperimento; misure native ed evidenze specifiche nella nuova consegna.

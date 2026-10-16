@@ -1,11 +1,42 @@
 # Practical Manual for Creating Demos and PRGs with 3Dvibe64 Using Codex
 
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
+## Gameplay modules in1.11.0
+
+Choose a profile/entry point before editing geometry. Ordinary Q8 fields do
+not configure the separate source-sharing, roll, event or room-group adapters.
+Use [GAMEPLAY](GAMEPLAY.en.md) for all 13 profiles, nine optional configuration
+switches and compatibility. The detailed module references include the
+`an_control`, `cr_set_roll`, `cr_resume`, `wg_request`, `wg_service` ABIs,
+event pulse/counter rules, near thresholds and storage ownership.
+
+Level editing starts with `work/build-level.py --validate-only`; a valid
+authoring graph may still have `buildable:false` for this backend. A plan is
+not a native memory measurement. Accept only the assembled budget, legal
+windows, guard space and aligned contiguous gaps. WORLD-01's proposed 3759 byte
+UI recovery is not implemented there; the separate integration actually
+reuses 2904 bytes under a different checked lifetime contract.
+
+Pause/source/instance state must remain stable during complete rendering.
+Do not call clip controls or modify self-patched shader state from IRQ.
+World input temporarily maps KERNAL and must restore zero page, vectors,
+CPU port and CIA 2. Native group files contain whitelisted data, not executable
+code. Follow [the level contract](extensions/gameplay/level/LEVEL-DEV.en.md).
+
+The release is currently local, source-only. Obtain its source ZIP from the
+local delivery or a later published release; do not assume it is already
+available online. Keep release/foundation/frozen projects immutable and build
+in external directories. `MANIFEST.sha256` verifies every source input.
+
 ## Precision profiles / Profili di precisione — 1.10.0
 
 Q8: byte-index ceilings of 255 disjoint objects/runtime vertices, subject to real RAM guards.
-Normalized16: experimental, at most two objects/16 runtime vertices.
+Normalized 16: experimental, at most two objects/16 runtime vertices.
 Q8: tetti di codifica di 255 oggetti disgiunti/vertici runtime, con controlli RAM reali.
-Normalized16: sperimentale, massimo due oggetti/16 vertici runtime.
+Normalized 16: sperimentale, massimo due oggetti/16 vertici runtime.
 See / Vedere [Official contract / Contratto ufficiale](Q8-SCALABILITY.md) and [qualification](Q8-QUALIFICATION.md).
 
 Legacy remains the default; the metric/renderer contracts below describe legacy
@@ -720,13 +751,13 @@ In the JSON or scene contract, the field may be named `viewportProfile`. When a 
 
 #### normal
 
-`normal` is the default viewport. With the Generic Text/FPS split compiled in it has a 160×88 3D body at Y=12; `-NoFpsOverlay` restores the legacy 160×100 body.
+`normal` is the default viewport. With the Generic Text/FPS split compiled in it has a 160 × 88 3D body at Y=12; `-NoFpsOverlay` restores the legacy 160 × 100 body.
 
 It is the most readable choice and normally the starting point. It should be used when the scene fits within the memory limits and maintains adequate speed.
 
 #### small
 
-`small` measures 128×80 low-resolution pixels. With the text split it starts at Y=12; without the split it is centered at Y=10.
+`small` measures 128 × 80 low-resolution pixels. With the text split it starts at Y=12; without the split it is centered at Y=10.
 
 It provides:
 
@@ -1655,7 +1686,7 @@ The command is split across several lines with the PowerShell continuation chara
 - `-SceneFile` identifies the scene JSON;
 - `-GraphicsMode 4` selects dynamic solid rendering;
 - `-CameraMode fixed` forces the camera profile;
-- `-CameraViewport normal` selects the 160×100 viewport;
+- `-CameraViewport normal` selects the 160 × 100 viewport;
 - `-Quality balanced` uses the balanced quality profile;
 - `-Projection table` uses table-based projection;
 - `-MemoryLayout stable` selects the compact layout;
@@ -2501,7 +2532,7 @@ The simplest and safest way to use 3Dvibe64 is to keep creation, compilation, ve
 
 The recommended workflow is:
 
-- download the official ZIP from GitHub;
+- obtain the source ZIP from the local delivery or published release;
 - preserve an untouched copy;
 - give Codex the path to the release;
 - allow Codex to check and, after obtaining permission, install the required tools;

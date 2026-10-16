@@ -1,0 +1,231 @@
+{
+  "version": "1.11.0",
+  "locales": [
+    "en",
+    "it"
+  ],
+  "currentPairs": [
+    {
+      "id": "ASSEMBLY-GUIDE",
+      "en": "ASSEMBLY-GUIDE.en.md",
+      "it": "ASSEMBLY-GUIDE.it.md"
+    },
+    {
+      "id": "DEV-NOTES",
+      "en": "DEV-NOTES.en.md",
+      "it": "DEV-NOTES.it.md"
+    },
+    {
+      "id": "GAMEPLAY",
+      "en": "GAMEPLAY.en.md",
+      "it": "GAMEPLAY.it.md"
+    },
+    {
+      "id": "LINE-RASTER",
+      "en": "LINE-RASTER.en.md",
+      "it": "LINE-RASTER.it.md"
+    },
+    {
+      "id": "MAPS-2.5D",
+      "en": "MAPS-2.5D.en.md",
+      "it": "MAPS-2.5D.it.md"
+    },
+    {
+      "id": "MODE7-FAST",
+      "en": "MODE7-FAST.en.md",
+      "it": "MODE7-FAST.it.md"
+    },
+    {
+      "id": "MODE7-LOD",
+      "en": "MODE7-LOD.en.md",
+      "it": "MODE7-LOD.it.md"
+    },
+    {
+      "id": "MODE7",
+      "en": "MODE7.en.md",
+      "it": "MODE7.it.md"
+    },
+    {
+      "id": "MODE8",
+      "en": "MODE8.en.md",
+      "it": "MODE8.it.md"
+    },
+    {
+      "id": "NORMALIZED16",
+      "en": "NORMALIZED16.en.md",
+      "it": "NORMALIZED16.it.md"
+    },
+    {
+      "id": "NUMERIC-CORRECTNESS",
+      "en": "NUMERIC-CORRECTNESS.en.md",
+      "it": "NUMERIC-CORRECTNESS.it.md"
+    },
+    {
+      "id": "PNG-TEXTURES",
+      "en": "PNG-TEXTURES.en.md",
+      "it": "PNG-TEXTURES.it.md"
+    },
+    {
+      "id": "PRECISION",
+      "en": "PRECISION.en.md",
+      "it": "PRECISION.it.md"
+    },
+    {
+      "id": "PRESENTATION",
+      "en": "PRESENTATION.en.md",
+      "it": "PRESENTATION.it.md"
+    },
+    {
+      "id": "README",
+      "en": "README.en.md",
+      "it": "README.it.md"
+    },
+    {
+      "id": "RELEASE-NOTES-1.11.0",
+      "en": "RELEASE-NOTES-1.11.0.en.md",
+      "it": "RELEASE-NOTES-1.11.0.it.md"
+    },
+    {
+      "id": "ROADMAP",
+      "en": "ROADMAP.en.md",
+      "it": "ROADMAP.it.md"
+    },
+    {
+      "id": "TEXTURE-GUIDE",
+      "en": "TEXTURE-GUIDE.en.md",
+      "it": "TEXTURE-GUIDE.it.md"
+    },
+    {
+      "id": "TEXTURE-PRECISION",
+      "en": "TEXTURE-PRECISION.en.md",
+      "it": "TEXTURE-PRECISION.it.md"
+    },
+    {
+      "id": "VIBE-CODING-GUIDE",
+      "en": "VIBE-CODING-GUIDE.en.md",
+      "it": "VIBE-CODING-GUIDE.it.md"
+    },
+    {
+      "id": "BB-01",
+      "en": "extensions/gameplay/CONTRACT.en.md",
+      "it": "extensions/gameplay/CONTRACT.it.md"
+    },
+    {
+      "id": "BB-02 / ENT-01",
+      "en": "extensions/gameplay/entities/DEV.en.md",
+      "it": "extensions/gameplay/entities/DEV.it.md"
+    },
+    {
+      "id": "ENT-01 door",
+      "en": "extensions/gameplay/entities/DOOR-DEV.en.md",
+      "it": "extensions/gameplay/entities/DOOR-DEV.it.md"
+    },
+    {
+      "id": "BB-03",
+      "en": "extensions/gameplay/billboards/MULTIPLE-DEV.en.md",
+      "it": "extensions/gameplay/billboards/MULTIPLE-DEV.it.md"
+    },
+    {
+      "id": "MAT-01",
+      "en": "extensions/gameplay/materials/DEV.en.md",
+      "it": "extensions/gameplay/materials/DEV.it.md"
+    },
+    {
+      "id": "TEX-01",
+      "en": "extensions/gameplay/materials/ANIMATION-DEV.en.md",
+      "it": "extensions/gameplay/materials/ANIMATION-DEV.it.md"
+    },
+    {
+      "id": "LIGHT-01",
+      "en": "extensions/gameplay/materials/LIGHT-DEV.en.md",
+      "it": "extensions/gameplay/materials/LIGHT-DEV.it.md"
+    },
+    {
+      "id": "VIS-01",
+      "en": "extensions/gameplay/visibility/VISIBILITY-DEV.en.md",
+      "it": "extensions/gameplay/visibility/VISIBILITY-DEV.it.md"
+    },
+    {
+      "id": "Q8-01",
+      "en": "extensions/gameplay/meshes/SHARED-DEV.en.md",
+      "it": "extensions/gameplay/meshes/SHARED-DEV.it.md"
+    },
+    {
+      "id": "Q8-02",
+      "en": "extensions/gameplay/motion/CONTROLLED-DEV.en.md",
+      "it": "extensions/gameplay/motion/CONTROLLED-DEV.it.md"
+    },
+    {
+      "id": "WORLD-01",
+      "en": "extensions/gameplay/world/WORLD-DEV.en.md",
+      "it": "extensions/gameplay/world/WORLD-DEV.it.md"
+    },
+    {
+      "id": "LEVEL-01",
+      "en": "extensions/gameplay/level/LEVEL-DEV.en.md",
+      "it": "extensions/gameplay/level/LEVEL-DEV.it.md"
+    },
+    {
+      "id": "Integration",
+      "en": "extensions/gameplay/experiments/underworld/README.en.md",
+      "it": "extensions/gameplay/experiments/underworld/README.it.md"
+    },
+    {
+      "id": "QUALIFICATION-1.11.0",
+      "en": "QUALIFICATION-1.11.0.en.md",
+      "it": "QUALIFICATION-1.11.0.it.md"
+    }
+  ],
+  "currentBilingual": [
+    "README.md",
+    "DOCS.md",
+    "QUICKSTART.md",
+    "TESTING.md",
+    "WORLD-METRICS.md",
+    "Q8-SCALABILITY.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md",
+    "LICENSE-DOCUMENTATION.md",
+    "examples/README.md",
+    "ROADMAP.md",
+    "RELEASE-NOTES-1.11.0.md"
+  ],
+  "historicalReports": [
+    "Q8-QUALIFICATION.md",
+    "NORMALIZED16-QUALIFICATION.md",
+    "MODE8-QUALIFICATION.md",
+    "MODE8-MEMORY.md",
+    "GOURAUD-MODE6-REPORT.md",
+    "examples/mode8/PLANS.md"
+  ],
+  "historyPolicy": "Preserve versioned measurements and archived release notes; current paired contracts take precedence.",
+  "frozenDocumentation": "extensions/gameplay/foundation-1.10.2",
+  "gameplayProfiles": [
+    "animated-textures",
+    "camera-roll",
+    "comparison-ui",
+    "controlled-animation",
+    "door-entity",
+    "dungeon-masked",
+    "interactive-billboard",
+    "mixed-surfaces",
+    "multiple-billboards",
+    "room-groups",
+    "sector-visibility",
+    "shared-meshes",
+    "static-light"
+  ],
+  "gameplayConfigurationOptions": [
+    "--surface-config",
+    "--gameplay-scene",
+    "--door-config",
+    "--texture-animation",
+    "--light-bake",
+    "--visibility",
+    "--shared-meshes",
+    "--motion-controls",
+    "--world-groups"
+  ],
+  "sourceOnly": true,
+  "publication": "local only"
+}

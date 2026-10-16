@@ -1,7 +1,11 @@
 # Profili di precisione — 1.10.0
 
+Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
+in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
+
 <!-- maintenance-1.10.1 -->
-La 1.10.1 ufficiale corregge casi numerici Mode7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
+La 1.10.1 ufficiale corregge casi numerici Mode 7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
 
 ## Release 1.10.0: scene Q8 con più oggetti
 
@@ -10,7 +14,7 @@ degli indici a byte. Rimossi i precedenti limiti di qualificazione di due
 oggetti e 96 vertici. Ogni scena deve comunque superare i controlli effettivi
 di buffer, segmenti e dominio geometrico: 255 non è una capienza garantita.
 Mesh sorgenti condivise, Ground, timeline e roll camera restano esclusi da
-questo exporter Q8. Normalized16 resta sperimentale: due oggetti/16 vertici.
+questo exporter Q8. Normalized 16 resta sperimentale: due oggetti/16 vertici.
 Vedere [contratto della release](Q8-SCALABILITY.md). Legacy resta default.
 [Release notes / Note di versione](RELEASE-NOTES-1.10.0.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
 
@@ -23,8 +27,8 @@ Conserva la precisione geometrica e cambia soltanto la quantizzazione del raster
 Restano default geometria legacy e linee Q8 precise. La presentazione sicura è
 ora default; i confronti PRG storici scelgono esplicitamente quella legacy.
 
-La1.6.0 aggiunge una selezione texture indipendente: Q8 da solo usa ancora UV
-affini. `-TexturePrecision perspective` richiede Mode7 Q8 e il contratto aggiuntivo
+La 1.6.0 aggiunge una selezione texture indipendente: Q8 da solo usa ancora UV
+affini. `-TexturePrecision perspective` richiede Mode 7 Q8 e il contratto aggiuntivo
 di profondità limitata. Vedere [precisione texture](TEXTURE-PRECISION.it.md).
 
 ## Default e raccomandazione
@@ -56,7 +60,7 @@ Z-buffer né garantisce occlusione esatta fra solidi che si intersecano.
 
 ## Profilo qualificato e rifiuti espliciti
 
-- Mode 1-7; viewport normal, 160×100 pixel logici senza split testo/FPS.
+- Mode 1-7; viewport normal, 160 × 100 pixel logici senza split testo/FPS.
 - `walkLite`, `high-basic-v2`, `fast`, `extended-table`, selezionati internamente
   dall'adattatore Q8. Opzioni CLI esplicite incompatibili vengono rifiutate.
 - Oggetti con intervalli vertici/facce disgiunti; fino a 255 vertici

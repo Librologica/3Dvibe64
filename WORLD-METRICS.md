@@ -1,11 +1,17 @@
 # 3Dvibe64 world metrics / Metrica del mondo 3Dvibe64
 
+Current 1.11.0 ordinary metric/geometry contract; inherited sections retain their stated profile/version.
+Contratto metrico/geometrico ordinario 1.11.0; sezioni ereditate con profilo/versione dichiarati.
+Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
+[gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
+[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
+
 ## Precision profiles / Profili di precisione — 1.10.0
 
 Q8: byte-index ceilings of 255 disjoint objects/runtime vertices, subject to real RAM guards.
-Normalized16: experimental, at most two objects/16 runtime vertices.
+Normalized 16: experimental, at most two objects/16 runtime vertices.
 Q8: tetti di codifica di 255 oggetti disgiunti/vertici runtime, con controlli RAM reali.
-Normalized16: sperimentale, massimo due oggetti/16 vertici runtime.
+Normalized 16: sperimentale, massimo due oggetti/16 vertici runtime.
 See / Vedere [Official contract / Contratto ufficiale](Q8-SCALABILITY.md) and [qualification](Q8-QUALIFICATION.md).
 
 Legacy remains the default; the metric/renderer contracts below describe legacy
@@ -18,13 +24,13 @@ non sostituisce globalmente legacy. Vedere [Q8 IT](PRECISION.it.md).
 ## Scope / Ambito in 1.4.0
 
 The WU/TU and mesh-camera conventions below apply to **Modes 1–7**.
-Mode 8 is a separate cell-map contract: 32×32 cells, position already encoded
+Mode 8 is a separate cell-map contract: 32 × 32 cells, position already encoded
 as Q8.8 integers (256 units/cell), vertical values in 1/32 cell, yaw 0–511
 (512 units/turn). Yaw 0 looks +Y, 128 looks +X. It does not automatically convert
 polygonal units. See [complete EN guide](MAPS-2.5D.en.md).
 
 Le convenzioni WU/TU e della camera mesh sotto valgono per **Mode 1–7**.
-La Mode 8 ha un contratto separato: 32×32 celle, posizione già codificata come
+La Mode 8 ha un contratto separato: 32 × 32 celle, posizione già codificata come
 interi Q8.8 (256 unità/cella), quote in 1/32 di cella, yaw 0–511
 (512 unità/giro). Yaw 0 guarda +Y, 128 guarda +X. Non converte automaticamente
 le unità poligonali. Vedere la [guida IT completa](MAPS-2.5D.it.md).
@@ -85,19 +91,19 @@ In pre-1.0, `ground.z` is a whole WU coordinate on the public Z-up axis. `WorldG
 
 In pre-1.0, `ground.z` è una coordinata WU intera sull'asse Z-up pubblico.
 `WorldGroundMode=plane` definisce quindi il piano geometrico
-`world Z = ground.z`, disponibile nelle GraphicsMode2–5. Una faccia interamente
+`world Z = ground.z`, disponibile nelle GraphicsMode 2–5. Una faccia interamente
 sul lato opposto alla camera viene rifiutata; una faccia che attraversa il piano
 è clippata prima del normale clipping near e screen. Attraversare il piano
 cambia il lato conservato; cambiare quota camera senza attraversarlo no.
 
 Mode 2 keeps a line-only presentation in both Ground profiles. `simple` is decorative and performs no geometric clipping. `plane` performs geometric classification and clipping, but still draws no half-plane; hidden-wire face masks and final edges use the post-clipping polygon. Modes 3-5 retain the traditional screen-space behavior for `simple`, while `plane` fills the projected half-plane and clips geometry. Mode 1 supports only the decorative roll-aware horizon.
 
-Mode2 mantiene una presentazione a sole linee in entrambi i profili Ground.
+Mode 2 mantiene una presentazione a sole linee in entrambi i profili Ground.
 `simple` è decorativo e non esegue clipping geometrico. `plane` classifica e
 clippa geometricamente, ma non disegna un semipiano; maschere hidden-wire e
-bordi finali usano il poligono risultante dal clipping. Mode3–5 conservano il
+bordi finali usano il poligono risultante dal clipping. Mode 3–5 conservano il
 comportamento tradizionale screen-space con `simple`; `plane` riempie il
-semipiano proiettato e clippa la geometria. Mode1 supporta soltanto l'orizzonte
+semipiano proiettato e clippa la geometria. Mode 1 supporta soltanto l'orizzonte
 decorativo che tiene conto del roll.
 
 The roll convention observed by the renderer is: `+32 TU` slopes down to the right, `-32 TU` slopes up to the right, and `+64 TU` is vertical. A horizon line wholly above, below, or laterally outside the viewport is rejected; the Mode 1/2 non-intersection sentinel is `$FF`, so no line is clamped to a border. Mode 2 `plane` adds `VERT_COUNT` bytes for `ground_vside`; the Ground-plus-near clipping pipeline is provisioned for polygons through 12 vertices. The `plane` path has a greater byte/cycle cost than `simple` and may require `high-basic-v2`.
@@ -105,9 +111,9 @@ The roll convention observed by the renderer is: `+32 TU` slopes down to the rig
 Convenzione roll osservata dal renderer: `+32 TU` scende verso destra,
 `-32 TU` sale verso destra, `+64 TU` è verticale. Un orizzonte interamente sopra,
 sotto o lateralmente fuori viewport è rifiutato; la sentinella di mancata
-intersezione Mode1/2 è `$FF`, quindi nessuna linea viene clampata al bordo.
-Mode2 `plane` aggiunge `VERT_COUNT` byte per `ground_vside`; la pipeline
-Ground-plus-near supporta poligoni fino a12 vertici. `plane` costa più byte/cicli
+intersezione Mode 1/2 è `$FF`, quindi nessuna linea viene clampata al bordo.
+Mode 2 `plane` aggiunge `VERT_COUNT` byte per `ground_vside`; la pipeline
+Ground-plus-near supporta poligoni fino a 12 vertici. `plane` costa più byte/cicli
 di `simple` e può richiedere `high-basic-v2`.
 
 For camera `rotation`, the public array is best read as rotations about public X/Y/Z. After conversion, the runtime variables receive `pitch=rotX`, `yaw=rotZ`, and `roll=rotY`, matching a Z-up world whose forward axis is Y. The alternative named camera fields are ambiguous in pre-1.0: the builder assembles `[pitch,yaw,roll]` and then applies the same component permutation, so the named `yaw` and `roll` do not land in the variables their names suggest. Use the three-component `rotation` array until that authoring API is audited separately.
@@ -155,7 +161,7 @@ Il contenitore della posizione depth è emesso in tre byte, ma il byte di
 estensione estende il segno, non aggiunge magnitudine unsigned. Il runtime
 rappresenta quindi raw -8388608..8388607, ossia -32768..32767,99609375 WU.
 Prima dello sviluppo pre-1.0, l'host accettava -8388608..16777215, cioè
--32768..65535,99609375 WU: sopra32767,99609375 l'estensione `$80..$FF` veniva
+-32768..65535,99609375 WU: sopra 32767,99609375 l'estensione `$80..$FF` veniva
 interpretata come geometria negativa. Lo sviluppo pre-1.0 rifiuta questi
 valori prima dell'assemblaggio.
 
@@ -181,18 +187,18 @@ con `E >= 128`, la somma a byte può andare in wrap e si usa tutto il dominio
 signed del byte locale `[-128,+127]`. Per limiti locali `[Dmin,Dmax]`, il
 centro intero runtime sicuro è `[-32768-Dmin,32767-Dmax]`. L'intervallo di
 authoring tiene conto anche della frazione: `fixed` arrotonda verso l'alto
-la depth intera quando il bit7 della frazione è attivo; `walkLite` e `walkFull`
+la depth intera quando il bit 7 della frazione è attivo; `walkLite` e `walkFull`
 ignorano nella geometria la frazione del centro oggetto memorizzata. Il risultato
-è intersecato con il dominio raw signed16.8.
+è intersecato con il dominio raw signed 16.8.
 
 Examples: a point mesh has raw intervals `[-32768,32767.49609375]` in `fixed` and `[-32768,32767.99609375]` in mobile modes; the standard cube at scale 64/64 has Q6 extension `[-84,+84]`, giving `[-32684.5,32683.49609375]` in `fixed` and `[-32684,32683.99609375]` in mobile modes. At scale 127/64 its envelope reaches the byte boundary, so `[-128,+127]` is used. complex reference mesh at scale 61/64 yields `[-89,+89]`. These are safety envelopes for every rotation, not claims that every bound is geometrically attainable.
 
 Esempi: una mesh punto ammette raw `[-32768,32767.49609375]` in `fixed` e
-`[-32768,32767.99609375]` nelle camere mobili. Il cubo standard a scala64/64
+`[-32768,32767.99609375]` nelle camere mobili. Il cubo standard a scala 64/64
 ha estensione Q6 `[-84,+84]`, quindi `[-32684.5,32683.49609375]` in `fixed`
-e `[-32684,32683.99609375]` nelle camere mobili. A scala127/64 l'envelope
+e `[-32684,32683.99609375]` nelle camere mobili. A scala 127/64 l'envelope
 raggiunge il limite del byte: si usa `[-128,+127]`. La mesh complex di
-riferimento a scala61/64 dà `[-89,+89]`. Sono envelope di sicurezza per
+riferimento a scala 61/64 dà `[-89,+89]`. Sono envelope di sicurezza per
 qualsiasi rotazione, non una garanzia che ogni estremo sia geometricamente
 raggiungibile.
 
@@ -215,7 +221,7 @@ Runtime additions wrap at their container width unless a specific subsystem impl
 
 Le somme runtime vanno in wrap alla larghezza del contenitore, salvo clamp
 esplicito di un sottosistema. Gli accumulatori X/Z pubblici degli oggetti sono
-a16 bit; la profondità forward a24 bit. Il rendering consuma WU intere:
+a 16 bit; la profondità forward a 24 bit. Il rendering consuma WU intere:
 le sotto-unità accumulano il moto in modo regolare, ma la geometria visibile
 cambia ai confini delle coordinate intere.
 
@@ -224,9 +230,9 @@ cambia ai confini delle coordinate intere.
 Scene and camera-file starting coordinates are coerced to whole integers and must be in -63..63 WU. They are not authored as fractional 8.8 values. A mobile camera then uses three-byte signed accumulators with one fractional byte, so controls advance in 1/256-WU sub-units.
 
 Le coordinate iniziali di scena e file camera sono convertite a interi
-e devono stare in -63..63 WU. Non vengono definite come valori8.8 frazionari.
+e devono stare in -63..63 WU. Non vengono definite come valori 8.8 frazionari.
 La camera mobile usa poi accumulatori signed a tre byte con un byte frazionario,
-quindi i controlli avanzano a passi di1/256 WU.
+quindi i controlli avanzano a passi di 1/256 WU.
 
 `0.1.0-pre-1.0-pre-1.0 development-camera-initial-sign-extension` corrects the initial encoding for all three internal axes. Each whole-WU coordinate is emitted as `[lowFraction, highInteger, signedExtension]`. Public world X maps to internal X, public world Z maps to internal Y, and public world Y maps to internal Z. Negative integer starts use extension `$FF`; zero and positive starts use `$00`. Examples are `$00:$C1:$FF` for -63 WU, `$00:$FF:$FF` for -1 WU, and `$00:$3F:$00` for +63 WU. This is a one-time host-side encoding decision, not a per-frame conversion.
 
@@ -256,7 +262,7 @@ lunghe va in wrap alla larghezza dell'accumulatore.
 Static and generated orbit-light coordinates are signed whole bytes in -127..127 WU. They do not have fractional 8.8 authoring or runtime storage. Orbit samples are precomputed as integer coordinates.
 
 Le coordinate delle luci statiche e orbitali generate sono byte signed
-interi in -127..127 WU. Non hanno authoring o storage runtime8.8 frazionario.
+interi in -127..127 WU. Non hanno authoring o storage runtime 8.8 frazionario.
 I campioni dell'orbita sono precalcolati come coordinate intere.
 
 ### Meshes and Q6 scale / Mesh e scala Q6
@@ -270,8 +276,8 @@ non rifiutate.
 `scale` is converted with `round(scale * 64)` and stored as `scaleQ6`; valid stored values are 1..127:
 
 `scale` diventa `round(scale * 64)` ed è memorizzata come `scaleQ6`,
-con valori validi1..127. La formula condivisa mostra scala1.0=64/64,
-0.5=32/64 e massimo127/64=1,984375.
+con valori validi 1..127. La formula condivisa mostra scala 1.0=64/64,
+0.5=32/64 e massimo 127/64=1,984375.
 
 ```text
 scale 1.0 = 64/64
@@ -290,13 +296,13 @@ effective world coordinate = local integer vertex * scaleQ6 / 64
 The runtime combines scale with Q6 rotation matrices and `mul_s6`, whose division by 64 truncates the magnitude toward zero. Rotation and scale are therefore integer-quantized, not exact real arithmetic.
 
 Il runtime combina scala, matrici di rotazione Q6 e `mul_s6`, la cui
-divisione per64 tronca la magnitudine verso zero. Rotazione e scala sono
+divisione per 64 tronca la magnitudine verso zero. Rotazione e scala sono
 quindi quantizzate intere, non aritmetica reale esatta.
 
 The built-in standard cube uses local coordinates -28 and +28 on every axis. At scale 1.0 its side is 56 WU and its half-side is 28 WU. This cube is an artistic reference only; it does not define the WU.
 
 Il cubo standard incorporato usa coordinate locali -28 e +28 su ogni asse.
-A scala1.0 il lato è56 WU e il semilato28 WU. È un riferimento artistico,
+A scala 1.0 il lato è 56 WU e il semilato 28 WU. È un riferimento artistico,
 non la definizione della WU.
 
 ## Geometric depth and near plane / Profondita geometrica e near-plane
@@ -304,7 +310,7 @@ non la definizione della WU.
 All camera profiles use the same abstract WU. The `default` profile in GraphicsMode 3, 4, and 5 uses:
 
 Tutti i profili camera usano la stessa WU astratta. Il profilo `default`
-nelle GraphicsMode3/4/5 usa la soglia geometrica8 WU della formula condivisa.
+nelle GraphicsMode 3/4/5 usa la soglia geometrica 8 WU della formula condivisa.
 
 ```text
 CAMERA_FACE_MIN_DEPTH = 8 WU
@@ -312,10 +318,10 @@ CAMERA_FACE_MIN_DEPTH = 8 WU
 
 pre-1.0 exposes `-Mode4NearProfile default|late|clip` for GraphicsMode 3, 4, and 5. The option name is retained for compatibility. `late` uses:
 
-pre-1.0 espone `-Mode4NearProfile default|late|clip` nelle GraphicsMode3/4/5.
+pre-1.0 espone `-Mode4NearProfile default|late|clip` nelle GraphicsMode 3/4/5.
 Il nome dell'opzione è mantenuto per compatibilità. `late` usa le regole
-condivise seguenti: rifiuto depth<=0, profondità minima accettata1 WU,
-divisore di proiezione minimo2.
+condivise seguenti: rifiuto depth<=0, profondità minima accettata 1 WU,
+divisore di proiezione minimo 2.
 
 ```text
 reject depth <= 0 WU
@@ -325,20 +331,20 @@ projection_divisor = max(2, camera_depth_geometric)
 
 `late` separates the reject distance from the minimum projection divisor: depth 1 WU is projected with divisor 2, producing a limited plateau between 1 and 2 WU, and geometric depth is used at and beyond 2 WU. Near-polygon clipping remains disabled, backface culling is unchanged, and no two-sided behavior is introduced. Faces crossing the camera plane are rejected as complete faces.
 
-`late` separa distanza di rifiuto e divisore minimo: depth1 WU viene proiettata
-con divisore2, creando un plateau limitato fra1 e2 WU; da2 WU si usa la depth
+`late` separa distanza di rifiuto e divisore minimo: depth 1 WU viene proiettata
+con divisore 2, creando un plateau limitato fra 1 e 2 WU; da 2 WU si usa la depth
 geometrica. Il clipping poligonale near rimane disabilitato, il backface culling
 invariato e non si introducono facce a due lati. Le facce che attraversano il
 piano camera sono rifiutate interamente.
 
 `clip` keeps the same 1 WU intersection depth and minimum projection divisor of 2, but clips a crossing face against the camera plane with Sutherland-Hodgman instead of rejecting the complete face. Ground plane clipping runs first. Backface culling remains one-sided and uses the original camera-space polygon; rasterization in Modes 3-5 and the Mode 5 outline use the final post-clipping polygon and its final edges. A diagnostic wall remains visible at +0.5 WU and on the plane at 0 WU, where the diagnostic face has five post-clipping vertices, then is rejected at -0.25 WU after the camera has genuinely crossed it. The legacy near-polygon path remains disabled.
 
-`clip` mantiene intersezione a1 WU e divisore minimo2, ma clippa la faccia
+`clip` mantiene intersezione a 1 WU e divisore minimo 2, ma clippa la faccia
 che attraversa il piano camera con Sutherland-Hodgman invece di rifiutarla
 interamente. Il clipping Ground viene prima. Il backface culling rimane
-monofacciale e usa il poligono camera-space originale; raster Mode3–5 e
-outline Mode5 usano poligono ed edge finali dopo clipping. Una parete
-diagnostica resta visibile a+0,5 WU e sul piano a0 WU, dove ha cinque vertici
+monofacciale e usa il poligono camera-space originale; raster Mode 3–5 e
+outline Mode 5 usano poligono ed edge finali dopo clipping. Una parete
+diagnostica resta visibile a+0,5 WU e sul piano a 0 WU, dove ha cinque vertici
 finali, poi è rifiutata a-0,25 WU dopo il reale attraversamento. Il percorso
 legacy di clipping poligonale near rimane disabilitato.
 
@@ -356,10 +362,10 @@ projection_divisor     = max(8, camera_depth_geometric)
 The value 190 is not geometric distance. Fixed, walkLite, and walkFull compare geometric depth against 8 WU. Their precision and overflow envelopes are not identical: `fixed` is the compact Q6/byte-oriented path and can saturate or wrap intermediate transverse/local terms, while the mobile paths preserve 16-bit camera-space depth and Mobile Y-Q2 screen coordinates. Equality is guaranteed only while inputs remain inside the safe range of the compact path.
 
 190 non è distanza geometrica. Fixed, walkLite e walkFull confrontano la
-depth geometrica con8 WU. Gli envelope di precisione/overflow differiscono:
+depth geometrica con 8 WU. Gli envelope di precisione/overflow differiscono:
 `fixed` è il percorso compatto Q6/byte e può saturare o far andare in wrap
 termini intermedi trasversali/locali; i percorsi mobili conservano depth
-camera-space16 bit e coordinate screen Mobile Y-Q2. L'uguaglianza è garantita
+camera-space 16 bit e coordinate screen Mobile Y-Q2. L'uguaglianza è garantita
 soltanto entro il dominio sicuro del percorso compatto.
 
 Near comparison is performed on integer camera-space WU after fixed-point accumulation/quantization. Fractional motion therefore changes the result when it crosses an integer boundary.
@@ -384,7 +390,7 @@ pre-1.0 development retains the signed-byte multiplier audited in pre-1.0 develo
 
 Lo sviluppo pre-1.0 conserva il moltiplicatore signed-byte verificato nello
 sviluppo pre-1.0, ma invoca ogni direzione W/S/A/D/Q/E selezionata una volta
-per ST. Un passo vale127/256=0,49609375 WU.
+per ST. Un passo vale 127/256=0,49609375 WU.
 
 ```text
 127/256 = 0.49609375 WU
@@ -392,7 +398,7 @@ per ST. Un passo vale127/256=0,49609375 WU.
 
 The effective axis-aligned displacement is:
 
-Lo spostamento effettivo allineato a un asse è127/256=0,49609375 WU/ST.
+Lo spostamento effettivo allineato a un asse è 127/256=0,49609375 WU/ST.
 
 ```text
 127/256 = 0.49609375 WU/ST
@@ -400,18 +406,18 @@ Lo spostamento effettivo allineato a un asse è127/256=0,49609375 WU/ST.
 
 At the nominal 50 ST/s this is 24.8046875 WU/s, or approximately 0.4429408482 standard-cube sides per second.
 
-Ai50 ST/s nominali sono24,8046875 WU/s, ossia circa0,4429408482 lati del
+Ai 50 ST/s nominali sono 24,8046875 WU/s, ossia circa 0,4429408482 lati del
 cubo standard al secondo.
 
-Each substep computes `trunc(axisQ6*127/64)`, sign-extends the result, and adds it to the three-byte positional accumulator with normal carry propagation. pre-1.0 development removes the second identical call; it does not replace the pair with a fused 254 multiplier. Consequently the one-substep path after 2N ST equals the historical two-substep path after N ST at constant orientation, including Q6 truncation and carry behaviour. A 256-ST axis-aligned trajectory is 32512 raw positional units.
+Each substep computes `trunc(axisQ6*127/64)`, sign-extends the result, and adds it to the three-byte positional accumulator with normal carry propagation. pre-1.0 development removes the second identical call; it does not replace the pair with a fused 254 multiplier. Consequently the one-substep path after 2 N ST equals the historical two-substep path after N ST at constant orientation, including Q6 truncation and carry behaviour. A 256-ST axis-aligned trajectory is 32512 raw positional units.
 
 Ogni sottopasso calcola `trunc(axisQ6*127/64)`, estende il segno e somma il
 risultato all'accumulatore posizionale a tre byte con normale propagazione
 del carry. Lo sviluppo pre-1.0 rimuove la seconda chiamata identica, senza
-fondere le due in un moltiplicatore254. A orientamento costante, 2N ST nel
+fondere le due in un moltiplicatore 254. A orientamento costante, 2 N ST nel
 percorso a un sottopasso equivalgono a N ST nel percorso storico a due
 sottopassi, inclusi troncamento Q6 e carry. Una traiettoria
-allineata all'asse di256 ST misura32512 unità posizionali raw.
+allineata all'asse di 256 ST misura 32512 unità posizionali raw.
 
 The same one-substep behaviour is shared by walkLite and walkFull. Fixed cameras, object velocity, object angular velocity, light animation, and depth ping-pong are unchanged.
 
@@ -439,7 +445,7 @@ traslazione. Le camere fixed non hanno controlli runtime di traslazione.
 
 Camera yaw, pitch, and roll are byte phases modulo 256 TU and retain `EXPLORER_LOOK_STEP = 1`. Yaw and pitch respond immediately to a new cursor press, then repeat after four ST and every four ST thereafter. Their continuous rate is 0.25 TU/ST = 0.3515625 degrees/ST = 17.578125 degrees/s. Roll responds immediately to N/M, then repeats after two ST and every two ST thereafter: 0.5 TU/ST = 0.703125 degrees/ST = 35.15625 degrees/s.
 
-Yaw, pitch e roll camera sono fasi byte modulo256 TU e conservano
+Yaw, pitch e roll camera sono fasi byte modulo 256 TU e conservano
 `EXPLORER_LOOK_STEP=1`. Yaw/pitch rispondono subito alla pressione dei cursori,
 poi dopo quattro ST e ogni quattro ST:0,25 TU/ST=0,3515625 gradi/ST=
 17,578125 gradi/s. Roll risponde subito a N/M, poi dopo due ST e ogni due ST:
@@ -449,7 +455,7 @@ Yaw, pitch, and roll have independent repeat-phase bytes. Release resets the cor
 
 Yaw, pitch e roll hanno byte indipendenti della fase di repeat. Il rilascio
 azzera la rispettiva fase; una nuova pressione applica subito il primo
-aggiornamento di1 TU. N+M è neutro e azzera la fase roll. La matrice tastiera
+aggiornamento di 1 TU. N+M è neutro e azzera la fase roll. La matrice tastiera
 C64 rappresenta ogni asse cursore con un tasto fisico più Shift: sinistra+
 destra o alto+basso logici simultanei non sono codificabili dalla tastiera
 stock; il modello host degli opposti logici li tratta come neutri con reset
@@ -466,7 +472,7 @@ frazionario restano invariati.
 The ordinary cursor pitch clamp is -64..+64 TU, or -90..+90 degrees. Initial scene rotation is merely validated as 0..255 and is not clamped to that interval. In the rolled walkFull routine, pitch changes coupled from simultaneous yaw can bypass the ordinary clamp; the pitch variable therefore has no unconditional global -90..+90 guarantee in every combined-input state.
 
 Il clamp ordinario del pitch cursore è-64..+64 TU, cioè-90..+90 gradi.
-La rotazione iniziale di scena è soltanto validata in0..255, senza quel clamp.
+La rotazione iniziale di scena è soltanto validata in 0..255, senza quel clamp.
 Nel walkFull con roll, variazioni pitch accoppiate a yaw simultaneo possono
 aggirare il clamp ordinario: la variabile pitch non garantisce globalmente
 -90..+90 in ogni stato di input combinato.
@@ -478,7 +484,7 @@ The raster IRQ queues one video event per VBlank. The main loop drains the queue
 L'IRQ raster accoda un evento video per VBlank. Il main loop svuota la coda
 e avanza la simulazione così:
 
-- PAL: un ST per VBlank, nominalmente50 ST/s;
+- PAL: un ST per VBlank, nominalmente 50 ST/s;
 - NTSC: ST nei primi cinque VBlank di ogni gruppo di sei, poi uno saltato,
   nominalmente `60*5/6=50 ST/s`.
 
@@ -497,8 +503,8 @@ e può andare in wrap con arretrati estremi non serviti.
 The nominal rates are equal on PAL and NTSC:
 
 Le velocità nominali sono uguali in PAL/NTSC, come nella tabella condivisa:
-50 ST/s, moto assiale24,8046875 WU/s,0,4429408482 lati cubo/s,
-yaw/pitch continui17,578125 gradi/s e roll continuo35,15625 gradi/s.
+50 ST/s, moto assiale 24,8046875 WU/s,0,4429408482 lati cubo/s,
+yaw/pitch continui 17,578125 gradi/s e roll continuo 35,15625 gradi/s.
 
 | Quantity / Grandezza | PAL | NTSC |
 |---|---:|---:|
@@ -511,7 +517,7 @@ yaw/pitch continui17,578125 gradi/s e roll continuo35,15625 gradi/s.
 These are nominal engine rates. Real PAL/NTSC hardware refresh frequencies differ slightly from exact 50/60 Hz.
 
 Sono velocità nominali dell'engine. Le frequenze di refresh PAL/NTSC
-dell'hardware reale differiscono leggermente dai50/60 Hz esatti.
+dell'hardware reale differiscono leggermente dai 50/60 Hz esatti.
 
 ## Automatic animation conversions / Conversione animazioni automatiche
 
@@ -527,7 +533,7 @@ Il valore memorizzato è sommato una volta per ST: la componente effettiva
 
 JSON values are expressed in TU/ST and quantized to signed 8.8:
 
-I valori JSON di `object.angularVelocity` sono TU/ST, quantizzati signed8.8
+I valori JSON di `object.angularVelocity` sono TU/ST, quantizzati signed 8.8
 secondo le formule condivise seguenti.
 
 ```text
@@ -539,8 +545,8 @@ runtime degrees/ST = q * 360 / (256 * 256)
 The signed accepted JSON range is -128 through 127.99609375 TU/ST. The 16-bit fixed angular accumulator adds `q` once per ST; its high byte indexes the 256-entry sine table and its low byte interpolates between entries. It wraps naturally after one turn. With `world-z-up`, `[wx,wy,wz]` is stored internally as `[wx,wz,wy]`. For example `[0.125,0.25,0.375]` becomes fixed steps `$0020,$0060,$0040` on internal X/Y/Z.
 
 L'intervallo JSON signed accettato è-128..127,99609375 TU/ST.
-L'accumulatore angolare fixed16 bit aggiunge `q` una volta per ST; il byte
-alto indicizza il seno a256 elementi e il basso interpola fra elementi.
+L'accumulatore angolare fixed 16 bit aggiunge `q` una volta per ST; il byte
+alto indicizza il seno a 256 elementi e il basso interpola fra elementi.
 Il wrap dopo un giro è naturale. Con `world-z-up`, `[wx,wy,wz]` diventa
 internamente `[wx,wz,wy]`: `[0.125,0.25,0.375]` genera passi fixed
 `$0020,$0060,$0040` sugli assi interni X/Y/Z.
@@ -550,7 +556,7 @@ internamente `[wx,wz,wy]`: `[0.125,0.25,0.375]` genera passi fixed
 Orbit geometry is a host-generated table of `phaseCount` integer samples (`phaseCount` is 8, 16, or 32). Runtime advances one phase every `tickDiv` ST, so a complete orbit/pulse cycle lasts:
 
 La geometria orbitale è una tabella host di `phaseCount` campioni interi;
-`phaseCount` vale8,16 o32. Il runtime avanza una fase ogni `tickDiv` ST:
+`phaseCount` vale 8,16 o 32. Il runtime avanza una fase ogni `tickDiv` ST:
 il ciclo orbita/pulse completo dura `phaseCount*tickDiv ST`.
 
 ```text
@@ -559,17 +565,17 @@ phaseCount * tickDiv ST
 
 `flat` uses a radius-88 sampled circle and an internal Y offset of -42. `tumble3d` starts from a radius-88 local circle, applies phase-derived pitch/yaw/roll, subtracts 12 from internal Y, rounds, and clamps each component to -127..127. Pulse intensity uses the same phase and a host-generated cosine curve.
 
-`flat` usa un cerchio campionato di raggio88 e offset Y interno-42.
-`tumble3d` parte da un cerchio locale di raggio88, applica pitch/yaw/roll
-derivati dalla fase, sottrae12 a Y interno, arrotonda e limita ogni componente
+`flat` usa un cerchio campionato di raggio 88 e offset Y interno-42.
+`tumble3d` parte da un cerchio locale di raggio 88, applica pitch/yaw/roll
+derivati dalla fase, sottrae 12 a Y interno, arrotonda e limita ogni componente
 a-127..127. L'intensità pulse usa la stessa fase e una curva coseno host.
 
 ### depthPingPong
 
 `min` and `max` are converted to fixed values with 256 sub-units per WU. The builder precomputes 256 sinusoidal samples:
 
-`min` e `max` diventano valori fixed con256 sotto-unità per WU. Il builder
-precalcola256 campioni sinusoidali con le formule condivise seguenti.
+`min` e `max` diventano valori fixed con 256 sotto-unità per WU. Il builder
+precalcola 256 campioni sinusoidali con le formule condivise seguenti.
 
 ```text
 u(phase) = (1 + sin(2*pi*phase/256)) / 2
@@ -594,9 +600,9 @@ solo per walkLite/walkFull.
   `advance_sim_tick`, quindi l'unità è ST, non frame renderizzati.
 - `RandomMaterialCycleSeconds` diventa `seconds*50 ST`.
 - Il legacy `MotionZStep256` è già un passo posizionale fixed unsigned in
-  unità1/256 WU per ST.
+  unità 1/256 WU per ST.
 - I passi legacy di rotazione non da scena sono sotto-unità angolari fixed
-  sommate una volta per ST, con lo stesso accumulatore256 sotto-unità per TU.
+  sommate una volta per ST, con lo stesso accumulatore 256 sotto-unità per TU.
 
 ## Audit conclusion / Conclusione dell'audit
 

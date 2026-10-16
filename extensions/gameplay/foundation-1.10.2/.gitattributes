@@ -1,0 +1,17 @@
+# Stable repository bytes and cross-platform diffs
+* text=auto eol=lf
+
+*.md text eol=lf
+*.json text eol=lf
+*.py text eol=lf
+*.ps1 text eol=lf
+*.sha256 text eol=lf
+VERSION text eol=lf
+LICENSE text eol=lf
+
+# Binary artifacts are not part of the source release, but remain binary if added locally
+*.prg binary
+*.png binary
+*.bmp binary
+*.gif binary
+*.zip binary

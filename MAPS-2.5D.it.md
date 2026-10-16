@@ -1,6 +1,10 @@
 # Costruire mappe Mode 8
 
-Questa guida descrive il contratto delle mappe **implementato e deliberatamente limitato** della 1.4.0. [MODE8.it.md](MODE8.it.md) spiega l'architettura; [QUICKSTART.md](QUICKSTART.md) prepara l'SDK. Mode 8 è un renderer bitmap 2.5D distinto, non un importatore di poligoni.
+Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
+in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
+
+Questa guida descrive il contratto delle mappe **implementato e deliberatamente limitato** della 1.4.0. [MODE 8.it.md](MODE8.it.md) spiega l'architettura; [QUICKSTART.md](QUICKSTART.md) prepara l'SDK. Mode 8 è un renderer bitmap 2.5D distinto, non un importatore di poligoni.
 
 ## 1. Scegliere un template completo
 
@@ -12,7 +16,7 @@ Questa guida descrive il contratto delle mappe **implementato e deliberatamente 
 
 Non sono tre editor di livelli completamente generici. Spostare un'apertura monolivello, cambiarne lo spessore, aggiungere rampe arbitrarie o spostare la camera iniziale di un template viene rifiutato. Multilivello significa una sola coppia pavimento/soffitto per posizione XY: **room-over-room escluso**. Non esistono porte animate o comandi di apertura/chiusura.
 
-Tutte le scene contengono mappe complete 32×32. Le [piante con coordinate generate dai dati](examples/mode8/PLANS.md) mostrano celle e cambiamenti dei tutorial. Una build valida sintassi, geometria, backend, capacità e percorso automatico: non dimostra di aver campionato esaustivamente ogni possibile vista interattiva.
+Tutte le scene contengono mappe complete 32 × 32. Le [piante con coordinate generate dai dati](examples/mode8/PLANS.md) mostrano celle e cambiamenti dei tutorial. Una build valida sintassi, geometria, backend, capacità e percorso automatico: non dimostra di aver campionato esaustivamente ogni possibile vista interattiva.
 
 ## 2. Coordinate e unità pubbliche
 
@@ -62,7 +66,7 @@ L'autore scrive array e metadati delle aperture/rampe. Owner, mappe direzionali 
 
 ### Monolivello opaco
 
-La disposizione solido/libero deve conservare bordo chiuso e percorso libero. Ogni tratto esposto contiguo e collineare diventa un owner: il layout ammette **96 owner più sentinella 0**. Anche una mappa 32×32 può eccedere questo budget aggiungendo ostacoli. Non esiste volume superiore in questa famiglia.
+La disposizione solido/libero deve conservare bordo chiuso e percorso libero. Ogni tratto esposto contiguo e collineare diventa un owner: il layout ammette **96 owner più sentinella 0**. Anche una mappa 32 × 32 può eccedere questo budget aggiungendo ostacoli. Non esiste volume superiore in questa famiglia.
 
 ### Aperture statiche monolivello
 
@@ -70,7 +74,7 @@ La disposizione solido/libero deve conservare bordo chiuso e percorso libero. Og
 
 ```text
 Pianta del separatore y=14 (X crescente):
-  … # # [10 D][11 D] # … # [22 D][23 D] # …
+  … # # [10 D][11 D] # … # [22 D][23D] # …
   spessore: da y=14 a y=15, esattamente una cella orizzontale
 
 Sezione verticale di un'apertura:
@@ -126,8 +130,8 @@ Usare i file finali completi: nessun elemento mancante o modifica assembly. Per 
 | Tutorial | Modifiche esatte | File finale completo | Risultato effettivo del precedente studio |
 |---|---|---|---|
 | Spostare un pilastro | `solid[15*32+21]=0`; `solid[16*32+21]=1` | [perimeter-tutorial.json](examples/mode8/perimeter-tutorial.json) | Nessun beneficio pratico significativo sul giro; non un'ottimizzazione prestazionale consigliata |
-| Spostare pilastro 2×2 | Liberare x=15..16 a y=18; rendere solidi x=15..16 a y=20; y=19 resta solida | [apertures-tutorial.json](examples/mode8/apertures-tutorial.json) | Calo CPU locale ma nessun miglioramento sostanziale del p95 del giro; non una raccomandazione generale |
-| Restringere apertura inferiore | Impostare `solid[6*32+16]=1`; nell'apertura y=6 con start16 cambiare start a17 | [two-levels-tutorial.json](examples/mode8/two-levels-tutorial.json) | Larghezza3→2celle; beneficio parziale sulle pause, worst del piano superiore invariato |
+| Spostare pilastro 2 × 2 | Liberare x=15..16 a y=18; rendere solidi x=15..16 a y=20; y=19 resta solida | [apertures-tutorial.json](examples/mode8/apertures-tutorial.json) | Calo CPU locale ma nessun miglioramento sostanziale del p 95 del giro; non una raccomandazione generale |
+| Restringere apertura inferiore | Impostare `solid[6*32+16]=1`; nell'apertura y=6 con start 16 cambiare start a 17 | [two-levels-tutorial.json](examples/mode8/two-levels-tutorial.json) | Larghezza 3→2 celle; beneficio parziale sulle pause, worst del piano superiore invariato |
 
 Dalla radice dell'SDK estratto, con Python, PowerShell e 64tass disponibili:
 
@@ -155,7 +159,7 @@ Scegliere una cartella esterna nuova e vuota per ciascuna build: output interno 
 | `BORDER` | Cella libera sul bordo esterno | Ripristinare la cella solida indicata |
 | `INITIAL_POSE`, `CAMERA`, `TEMPLATE_CAMERA` | Impronta occupata, occhio errato, camera discordante o start modificato | Ripristinare la camera del template e liberarne l'impronta |
 | `MONO_CEILING`, `MONO_QUOTE`, `MONO_FLOOR` | Quote stanza fuori contratto | Ripristinare i valori della famiglia |
-| `MONO_APERTURES`, `MONO_SEPARATOR` | Varco spostato/ridimensionato, separatore bucato | Ripristinare due aperture di spessore1 e riga14 |
+| `MONO_APERTURES`, `MONO_SEPARATOR` | Varco spostato/ridimensionato, separatore bucato | Ripristinare due aperture di spessore 1 e riga 14 |
 | `RAMP_FORMULA`, `MULTI_GEOMETRY` | Marker, impronta o raccordo errato | Ripristinare rampe ammesse e continuità dei pavimenti adiacenti |
 | `HEADROOM`, `DOOR_CELL`, `DOOR_METADATA` | Spazio verticale insufficiente o metadati incoerenti | Correggere cella e descrittore indicati |
 | `OWNER_CAPACITY`, `EVENT_CAPACITY`, `PATH_CAPACITY` | Superati budget numerici distinti | Semplificare rispetto al budget indicato, senza ridurre precisione silenziosamente |
@@ -173,7 +177,7 @@ Dipendenze opzionali: `python -m pip install py65==1.2.0 Pillow`. Compilare prim
 python -B scripts/analyze_mode8.py --scene examples/mode8/perimeter.json --build ../perimeter-reference-build --sampling examples/mode8/sampling/perimeter.json --out ../perimeter-cost
 ```
 
-Usare una build della **stessa** scena, per esempio quella del comando in [MODE8.it.md](MODE8.it.md). Il campionamento contiene `poses`, ciascuna `[xQ8,yQ8,yaw,eyeInteger,eyeFraction]`, valutate in ordine con RAM persistente. Su una mappa diversa ricontrollare le pose: campioni con impronta/quota/intervallo errati vengono registrati e saltati, non convertiti.
+Usare una build della **stessa** scena, per esempio quella del comando in [MODE 8.it.md](MODE8.it.md). Il campionamento contiene `poses`, ciascuna `[xQ8,yQ8,yaw,eyeInteger,eyeFraction]`, valutate in ordine con RAM persistente. Su una mappa diversa ricontrollare le pose: campioni con impronta/quota/intervallo errati vengono registrati e saltati, non convertiti.
 
 Output: `poses.json`, `poses.csv`, `REPORT.md`, `atlas-host.png`. Media e massimo osservato per cella sono separati; la freccia indica lo yaw più costoso campionato. Grigio=non campionato, blu=irraggiungibile, rosa=invalido, nero=solido. È un **atlante host**, non uno screenshot VICE. Ogni render valido confronta tutti i 7.040 byte bitmap, viewport e margini, contro l'oracolo fixed indipendente.
 

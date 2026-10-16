@@ -1,16 +1,20 @@
 # Mode 7 Texture Format Guide
 
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
 1.8.0: optional [gradual LOD](MODE7-LOD.en.md) derives its modal
 and accent pigments from these same runtime texels and the face palette.
 The source format, dimensions, repeat and UV contract below are unchanged.
 
-Every texture is **16×16**, row-major, unpacked: one byte per texel, 256 bytes. No other dimensions are supported. Integer JSON values **1, 2, 3** mean VIC-II pixel codes **01, 10, 11**. Do not write binary literals or RGB values as texels. **00** is reserved for the background; zero texels are rejected, not transparent.
+Every texture is **16 × 16**, row-major, unpacked: one byte per texel, 256 bytes. No other dimensions are supported. Integer JSON values **1, 2, 3** mean VIC-II pixel codes **01, 10, 11**. Do not write binary literals or RGB values as texels. **00** is reserved for the background; zero texels are rejected, not transparent.
 
 At scene level, `texturePalette: [9,8,1]` assigns the VIC-II color indices (0–15) for Dark, High and Highlight in that order. These are the three texture pigments, not RGB colors. Multicolor cell palette sharing still applies. With lighting none they are sampled directly; flat changes lighting per face; Gouraud C modulates sampled pigments by shade vertex illumination. See [Mode 7](MODE7.en.md).
 
 ## Texture declaration
 
-Choose exactly one of `texels` or `source`. A complete inline texture contains 256 integers. [mode7-cube-gouraud.json](examples/mode7-cube-gouraud.json) contains a complete inline brick pattern. [mode7-cube-png.json](examples/mode7-cube-png.json) has the equivalent PNG declaration:
+Choose exactly one of `texels` or `source`. A complete inline texture contains 256 integers. [mode 7-cube-gouraud.json](examples/mode7-cube-gouraud.json) contains a complete inline brick pattern. [mode 7-cube-png.json](examples/mode7-cube-png.json) has the equivalent PNG declaration:
 
 ```json
 {
@@ -37,12 +41,12 @@ For triangle [0,1,2], use three pairs, for example [[0,0],[15.9375,0],[0,15.9375
 
 A mesh's `texture: "diagnostic"` supplies its default. `faceTextures: [null,"second",null]` overrides individual faces, in face order; null inherits the mesh texture. The list must have exactly as many entries as source faces, before quad triangulation. See the complete [multi-texture scene](examples/mode7-multi-texture.json).
 
-`repeat: [U,V]` defaults to [1,1]; each value must be 1,2,4,8 or16. It changes sampling frequency only, not the texture bytes. For encoded UV bytes u,v, addressing is:
+`repeat: [U,V]` defaults to [1,1]; each value must be 1,2,4,8 or 16. It changes sampling frequency only, not the texture bytes. For encoded UV bytes u,v, addressing is:
 `((floor(v*repeatV/16)&15)<<4) | (floor(u*repeatU/16)&15)`.
 Nearest-neighbor and power-of-two wrap avoid expensive per-texel division.
 
 ## Authoring
 
-Draw an opaque 16×16 image with exactly three RGB colors, no antialiasing. Use [PNG import](PNG-TEXTURES.en.md), or convert each pixel to integer1/2/3 according to an explicit RGB-to-pigment map, scan rows from top left, and paste all256 values into texels. Do not resize/quantize implicitly. Set texturePalette separately for the C64 colors you want.
+Draw an opaque 16 × 16 image with exactly three RGB colors, no antialiasing. Use [PNG import](PNG-TEXTURES.en.md), or convert each pixel to integer 1/2/3 according to an explicit RGB-to-pigment map, scan rows from top left, and paste all 256 values into texels. Do not resize/quantize implicitly. Set texturePalette separately for the C64 colors you want.
 
 The default remains affine. Optional projective sampling uses the same three pigments, Q4.4 and nearest-neighbor; see [texture precision](TEXTURE-PRECISION.en.md). No filtering, transparency or larger textures. Lighting adds shade/code memory and the applicable 255-shade-vertex limit; the builder's segment check is authoritative.

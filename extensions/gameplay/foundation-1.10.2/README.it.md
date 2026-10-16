@@ -1,0 +1,387 @@
+# 3Dvibe64 1.10.2
+
+Stable local source SDK. Qualified dev3 runtime, defaults and options unchanged.
+Opt-in Q8 improvements and inherited fast block state; Mode8 bitmap retained.
+[Release notes EN](RELEASE-NOTES-1.10.2.en.md).
+
+SDK sorgente stabile locale: runtime, default e opzioni della dev3 qualificata
+invariati. Migliorie Q8 opzionali e fast a blocchi; Mode8 bitmap conservato.
+[Note di rilascio IT](RELEASE-NOTES-1.10.2.it.md).
+
+GitHub publication requires separate authorization. Historical documentation
+follows; current scope and qualification are defined by the 1.10.2 release notes.
+Pubblicazione GitHub soggetta ad autorizzazione separata. Documentazione storica
+di seguito; ambito e qualificazione correnti nelle note 1.10.2.
+
+## Release 1.10.0: scene Q8 con più oggetti
+
+Q8 accetta oggetti disgiunti e vertici runtime fino al tetto di 255 elementi
+degli indici a byte. Rimossi i precedenti limiti di qualificazione di due
+oggetti e 96 vertici. Ogni scena deve comunque superare i controlli effettivi
+di buffer, segmenti e dominio geometrico: 255 non è una capienza garantita.
+Mesh sorgenti condivise, Ground, timeline e roll camera restano esclusi da
+questo exporter Q8. Normalized16 resta sperimentale: due oggetti/16 vertici.
+Vedere [contratto della release](Q8-SCALABILITY.md). Legacy resta default.
+[Release notes / Note di versione](RELEASE-NOTES-1.10.0.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
+
+## Novità 1.9.0: geometria sperimentale Normalized16
+
+`-Precision normalized16` è un esperimento geometrico intermedio esplicito per
+Mode 1–7, con ABI raster Q2. Legacy resta default; Q8 conserva il percorso preciso,
+incluse texture prospettiche/fast/LOD Mode 7. Il nuovo exporter limitato supporta
+al massimo 16 vertici runtime, camera walkLite stazionaria/interattiva e Mode 7
+affine. Non è l'adattamento privato della navetta né un sostituto generale di Q8.
+Leggere [contratto](NORMALIZED16.it.md), [qualificazione](NORMALIZED16-QUALIFICATION.md)
+e [note release EN/IT](RELEASE-NOTES-1.9.0.md).
+
+## Novità 1.8.0: LOD texture, linee ibride, presentazione sicura
+
+Mode 7 aggiunge [LOD graduale](MODE7-LOD.it.md) opzionale ai profili prospettici standard/fast esistenti. Mode 1/2/5 aggiungono [linee ibride](LINE-RASTER.it.md), conservando camera/proiezione/clipping Q8. Restano default geometria legacy, linee Q8 precise, qualità texture standard e LOD off. La [presentazione sicura](PRESENTATION.it.md) è attiva di default e corregge la fascia inferiore causata dalla gara fra clear e scansione video. Gli hash PRG storici richiedono `-FramePresentation legacy` esplicito; le vecchie dichiarazioni di byte invariati valgono per i profili storici. Mode 8 invariata. [Note release](RELEASE-NOTES-1.8.0.md).
+
+## Novità 1.7.0: profilo veloce Mode 7
+
+`-TextureQuality fast` / `textureQuality: fast` aggiunge un profilo esplicito
+Q8 + perspective + Gouraud C: blocchi da otto pixel e 50 righe campionate,
+ricostruite per duplicazione superiore nella viewport 160×100. È vero 3D
+poligonale, non raycasting; introduce compromessi di campionamento dichiarati.
+`standard` resta default; legacy/affine e le altre modalità restano invariate.
+Non include la demo privata, la sua LUT o le sue ipotesi di visibilità.
+[Contratto completo](MODE7-FAST.it.md) · [note release EN/IT](RELEASE-NOTES-1.7.0.md).
+
+## Novità 1.6.1: divisione UV prospettica accoppiata esatta
+
+Mode 7 Q8 perspective flat/Gouraud C usa ora un divisore U/V esatto, unrolled
+in zero page, per texture non uniformi. Qualità del rendering invariata. Legacy,
+affine, ricorrenza unlit e fast path tutto uniforme conservano i propri output.
+La posa misurata del cubo pubblico risparmia 16,30% Gouraud / 17,36% flat dei
+cicli CPU delle istruzioni: non sono FPS nativi né promesse universali.
+Costo: +673 byte di codice su quel cubo, otto byte zero page riservati `$E8..$EF`.
+Gli IRQ esterni devono rispettare questo scratch. Limiti di memoria/profilo
+invariati. [Note release EN/IT](RELEASE-NOTES-1.6.1.md).
+
+## Novità 1.6.0: texture prospettiche Mode 7 opzionali
+
+`-TexturePrecision perspective` / campo scena `texturePrecision` attiva UV
+prospettiche fixed-point solo con `-Precision q8 -GraphicsMode 7`. Geometria
+legacy e texture affini restano default; gli output precedenti conservano gli hash.
+None/flat/Gouraud C, specializzazioni aritmetiche esatte e riconoscimento di
+texture uniformi sono supportati nel profilo limitato. Costo RAM/CPU e arresto
+per input runtime non validi sono descritti in [precisione texture](TEXTURE-PRECISION.it.md).
+Nessuna demo di sviluppo o musica inclusa. [Note release](RELEASE-NOTES-1.6.0.md).
+
+## Novità 1.5.5: correttezza delle architravi Mode 8
+
+Il backend `mono-portals` azzera lo stato interno all'uscita dall'architrave e
+riconosce anche la faccia frontale nel raffinamento adattivo dei bordi. Il
+contratto delle mappe resta invariato; non sono inclusi mondo infinito o
+ombre a distanza. Mode 1–7, Q8 e gli altri due backend Mode 8 sono invariati.
+Vedere [note 1.5.5](RELEASE-NOTES-1.5.5.md).
+
+## Novità 1.5.0: precisione Q8 opzionale
+
+**Legacy resta sempre il default.** Q8 si attiva solo con `-Precision q8`; nessuna selezione automatica in base alla CPU. Consigliato Q8 sopra 20 MHz, legacy a 20 MHz o meno. Legacy non è deprecato. Il profilo Q8 qualificato è limitato a normal/walkLite e oggetti disgiunti entro i budget degli indici e della RAM; leggere [limiti e comandi](PRECISION.it.md). Mode 8 invariata.
+
+## Novità della 1.4.0: GraphicsMode 8 — 2.5D
+
+L'SDK pubblico supporta **GraphicsMode 1–8**. La Mode 8 promuove il renderer
+bitmap multicolor VIC-II qualificato a 128×144 pixel logici, con backend
+monolivello e heightfield distinti selezionati dalle proprietà della mappa.
+Non è il precedente renderer a celle carattere. Usa pigmenti per orientamento,
+retino del soffitto, aperture statiche con spessore e le rampe continue
+documentate. Texture UV sulle pareti e room-over-room non sono supportati.
+
+Iniziare dall'[architettura e tabella delle opzioni](MODE8.it.md), quindi dalla
+[guida completa alle mappe](MAPS-2.5D.it.md). Camera iniziale, percorsi monolivello
+e footprint delle rampe hanno vincoli espliciti legati ai template.
+Le guide spiegano questi limiti prima dei tutorial di modifica.
+
+```powershell
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../perimeter-build
+```
+
+W/S per avanzare/arretrare, A/D per ruotare. PAL/NTSC viene riconosciuto a runtime.
+PowerShell, Python 3 e 64tass bastano per compilare la Mode 8; gli strumenti
+opzionali aggiungono py65 e Pillow. Gli output restano fuori dall'SDK.
+Le tre mappe supportano build automatiche e interattive; l'SDK sorgente non contiene PRG precompilati.
+
+Mode 1–7 conservano riferimenti qualificati e comandi esistenti. JSON mesh,
+camere, layout, metriche e split testuale descritti sotto **non** configurano
+la Mode 8. L'API non consente di comporre le due pipeline nella stessa vista.
+Vedere [note di release](RELEASE-NOTES-1.5.5.md) e [test](TESTING.md).
+Non è stata eseguita una prova hardware: la qualificazione Mode 8 usa x64sc stock.
+
+**Conservata: GraphicsMode 7 ufficiale con texture affini**, luce flat/Gouraud C
+opzionale e import PNG rigoroso. Iniziare da [Mode 7](MODE7.it.md). Mode 1–6
+conservano l'output ufficiale 1.2.0; la loro API esistente è documentata sotto.
+
+Questa release ufficiale 1.10.0 è un SDK sorgente: contiene builder congelato,
+documentazione, scene JSON di riferimento e contratti, ma nessun PRG precompilato o
+artefatto diagnostico. Gli esempi si compilano localmente, preferibilmente in una
+copia di lavoro eliminabile; sono documentazione eseguibile dell'API, non produzioni
+incluse.
+
+Il contratto delle metriche spaziali, angolari e temporali è documentato in [WORLD-METRICS.md](WORLD-METRICS.md).
+
+La struttura del generatore, il sorgente 6510/6502 emesso, il layout di memoria e il
+workflow professionale di modifica e debug sono descritti in
+[ASSEMBLY-GUIDE.it.md](ASSEMBLY-GUIDE.it.md).
+
+Il flusso pratico assistito da Codex — preparazione dell’ambiente, creazione della
+scena, compilazione, test in VICE e conservazione delle versioni approvate — è
+documentato in [VIBE-CODING-GUIDE.it.md](VIBE-CODING-GUIDE.it.md).
+
+## Culling stabile e istanze condivise Mode 4/5/6
+
+L'opzione compile-time `-FaceCullProfile default|stable` è disponibile per le
+GraphicsMode 4, 5 e 6. Nelle Mode 4/5, `default` conserva byte per byte il percorso screen-space
+validato. `stable` usa il test screen-space fuori dalla banda signed `[-64,+64]` e il
+facing camera-space nella banda quasi edge-on, riutilizzando normali e matrice già
+disponibili. Le facce esattamente edge-on vengono conservate, senza hysteresis o stato
+fra frame; il rendering resta monofacciale. La cache luce `sh_nx`, `sh_ny`, `sh_nz`
+viene salvata sullo stack e ripristinata su entrambi gli esiti del culling, con zero
+scratch persistente e shading dinamico invariato. Mode 3 resta esclusa; la Mode 6
+usa la stessa decisione prima del raster Gouraud.
+
+Con `"meshSourceSharing": true`, una geometria sorgente riutilizzata viene emessa una sola volta. Descriptor mesh e descriptor istanza restano distinti; ciascuna istanza mantiene buffer trasformati e proiettati propri. Le bucket entry identificano istanza e faccia locale, e tutte le istanze visibili entrano in un unico painter order globale. Il percorso shared è disponibile solo in Mode 4/5/6. L'opt-in in Mode 1, 2 o 3 interrompe la build con `meshSourceSharing is supported only in GraphicsMode 4, 5 and 6`; anche l'opt-in senza una mesh sorgente referenziata da più istanze interrompe la build. Non esiste fallback silenzioso all'espansione. Le scene senza opt-in conservano il percorso diretto byte-identico.
+
+Gli override `materialOverride`, `reflectivityOverride` e `colorOverride` si applicano senza riscrivere le tabelle sorgente. La precedenza è: override locale della faccia, override dell'istanza, materiale sorgente. Nel percorso shared, `faceOverrides` appartiene alla mesh sorgente e le chiavi sono indici faccia locali alla sorgente; `faceOverrides` per istanza viene rifiutato. Per un pigmento esplicito non soggetto a shading si usa una mappa sparsa nella sorgente, per esempio `"faceOverrides": { "0": { "solidColor": 7, "shading": false } }`. Mode 4 esegue il fill solido nel painter normale; Mode 5 applica anche l'outline al poligono finale post-clipping, senza contorni residui sulle facce eliminate.
+
+Una luce reale statica usa `"type": "static"` e `"position": [x,y,z]`: viene emesso un solo campione, senza fase orbitale, tick divisor o tabella duplicata; lo shading continua a reagire alla rotazione degli oggetti. Il valore legacy `"mode": "static"` non seleziona questo percorso compile-time 1.0 e può conservare infrastruttura di fase, tick e tabelle. La timeline dichiarativa richiede `tickRate: 50`; `resetKey: "SPACE"` ripristina stato, pose, visibilità e contatori. PAL e NTSC producono 50 tick logici al secondo. L'easing sinusoidale generico resta fuori da pre-1.0.
+
+## Profili near per Mode 3, 4, 5 e 6
+
+L'API pubblica documenta l'opzione compile-time `-Mode4NearProfile default|late|clip` per le GraphicsMode 3, 4, 5 e 6; il nome resta invariato per compatibilita. `default` conserva il reject sotto 8 WU e il divisore prospettico minimo 8 WU, con comportamento byte-identico alla baseline validata. `late` rigetta la profondita `<= 0`, accetta 1 WU usando un divisore minimo di 2 WU e da 2 WU usa il divisore geometrico. Fra 1 e 2 WU esiste quindi un breve plateau prospettico a divisore 2.
+
+Il profilo `late` non abilita il clipping poligonale near-plane, non modifica il backface culling e non introduce rendering two-sided: le facce che attraversano il piano camera vengono rigettate integralmente. `clip` esegue invece clipping Sutherland-Hodgman contro il piano camera dopo l'eventuale Ground clipping. Conserva la porzione davanti alla camera fino a 0 WU incluso, genera intersezioni proiettabili a 1 WU con divisore minimo 2 e rigetta la faccia soltanto dopo il reale attraversamento. Il culling camera-space usa il poligono originale; raster e outline Mode 5 usano il poligono finale. Il vecchio near-poly resta escluso e il comportamento monofacciale non cambia. `default` e `late` restano byte-identici; il fix `clip` aggiunge zero scratch.
+
+`clip` è disponibile con `fixed`, `walkLite` e `walkFull`. `-ExplorerClipMode` e `-ExplorerNearCrossMode` sono controlli diagnostici legacy: non vanno combinati con il percorso near legacy quando si usa `-Mode4NearProfile late|clip`, che richiede `ExplorerClipMode=none` e rifiuta un crossing mode legacy non predefinito.
+
+## Reference JSON compatta
+
+La struttura esatta della timeline è:
+
+```json
+{
+  "timeline": {
+    "tickRate": 50,
+    "resetKey": "SPACE",
+    "initialState": "id-stato",
+    "states": [{
+      "id": "id-stato",
+      "duration": 50,
+      "next": "id-stato-successivo",
+      "loop": false,
+      "instances": {
+        "id-oggetto": {
+          "visible": true,
+          "position": [0, 100, 8],
+          "rotation": [0, 0, 0],
+          "scale": 1,
+          "positionVelocity": [0, 0, 0],
+          "rotationVelocity": [0, 0, 0],
+          "materialOverride": "blue",
+          "reflectivityOverride": "mirror",
+          "colorOverride": 6
+        }
+      }
+    }]
+  }
+}
+```
+
+`tickRate` deve essere 50. La timeline contiene 1-255 stati, il prodotto stati × oggetti della scena non può superare 255 e `duration` vale 1-65535 tick. Il campo corretto è esattamente `visible`, non `visibility`; quest'ultimo produce un warning del builder e viene ignorato. `position` è in WU secondo la convenzione assi della scena; `rotation` in TU, `positionVelocity` in WU/ST e `rotationVelocity` in TU/ST. Le transizioni sono deterministiche e pre-1.0 non offre easing sinusoidale generico.
+
+Un'istanza seleziona la sorgente tramite `mesh` e può usare `materialOverride`, `reflectivityOverride` e `colorOverride`. Il materiale accetta il nome di famiglia (`gray`, `white`, `red`, `green`, `blue`, `yellow`, `cyan`, `magenta`, `orange`, `brown`) oppure l'indice 0-9. La riflettività accetta `satin`, `gloss`, `reflective`, `mirror` oppure l'indice 0-3. `colorOverride` e `solidColor` sono indici palette VIC-II 0-15. `active`, `global`, `variable` o `default` mantengono materiale/riflettività attivi. La precedenza effettiva è override locale della faccia sorgente, override dell'istanza, materiale della mesh sorgente.
+
+Con sharing attivo, `faceOverrides` deve trovarsi nell'elemento sorgente di `meshes`, mai nell'istanza oggetto. Le chiavi sono indici locali delle facce. `solidColor` con `shading:false` esclude lo shading dinamico per quella faccia. Una mappa per istanza su sorgente riutilizzata fallisce con `per-instance object faceOverrides are not supported by the shared-source path`.
+
+Lo sharing è esplicito e limitato alle Mode 4/5/6. La geometria sorgente viene emessa una volta, ma ogni istanza richiede buffer runtime trasformati/proiettati distinti. Gli indici a un byte limitano a 255 ciascuno vertici sorgente, facce sorgente, vertici runtime, facce runtime, descriptor mesh e oggetti/istanze di scena. In Mode 6 anche gli shade vertex runtime sono limitati a 255. La memoria disponibile impone normalmente limiti pratici inferiori; le scene complesse possono richiedere esplicitamente `-MemoryLayout high-basic-v2`.
+
+Questa release ufficiale limita `H` (Temporal Scanline Mode) alle sole GraphicsMode 4 e 5. Le Mode 1-3 non compilano alcun handler, stato, copia temporale o gate di rasterizzazione esclusivo della funzione.
+
+## Ground `simple` e `plane`
+
+pre-1.0 promuove due profili Ground compile-time. `ground.z` e espresso in WU nella convenzione pubblica `world-z-up`; il piano geometrico e quindi `world Z = ground.z`. La quota della camera cambia il lato geometricamente visibile soltanto quando la camera attraversa il piano. Il profilo `plane` costa piu cicli di `simple` e le scene che non entrano nel layout `stable` devono selezionare esplicitamente `high-basic-v2`.
+
+- Mode 1: linea d'orizzonte roll-aware decorativa, senza occlusione e senza fill.
+- Mode 2 `simple`: la stessa linea decorativa e nessun clipping geometrico; tutte le mesh vengono conservate. La linea e disegnata prima delle facce, quindi le face mask hidden-wire la nascondono dietro le superfici.
+- Mode 2 `plane`: linea d'orizzonte di sfondo, classificazione rispetto al piano, eliminazione delle facce dal lato opposto alla camera e clipping delle facce attraversanti. Hidden-wire ed edge usano il poligono post-clipping. Non viene mai riempito un semipiano. Il profilo aggiunge `VERT_COUNT` byte di `ground_vside`, usa buffer poligonali fino a 12 vertici e puo richiedere `high-basic-v2`.
+- Mode 3-6 `simple`: Ground screen-space tradizionale.
+- Mode 3-6 `plane`: semipiano roll-aware riempito, classificazione e clipping geometrici, con camera sopra o sotto il piano. La Mode 3 fixed usa la rilocazione Ground corretta nel layout `high-basic-v2`; la Mode 6 interpola anche lo shade alle intersezioni Ground.
+
+Con la convenzione storica, roll `+32 TU` produce un orizzonte discendente verso destra, `-32 TU` ascendente verso destra e `+64 TU` verticale. Se la retta e interamente fuori viewport non viene disegnata e non resta alcuna linea sui bordi.
+
+## Wire multimateriale a due colori
+
+L'API pubblica include alle GraphicsMode 1 e 2 un profilo compile-time attivato da `materialProfile: multimaterial`. La scena deve usare esattamente due famiglie colore differenti e deve mappare esplicitamente ogni faccia; una terza famiglia o un mapping incompleto interrompono la build senza fallback al materiale globale. La prima famiglia nell'ordine sorgente usa lo slot bitmap `01` e il pattern `$55`, la seconda lo slot `10` e `$AA`. I due pigmenti condividono lo stesso `screenByte`; Color RAM resta fisso e non li distingue. Per la two-color multimaterial wire reference il mapping e rosso VIC-II 2 / bianco VIC-II 1, quindi `screenByte=$21` e Color RAM fisso `$01`.
+
+In Mode 1 gli edge sono unici: `wire_edge_slot` assegna ogni spigolo alla prima faccia adiacente nell'ordine sorgente, regola stabile anche per gli edge condivisi fra materiali differenti. In Mode 2 `wire_face_slot` seleziona il pattern prima dei bordi di ogni faccia; restano invariati fill di mascheramento hidden-wire, clipping, culling, painter order e depth bucket. Nello stesso bucket la catena esistente disegna gli indici faccia in ordine decrescente, quindi la faccia sorgente con indice minore vince deterministicamente. Non sono introdotti buffer runtime per edge o proprietari. La regressione e [examples/wire-two-color-multimaterial.json](examples/wire-two-color-multimaterial.json), con 84 facce inalterate (42 rosse e 42 bianche).
+
+Il limite a due pigmenti non dipende dal fatto che le facce siano triangoli o quadrilateri: la topologia della mesh non determina i colori disponibili. In ogni cella bitmap multicolore VIC-II, `00` usa il colore globale di sfondo `$D021`, `01` il nibble alto della Screen RAM, `10` il nibble basso della Screen RAM e `11` la Color RAM. pre-1.0 assegna i due pigmenti wire a `01` e `10` e mantiene stabile `11`; edge di facce e oggetti differenti possono cosi attraversare la stessa cella senza richiedere una nuova palette per cella. Un terzo pigmento e tecnicamente possibile tramite `11`, ma writer concorrenti richiederebbero arbitraggio esplicito dei conflitti, proprieta per cella, prepass o stato runtime aggiuntivo. I due pigmenti sono quindi una scelta architetturale generale sicura, compatta e deterministica della pre-1.0, non un limite assoluto del VIC-II.
+
+## Profili grafici
+
+**Mode 5: solid dynamic outlined. Mode 6: Gouraud ordered dither.**
+
+La Mode 6 conserva il runtime 1.2.0 Gate 5 validato: LUT Gouraud/Bayer esatta, clear
+specializzato, span byte-oriented, divisioni esatte e aggregazione dei byte parziali.
+È Gouraud ordered-dithered per VIC-II, non un framebuffer a colori continui.
+Non esiste un selettore ibrido flat/Gouraud per oggetto. Vedere `GOURAUD-MODE6-REPORT.md`
+e `TESTING.md`. creaseAngle 0 conserva le discontinuità fra facce; 60 gradi è il default;
+180 smussa il toro molto low-poly. Lo smoothing cambia le normali luminose, non la
+geometria, il numero di poligoni o la silhouette. Sono inclusi esempi cubo hard e smooth.
+
+Le modalità grafiche 1 e 2 offrono i percorsi wire e hidden-wire. La modalità 3 usa facce riempite con shading statico. GraphicsMode 4 offre facce riempite e luce dinamica e attiva automaticamente il profilo XY-Q2 validato: non servono flag subpixel sperimentali.
+
+GraphicsMode 5 eredita l’intera pipeline Mode 4 e aggiunge un contorno di un pixel lowres dopo il riempimento di ogni faccia. Il contorno segue il poligono finale dopo il clipping, compresi gli spigoli generati dal near-plane e dai limiti schermo, e usa `world.backgroundColor`. Viene applicato faccia per faccia nel painter order far-to-near esistente, quindi il riempimento più vicino copre naturalmente i contorni della geometria retrostante.
+
+Il costo dell’outline è misurabile. L’audit prestazionale pre-1.0 non ha promosso ottimizzazioni rischiose o con impatto insufficiente: Mode 5 conserva il renderer dinamico, lo shading e i materiali della Mode 4, aggiungendo esclusivamente il contorno post-fill sul poligono post-clipping.
+
+La GraphicsMode 6 calcola 33 livelli di shade per shade vertex runtime e li interpola
+sul poligono finale post-clipping. Una matrice Bayer 4x4 ancorata allo schermo
+seleziona i tre pigmenti VIC-II del materiale usando soltanto codici bitmap opachi.
+La proprietà mesh `gouraud.creaseAngle` (0–180, default 60 gradi) controlla lo
+smoothing area-weighted delle normali e la separazione degli spigoli duri. Mode 6
+richiede `high-basic-v2`; dopo il primo campione, la variazione è limitata a quattro
+livelli per simulation tick. Algoritmo, limiti, test e benchmark sono descritti in
+[GOURAUD-MODE6-REPORT.md](GOURAUD-MODE6-REPORT.md).
+
+Le build dense nel layout stable restano soggette al limite esistente del video buffer a `$5C00`. Il toro ufficiale Mode 5 entra con overlay FPS attivo; la scena di stress completa del near-plane usa il layout esistente `high-basic-v2`.
+
+Mode 4 usa X LegacyDirect, builder XY-Q2, trace Y integrale e frazionario, divisore 11×8, fast pixel convert, inline bounds, Mode4ShadeStepLimit e somma signed saturata del vettore luce. Con lo split testuale DEV7 predefinito, `normal` renderizza un body 160×88 a Y low-resolution 12 e `small` un body 128×80 a Y=12. `-NoFpsOverlay` rimuove lo split e ripristina il body storico 160×100; small resta 128×80 e viene centrata.
+
+### Header Generic Text e FPS
+
+Lo split same-bank DEV7 riserva tre righe di caratteri (`TEXT_HEADER_SCREEN_BYTES=120`) sopra il body 3D. `-HeaderText "..."` scrive fino a 40 caratteri nella riga centrale di Screen A e Screen B. Il charset compatto supporta spazio, cifre, punto e `S C R I T A D E M P O`; i caratteri non supportati diventano spazi. Il terminatore `$FF` DEV7.1 permette spazi interni alla stringa e corregge il mapping alfabetico compatto.
+
+Il contatore FPS usa le celle 0–3 della stessa riga e ha precedenza. `F` commuta l’intero header, Generic Text compreso; `-FpsOverlayOnStart` lo mostra dall’avvio. `-FpsCounterOnly` conserva il campionamento senza split visivo, mentre `-NoFpsOverlay` rimuove split e tasto FPS. Ogni bank video mantiene la propria Screen RAM e il proprio charset; i cambi materiale proteggono i 120 byte riservati. L’aggiunta di Generic Text emette il font compatto completo da 184 byte e può richiedere `high-basic-v2` in una build `stable` molto densa.
+
+`F` non nasconde separatamente le sole quattro celle FPS: commuta tutto lo split Generic Text/FPS. Quando è nascosto, il renderer continua il double buffering e seleziona `$DD00`/`$D018` in base al buffer realmente mostrato. Il builder deriva la dimensione del charset compatto dal numero di glifi generati (96 byte per i soli FPS, 184 byte con Generic Text), pulisce esattamente quell’intervallo allo spegnimento e lo ricostruisce prima della riattivazione.
+
+Con `meshSourceSharing`, il materiale per istanza si indica con `materialOverride` (analogamente `reflectivityOverride`/`colorOverride`). `material` o `materialFamily` senza suffisso non è un override dell’istanza shared. Un override del materiale non richiede anche un override della riflettività; la 1.1.2 corregge inoltre questa configurazione shared con solo materiale.
+
+Limitazione nota: con timing stock può restare un singolo pixel fisico sul margine destro, in corrispondenza della transizione raster fra header e body. La regressione 1.1.1 ha osservato un pixel stabile, senza corruzione della scena, crash, propagazione o divergenza A/B. Il timing validato `$4A`/`$4B` viene mantenuto intenzionalmente; usare `-NoFpsOverlay` quando serve un frame privo dello split.
+
+### Temporal Scanline Mode sperimentale (`H`)
+
+Disponibile esclusivamente in GraphicsMode 4 e 5, cicla una volta per pressione fra `0 -> 1 -> 2 -> 0`: lo stato 0 aggiorna tutte le 100 righe, lo stato 1 ne aggiorna 50 a parità alternata e lo stato 2 ne aggiorna 25 secondo la classe modulo 4. Le righe escluse conservano temporaneamente il contenuto precedente, creando un effetto interlacciato e una moderata scia nel movimento; il ritorno a 0 esegue il ripristino completo già previsto dal renderer.
+
+Non è una modalità prestazionale o una semplice bassa risoluzione. Trasformazione, proiezione, clipping, culling, depth ordering, shading e preparazione delle facce continuano integralmente; l'effetto può aumentare il costo del frame. Materiali, fill, painter order e outline Mode 5 restano invariati.
+
+## Profili camera
+
+La camera `fixed` è il percorso specializzato leggero. Consuma meno codice, memoria e cicli, è più frequentemente compatibile con `MemoryLayout stable` e usa la proiezione tabellare Q6 più quantizzata. Offre qualità geometrica inferiore alle camere walk nelle scene complesse o molto vicine. Con `Mode4NearProfile=default|late` una faccia può essere rigettata integralmente dal relativo gate near/camera; selezionando esplicitamente `-Mode4NearProfile clip` si abilita il clipping poligonale contro il piano camera anche per `fixed`, oltre che per le camere walk.
+
+`walkLite` è una camera mobile con yaw e pitch. Usa la trasformazione Mobile Y-Q2 e una proiezione geometricamente più precisa. Per il clipping poligonale contro il piano camera si seleziona `-Mode4NearProfile clip`.
+
+`walkFull` aggiunge il roll alla stessa pipeline precisa di `walkLite`. Richiede più codice e dati runtime e, con mesh complesse come complex reference mesh, può richiedere `MemoryLayout high-basic-v2`.
+
+Le camere walk partono nella posa definita dalla scena e restano ferme finché l’utente non invia un comando camera. Rotazione degli oggetti e animazione della luce continuano anche quando la camera è ferma. I tre profili condividono culling, depth bucket a 16 bit, painter order far-to-near, builder facce XY-Q2, fill, pattern e shading.
+
+I default pre-1.0 development di `walkLite` e `walkFull` applicano un solo sotto-step lineare da `127/256 = 0,49609375 WU/ST`, pari nominalmente a `24,8046875 WU/s` o circa `0,44294` lati del cubo standard al secondo. Il movimento diagonale resta additivo e non normalizzato. Yaw e pitch rispondono subito con 1 TU, poi ripetono ogni 4 ST (`0,25 TU/ST`, `17,578125°/s` continui); il roll risponde subito e ripete ogni 2 ST (`0,5 TU/ST`, `35,15625°/s`). Il rilascio e il reset camera azzerano separatamente le tre fasi. La camera `fixed` e le animazioni degli oggetti restano invariate.
+
+La profondità pre-1.0 è geometrica: `camera_depth_geometric` resta la distanza reale, `projection_table_index = max(1, camera_depth_geometric + 190)` è soltanto l’indirizzo fisico e `projection_divisor = max(8, camera_depth_geometric)` determina la scala. Le scene distribuite sono migrate lungo il loro asse forward world Y; non esiste un fallback runtime per il vecchio bias geometrico.
+
+La geometria clippata conserva il fallback legacy compatibile. I profili `normal` e `small` mantengono nere l’area esterna e la cornice VIC-II.
+
+## Layout di memoria
+
+`MemoryLayout stable` è il layout preferenziale e compatto, adatto alle configurazioni leggere o medie. Il builder interrompe la compilazione se codice o runtime invadono bitmap, screen buffer o altre aree video e suggerisce esplicitamente `-MemoryLayout high-basic-v2`; il passaggio non avviene mai automaticamente.
+
+`MemoryLayout high-basic-v2` è il layout segmentato per build pesanti. Usa anche la RAM sotto la BASIC ROM ed è indicato per complex reference mesh, camera `walkFull` e pipeline solide complesse. Deve essere selezionato esplicitamente e può produrre PRG fisicamente più grandi a causa dei gap tra segmenti.
+
+## Materiali
+
+Satin e gloss conservano il percorso storico. Nelle scene composte interamente da facce reflective o mirror, il selettore raw alimenta direttamente Mode4ShadeStepLimit. Le scene con profili misti conservano il comportamento storico. Reflective può raggiungere il massimo previsto dalla propria tabella; mirror raggiunge il bianco per ogni famiglia la cui tabella definisce il bianco come massimo.
+
+Il VIC-II accetta legalmente tutti gli indici colore 0-15, incluso il nero, e anche valori duplicati fra Dark, High e Highlight. 3Dvibe64 esclude deliberatamente il nero dalle rampe delle facce come soglia minima di illuminazione ambientale del modello di illuminazione dell'engine: è una policy dell'engine, non un limite hardware. Le rampe D/H/L arrivano inalterate al runtime; il packing necessario è `screenByte = (Dark << 4) | High` e `colorRam = Highlight`. `VicColorPolicy` gestisce eventuali conflitti di palette nella stessa cella bitmap e normalmente non filtra né rimappa le rampe materiali. Orange satin resta `9,8,10` con `$98/$0A`; Brown satin resta `2,9,8` con `$29/$08`.
+
+## Controlli camera e runtime
+
+- `W` / `S`: avanti / indietro
+- `A` / `D`: movimento laterale sinistra / destra
+- `Q` / `E`: movimento verticale giù / su
+- cursori: yaw e pitch
+- `N` / `M`: roll
+- `R`: con `-ControlRotation` sospende o riprende la rotazione della mesh; nelle build di riflettività interattiva va riservato a `-ControlReflectivity`. `-ReflectivityCycleLevels 3` limita il ciclo a satin, gloss e reflective.
+- `L`: controllo luce, dove supportato dalla scena
+- `F`: header completo Generic Text/FPS
+- `H`: Temporal Scanline Mode, soltanto in GraphicsMode 4 e 5
+
+Se `-ControlRotation` e `-ControlReflectivity` vengono forzati insieme, entrambi gli handler leggono `R`: quello della rotazione viene eseguito per primo e quello della riflettività subito dopo. Non è una configurazione a proprietario unico; per assegnare `R` alla riflettività si deve omettere `-ControlRotation`.
+
+## Principali opzioni pubbliche da riga di comando
+
+| Opzione | Valori | Default / effetto |
+|---|---|---|
+| `-Precision` | `legacy`, `q8`, `normalized16` | **legacy**; Q8 e Normalized16 sperimentale richiedono selezione esplicita; [limiti qualificati](PRECISION.it.md) |
+| `-Q8Camera` | `stationary`, `interactive`, `auto` | `stationary`; solo con Q8 |
+| `-GraphicsMode` | `1`-`8` | `4`; Mode 8 usa la propria API mappe separata |
+| `-CameraMode` | `fixed`, `walkLite`, `walkFull` | modo della camera nella scena, altrimenti `fixed`; il valore CLI esplicito prevale |
+| `-VideoStandard` | `auto`, `pal`, `ntsc` | `auto`; PAL/NTSC forzato mantiene la simulazione logica a 50 ST/s |
+| ViewportProfile / `-CameraViewport` | `normal`, `small` | `normal`; `contract.viewportProfile` vale quando la CLI è omessa |
+| `-MemoryLayout` | `stable`, `high-basic-v2` | `stable`; non cambia mai automaticamente |
+| `-Mode4NearProfile` | `default`, `late`, `clip` | `default`; valido per Mode 3-6 |
+| `-FaceCullProfile` | `default`, `stable` | `default`; `stable` solo per Mode 4/5/6 |
+| `-ControlRotation` | switch | off; assegna `R` a pausa/ripresa della rotazione |
+| `-ControlLight` | switch | off; abilita il tasto luce supportato dalla scena |
+| `-ControlReflectivity` | switch | off; assegna `R` al ciclo riflettività quando `ControlRotation` non è attivo |
+| `-ReflectivityCycleLevels` | `1`-`4` | `4`; numero di livelli attraversati ciclicamente da `R`, usare `3` per il ciclo `0 → 1 → 2 → 0` |
+| `-FpsOverlay` | switch | il sistema overlay è incluso per default e commutato con `F`; selettore esplicito di compatibilità |
+| `-FpsOverlayOnStart` | switch | off; mostra dall'avvio l'overlay incluso |
+| `-HeaderText` | stringa | vuota; fino a 40 caratteri del charset compatto nella riga centrale dell’header |
+| `-FpsCounterOnly` | switch | off; mantiene il campionamento FPS senza split visivo né tasto `F` |
+| `-NoFpsOverlay` | switch | off; rimuove overlay e tasto FPS, in conflitto con i due switch overlay |
+| `-NoCameraRuntimeControls` | switch | off; compila una camera mobile senza input camera runtime |
+| `-StaticPose` | switch | off; impedisce gli aggiornamenti automatici degli angoli mesh |
+| `-LightOrbit` | `flat`, `tumble3d` | `flat` per il percorso orbit legacy |
+| `-LightPhaseCount` | `8`, `16`, `32` | `32` |
+| `-LightTickDiv` | intero | `2`; divisore aggiornamento orbit legacy |
+| `-LightStaticPhase` | `-1` o indice fase | `-1`; congela il campione luce legacy selezionato se non negativo |
+
+`-ExplorerClipMode` e `-ExplorerNearCrossMode` sono opzioni diagnostiche legacy, non l'API pubblica 1.0 dei profili near. Gli switch `Experimental*`, `Diagnostic*`, `*Trace` e i probe interni non fanno parte dell'API pubblica stabile.
+
+## Licenze
+
+Copyright © 2026 **librologica.digital**, autore e licenziante di 3Dvibe64.
+
+Il software, il builder, gli script, gli esempi JSON, i materiali di validazione
+e il codice engine generato possono essere usati esclusivamente per scopi non
+commerciali secondo la [PolyForm Noncommercial License 1.0.0](LICENSE). Qualsiasi
+uso commerciale richiede una licenza separata rilasciata per iscritto da
+librologica.digital.
+
+Tutta la documentazione Markdown, i manuali e le guide per programmatori possono
+essere usati esclusivamente per scopi non commerciali secondo la
+[Creative Commons Attribuzione–NonCommerciale 4.0 Internazionale](LICENSE-DOCUMENTATION.md).
+È obbligatoria l'attribuzione a `librologica.digital`. Queste restrizioni rendono
+il progetto *source-available*, non open source approvato OSI. In un repository
+GitHub pubblico restano comunque consentite la visualizzazione e la creazione di
+fork attraverso le funzioni offerte da GitHub.
+
+64tass e VICE sono dipendenze esterne, non incluse nella distribuzione, e restano
+soggetti alle licenze dei rispettivi autori.
+
+## Requisiti di compilazione
+
+Servono Windows PowerShell e 64tass 1.60 o successivo. Inserire `64tass.exe` nel `PATH`, impostare `TASS64_EXE`/`TASS64_PATH` oppure collocarlo sotto `work/tools/64tass`. I comandi sono riportati in [examples/README.md](examples/README.md). Il contratto completo richiede anche VICE x64sc: inserirlo nel `PATH` oppure impostare `VICE_X64SC`/`VICE_EXE` prima di eseguire `python scripts/test_release_contract.py`.
+
+## Mode 7 ufficiale nella 1.3.0
+
+Sono disponibili GraphicsMode 1–8. Le GraphicsMode 1–6 conservano l'output di riferimento della 1.2.0; le sezioni API precedenti continuano a descrivere quelle modalità.
+
+Mode 4 è flat shading dinamico. Mode 6 è Gouraud ordered-dithered.
+Mode 7 è **texture mapping affine**, con luce flat o Gouraud opzionale:
+`textureLighting` assente/`"none"`, `"flat"` oppure `"gouraud"`.
+Il compositor Gouraud ufficiale è `textureCompositor: "C"` (texel-first + LightFix; ora default Gouraud). R1 corregge l'inclusione degli edge in questo percorso C. A/B restano opzioni di compatibilità, non il renderer consigliato.
+
+Mode 7 richiede `high-basic-v2`, Python 3, qualità `fast` e proiezione `extended-table`.
+Le texture sono 16×16, nearest-neighbor, con tre codici pigmento1/2/3, UV Q4.4 e repeat opzionale1/2/4/8/16. Supporta UV per vertice o corner, seam, texture per faccia, quad triangolati(0→2), clipping near/screen, fill byte-oriented, byte parziali, double buffering, PAL/NTSC, normal/small e fixed/walkLite/walkFull.
+
+L'import PNG è host-side tramite Pillow: `source` e `sourceColors` obbligatorio ordinato convertono esattamente tre RGB opachi nei texel Dark/High/Highlight. `texturePalette` sceglie separatamente tre colori VIC-II. Niente resizing, quantizzazione o trasparenza. I texel inline restano supportati ed equivalenti a runtime.
+
+Il Gouraud textured usa `gouraud.creaseAngle` (default60°, intervallo0–180°) per spigoli duri o normali smussate, con il limite di255 shade vertices dove applicabile. Mode 7 ha vincoli propri di memoria/geometria e non eredita tutte le API override/source-sharing della Mode 6.
+
+Il default affine non corregge la prospettiva. L’interpolazione prospettica opzionale richiede il profilo Q8 limitato: vedere [precisione texture](TEXTURE-PRECISION.it.md). Niente bilinear, mipmapping, texture runtime packed o quad mapper nativo. Resta l’aliasing di campionamento.
+
+Leggere il [contratto Mode7 completo](MODE7.it.md), la [guida texture](TEXTURE-GUIDE.it.md), la [guida PNG](PNG-TEXTURES.it.md) e gli [otto esempi pubblici](examples/README.md). Le guide inglesi equivalenti coprono lo stesso contratto.

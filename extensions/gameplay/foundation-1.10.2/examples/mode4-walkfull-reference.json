@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "name": "mode4_walkfull_reference",
+  "graphicsMode": 4,
+  "axisConvention": "world-z-up",
+  "world": { "backgroundColor": 0, "grounds": [] },
+  "camera": {
+    "id": "official_walkfull_camera",
+    "position": [0, -63, 20],
+    "rotation": [0, 0, 0],
+    "mode": "walkFull"
+  },
+  "lights": [
+    { "id": "official_static_key", "mode": "static", "position": [52, 40, 60], "phaseCount": 32, "tickDiv": 2, "staticPhase": 0, "intensity": 10, "pulse": false }
+  ],
+  "meshes": [
+    { "id": "official_cube", "type": "mesh", "geometry": "solid", "materialProfile": "single", "builtin": "cube" }
+  ],
+  "objects": [
+    { "id": "official_z_world_cube", "mesh": "official_cube", "position": [0, 190, 20], "rotation": [32, 0, 0], "angularVelocity": [0, 0, 0.25], "scale": 1.0, "visible": true, "material": "gray", "reflectivity": "satin", "geometry": "solid", "materialProfile": "single" }
+  ],
+  "contract": {
+    "version": 1,
+    "ground": false,
+    "runtimeControls": { "camera": "WASD,Q/E,cursors", "roll": "N/M", "fps": "F", "rotation": "R" }
+  }
+}

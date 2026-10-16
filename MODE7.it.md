@@ -1,7 +1,11 @@
 # GraphicsMode 7 — Texture mapping
 
+Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
+in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
+
 <!-- maintenance-1.10.1 -->
-La 1.10.1 ufficiale corregge casi numerici Mode7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
+La 1.10.1 ufficiale corregge casi numerici Mode 7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
 
 La release 1.8.0 aggiunge [LOD graduale opzionale](MODE7-LOD.it.md) e
 la [correzione comune di presentazione](PRESENTATION.it.md). Fast/standard,
@@ -9,12 +13,12 @@ affine/prospettico e illuminazione restano scelte indipendenti. LOD default off.
 Le dichiarazioni storiche di byte identici richiedono la presentazione storica.
 
 La 1.7.0 aggiunge `TextureQuality fast` esplicito per Q8/perspective/Gouraud C,
-con UV block8 e duplicazione superiore. Output/default standard invariati.
+con UV block 8 e duplicazione superiore. Output/default standard invariati.
 Leggere il [contratto veloce](MODE7-FAST.it.md); il profilo legacy più ampio
 descritto sotto non elimina i limiti memoria, camera o viewport fast/Q8.
 
 Il default è il renderer R1 qualificato con texture software **affini** su bitmap
-multicolor VIC-II. La1.6.0 aggiunge interpolazione prospettica fixed-point opzionale
+multicolor VIC-II. La 1.6.0 aggiunge interpolazione prospettica fixed-point opzionale
 nel profilo Q8 limitato; Q8 da solo non la attiva. Leggere il
 [contratto precisione texture](TEXTURE-PRECISION.it.md) prima di selezionarla.
 
@@ -35,7 +39,7 @@ Nella scena, `textureLighting` assente oppure `"none"` significa texture senza i
 
 Il compositor ufficiale per Gouraud textured è `textureCompositor: "C"`, anche default della 1.3.0 quando l'illuminazione è Gouraud. Specificare C esplicitamente nelle scene portabili. A/B restano accettati per compatibilità/diagnostica; non sono il percorso pubblico consigliato e non ereditano il fix R1, specifico di C.
 
-Il compositor C è texel-first: campiona il pigmento, poi applica l'illuminazione. La fascia luminosa centrale conserva i tre pigmenti della texture; le fasce scure/chiare li spostano, con transizioni Bayer 4×4 ancorate allo schermo. Conserva il contrasto del pattern, ma non garantisce pigmenti immutati a ogni intensità. LightFix corregge aritmetica e saturazione del vettore luce con segno; non introduce un modello luminoso nuovo. Materiali e reflectivity usano la pipeline già presente. Con `none`, luci, normali e reflectivity non illuminano dinamicamente la texture.
+Il compositor C è texel-first: campiona il pigmento, poi applica l'illuminazione. La fascia luminosa centrale conserva i tre pigmenti della texture; le fasce scure/chiare li spostano, con transizioni Bayer 4 × 4 ancorate allo schermo. Conserva il contrasto del pattern, ma non garantisce pigmenti immutati a ogni intensità. LightFix corregge aritmetica e saturazione del vettore luce con segno; non introduce un modello luminoso nuovo. Materiali e reflectivity usano la pipeline già presente. Con `none`, luci, normali e reflectivity non illuminano dinamicamente la texture.
 
 ## Build
 
@@ -67,11 +71,11 @@ Il limite runtime è 255 shade vertices dove applicabile, inclusi split delle no
 
 ## Memoria e ambito
 
-Le texture sono unpacked, allineate a pagina, 256 byte per texture 16×16 utilizzata, più allineamento e metadati faccia/puntatori. Pagine texture inutilizzate e metadati luminosi Gouraud inutili vengono omessi dove possibile. I segmenti low/middle/relocated/high usano il layout recuperato; codice/dati high devono restare sotto $D000. Geometria, UV, buffer clipping, stato luminoso e codice generato condividono questo spazio. Non esiste un budget di mesh universale indipendente da luce e configurazione.
+Le texture sono unpacked, allineate a pagina, 256 byte per texture 16 × 16 utilizzata, più allineamento e metadati faccia/puntatori. Pagine texture inutilizzate e metadati luminosi Gouraud inutili vengono omessi dove possibile. I segmenti low/middle/relocated/high usano il layout recuperato; codice/dati high devono restare sotto $D 000. Geometria, UV, buffer clipping, stato luminoso e codice generato condividono questo spazio. Non esiste un budget di mesh universale indipendente da luce e configurazione.
 
 Mode 7 richiede geometria esplicita: non supporta loader mesh builtin/file, `meshSourceSharing`, override shading per faccia o campi override material/color/reflectivity per oggetto. Le normali proprietà supportate material/reflectivity sono distinte dagli override della Mode 6.
 
-Limiti comuni: nearest-neighbor;texture16×16;tre pigmenti VIC-II;UV Q4.4;
+Limiti comuni: nearest-neighbor;texture 16 × 16;tre pigmenti VIC-II;UV Q4.4;
 triangoli runtime e quad triangolati. Niente bilinear, mipmapping, trasparenza,
 texture runtime packed o quad mapper nativo. Il default affine non corregge la
 prospettiva. Il sampling prospettico opzionale ha limiti camera/viewport/profondità
@@ -80,4 +84,4 @@ quantizzazione fixed-point in entrambi i percorsi.
 
 Vedere [formato texture](TEXTURE-GUIDE.it.md), [import PNG](PNG-TEXTURES.it.md),
 [precisione texture](TEXTURE-PRECISION.it.md), [esempi](examples/README.md) e
-[test](TESTING.md). Mode1–6/8 e output affine precedente conservano i riferimenti.
+[test](TESTING.md). Mode 1–6/8 e output affine precedente conservano i riferimenti.

@@ -1,5 +1,13 @@
 # Mode 8 qualification / Qualificazione Mode 8
 
+Historical/versioned evidence. Measurements, hashes and implementation stages below
+retain their original scope; they are not a new1.11.0 acquisition or feature promise.
+Evidenza storica/versionata: misure, hash e fasi seguenti mantengono l’ambito
+originale; non sono nuove acquisizioni o promesse di funzioni1.11.0.
+Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
+[gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
+[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
+
 <!-- maintenance-1.10.1 -->
 Current 1.10.1-rc1 provenance checks and independent fine diagnostics: [English](QUALIFICATION-1.10.1-rc1.en.md), [Italiano](QUALIFICATION-1.10.1-rc1.it.md). Riuso catture con provenienza e diagnostica fine nella qualificazione corrente; il rapporto storico seguente conserva il proprio ambito.
 

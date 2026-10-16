@@ -1,20 +1,51 @@
 # 3Dvibe64 — Guida per il programmatore assembly
 
+Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
+in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
+
+## Moduli gameplay nella1.11.0
+
+Scegliere profilo/entry point prima di cambiare la geometria. I campi Q8
+ordinari non configurano gli adattatori separati di condivisione, roll,
+eventi o gruppi. [GAMEPLAY](GAMEPLAY.it.md) copre 13 profili, nove opzioni di
+configurazione e compatibilità. I contratti specificano le ABI `an_control`,
+`cr_set_roll`, `cr_resume`, `wg_request`, `wg_service`, impulsi/contatori
+degli eventi, soglie near e proprietà della memoria.
+
+Il livello si controlla con `work/build-level.py --validate-only`; un grafo
+valido può comunque risultare `buildable:false`. Un piano non misura RAM
+nativa: accettare soltanto mappa assemblata, finestre legali, guardie e gap
+contigui allineati. Il recupero UI ipotetico 3759 byte non è implementato nel
+backend WORLD-01; l’integrazione separata riusa 2904 byte con un diverso
+contratto di durata verificato.
+
+Stato delle istanze e dei sorgenti stabile durante una vista completa.
+Non chiamare controlli delle clip o alterare shader auto-modificanti da IRQ.
+L’I/O WORLD mappa temporaneamente il KERNAL e ripristina zero page, vettori,
+porta CPU e CIA 2. I file gruppo contengono dati ammessi, non codice eseguibile.
+Seguire il [contratto livello](extensions/gameplay/level/LEVEL-DEV.it.md).
+
+La release corrente è locale e solo sorgente: ottenere lo ZIP dalla consegna
+locale o da una futura pubblicazione, senza presumere che sia già online.
+Preservare release/fondazione/progetti congelati e compilare in cartelle
+esterne. `MANIFEST.sha256` verifica ogni input sorgente.
+
 ## Mode 7 veloce — 1.7.0
 
 Il percorso opzionale fast Q8/perspective/Gouraud C è specificato in
-[MODE7-FAST.it.md](MODE7-FAST.it.md). Mantiene le dimensioni della viewport ma
+[MODE 7-FAST.it.md](MODE7-FAST.it.md). Mantiene le dimensioni della viewport ma
 campiona righe logiche alternate e usa blocchi prospettici da otto pixel.
-Riserva lo scratch UV $E8..$EF e modifica gli ingressi dello shader scalare fra
+Riserva lo scratch UV $E 8..$EF e modifica gli ingressi dello shader scalare fra
 gli span: gli IRQ personalizzati non devono usare lo scratch o rientrare nel
 renderer. I contratti legacy e delle altre modalità sotto restano invariati.
 
 ## Precision profiles / Profili di precisione — 1.10.0
 
 Q8: byte-index ceilings of 255 disjoint objects/runtime vertices, subject to real RAM guards.
-Normalized16: experimental, at most two objects/16 runtime vertices.
+Normalized 16: experimental, at most two objects/16 runtime vertices.
 Q8: tetti di codifica di 255 oggetti disgiunti/vertici runtime, con controlli RAM reali.
-Normalized16: sperimentale, massimo due oggetti/16 vertici runtime.
+Normalized 16: sperimentale, massimo due oggetti/16 vertici runtime.
 See / Vedere [Official contract / Contratto ufficiale](Q8-SCALABILITY.md) and [qualification](Q8-QUALIFICATION.md).
 
 Legacy remains the default; the metric/renderer contracts below describe legacy
@@ -266,7 +297,7 @@ Per misurazioni o breakpoint stabili, `render_frame_begin` e `render_frame_end` 
 
 Quando l’overlay visivo è compilato, ogni bank VIC-II possiede la propria Screen RAM e il proprio charset compatto. L’IRQ mostra tre righe di caratteri, passa al fast path bitmap a `TEXT_BITMAP_IRQ_RASTER=$4A` e avvia il body a `TEXT_BODY_FIRST_RASTER=$4B`. `TEXT_HEADER_CELL_ROWS=3` e `TEXT_HEADER_SCREEN_BYTES=120` sono un contratto pubblico di memoria: `apply_active_material` deve iniziare dopo il byte 119 in entrambi gli screen buffer.
 
-Il body 3D normal misura quindi 160×88 a Y=12; small misura 128×80 a Y=12. `-NoFpsOverlay` compila il percorso solo bitmap 1.1.0 invariato. Generic Text usa una stringa compatta terminata da `$FF`; zero è un glifo spazio valido. Le cifre FPS e Generic Text vengono scritti in entrambe le Screen RAM, senza copiare dalla bank visualizzata all’altra.
+Il body 3D normal misura quindi 160 × 88 a Y=12; small misura 128 × 80 a Y=12. `-NoFpsOverlay` compila il percorso solo bitmap 1.1.0 invariato. Generic Text usa una stringa compatta terminata da `$FF`; zero è un glifo spazio valido. Le cifre FPS e Generic Text vengono scritti in entrambe le Screen RAM, senza copiare dalla bank visualizzata all’altra.
 
 A runtime, `F` commuta l’intero split, non le sole celle numeriche FPS. Il percorso OFF continua a scegliere bank VIC, Screen RAM e bitmap da `drawbuf`. `TEXT_CHARSET_BYTES` deriva da `TEXT_CHARSET_GLYPH_COUNT`: vale 96 per il charset dei soli FPS e 184 quando è emesso Generic Text. Il toggle sicuro pulisce esattamente quel prefisso bitmap quando lo split è nascosto e lo ripristina prima di riattivare l’IRQ testuale; il timing `$4A`/`$4B` resta invariato.
 
@@ -404,7 +435,7 @@ Il numero del mode non è un semplice flag runtime: determina quanto codice e qu
 
 ## 10. VIC-II, bitmap e materiali
 
-Il renderer normale usa bitmap multicolore a doppio buffer, con risoluzione logica 160×100 espansa a 320×200 pixel fisici.
+Il renderer normale usa bitmap multicolore a doppio buffer, con risoluzione logica 160 × 100 espansa a 320 × 200 pixel fisici.
 
 In una build `stable` tipica sono visibili questi elementi:
 
@@ -697,7 +728,7 @@ Una faccia completamente interna e una faccia clippata non hanno lo stesso contr
 
 ### Valutare un solo profilo
 
-Una modifica può funzionare in Mode 4/fixed/stable e rompere Mode 2, walkFull o high-basic-v2. Scegliere una matrice minima di build.
+Una modifica può funzionare in Mode 4/fixed/stable e rompere Mode 2, walkFull o high-basic-v 2. Scegliere una matrice minima di build.
 
 ### Aggiornare subito manifest e checksum
 
@@ -747,7 +778,7 @@ Finché il progetto non adotta ufficialmente moduli esterni, il builder PowerShe
 - I test host-side interessati passano.
 - Le regressioni VICE interessate passano o la nuova firma è motivata.
 - Documentazione italiana e inglese descrivono la stessa API.
-- Versione, package manifest e checksum saranno aggiornati insieme nella fase di release.
+- Versione 1.11.0, package manifest e checksum sono sigillati insieme nella release sorgente locale.
 
 ## 24. Percorso di lettura consigliato
 

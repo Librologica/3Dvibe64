@@ -1,5 +1,13 @@
 # Mode 8 memory / Memoria Mode 8
 
+Historical/versioned evidence. Measurements, hashes and implementation stages below
+retain their original scope; they are not a new1.11.0 acquisition or feature promise.
+Evidenza storica/versionata: misure, hash e fasi seguenti mantengono l’ambito
+originale; non sono nuove acquisizioni o promesse di funzioni1.11.0.
+Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
+[gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
+[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
+
 The source ASM and emitted `labels.txt`, `listing.txt`, `assembler.log` are the
 authoritative per-build layout. The two backends do not share a single allocation
 map. Load-image gaps are **not automatically free runtime RAM**: initialization

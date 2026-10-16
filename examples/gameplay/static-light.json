@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "profile": "static-light",
+  "extends": "animated-textures",
+  "engineVersion": "1.11.0",
+  "generatorFoundation": "1.10.2",
+  "buildName": "static-light",
+  "expectedCheckpointPRGSHA256": "CDE171254FE84C1AD7AD509DD0DFFD3122A9267DF5A39BB8E1D8AAFDEA3469FB",
+  "distributionPRG": "artifacts/room-skeleton-billboard-precise-pal-static-light.prg",
+  "standard": "pal",
+  "multiplier": 64,
+  "music": false,
+  "viewportLogical": [
+    96,
+    60
+  ],
+  "textureQuality": "precise",
+  "textureLOD": [
+    14,
+    22
+  ],
+  "billboardImplementation": "outlined",
+  "routeRefreshes": 3072,
+  "scope": "host-only deterministic static vertex light/shadow bake on existing Gouraud surfaces; no new runtime code or RAM"
+}

@@ -1,0 +1,29 @@
+{
+  "schema": 1,
+  "name": "mode6_static_hard_cube",
+  "graphicsMode": 6,
+  "axisConvention": "world-z-up",
+  "world": { "backgroundColor": 0, "grounds": [] },
+  "camera": { "id": "camera", "position": [0, 0, 4], "rotation": [0, 0, 0], "mode": "fixed" },
+  "lights": [{ "id": "key", "mode": "static", "position": [-30, 28, 48], "intensity": 10 }],
+  "meshes": [{
+    "id": "hard_cube",
+    "type": "mesh",
+    "geometry": "solid",
+    "materialProfile": "single",
+    "builtin": "cube",
+    "gouraud": { "creaseAngle": 0 }
+  }],
+  "objects": [{
+    "id": "cube",
+    "mesh": "hard_cube",
+    "position": [0, 118, 4],
+    "rotation": [24, 32, 8],
+    "angularVelocity": [0, 0, 0],
+    "scale": 0.85,
+    "visible": true,
+    "material": "red",
+    "reflectivity": "mirror"
+  }],
+  "contract": { "version": 1, "viewportProfile": "normal", "ground": false }
+}

@@ -1,0 +1,30 @@
+{
+  "schema": 1,
+  "enabled": true,
+  "autoTransitions": true,
+  "capacityBytes": 1024,
+  "groups": [
+    {
+      "id": "hall",
+      "rooms": 2,
+      "halfWidth": 24,
+      "floorLevel": null,
+      "doorIndex": 2,
+      "initialOpen": false,
+      "neighbors": [
+        "crypt"
+      ]
+    },
+    {
+      "id": "crypt",
+      "rooms": 2,
+      "halfWidth": 20,
+      "floorLevel": 10,
+      "doorIndex": 3,
+      "initialOpen": true,
+      "neighbors": [
+        "hall"
+      ]
+    }
+  ]
+}

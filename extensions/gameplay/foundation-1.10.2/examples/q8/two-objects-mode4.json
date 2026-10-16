@@ -1,0 +1,111 @@
+{
+  "schema": 1,
+  "name": "q8-two-objects-mode4",
+  "graphicsMode": 4,
+  "axisConvention": "world-z-up",
+  "world": {
+    "backgroundColor": 0,
+    "grounds": []
+  },
+  "camera": {
+    "id": "camera",
+    "position": [
+      0,
+      0,
+      4
+    ],
+    "rotation": [
+      0,
+      0,
+      0
+    ],
+    "mode": "walkLite"
+  },
+  "lights": [
+    {
+      "id": "key",
+      "mode": "static",
+      "position": [
+        -30,
+        28,
+        48
+      ],
+      "intensity": 10
+    }
+  ],
+  "meshes": [
+    {
+      "id": "meshA",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 60
+      }
+    },
+    {
+      "id": "meshB",
+      "type": "mesh",
+      "geometry": "solid",
+      "materialProfile": "single",
+      "builtin": "cube",
+      "gouraud": {
+        "creaseAngle": 180
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "front",
+      "mesh": "meshA",
+      "position": [
+        -8,
+        135,
+        8
+      ],
+      "rotation": [
+        24,
+        32,
+        8
+      ],
+      "angularVelocity": [
+        0.28,
+        0.4,
+        0.36
+      ],
+      "scale": 0.65,
+      "visible": true,
+      "material": "blue",
+      "reflectivity": "satin"
+    },
+    {
+      "id": "back",
+      "mesh": "meshB",
+      "position": [
+        10,
+        185,
+        -2
+      ],
+      "rotation": [
+        50,
+        12,
+        40
+      ],
+      "angularVelocity": [
+        -0.32,
+        0.24,
+        -0.28
+      ],
+      "scale": 0.5,
+      "visible": true,
+      "material": "red",
+      "reflectivity": "gloss"
+    }
+  ],
+  "contract": {
+    "version": 1,
+    "viewportProfile": "normal",
+    "ground": false
+  }
+}

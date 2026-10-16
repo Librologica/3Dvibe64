@@ -1,4 +1,30 @@
-# Public JSON reference scenes / Scene JSON pubbliche di riferimento
+# Source examples / Esempi sorgente — 1.11.0
+
+The release includes JSON/PNG/source examples only, no compiled programs or
+demo archives. Ordinary examples below use the inherited exporter; gameplay
+inputs in `gameplay/*.json` cover 13 profiles and `levels/*.json` cover the
+common buildable/planning level cases. [Complete EN guide](../GAMEPLAY.en.md).
+
+La release include esempi JSON/PNG/sorgenti, senza programmi compilati o archivi
+demo. Gli esempi ordinari seguenti usano l’exporter ereditato; `gameplay/*.json`
+contiene 13 profili, `levels/*.json` casi costruibili/di pianificazione del
+formato comune. [Guida completa IT](../GAMEPLAY.it.md).
+
+```powershell
+python -B work/build-gameplay.py --profile room-groups --out ../groups-build
+python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
+python -B work/build-level.py --level examples/levels/integration-planning.json --plan-only --out ../level-plan
+```
+
+`integration-planning.json` is intentionally unsupported by the native adapter;
+validation/planning must not be presented as a compiled level. Il caso di
+pianificazione è intenzionalmente non costruibile dal backend: validare un
+grafo non significa aver compilato il livello. Use new external output folders.
+Usare cartelle di output nuove ed esterne. Ordinary options/defaults below do
+not expand the gameplay adapters. I contratti ordinari non ampliano gli adapter.
+
+## Ordinary source examples / Esempi sorgente ordinari
+
 
 ## 1.10.0 Q8 scalability / Scalabilità Q8 1.10.0
 
@@ -6,13 +32,13 @@
 and a single 129-vertex transformation stress case (one face).
 Select explicit Q8 and the scene's GraphicsMode. The 13-object scenes are
 qualified in Modes 1–5; eight objects in Mode 6; three objects in Modes 1–7.
-The eight-object Mode6 variant is in the separate evidence scenes directory.
+The eight-object Mode 6 variant is in the separate evidence scenes directory.
 `13-objects-mode6.json`, `13-objects-mode7.json`, `single-255-mode3.json`
 and `single-256-mode3.json` are expected rejection cases with these settings.
 Scene affini con 3 e 13 oggetti; stress a 129 vertici con una sola faccia.
 Selezionare Q8 esplicito e la GraphicsMode della scena. Qualificati 13 oggetti
 in Mode 1–5, otto in Mode 6, tre in Mode 1–7. La variante a otto oggetti è
-nel pacchetto prove separato. I casi 13-objects-mode6/mode7 e single-255/single-256
+nel pacchetto prove separato. I casi 13-objects-mode 6/mode 7 e single-255/single-256
 sono rifiuti attesi con questi parametri, non demo compilabili.
 [Contract / Contratto](../Q8-SCALABILITY.md) · [Qualification / Qualificazione](../Q8-QUALIFICATION.md).
 
@@ -53,7 +79,7 @@ outside the SDK. Previous examples remain affine with unchanged PRG references.
 Read [EN](../TEXTURE-PRECISION.en.md) / [IT](../TEXTURE-PRECISION.it.md).
 
 1.6.0: l'esempio prospettico deriva dal cubo diagnostico pubblico, non dalla demo.
-Richiede Q8/Mode7 e output esterno. Esempi precedenti affini e hash invariati.
+Richiede Q8/Mode 7 e output esterno. Esempi precedenti affini e hash invariati.
 Precisione texture indipendente dalla geometria: leggere le due guide sopra.
 
 1.5.5: examples and build commands are unchanged. The two aperture reference
@@ -105,16 +131,16 @@ Non aggiungere ai comandi Mode 8 le opzioni poligonali seguenti.
 `mode6-gouraud-cube-hard.json` and `mode6-gouraud-cube-smooth.json` have identical
 geometry, pose, light and material. Only creaseAngle changes 0 to 180 (plus the
 descriptive scene name). Compile either with `-GraphicsMode 6 -MemoryLayout
-high-basic-v2 -Quality fast -Projection extended-table -NoFpsOverlay -SkipCmdUpdate`.
+high-basic-v 2 -Quality fast -Projection extended-table -NoFpsOverlay -SkipCmdUpdate`.
 
 `mode6-gouraud-cube-hard.json` e `mode6-gouraud-cube-smooth.json` hanno
-geometria, posa, luce e materiale identici. Cambiano soltanto creaseAngle da0
-a180 e nome descrittivo. Compilare entrambi con `-GraphicsMode 6 -MemoryLayout
-high-basic-v2 -Quality fast -Projection extended-table -NoFpsOverlay -SkipCmdUpdate`.
+geometria, posa, luce e materiale identici. Cambiano soltanto creaseAngle da 0
+a 180 e nome descrittivo. Compilare entrambi con `-GraphicsMode 6 -MemoryLayout
+high-basic-v 2 -Quality fast -Projection extended-table -NoFpsOverlay -SkipCmdUpdate`.
 
 Reproduce the exact frozen Gate 5 torus/FPS build in a disposable SDK copy:
 
-Riprodurre la build esatta Gate5 toro/FPS congelata in una copia di lavoro
+Riprodurre la build esatta Gate 5 toro/FPS congelata in una copia di lavoro
 dell'SDK con il comando condiviso seguente:
 
 ```powershell
@@ -130,8 +156,8 @@ Expected PRG SHA-256:
 Keys 1–0 select material; R cycles reflectivity 0, 1, 2; F toggles the FPS/text header.
 Do not also enable ControlRotation when R is reserved for reflectivity.
 
-SHA-256 PRG atteso: lo stesso hash riportato sopra. I tasti1–0 selezionano
-il materiale; R cicla reflectivity0,1,2; F commuta l'header testo/FPS.
+SHA-256 PRG atteso: lo stesso hash riportato sopra. I tasti 1–0 selezionano
+il materiale; R cicla reflectivity 0,1,2; F commuta l'header testo/FPS.
 Non abilitare anche ControlRotation quando R è riservato alla reflectivity.
 
 ## Other references / Altri riferimenti
@@ -168,13 +194,13 @@ $build = '.\work\build-3Dvibe64.ps1'
 ```
 
 The last command exercises the DEV7/DEV7.1 same-bank Generic Text and FPS header.
-The 3D body is 160×88 while the split is compiled in; add `-NoFpsOverlay` for the
-byte-compatible 1.1.0 bitmap-only path and legacy 160×100 normal viewport.
+The 3D body is 160 × 88 while the split is compiled in; add `-NoFpsOverlay` for the
+byte-compatible 1.1.0 bitmap-only path and legacy 160 × 100 normal viewport.
 
 L'ultimo comando verifica l'header Generic Text/FPS DEV7/DEV7.1 nella stessa
-banca. Con lo split compilato il body3D è160×88; aggiungere `-NoFpsOverlay`
-per il percorso bitmap-only byte-compatibile1.1.0 e la viewport normal
-storica160×100.
+banca. Con lo split compilato il body 3D è 160 × 88; aggiungere `-NoFpsOverlay`
+per il percorso bitmap-only byte-compatibile 1.1.0 e la viewport normal
+storica 160 × 100.
 
 ## Dynamic camera and materials / Camera e materiali dinamici
 
@@ -209,17 +235,17 @@ Ground configuration.
 `materialOverride`/`reflectivityOverride`/`colorOverride` documentati per l'aspetto
 per istanza. `material` semplice non è un override d'istanza condivisa. La scena
 copre anche override facce locali alla sorgente, `light.type: "static"`, timeline
-dichiarativa a50 Hz e `resetKey: "SPACE"`. `mode5-solid-color-outline.json`
+dichiarativa a 50 Hz e `resetKey: "SPACE"`. `mode5-solid-color-outline.json`
 mostra istanze condivise, pigmenti solidi e outline finale clippato.
-`ground-plane-near-clip.json` mostra il profilo `clip` Mode3–5 con Ground plane.
+`ground-plane-near-clip.json` mostra il profilo `clip` Mode 3–5 con Ground plane.
 
 ## GraphicsMode 6 Gouraud references / Riferimenti Gouraud Mode6
 
 Mode 6 requires `high-basic-v2` and accepts `gouraud.creaseAngle` from 0 through
 180 degrees on each mesh (default 60):
 
-Mode6 richiede `high-basic-v2`; ogni mesh accetta `gouraud.creaseAngle`
-da0 a180 gradi, default60.
+Mode 6 richiede `high-basic-v2`; ogni mesh accetta `gouraud.creaseAngle`
+da 0 a 180 gradi, default 60.
 
 ```powershell
 & $build -SceneFile .\examples\mode6-gouraud-torus.json -GraphicsMode 6 -CameraMode walkFull -CameraViewport normal -Quality balanced -Projection table -MemoryLayout high-basic-v2 -SkipCmdUpdate
@@ -232,13 +258,13 @@ native triangles and quadrilaterals with multiple material families; the shared
 scene covers source sharing, per-instance materials/reflectivity, and a source face
 whose explicit pigment bypasses dynamic shading. The complete algorithm, limits,
 test matrix, and benchmark are in
-[GOURAUD-MODE6-REPORT.md](../GOURAUD-MODE6-REPORT.md).
+[GOURAUD-MODE 6-REPORT.md](../GOURAUD-MODE6-REPORT.md).
 
 Il toro mostra normali smooth e luce animata; la scena mixed copre triangoli
 e quadrilateri nativi con più famiglie materiali; la scena shared mostra source
 sharing, materiali/reflectivity per istanza e una faccia sorgente il cui pigmento
 esplicito evita lo shading dinamico. Algoritmo completo, limiti, matrice test
-e benchmark sono in [GOURAUD-MODE6-REPORT.md](../GOURAUD-MODE6-REPORT.md).
+e benchmark sono in [GOURAUD-MODE 6-REPORT.md](../GOURAUD-MODE6-REPORT.md).
 
 ## Mode 7 — public examples / esempi pubblici
 
@@ -248,14 +274,14 @@ Tutte le scene contengono `graphicsMode: 7`. Usare i parametri sopra più la cam
 
 | Scene / scena | Lighting / luce | Camera | Purpose / scopo |
 | --- | --- | --- | --- |
-| mode7-triangle.json | none | walkLite | Inclined triangle / triangolo inclinato |
-| mode7-cube.json | none | walkLite | Textured rotating cube / cubo textured rotante |
-| mode7-cube-flat.json | flat | walkLite | Dynamic face light / luce dinamica per faccia |
-| mode7-cube-gouraud.json | gouraud C | fixed | Hard cube edges, inline brick texture / spigoli duri, mattoni inline |
-| mode7-torus-gouraud.json | gouraud C | walkLite | Smooth curved surface and UV seams / superficie curva smooth e seam UV |
-| mode7-uvsphere-gouraud.json | gouraud C | fixed | Smooth sphere / sfera smooth |
-| mode7-multi-texture.json | none | walkLite | Per-face selection and repeat / selezione per faccia e repeat |
-| mode7-cube-png.json | gouraud C | fixed | Same output as inline cube / stesso output del cubo inline |
+| mode 7-triangle.json | none | walkLite | Inclined triangle / triangolo inclinato |
+| mode 7-cube.json | none | walkLite | Textured rotating cube / cubo textured rotante |
+| mode 7-cube-flat.json | flat | walkLite | Dynamic face light / luce dinamica per faccia |
+| mode 7-cube-gouraud.json | gouraud C | fixed | Hard cube edges, inline brick texture / spigoli duri, mattoni inline |
+| mode 7-torus-gouraud.json | gouraud C | walkLite | Smooth curved surface and UV seams / superficie curva smooth e seam UV |
+| mode 7-uvsphere-gouraud.json | gouraud C | fixed | Smooth sphere / sfera smooth |
+| mode 7-multi-texture.json | none | walkLite | Per-face selection and repeat / selezione per faccia e repeat |
+| mode 7-cube-png.json | gouraud C | fixed | Same output as inline cube / stesso output del cubo inline |
 
 ```powershell
 .\work\build-3Dvibe64.ps1 -SceneFile .\examples\mode7-cube-png.json -GraphicsMode 7 -MemoryLayout high-basic-v2 -CameraMode fixed -CameraViewport normal -VideoStandard pal -FpsCounterOnly -SkipCmdUpdate

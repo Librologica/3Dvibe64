@@ -1,15 +1,19 @@
 # Mode 7 texture precision — 1.7.0
 
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
 <!-- maintenance-1.10.1 -->
-Official 1.10.1 delivers bounded Mode7 numeric fixes and a guarded aligned allocator fallback. See [numeric behavior](NUMERIC-CORRECTNESS.en.md) and [qualification](QUALIFICATION-1.10.1-rc1.en.md); historical contracts and measurements below retain their versioned scope.
+Official 1.10.1 delivers bounded Mode 7 numeric fixes and a guarded aligned allocator fallback. See [numeric behavior](NUMERIC-CORRECTNESS.en.md) and [qualification](QUALIFICATION-1.10.1-rc1.en.md); historical contracts and measurements below retain their versioned scope.
 
 Release 1.10.0: Q8 encoding ceilings are extended;
-new multiobject native qualification covers affine Modes1–7. The perspective/
+new multiobject native qualification covers affine Modes 1–7. The perspective/
 fast/LOD measurements below remain inherited tests on the original scenes.
 See [release scope](Q8-SCALABILITY.md). RAM/depth guards remain mandatory.
 
 The exact sampling contract below describes `textureQuality: standard` (default).
-For approximate block8 sampling with upper-row reconstruction explicitly select
+For approximate block 8 sampling with upper-row reconstruction explicitly select
 `textureQuality: fast` and read [Mode 7 fast](MODE7-FAST.en.md).
 
 ## Defaults and opt-in
@@ -36,7 +40,7 @@ for this profile, not the development scene.
 
 ## Supported profile
 
-All existing Q8 restrictions apply: normal 160×100 logical viewport without
+All existing Q8 restrictions apply: normal 160 × 100 logical viewport without
 header/FPS split; walkLite stationary/interactive/auto; explicit PAL/NTSC; disjoint nonshared
 objects; byte-index ceilings of 255 objects/vertices subject to RAM fit; scaled radius <=40 WU per
 object; scale >0 and <=1; no Ground, timeline, small viewport or camera roll.
@@ -60,7 +64,7 @@ levels retain their existing meaning. No baked or camera-attached light is added
 
 Near clipping transports raw UV (Q4.4 with 8 additional clipping fraction bits).
 For camera depth Q16.8, W=floor(8388608/depthQ8). Each attribute carrier is
-floor(rawUV16*W/32768), unsigned 16; W is unsigned 16. Screen clipping then
+floor(rawUV 16*W/32768), unsigned 16; W is unsigned 16. Screen clipping then
 interpolates UW/VW/W with the geometric parameter. Exact Euclidean quotient/
 remainder edge and span DDAs advance these carriers. Each sampled coordinate
 is floor(carrier*128/W), using the low byte for the established repeat sampler.
@@ -76,7 +80,7 @@ floating-point oracle, nor increase resolution or UV source precision.
 
 - Signed span setup uses restoring 16/8 division with Euclidean rounding.
 - Projection/clipping 48/24 division skips leading zero bits without changing
-  quotient/remainder. A guarded 16×16 clipping product keeps the full 24×24 path.
+  quotient/remainder. A guarded 16 × 16 clipping product keeps the full 24 × 24 path.
 - Near-plane reciprocal encoding is an exact identity at 1 WU. An 8-entry FIFO
   caches the full fractional depth and its exact reciprocal, not rounded bins.
   The cache costs 34 state bytes; it is per PRG and main-thread only.
@@ -109,7 +113,7 @@ nonuniform projective textures with flat/Gouraud C lighting. U/V sampling and
 all numerical results remain exact under the existing integer carrier contract.
 Seven fractional steps are unrolled; no denominator patching or approximation.
 The original scalar divider handles out-of-fast-domain inputs and zero W.
-Eight zero-page bytes $E8-$EF are reserved while the renderer owns the machine;
+Eight zero-page bytes $E 8-$EF are reserved while the renderer owns the machine;
 external IRQ/KERNAL extensions must not use this scratch or call the sampler.
 The routine is not reentrant. Existing renderer IRQs do not access this state.
 It adds code, not texture RAM; ordinary memory-budget checks remain active.
@@ -121,4 +125,3 @@ cube is 673 bytes, with no extra absolute scratch. A measured cube pose saves
 wait and presentation. This is not a native FPS measurement or universal gain.
 Additional code reduces scene-specific memory headroom; unsafe layouts are
 still rejected, not silently simplified. See [release notes](RELEASE-NOTES-1.6.1.md).
-

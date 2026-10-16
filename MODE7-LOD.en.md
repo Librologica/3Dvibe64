@@ -1,5 +1,9 @@
 # Mode 7 gradual texture LOD (1.8.0)
 
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
 An explicit image-quality option, not raycasting, mipmapping or an exact-image optimization. Geometry, coverage, projective endpoints and lighting keep their existing contracts. `off` is the default. The standard and fast texture-quality profiles remain separately selectable.
 
 ```powershell
@@ -10,7 +14,7 @@ The scene may instead contain `"textureLOD": "gradual"`, `"textureLODNear": 28`,
 
 The build counts the actual 256 runtime texels (PNG and inline are equivalent). The modal pigment is the most frequent of 1/2/3, ties choosing the lowest index. The accent is the most saturated present pigment in a fixed VIC-II RGB ranking, then the brightest, then the lowest index. This ranking does not change the emulator palette. Selection is palette-specific for each runtime face; there is no hardcoded texture ID or room list.
 
-The minimum original face-corner camera depth selects detail conservatively. A corner behind the camera retains full detail. At or before `near`, the texture remains complete. Between near and far, an anchored Bayer 4×4 mask blends complete detail with the far pattern in sixteen steps. At/after far the fill is 75% modal pigment and 25% accent pigment. Gouraud/flat composition, when selected, is applied afterward. Already uniform texture pages are unchanged. This is a per-face depth classifier, not per-pixel LOD; long faces may retain detail because one corner is near. No lower-resolution texture pyramid is emitted.
+The minimum original face-corner camera depth selects detail conservatively. A corner behind the camera retains full detail. At or before `near`, the texture remains complete. Between near and far, an anchored Bayer 4 × 4 mask blends complete detail with the far pattern in sixteen steps. At/after far the fill is 75% modal pigment and 25% accent pigment. Gouraud/flat composition, when selected, is applied afterward. Already uniform texture pages are unchanged. This is a per-face depth classifier, not per-pixel LOD; long faces may retain detail because one corner is near. No lower-resolution texture pyramid is emitted.
 
 Standard anchors the pattern to logical x/y. Fast anchors y to its sampled row index (`y/2`) and duplicates the result into the omitted row. No temporal dithering. At far LOD, existing uniform dispatch bypasses UV division and carrier advancement; the original bounded page read is retained and replaced by the selected pigment. Encoding and depth-domain checks remain live.
 

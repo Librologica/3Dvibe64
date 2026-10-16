@@ -1,6 +1,10 @@
 # GraphicsMode 8 — 2.5D
 
-Stable 1.10.2: only the qualified bitmap path remains. EngineExperiments omission/none is accepted; all and retired Mode8 flags/combinations are rejected. See [release notes](RELEASE-NOTES-1.10.2.en.md).
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
+Inherited 1.10.2 backend in 1.11.0: only the qualified bitmap path remains. EngineExperiments omission/none is accepted; all and retired Mode 8 flags/combinations are rejected. See [release notes](RELEASE-NOTES-1.11.0.en.md).
 <!-- maintenance-1.10.1 -->
 Official 1.10.1 requires capture acquisition provenance for native reuse and retains mandatory input checks under optimized Python. Coincident heading is 64. The adaptive renderer can miss interior discontinuities: see [diagnostic, measured cost and known limit](QUALIFICATION-1.10.1-rc1.en.md). Runtime sampling is unchanged.
 
@@ -58,8 +62,8 @@ There are no triangle fills, mesh transforms, vertex normals, Gouraud, active wa
 
 ## Video and memory
 
-- Bitmap multicolor VIC-II, **128×144 logical pixels**, each 2×1 physical pixels.
-- 256×144 physical viewport; 32×18 bitmap cells; **4,608 active bytes per buffer**.
+- Bitmap multicolor VIC-II, **128 × 144 logical pixels**, each 2 × 1 physical pixels.
+- 256 × 144 physical viewport; 32 × 18 bitmap cells; **4,608 active bytes per buffer**.
 - Bitmap bases `$6000/$E000`; active origins `$6660/$E660`.
 - Screen RAM `$4000/$CC00`; separate text font `$5800/$D800`; three-row UI.
 - CPU/VIC banking uses `$01`, `$DD00`, `$D018` and the qualified PAL/NTSC split handlers.
@@ -76,7 +80,7 @@ Interactive: W/S movement, A/D rotation. Automatic: the complete validated cycli
 
 Static apertures only; fixed supported ramp formulas; no room-over-room, arbitrary steps, PVS, advanced portal traversal, wall UV texture mapping, floor textures, dynamic lighting or 3D sprites. Modes 1–7 remain distinct polygon-renderer builds.
 
-[TESTING.md](TESTING.md) separates 13 legacy test scripts, the new public map tests, instruction/oracle comparisons and native runs. [Release notes](RELEASE-NOTES-1.4.0.md) contain final measured FPS, p95 and worst intervals. CPU-only sampling is not converted to FPS. Hardware execution is **not tested**; qualification is stock x64sc PAL/NTSC. Accelerated or other machine results are not substitutes.
+[TESTING.md](TESTING.md) separates 13 legacy test scripts, the new public map tests, instruction/oracle comparisons and native runs. [Release notes](RELEASE-NOTES-1.4.0.md) contain final measured FPS, p 95 and worst intervals. CPU-only sampling is not converted to FPS. Hardware execution is **not tested**; qualification is stock x64sc PAL/NTSC. Accelerated or other machine results are not substitutes.
 
 For a hardware check: transfer the appropriate interactive PRG to a stock PAL/NTSC C64, load/run it, traverse the scene including both ramp joins, inspect split stability and buffer presentation, then run its automatic counterpart for a full loop. Record machine model, video standard, loader and observed faults. Do not claim a hardware PASS without performing and recording this test.
 

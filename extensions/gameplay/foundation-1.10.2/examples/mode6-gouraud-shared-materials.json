@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "name": "mode6_gouraud_shared_materials",
+  "graphicsMode": 6,
+  "axisConvention": "world-z-up",
+  "meshSourceSharing": true,
+  "world": { "backgroundColor": 0, "grounds": [] },
+  "camera": { "id": "camera", "position": [0, 0, 8], "rotation": [0, 0, 0], "mode": "fixed" },
+  "lights": [{ "id": "key", "mode": "static", "position": [-52, 12, 58], "intensity": 10 }],
+  "meshes": [{
+    "id": "shared_cube",
+    "type": "mesh",
+    "geometry": "solid",
+    "materialProfile": "single",
+    "builtin": "cube",
+    "gouraud": { "creaseAngle": 60 },
+    "faceOverrides": { "0": { "solidColor": 7, "shading": false } }
+  }],
+  "objects": [
+    {
+      "id": "blue_mirror",
+      "mesh": "shared_cube",
+      "position": [-24, 112, 8],
+      "rotation": [12, 8, 0],
+      "angularVelocity": [0.03, 0.06, 0.02],
+      "scale": 0.55,
+      "visible": true,
+      "materialOverride": "blue",
+      "reflectivityOverride": "mirror",
+      "colorOverride": 6
+    },
+    {
+      "id": "red_satin",
+      "mesh": "shared_cube",
+      "position": [24, 148, 8],
+      "rotation": [20, 12, 0],
+      "angularVelocity": [-0.02, 0.04, -0.03],
+      "scale": 0.55,
+      "visible": true,
+      "materialOverride": "red",
+      "reflectivityOverride": "satin",
+      "colorOverride": 2
+    }
+  ],
+  "contract": { "version": 1, "viewportProfile": "normal", "ground": false }
+}

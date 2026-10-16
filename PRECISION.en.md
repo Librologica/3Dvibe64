@@ -1,7 +1,11 @@
 # Precision profiles — 1.10.0
 
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
 <!-- maintenance-1.10.1 -->
-Official 1.10.1 delivers bounded Mode7 numeric fixes and a guarded aligned allocator fallback. See [numeric behavior](NUMERIC-CORRECTNESS.en.md) and [qualification](QUALIFICATION-1.10.1-rc1.en.md); historical contracts and measurements below retain their versioned scope.
+Official 1.10.1 delivers bounded Mode 7 numeric fixes and a guarded aligned allocator fallback. See [numeric behavior](NUMERIC-CORRECTNESS.en.md) and [qualification](QUALIFICATION-1.10.1-rc1.en.md); historical contracts and measurements below retain their versioned scope.
 
 ## Release 1.10.0: Q8 scene scalability
 
@@ -10,7 +14,7 @@ Q8 now accepts disjoint objects and runtime vertices up to the existing
 gates are removed. Every scene must still pass actual buffer, segment and
 geometry-domain checks; 255 is not a guaranteed capacity in every mode.
 Shared source meshes, Ground, timeline and camera roll remain unsupported
-by this Q8 exporter. Normalized16 remains experimental, two objects/16 vertices.
+by this Q8 exporter. Normalized 16 remains experimental, two objects/16 vertices.
 See [release contract](Q8-SCALABILITY.md). Legacy stays the default.
 [Release notes / Note di versione](RELEASE-NOTES-1.10.0.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
 
@@ -56,7 +60,7 @@ guarantee correct occlusion for intersecting solids.
 
 ## Qualified profile and strict refusals
 
-- Mode 1-7; normal viewport, 160×100 logical pixels without text/FPS split.
+- Mode 1-7; normal viewport, 160 × 100 logical pixels without text/FPS split.
 - `walkLite`, `high-basic-v2`, `fast`, `extended-table`. These are selected inside
   the Q8 adapter; explicitly conflicting CLI options are rejected.
 - Objects with disjoint mesh vertex/face ranges; up to 255 total

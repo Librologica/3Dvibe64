@@ -1,4 +1,14 @@
-# Q8 scalability — 1.10.0
+# Q8 scalability — 1.11.0
+
+The ordinary 1.10.0 geometry contract is retained with the 1.10.2 runtime.
+Il contratto geometrico ordinario 1.10.0 è conservato con runtime 1.10.2.
+Q8-01/Q8-02 use separate profile APIs / usano API di profilo separate.
+
+Current 1.11.0 ordinary metric/geometry contract; inherited sections retain their stated profile/version.
+Contratto metrico/geometrico ordinario 1.11.0; sezioni ereditate con profilo/versione dichiarati.
+Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
+[gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
+[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
 
 Official 1.10.0, promoted from the qualified 1.10.0-rc1.
 Promotion changes documentation and package identity only. Q8 arithmetic, rounding, projection, near/screen clipping,
@@ -16,12 +26,13 @@ single meshes above 128 vertices, the same range-based adapter also replaces
 the signed descending invalidation loop, so invalid vertices are cleared
 through the entire range. One/two-object historical binaries remain unchanged.
 
-MeshSourceSharing, Ground, timeline and camera roll are not added in this release.
+The ordinary Q8 exporter still does not accept MeshSourceSharing, Ground,
+scene timeline or camera roll. Q8-01/Q8-02 use the separate 1.11.0 profile APIs.
 Initial camera rotation is zero; runtime yaw/pitch and existing stationary,
 interactive and automatic camera profiles remain supported. Scaled radius
 <=40 WU and existing coordinate/scale domains remain enforced.
 
-Normalized16 keeps its separate experimental two-object/16-runtime-vertex
+Normalized 16 keeps its separate experimental two-object/16-runtime-vertex
 scope with an explicit object guard; expanding Q8 does not silently expand NF.
 
 [Qualification / Qualificazione](Q8-QUALIFICATION.md) · [Release notes / Note di versione](RELEASE-NOTES-1.10.0.md).
@@ -61,7 +72,7 @@ La rotazione iniziale della camera è zero; restano supportati yaw/pitch runtime
 e i profili camera stationary, interactive e auto esistenti. Sono ancora
 vincolanti raggio scalato <=40 WU e domini di coordinate/scala già previsti.
 
-Normalized16 conserva il proprio ambito sperimentale separato di due oggetti/
+Normalized 16 conserva il proprio ambito sperimentale separato di due oggetti/
 16 vertici runtime, con controllo esplicito del numero di oggetti. Ampliare Q8
 non amplia implicitamente NF.
 

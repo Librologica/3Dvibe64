@@ -1,0 +1,15 @@
+{
+  "schema": 1,
+  "name": "mode5_two_cubes_depth_overlap_fixed",
+  "graphicsMode": 5,
+  "axisConvention": "world-z-up",
+  "world": { "backgroundColor": 0, "grounds": [] },
+  "camera": { "id": "fixed_overlap_camera", "position": [0, -63, 8], "rotation": [0, 0, 0], "mode": "fixed" },
+  "lights": [{ "id": "overlap_key", "mode": "static", "position": [48, 30, 48], "phaseCount": 32, "tickDiv": 2, "staticPhase": 0, "intensity": 10, "pulse": false }],
+  "meshes": [{ "id": "overlap_cube", "type": "mesh", "geometry": "solid", "materialProfile": "single", "builtin": "cube" }],
+  "objects": [
+    { "id": "rear_blue_cube", "mesh": "overlap_cube", "position": [13, 368, 12], "rotation": [22, 18, 0], "angularVelocity": [0, 0, -0.08], "scale": 1.05, "visible": true, "geometry": "solid", "materialProfile": "single", "material": "blue", "reflectivity": "satin" },
+    { "id": "front_red_cube", "mesh": "overlap_cube", "position": [-13, 332, 5], "rotation": [34, 0, 0], "angularVelocity": [0, 0, 0.11], "scale": 1.00, "visible": true, "geometry": "solid", "materialProfile": "single", "material": "red", "reflectivity": "satin" }
+  ],
+  "contract": { "version": 1, "viewportProfile": "small", "ground": false, "runtimeControls": { "rotation": "R" } }
+}

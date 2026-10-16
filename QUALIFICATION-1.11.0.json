@@ -1,0 +1,518 @@
+{
+  "version": "1.11.0",
+  "status": "PASS",
+  "publication": "local only",
+  "sourceOnly": true,
+  "sourceDevelopmentCommit": "cb134c7a10ad1155ee1c8ad5297d0c219a293ce6",
+  "requiredTests": 41,
+  "passedTests": 41,
+  "releaseTests": [
+    {
+      "name": "test_documentation.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_mixed_surfaces.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_billboard_scene.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_door_entity.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_multiple_billboards.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_texture_animation.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_light_bake.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_sector_visibility.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_shared_meshes.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_controlled_motion.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_world_groups.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_common_level.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_dev_gameplay.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_release_contract.py",
+      "status": "PASS",
+      "evidence": "package-gate-rerun.log",
+      "initialStatus": "FAIL",
+      "resolution": "Canonical160×88 README token corrected; full package/native gate rerun PASS"
+    },
+    {
+      "name": "test_world_metrics.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_gouraud_mode6.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_optimization_gate1_lut.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_optimization_gate3_span.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_optimization_gate4_division.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_mobile_yq2.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_camera_move_step.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_camera_angular_repeat.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_object_depth_domain.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_gouraud_mode6_emulators.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_dev7_text_split.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_mode7.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_mode8.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_precision_q8.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_mode8_lintels.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_texture_perspective.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_texture_uvzp.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_texture_fast.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_line_hybrid.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_texture_lod.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_frame_presentation.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_normalized16.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_maintenance_host.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_maintenance_numeric.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_engine_experiments.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_mode8_retirement.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    },
+    {
+      "name": "test_qualification_guard.py",
+      "status": "PASS",
+      "evidence": "public-tests.log"
+    }
+  ],
+  "initialSuite": {
+    "exitCode": 1,
+    "qualifiedInputManifestSHA256": "103535B6BB45AC8EF0323C833D33861760135471D8B1F6123CB7B0AC3CCF59FC",
+    "resolvedFailures": 1,
+    "notes": "One documentation-token failure resolved by complete package/native rerun; original logs preserved externally."
+  },
+  "checkpointRebuilds": [
+    {
+      "name": "camera-roll",
+      "status": "PASS",
+      "PRGSHA256": "EC3A434DFB61AC472EB1FF94D90E5C257D2D767CEA9553E464D2CAFEF5B5CEB2",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "animated-textures",
+      "status": "PASS",
+      "PRGSHA256": "4C9332F5D7CCD08DDAEB1BD011832231DFD1F7E68BA070D4602FEC9DA1C1136F",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "comparison-ui",
+      "status": "PASS",
+      "PRGSHA256": "4F095534693B5C8C2184013707579FC432F4C969DB09FA9B9A110A3A1A8D35DA",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "controlled-animation",
+      "status": "PASS",
+      "PRGSHA256": "C7BFF7C25C68F245BE1EFE69C7D7F07CD45C6D330F5974B0036DF39D92232B34",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "dungeon-masked",
+      "status": "PASS",
+      "PRGSHA256": "10CB2EECF91EAF2CB90F3DA310D502EE3B6ABAC7A8F4BE9C0F0B6320EBEC1606",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "door-entity",
+      "status": "PASS",
+      "PRGSHA256": "FA692F07C3E302E818FF4B8586CDA9B7215D53242F386D02177D6E53A5AF6ADA",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "interactive-billboard",
+      "status": "PASS",
+      "PRGSHA256": "40B83505D87CA08C9ADBEC1ABFDC801A2E12BA70F5805AEE9BA428790C1839C2",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "mixed-surfaces",
+      "status": "PASS",
+      "PRGSHA256": "5BD5BC5192752565C1E20B0433D719ED4168C18055F5A612B9E8FF67AA248800",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "multiple-billboards",
+      "status": "PASS",
+      "PRGSHA256": "8AFE14994B96CB48E6607487050C7DFD9CDB11A311282C93BC00E833B71CF280",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "room-groups",
+      "status": "PASS",
+      "PRGSHA256": "3601C88421777E33147BE70000035C977A22CCE70B628929CB16F01253B057B7",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "sector-visibility",
+      "status": "PASS",
+      "PRGSHA256": "A8205371A795A4C002E4C7D2AE58A4882B6FFBBAA1F444CEDD0BD5162A32D2AD",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "shared-meshes",
+      "status": "PASS",
+      "PRGSHA256": "749D1B3551DE8BC7427B9BB602850924A3BADA548DD7D82CC74C61E57DACAAA2",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "static-light",
+      "status": "PASS",
+      "PRGSHA256": "CDE171254FE84C1AD7AD509DD0DFFD3122A9267DF5A39BB8E1D8AAFDEA3469FB",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "common-level",
+      "status": "PASS",
+      "PRGSHA256": "3601C88421777E33147BE70000035C977A22CCE70B628929CB16F01253B057B7",
+      "checkpointIdentical": true
+    },
+    {
+      "name": "underworld-integration",
+      "status": "PASS",
+      "PRGSHA256": "249D99C34BA0A50C318A1577F07E632ACD3BEEE299E3AFEDCDDDD31966B6FA2E",
+      "checkpointIdentical": true
+    }
+  ],
+  "quickStartChecks": [
+    {
+      "name": "solid",
+      "status": "PASS"
+    },
+    {
+      "name": "texture",
+      "status": "PASS"
+    },
+    {
+      "name": "map",
+      "status": "PASS"
+    },
+    {
+      "name": "level-validation",
+      "status": "PASS"
+    },
+    {
+      "name": "level-plan",
+      "status": "PASS"
+    },
+    {
+      "name": "powershell-profile",
+      "status": "PASS"
+    }
+  ],
+  "preservation": {
+    "result": "PASS",
+    "qualifiedSourceDifferences": [
+      {
+        "path": "ASSEMBLY-GUIDE.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "ASSEMBLY-GUIDE.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "GAMEPLAY.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "GAMEPLAY.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "MANIFEST.sha256",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "MAPS-2.5D.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "MAPS-2.5D.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "MODE7-FAST.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "MODE7-FAST.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "MODE7.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "MODE7.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "MODE8.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "MODE8.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "Q8-SCALABILITY.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "QUICKSTART.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "README.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "README.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "README.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "VIBE-CODING-GUIDE.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "VIBE-CODING-GUIDE.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "examples/README.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "scripts/seal_dev.py",
+        "change": "module help/docstrings or invalid-input diagnostic text only"
+      },
+      {
+        "path": "scripts/test_dev_gameplay.py",
+        "change": "module help/docstrings or invalid-input diagnostic text only"
+      },
+      {
+        "path": "work/build-gameplay.py",
+        "change": "module help/docstrings or invalid-input diagnostic text only"
+      },
+      {
+        "path": "work/qualify-gameplay.py",
+        "change": "module help/docstrings or invalid-input diagnostic text only"
+      },
+      {
+        "path": "extensions/gameplay/billboards/MULTIPLE-DEV.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "extensions/gameplay/billboards/MULTIPLE-DEV.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "extensions/gameplay/billboards/scene.py",
+        "change": "module help/docstrings or invalid-input diagnostic text only"
+      },
+      {
+        "path": "extensions/gameplay/entities/DEV.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "extensions/gameplay/entities/DEV.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "extensions/gameplay/motion/CONTROLLED-DEV.it.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "extensions/gameplay/experiments/underworld/README.en.md",
+        "change": "documentation or qualification metadata"
+      },
+      {
+        "path": "extensions/gameplay/experiments/underworld/README.it.md",
+        "change": "documentation or qualification metadata"
+      }
+    ],
+    "ordinaryWorkFilesByteIdentical": 80,
+    "foundationFilesByteIdentical": 258,
+    "developmentPreserved": true
+  },
+  "ordinaryBuilderSHA256": "79510B085B6B786A87F2F2814B2BED0FE2C95313EDAF0A3C121B89EA02C9C14F",
+  "toolSHA256": {
+    "TASS64_EXE": "46920377FDE73464068556B1A60F6E3794707966F31D45936741E618F78384B5",
+    "VICE_X64SC": "B48F9117916E960CA6A59CA32BC63765F9B30F2B6BB3EF056514C8BCCE0A7030",
+    "VICE_XSCPU64": "484F0B137E274BAEA920579810169CDB05A9A1127D2B393CEAA99B1546D56182",
+    "VICE_TURBO6510": "66AC67C203B94D61942AAC7601BADD1D52F261111D61F3745EE73AF46B22B23F"
+  },
+  "host": {
+    "platform": "Windows",
+    "Python": "3.13.14",
+    "Pillow": "12.3.0",
+    "py65": "1.2.0",
+    "PowerShell": "7",
+    "assembler": "64tass1.60.3243"
+  },
+  "documentation": {
+    "languagePairs": 34,
+    "localLinks": "verified by test_documentation.py",
+    "profiles": 13,
+    "configurationOptions": 9
+  },
+  "nativeEvidencePolicy": "Prior native correctness/FPS evidence reused only for exact program bytes and original launch conditions. No fresh performance claim from promotion.",
+  "externalEvidence": "Local release reports retain actual commands, tool paths, raw suite output, checkpoint hashes and quick-start acquisition logs.",
+  "limitations": [
+    "bounded experimental gameplay adapters, no general combined scene API",
+    "WORLD-01 UI recovery not applied",
+    "Linux and physical hardware not newly qualified"
+  ],
+  "excludedDistributionAssets": [
+    "precompiled programs",
+    "demo archives",
+    "music",
+    "video",
+    "native captures",
+    "external dependency binaries"
+  ]
+}

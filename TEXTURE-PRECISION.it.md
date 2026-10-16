@@ -1,7 +1,11 @@
 # Precisione texture Mode 7 — 1.7.0
 
+Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
+in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
+
 <!-- maintenance-1.10.1 -->
-La 1.10.1 ufficiale corregge casi numerici Mode7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
+La 1.10.1 ufficiale corregge casi numerici Mode 7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
 
 Release 1.10.0: i tetti di codifica Q8 sono estesi; la nuova qualificazione
 nativa con più oggetti copre i Modes 1–7 affine. Le misure perspective/fast/LOD
@@ -9,7 +13,7 @@ seguenti restano quelle ereditate sulle scene originali.
 Vedere [ambito della release](Q8-SCALABILITY.md). I controlli RAM/depth restano obbligatori.
 
 Il contratto esatto qui sotto descrive `textureQuality: standard` (default).
-Per sampling block8 approssimato con ricostruzione superiore selezionare
+Per sampling block 8 approssimato con ricostruzione superiore selezionare
 `textureQuality: fast` e leggere [Mode 7 veloce](MODE7-FAST.it.md).
 
 ## Default e selezione esplicita
@@ -36,7 +40,7 @@ musica. L'esempio deriva dal cubo diagnostico pubblico, non dalla scena di svilu
 
 ## Profilo supportato
 
-Restano tutti i vincoli Q8: viewport normal 160×100 logici senza split header/FPS;
+Restano tutti i vincoli Q8: viewport normal 160 × 100 logici senza split header/FPS;
 walkLite stationary/interactive/auto; PAL/NTSC esplicito; oggetti con geometria non
 condivisa; tetto a byte di 255 oggetti/vertici subordinato alla RAM; raggio scalato <=40 WU per oggetto;
 scala>0 e<=1; niente Ground, timeline, small o roll della camera. L'allocatore
@@ -59,7 +63,7 @@ invariati. Non viene aggiunta illuminazione precalcolata o legata alla camera.
 
 Il near clipping trasporta UV grezze Q4.4 con 8 bit frazionari aggiuntivi. Per
 profondità camera Q16.8, W=floor(8388608/depthQ8). Ogni carrier attributo vale
-floor(rawUV16*W/32768), unsigned 16; anche W è unsigned 16. Lo screen clipping
+floor(rawUV 16*W/32768), unsigned 16; anche W è unsigned 16. Lo screen clipping
 interpola UW/VW/W con il parametro geometrico. DDA edge/span con quoziente e
 resto euclidei esatti avanzano i carrier. La coordinata campionata è
 floor(carrier*128/W); il byte basso alimenta il sampler repeat esistente.
@@ -75,7 +79,7 @@ oracolo floating-point, né si aumenta risoluzione o precisione UV sorgente.
 
 - Setup span signed con divisione restoring 16/8 e arrotondamento euclideo.
 - Divisione 48/24 di proiezione/clipping senza bit iniziali nulli, quoziente/resto
-  invariati. Prodotto clipping 16×16 protetto, con percorso 24×24 completo.
+  invariati. Prodotto clipping 16 × 16 protetto, con percorso 24 × 24 completo.
 - Encoding al near plane 1 WU ridotto all'identità esatta. FIFO di 8 elementi per
   profondità frazionaria completa e reciproco esatto, non fasce arrotondate.
   Costa 34 byte di stato per PRG e opera solo nel thread principale.
@@ -107,7 +111,7 @@ per texture prospettiche non uniformi con illuminazione flat/Gouraud C.
 Campionamento U/V e risultati numerici restano esatti nel contratto intero
 dei carrier esistente. Sette passi frazionari unrolled; nessun patching del
 denominatore o approssimazione. Il divisore scalare originale gestisce input
-fuori dal dominio veloce e W nullo. Otto byte zero page $E8-$EF sono riservati
+fuori dal dominio veloce e W nullo. Otto byte zero page $E 8-$EF sono riservati
 mentre il renderer controlla la macchina: IRQ/estensioni KERNAL esterni non
 devono usare questo scratch o chiamare il sampler. La routine non è rientrante.
 Gli IRQ del renderer esistente non accedono a questo stato. Aumenta il codice,
@@ -121,4 +125,3 @@ esclusi stall VIC, IRQ, attesa e presentazione: non sono FPS nativi o guadagni
 universali. Il codice aggiunto riduce il margine memoria della singola scena;
 layout non sicuri restano rifiutati, non semplificati in silenzio.
 Vedere [note release](RELEASE-NOTES-1.6.1.md).
-

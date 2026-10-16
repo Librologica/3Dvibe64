@@ -1,0 +1,254 @@
+{
+  "poses": [
+    {
+      "pose": [
+        2432,
+        2534,
+        272,
+        32,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1184,
+        2177,
+        356,
+        32,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1566,
+        1657,
+        243,
+        32,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2616,
+        997,
+        121,
+        32,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        4740,
+        915,
+        122,
+        32,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6790,
+        951,
+        154,
+        32,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6781,
+        1963,
+        473,
+        32,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5104,
+        2283,
+        378,
+        32,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2980,
+        2318,
+        390,
+        32,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2438,
+        3445,
+        508,
+        51,
+        168
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        3281,
+        4201,
+        125,
+        64,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        3963,
+        5248,
+        3,
+        84,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        3018,
+        6114,
+        391,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1527,
+        5570,
+        291,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1113,
+        6008,
+        10,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1734,
+        7207,
+        79,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        3646,
+        7349,
+        121,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5473,
+        7182,
+        124,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6915,
+        6975,
+        239,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6682,
+        5425,
+        358,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6059,
+        6111,
+        383,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        4165,
+        5989,
+        372,
+        96,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        3962,
+        4506,
+        269,
+        64,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2607,
+        4206,
+        360,
+        64,
+        0
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2436,
+        2592,
+        259,
+        32,
+        0
+      ],
+      "origin": "historical"
+    }
+  ]
+}

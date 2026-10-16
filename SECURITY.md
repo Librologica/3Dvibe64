@@ -24,7 +24,7 @@ available. No response-time or bounty commitment is made by this document.
 
 ### Versione supportata
 
-Le correzioni di sicurezza si applicano all'ultima release1.x pubblicata di
+Le correzioni di sicurezza si applicano all'ultima release 1.x pubblicata di
 3Dvibe64. Snapshot precedenti e fork modificati non sono mantenuti da
 librologica.digital.
 

@@ -1,0 +1,276 @@
+{
+  "poses": [
+    {
+      "pose": [
+        5939,
+        2509,
+        469
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6060,
+        4443,
+        83
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        7001,
+        5897,
+        508
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5996,
+        7112,
+        364
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5256,
+        6045,
+        383
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2706,
+        6045,
+        385
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1799,
+        7206,
+        506
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        3466,
+        7508,
+        125
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        4475,
+        6593,
+        260
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2801,
+        6079,
+        377
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1833,
+        4818,
+        250
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2796,
+        4014,
+        251
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1836,
+        2492,
+        360
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1146,
+        2398,
+        102
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2128,
+        1288,
+        182
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        4157,
+        1406,
+        126
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6378,
+        642,
+        134
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        7085,
+        2018,
+        494
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5920,
+        2829,
+        494
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5854,
+        4206,
+        315
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5486,
+        3256,
+        381
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        3016,
+        3205,
+        388
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        2982,
+        4373,
+        469
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1234,
+        4513,
+        455
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        1870,
+        5882,
+        56
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        4083,
+        6073,
+        135
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5147,
+        5007,
+        141
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6771,
+        4749,
+        309
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5885,
+        3355,
+        267
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        4882,
+        2368,
+        261
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        5909,
+        761,
+        167
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        7033,
+        1486,
+        4
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6011,
+        2467,
+        423
+      ],
+      "origin": "historical"
+    },
+    {
+      "pose": [
+        6001,
+        2473,
+        424
+      ],
+      "origin": "historical"
+    }
+  ]
+}

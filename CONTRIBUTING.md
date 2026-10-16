@@ -82,9 +82,9 @@ Inviando un contributo, si conferma di avere il diritto di inviarlo e si accetta
 che sia distribuito sotto la stessa licenza della parte del progetto modificata:
 
 - software, script, esempi JSON, materiale di validazione e codice engine generato:
-  PolyForm Noncommercial License1.0.0;
+  PolyForm Noncommercial License 1.0.0;
 - documentazione Markdown e manuali: Creative Commons
-  Attribution-NonCommercial4.0 International.
+  Attribution-NonCommercial 4.0 International.
 
 L'attribuzione obbligatoria dell'autore del progetto originale resta
 `librologica.digital`. Un contributo non concede diritti d'uso commerciale.

@@ -13,6 +13,20 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'work'))
 from mode8.common import require_qualification_checks
 TESTS = (
+    "test_documentation.py",
+    "test_mixed_surfaces.py",
+    "test_billboard_scene.py",
+    "test_door_entity.py",
+    "test_multiple_billboards.py",
+    "test_texture_animation.py",
+    "test_light_bake.py",
+    "test_sector_visibility.py",
+    "test_shared_meshes.py",
+    "test_controlled_motion.py",
+    "test_world_groups.py",
+    "test_common_level.py",
+
+    "test_dev_gameplay.py",
     "test_release_contract.py", "test_world_metrics.py", "test_gouraud_mode6.py",
     "test_optimization_gate1_lut.py", "test_optimization_gate3_span.py",
     "test_optimization_gate4_division.py", "test_mobile_yq2.py",

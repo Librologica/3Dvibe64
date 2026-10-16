@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "meshes": {
+    "comparison-room": [
+      {
+        "mode": "texture"
+      },
+      {
+        "mode": "texture"
+      },
+      {
+        "mode": "texture"
+      },
+      {
+        "mode": "texture"
+      },
+      {
+        "mode": "texture"
+      },
+      {
+        "mode": "texture"
+      },
+      {
+        "mode": "texture"
+      },
+      {
+        "mode": "texture"
+      },
+      {
+        "mode": "gouraud",
+        "levels": [
+          16,
+          24,
+          0
+        ]
+      },
+      {
+        "mode": "gouraud",
+        "levels": [
+          16,
+          32,
+          24
+        ]
+      },
+      {
+        "mode": "gouraud",
+        "levels": [
+          16,
+          8,
+          32
+        ]
+      },
+      {
+        "mode": "gouraud",
+        "levels": [
+          16,
+          0,
+          8
+        ]
+      },
+      {
+        "mode": "flat",
+        "index": 2
+      },
+      {
+        "mode": "flat",
+        "index": 2
+      },
+      {
+        "mode": "texture"
+      },
+      {
+        "mode": "texture"
+      }
+    ]
+  }
+}

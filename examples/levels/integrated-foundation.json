@@ -1,0 +1,342 @@
+{
+  "schema": 1,
+  "format": "3Dvibe64.level",
+  "id": "integrated-foundation",
+  "axisConvention": "world-z-up",
+  "target": {
+    "standard": "pal",
+    "multiplier": 64,
+    "quality": "precise",
+    "textureLOD": [
+      14,
+      22
+    ],
+    "music": false,
+    "autoTransitions": true
+  },
+  "memory": {
+    "reserveBytes": 512,
+    "minimumContiguousBytes": 256,
+    "stagingBytes": 1024
+  },
+  "features": [],
+  "assets": [
+    {
+      "id": "guardian-art",
+      "kind": "billboard",
+      "source": "builtin:guardian"
+    },
+    {
+      "id": "room-materials",
+      "kind": "materials",
+      "source": "builtin:mixed-room"
+    }
+  ],
+  "groups": [
+    {
+      "id": "hall",
+      "geometry": {
+        "template": "two-room-divider-v1",
+        "halfWidth": 24,
+        "floorLevel": null,
+        "doorIndex": 2
+      },
+      "materials": "room-materials",
+      "entry": "hall-entry"
+    },
+    {
+      "id": "crypt",
+      "geometry": {
+        "template": "two-room-divider-v1",
+        "halfWidth": 20,
+        "floorLevel": 10,
+        "doorIndex": 3
+      },
+      "materials": "room-materials",
+      "entry": "crypt-entry"
+    }
+  ],
+  "rooms": [
+    {
+      "id": "hall-front",
+      "group": "hall",
+      "bounds": {
+        "min": [
+          -24,
+          -24,
+          -10
+        ],
+        "max": [
+          24,
+          8,
+          18
+        ]
+      }
+    },
+    {
+      "id": "hall-back",
+      "group": "hall",
+      "bounds": {
+        "min": [
+          -24,
+          8,
+          -10
+        ],
+        "max": [
+          24,
+          24,
+          18
+        ]
+      }
+    },
+    {
+      "id": "crypt-front",
+      "group": "crypt",
+      "bounds": {
+        "min": [
+          -20,
+          -24,
+          -10
+        ],
+        "max": [
+          20,
+          8,
+          18
+        ]
+      }
+    },
+    {
+      "id": "crypt-back",
+      "group": "crypt",
+      "bounds": {
+        "min": [
+          -20,
+          8,
+          -10
+        ],
+        "max": [
+          20,
+          24,
+          18
+        ]
+      }
+    }
+  ],
+  "objects": [
+    {
+      "id": "hall-guardian",
+      "kind": "billboard",
+      "room": "hall-front",
+      "position": [
+        7,
+        0,
+        -2.5
+      ],
+      "asset": "guardian-art",
+      "size": [
+        6,
+        16
+      ],
+      "animations": {
+        "idle": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "ticksPerFrame": 8
+        },
+        "used": {
+          "frames": [
+            4,
+            5
+          ],
+          "ticksPerFrame": 8
+        }
+      },
+      "interaction": {
+        "useRange": 18,
+        "collisionHalfSize": [
+          3,
+          7.5
+        ]
+      },
+      "state": {
+        "used": false
+      }
+    },
+    {
+      "id": "hall-door",
+      "kind": "sliding-door",
+      "room": "hall-front",
+      "position": [
+        0,
+        8,
+        -10
+      ],
+      "size": [
+        10,
+        18
+      ],
+      "state": {
+        "open": false
+      }
+    },
+    {
+      "id": "crypt-guardian",
+      "kind": "billboard",
+      "room": "crypt-front",
+      "position": [
+        7,
+        0,
+        -2.5
+      ],
+      "asset": "guardian-art",
+      "size": [
+        6,
+        16
+      ],
+      "animations": {
+        "idle": {
+          "frames": [
+            0,
+            1,
+            2,
+            3
+          ],
+          "ticksPerFrame": 8
+        },
+        "used": {
+          "frames": [
+            4,
+            5
+          ],
+          "ticksPerFrame": 8
+        }
+      },
+      "interaction": {
+        "useRange": 18,
+        "collisionHalfSize": [
+          3,
+          7.5
+        ]
+      },
+      "state": {
+        "used": true
+      }
+    },
+    {
+      "id": "crypt-door",
+      "kind": "sliding-door",
+      "room": "crypt-front",
+      "position": [
+        0,
+        8,
+        -10
+      ],
+      "size": [
+        10,
+        18
+      ],
+      "state": {
+        "open": true
+      }
+    }
+  ],
+  "connections": [
+    {
+      "id": "hall-doorway",
+      "kind": "doorway",
+      "from": "hall-front",
+      "to": "hall-back",
+      "door": "hall-door"
+    },
+    {
+      "id": "crypt-doorway",
+      "kind": "doorway",
+      "from": "crypt-front",
+      "to": "crypt-back",
+      "door": "crypt-door"
+    },
+    {
+      "id": "hall-crypt",
+      "kind": "group-transition",
+      "from": "hall-back",
+      "to": "crypt-front",
+      "fromSpawn": "hall-entry",
+      "toSpawn": "crypt-entry"
+    }
+  ],
+  "spawns": [
+    {
+      "id": "hall-entry",
+      "room": "hall-front",
+      "position": [
+        0,
+        -20,
+        0
+      ],
+      "yawDegrees": 0,
+      "pitchDegrees": 0
+    },
+    {
+      "id": "crypt-entry",
+      "room": "crypt-front",
+      "position": [
+        0,
+        -20,
+        0
+      ],
+      "yawDegrees": 0,
+      "pitchDegrees": 0
+    }
+  ],
+  "events": [
+    {
+      "id": "hall-use-guardian",
+      "trigger": {
+        "object": "hall-guardian",
+        "signal": "use"
+      },
+      "actions": [
+        {
+          "type": "toggle",
+          "object": "hall-door",
+          "field": "open"
+        },
+        {
+          "type": "animate-from",
+          "object": "hall-guardian",
+          "source": "hall-door",
+          "field": "open",
+          "whenFalse": "idle",
+          "whenTrue": "used"
+        }
+      ]
+    },
+    {
+      "id": "crypt-use-guardian",
+      "trigger": {
+        "object": "crypt-guardian",
+        "signal": "use"
+      },
+      "actions": [
+        {
+          "type": "toggle",
+          "object": "crypt-door",
+          "field": "open"
+        },
+        {
+          "type": "animate-from",
+          "object": "crypt-guardian",
+          "source": "crypt-door",
+          "field": "open",
+          "whenFalse": "idle",
+          "whenTrue": "used"
+        }
+      ]
+    }
+  ],
+  "start": "hall-entry"
+}

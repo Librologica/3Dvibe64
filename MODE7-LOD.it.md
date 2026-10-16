@@ -1,5 +1,9 @@
 # LOD graduale delle texture Mode 7 (1.8.0)
 
+Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
+in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
+
 Opzione esplicita di qualità dell'immagine: non raycasting, mipmapping o ottimizzazione a immagine identica. Geometria, copertura, estremi prospettici e illuminazione mantengono i contratti esistenti. `off` è il default. I profili di qualità texture standard e fast restano selezionabili separatamente.
 
 ```powershell
@@ -10,7 +14,7 @@ La scena può invece contenere `"textureLOD": "gradual"`, `"textureLODNear": 28`
 
 La build conta i 256 texel runtime reali (PNG e inline equivalenti). Il pigmento dominante è il più frequente fra 1/2/3, con indice minore in caso di parità. L'accento è il pigmento presente più saturo secondo una graduatoria RGB VIC-II fissa, poi il più luminoso, poi l'indice minore. La graduatoria non modifica la palette dell'emulatore. Selezione specifica per la palette di ogni faccia runtime; nessun indice texture o elenco di stanze codificato.
 
-La minima profondità camera dei corner originali seleziona conservativamente il dettaglio. Un corner dietro la camera conserva il dettaglio completo. Fino a `near` la texture resta completa. Fra near e far una maschera Bayer 4×4 ancorata miscela dettaglio completo e riempimento lontano in sedici passi. Da far il riempimento usa 75% pigmento dominante e 25% accento. La composizione Gouraud/flat, se scelta, avviene successivamente. Le texture già uniformi restano invariate. Classificazione per faccia, non per pixel: una superficie lunga può mantenere dettaglio per un corner vicino. Nessuna piramide di texture a risoluzioni inferiori.
+La minima profondità camera dei corner originali seleziona conservativamente il dettaglio. Un corner dietro la camera conserva il dettaglio completo. Fino a `near` la texture resta completa. Fra near e far una maschera Bayer 4 × 4 ancorata miscela dettaglio completo e riempimento lontano in sedici passi. Da far il riempimento usa 75% pigmento dominante e 25% accento. La composizione Gouraud/flat, se scelta, avviene successivamente. Le texture già uniformi restano invariate. Classificazione per faccia, non per pixel: una superficie lunga può mantenere dettaglio per un corner vicino. Nessuna piramide di texture a risoluzioni inferiori.
 
 Standard ancora il pattern a x/y logici. Fast usa per y l'indice delle righe campionate (`y/2`) e duplica il risultato nella riga omessa. Nessun dithering temporale. Nel LOD lontano il dispatch uniforme esistente salta divisione UV e avanzamento dei carrier; conserva la lettura sicura della pagina originale, sostituendola con il pigmento selezionato. Encoding e controlli di dominio della profondità restano attivi.
 

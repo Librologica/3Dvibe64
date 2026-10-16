@@ -1,0 +1,38 @@
+{
+  "schema": 1,
+  "name": "mode6_gouraud_torus_material_keys_fps",
+  "graphicsMode": 6,
+  "axisConvention": "world-z-up",
+  "world": { "backgroundColor": 0, "grounds": [] },
+  "camera": { "id": "camera", "position": [43, 63, -19], "rotation": [0, 0, 0], "mode": "walkFull" },
+  "lights": [{
+    "id": "key",
+    "mode": "orbit",
+    "orbit": "tumble3d",
+    "phaseCount": 32,
+    "tickDiv": 3,
+    "staticPhase": 0,
+    "intensity": 10,
+    "pulse": false
+  }],
+  "meshes": [{
+    "id": "smooth_torus",
+    "type": "mesh",
+    "geometry": "solid",
+    "materialProfile": "single",
+    "builtin": "torus6x6",
+    "gouraud": { "creaseAngle": 180 }
+  }],
+  "objects": [{
+    "id": "interactive_torus",
+    "mesh": "smooth_torus",
+    "position": [43, 230, -19],
+    "rotation": [20, 12, 0],
+    "angularVelocity": [0.14, 0.20, 0.28],
+    "scale": 0.70,
+    "visible": true,
+    "material": "active",
+    "reflectivity": "active"
+  }],
+  "contract": { "version": 1, "viewportProfile": "normal", "ground": false }
+}

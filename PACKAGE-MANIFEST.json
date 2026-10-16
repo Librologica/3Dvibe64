@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.10.2",
-    "version": "1.10.2",
+    "displayName": "3Dvibe64 1.11.0",
+    "version": "1.11.0",
     "distribution": "source-sdk",
-    "permanentFiles": 258,
+    "permanentFiles": 794,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -1899,5 +1899,237 @@
     "publication": "local only; GitHub authorization separate",
     "qualifications": "Windows/VICE named profiles; Linux and physical hardware untested",
     "evidenceArchive": "3Dvibe64_1.10.2_evidence.zip"
+  },
+  "gameplayDevelopment": {
+    "experimental": true,
+    "builder": "work/build-gameplay.py",
+    "presets": [
+      "examples/gameplay/comparison-ui.json",
+      "examples/gameplay/dungeon-masked.json",
+      "examples/gameplay/mixed-surfaces.json",
+      "examples/gameplay/interactive-billboard.json",
+      "examples/gameplay/door-entity.json",
+      "examples/gameplay/multiple-billboards.json",
+      "examples/gameplay/animated-textures.json",
+      "examples/gameplay/static-light.json",
+      "examples/gameplay/sector-visibility.json",
+      "examples/gameplay/shared-meshes.json",
+      "examples/gameplay/controlled-animation.json",
+      "examples/gameplay/camera-roll.json",
+      "examples/gameplay/room-groups.json"
+    ],
+    "publicSceneAPI": false,
+    "foundation": "extensions/gameplay/foundation-1.10.2",
+    "mixedSurfaces": {
+      "status": "experimental bounded profile",
+      "modes": [
+        "texture",
+        "flat",
+        "gouraud"
+      ],
+      "configuration": "extensions/gameplay/profiles/mixed-surfaces/assets/surfaces.json",
+      "automaticLightBake": false,
+      "hostBakeProfile": "static-light"
+    },
+    "billboardSceneAPI": "experimental one/two instances in bounded multiple-billboards profile; shared asset/palette, exact Q8 ordering",
+    "door": "experimental bounded divider/door, state/collision/occlusion proof",
+    "textureAnimation": {
+      "status": "experimental bounded profile",
+      "configuration": "extensions/gameplay/profiles/animated-textures/assets/texture-animation.json",
+      "runtimeTexelCopies": false,
+      "maxGroups": 2,
+      "maxFrames": 4
+    },
+    "staticLightBake": {
+      "status": "experimental bounded Gouraud receivers",
+      "configuration": "extensions/gameplay/profiles/static-light/assets/light-bake.json",
+      "runtimeCodeAdded": false,
+      "residentBytesAdded": 0
+    },
+    "sectorVisibility": {
+      "profile": "sector-visibility",
+      "status": "experimental conservative connectivity compiler and bounded native proof",
+      "compilerLimits": {
+        "sectors": 8,
+        "doors": 4,
+        "portals": 16
+      },
+      "nativeSectors": 2,
+      "nativePortals": 1,
+      "compactFormat": "PV01 counts, face ownership masks, state-major sector PVS",
+      "demoPayloadBytes": 43,
+      "selection": "closed door only; any opening connects; near/outside/oblique views accept all",
+      "nativeAngleScope": "exact yaw0/180 and pitch0; historical raster edge pixels preserved",
+      "angularPortalClipping": false,
+      "nativeCodeBytes": 180,
+      "nativeDataBytes": 41,
+      "remainingGapBytes": 1183
+    },
+    "sharedMeshes": {
+      "profile": "shared-meshes",
+      "status": "experimental bounded native geometry sharing",
+      "maxInstances": 4,
+      "minInstances": 2,
+      "sourceVertices": 6,
+      "sourceTriangles": 8,
+      "sourceGeometryBytes": 50,
+      "duplicatedFourInstanceBytes": 200,
+      "sourceGeometrySavedBytes": 150,
+      "positionStepWU": 0.00390625,
+      "scaleStep": 0.015625,
+      "yawBits": 16,
+      "mutableStateAndCachesPerInstance": true,
+      "vertexCacheBytesPerVertex": 36,
+      "descriptorAndIndexBytesPerInstance": 16,
+      "sharedScratchBytes": 35,
+      "remainingGapBytes": 5281,
+      "replicatedRemainingGapBytes": 5131,
+      "publicMeshSourceSharingAPI": false,
+      "scope": "disjoint convex six-vertex/eight-triangle solids in original bounded room; dedicated profile"
+    },
+    "controlledMotion": {
+      "profiles": [
+        "controlled-animation",
+        "camera-roll"
+      ],
+      "status": "experimental bounded Q8 clip controls and signed24 camera roll",
+      "instances": [
+        2,
+        4
+      ],
+      "keysPerClip": [
+        1,
+        8
+      ],
+      "ticksPerKey": 64,
+      "speeds": [
+        1,
+        2,
+        4
+      ],
+      "commandABI": "an_control A opcode,X instance,Y argument; carry success",
+      "cameraABI": "cr_set_roll A low,Y high phase;cr_resume",
+      "positionStepWU": 0.00390625,
+      "yawAndRollBits": 16,
+      "scaleBitsFraction": 6,
+      "scaleAccumulatorBitsFraction": 14,
+      "cameraModes": [
+        "dungeon locks roll0",
+        "flight full16-bit roll after yaw/pitch before clipping"
+      ],
+      "clipSourceBytes": 344,
+      "clipStateBytes": 80,
+      "bankSourceBytes": 192,
+      "bankStateBytes": 9,
+      "playerCodeBytes": 650,
+      "keyboardCodeBytes": 285,
+      "rollCodeBytes": 361,
+      "additionalAllocatedBytes": 1979,
+      "remainingGapBytes": 3302,
+      "ordinaryEngineAPIChanged": false
+    },
+    "worldGroups": {
+      "profile": "room-groups",
+      "status": "experimental bounded external group loading",
+      "groups": [
+        2,
+        8
+      ],
+      "roomsPerGroup": 2,
+      "residentGroups": 1,
+      "vertices": 21,
+      "faces": 32,
+      "stagingBytes": 1024,
+      "groupFileBytes": 762,
+      "payloadBytes": 748,
+      "persistentBytesPerGroup": 17,
+      "ioBlockBytes": 620,
+      "managerBlockBytes": 1237,
+      "remainingGapBytes": 1006,
+      "eightGroupRemainingGapBytes": 460,
+      "additionalAllocatedBytes": 2496,
+      "equal48KeyControlAdditionalBytes": 2904,
+      "storage": "KERNAL sequential input on VICE filesystem device8; not physical1541 timing",
+      "integrity": "fixed channels, exact length, CRC16-CCITT matched against resident expected CRC",
+      "state": "per-group guardian/events, door lift/state and animation; RAM session only; inactive groups freeze",
+      "generalTopology": false,
+      "ordinaryEngineAPIChanged": false
+    },
+    "commonLevel": {
+      "status": "experimental common authoring format and exact assembled budget",
+      "format": "3Dvibe64.level/1",
+      "compiler": "work/build-level.py",
+      "schema": "extensions/gameplay/level/level.schema.json",
+      "backend": "WORLD-01 bounded adapter",
+      "examples": [
+        "examples/levels/integrated-foundation.json",
+        "examples/levels/integration-planning.json"
+      ],
+      "authoring": [
+        "groups",
+        "rooms",
+        "objects",
+        "connections",
+        "spawns",
+        "assets",
+        "events"
+      ],
+      "nativeDescriptorBytesAdded": 0,
+      "measuredHelperPoolBytes": 26018,
+      "allocatedBytes": 25012,
+      "freeBytes": 1006,
+      "largestRawFreeBytes": 965,
+      "largestAligned2FreeBytes": 964,
+      "defaultReserveBytes": 512,
+      "bytesBeyondReserve": 494,
+      "proposedUIStartupRecovery": {
+        "status": "not applied",
+        "candidateAllocatedBytes": 3759,
+        "hypotheticalFreeBytes": 4765,
+        "hypotheticalLargestAligned2Bytes": 2904,
+        "bootExtensionArenaBytes": 2048,
+        "additionalEventStateBytes": 512,
+        "safetyMarginBytes": 512,
+        "unassignedBeyondSafetyBytes": 1693
+      },
+      "combinedFeaturesImplemented": false,
+      "ordinaryEngineAPIChanged": false
+    },
+    "underworldIntegration": {
+      "status": "bounded integrated Underworld experiment",
+      "builder": "work/build-underworld.py",
+      "scope": "3 rooms, three static flat cubes, precise96x60 window, skeleton and outlined guardian",
+      "features": [
+        "BB-02 scene and animation API",
+        "range-checked entity events, SPACE use and automatic proximity trigger",
+        "event-controlled skeleton walking/attack clips",
+        "conservative negative-Z room rejection",
+        "post-UI-init storage reuse"
+      ],
+      "UIStartupBytesReused": 2904,
+      "geometricLOD": false,
+      "textureLOD": [
+        14,
+        22
+      ],
+      "worldGroups": false,
+      "commonLevelSchema": false,
+      "publicGeneralAPI": false,
+      "revision": "cubes-restored",
+      "cubes": 3,
+      "centralCubeMotion": "static",
+      "compactPainterBytes": 175
+    }
+  },
+  "release": {
+    "status": "official local release",
+    "sourceDevelopment": "1.11.0-dev13/cubes-restored",
+    "publication": "local only",
+    "demoArchives": false,
+    "documentation": "DOCUMENTATION.json",
+    "releaseNotes": {
+      "en": "RELEASE-NOTES-1.11.0.en.md",
+      "it": "RELEASE-NOTES-1.11.0.it.md"
+    }
   }
 }

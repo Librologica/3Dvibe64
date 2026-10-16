@@ -1,6 +1,10 @@
 # Safe bitmap presentation (Modes 1–7)
 
-The old renderer returned from `wait_raster` just after raster 240, toggled the software draw buffer and immediately reused the old front buffer. The VIC-II bank/D018 update occurred in the following raster IRQ. At high CPU speed, clear could therefore erase the bottom of an image still being scanned out. The defect was reproduced on PAL/NTSC Mode 7 complete and fast demo builds; it is not evidence of a geometry or texture-sampling fault.
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
+The old renderer returned from `wait_raster` just after raster 240, toggled the software draw buffer and immediately reused the old front buffer. The VIC-II bank/D 018 update occurred in the following raster IRQ. At high CPU speed, clear could therefore erase the bottom of an image still being scanned out. The defect was reproduced on PAL/NTSC Mode 7 complete and fast demo builds; it is not evidence of a geometry or texture-sampling fault.
 
 `-FramePresentation safe` is now the default. It waits for raster 252 to end, beyond the displayed bitmap area, before permitting the next clear/dirty-clear. The next IRQ establishes the newly selected front before visible scanout. The same rule applies with and without the text split and with runtime low-resolution controls. No sampled rows, palettes, shading or geometry are changed. The additional wait can affect native pacing; it does not increase the renderer's CPU work.
 

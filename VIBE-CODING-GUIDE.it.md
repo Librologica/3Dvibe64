@@ -1,11 +1,42 @@
 # Manuale pratico per creare demo e PRG con 3Dvibe64 usando Codex
 
+Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
+in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
+
+## Moduli gameplay nella1.11.0
+
+Scegliere profilo/entry point prima di cambiare la geometria. I campi Q8
+ordinari non configurano gli adattatori separati di condivisione, roll,
+eventi o gruppi. [GAMEPLAY](GAMEPLAY.it.md) copre 13 profili, nove opzioni di
+configurazione e compatibilità. I contratti specificano le ABI `an_control`,
+`cr_set_roll`, `cr_resume`, `wg_request`, `wg_service`, impulsi/contatori
+degli eventi, soglie near e proprietà della memoria.
+
+Il livello si controlla con `work/build-level.py --validate-only`; un grafo
+valido può comunque risultare `buildable:false`. Un piano non misura RAM
+nativa: accettare soltanto mappa assemblata, finestre legali, guardie e gap
+contigui allineati. Il recupero UI ipotetico 3759 byte non è implementato nel
+backend WORLD-01; l’integrazione separata riusa 2904 byte con un diverso
+contratto di durata verificato.
+
+Stato delle istanze e dei sorgenti stabile durante una vista completa.
+Non chiamare controlli delle clip o alterare shader auto-modificanti da IRQ.
+L’I/O WORLD mappa temporaneamente il KERNAL e ripristina zero page, vettori,
+porta CPU e CIA 2. I file gruppo contengono dati ammessi, non codice eseguibile.
+Seguire il [contratto livello](extensions/gameplay/level/LEVEL-DEV.it.md).
+
+La release corrente è locale e solo sorgente: ottenere lo ZIP dalla consegna
+locale o da una futura pubblicazione, senza presumere che sia già online.
+Preservare release/fondazione/progetti congelati e compilare in cartelle
+esterne. `MANIFEST.sha256` verifica ogni input sorgente.
+
 ## Precision profiles / Profili di precisione — 1.10.0
 
 Q8: byte-index ceilings of 255 disjoint objects/runtime vertices, subject to real RAM guards.
-Normalized16: experimental, at most two objects/16 runtime vertices.
+Normalized 16: experimental, at most two objects/16 runtime vertices.
 Q8: tetti di codifica di 255 oggetti disgiunti/vertici runtime, con controlli RAM reali.
-Normalized16: sperimentale, massimo due oggetti/16 vertici runtime.
+Normalized 16: sperimentale, massimo due oggetti/16 vertici runtime.
 See / Vedere [Official contract / Contratto ufficiale](Q8-SCALABILITY.md) and [qualification](Q8-QUALIFICATION.md).
 
 Legacy remains the default; the metric/renderer contracts below describe legacy
@@ -721,13 +752,13 @@ Nel JSON o nel contratto della scena il campo può essere indicato come `viewpor
 
 #### normal
 
-`normal` è la viewport predefinita. Con lo split Generic Text/FPS compilato offre un body 3D 160×88 a Y=12; `-NoFpsOverlay` ripristina il body storico 160×100.
+`normal` è la viewport predefinita. Con lo split Generic Text/FPS compilato offre un body 3D 160 × 88 a Y=12; `-NoFpsOverlay` ripristina il body storico 160 × 100.
 
 È la scelta più leggibile e normalmente il punto di partenza. Va usata quando la scena entra nei limiti di memoria e mantiene una velocità adeguata.
 
 #### small
 
-`small` misura 128×80 pixel low-resolution. Con lo split testuale parte da Y=12; senza split è centrata a Y=10.
+`small` misura 128 × 80 pixel low-resolution. Con lo split testuale parte da Y=12; senza split è centrata a Y=10.
 
 Comporta:
 
@@ -1657,7 +1688,7 @@ Il comando è suddiviso su più righe con il carattere di continuazione di Power
 - `-SceneFile` indica il JSON della scena;
 - `-GraphicsMode 4` seleziona il rendering solido dinamico;
 - `-CameraMode fixed` forza il profilo della camera;
-- `-CameraViewport normal` seleziona la viewport 160×100;
+- `-CameraViewport normal` seleziona la viewport 160 × 100;
 - `-Quality balanced` usa il profilo di qualità bilanciato;
 - `-Projection table` usa la proiezione tabellare;
 - `-MemoryLayout stable` sceglie il layout compatto;
@@ -2503,7 +2534,7 @@ Il modo più semplice e sicuro per usare 3Dvibe64 consiste nel separare nettamen
 
 Il flusso raccomandato è:
 
-- scaricare lo ZIP ufficiale da GitHub;
+- ottenere lo ZIP sorgente dalla consegna locale o dalla release pubblicata;
 - conservarne una copia intatta;
 - fornire a Codex il percorso della release;
 - lasciare che Codex controlli e, previa autorizzazione, installi gli strumenti necessari;

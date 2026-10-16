@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "profile": "door-entity",
+  "extends": "interactive-billboard",
+  "engineVersion": "1.11.0",
+  "generatorFoundation": "1.10.2",
+  "buildName": "door-entity",
+  "expectedCheckpointPRGSHA256": "FA692F07C3E302E818FF4B8586CDA9B7215D53242F386D02177D6E53A5AF6ADA",
+  "distributionPRG": "artifacts/room-skeleton-billboard-precise-pal-door-entity.prg",
+  "standard": "pal",
+  "multiplier": 64,
+  "music": false,
+  "viewportLogical": [
+    96,
+    60
+  ],
+  "textureQuality": "precise",
+  "textureLOD": [
+    14,
+    22
+  ],
+  "billboardImplementation": "outlined",
+  "routeRefreshes": 3072,
+  "scope": "experimental guardian-controlled polygonal door, Q8 lift/collision and one bounded divider plane"
+}

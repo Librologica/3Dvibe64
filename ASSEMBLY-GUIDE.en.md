@@ -1,20 +1,51 @@
 # 3Dvibe64 — Assembly Programmer's Guide
 
+Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
+are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
+
+## Gameplay modules in1.11.0
+
+Choose a profile/entry point before editing geometry. Ordinary Q8 fields do
+not configure the separate source-sharing, roll, event or room-group adapters.
+Use [GAMEPLAY](GAMEPLAY.en.md) for all 13 profiles, nine optional configuration
+switches and compatibility. The detailed module references include the
+`an_control`, `cr_set_roll`, `cr_resume`, `wg_request`, `wg_service` ABIs,
+event pulse/counter rules, near thresholds and storage ownership.
+
+Level editing starts with `work/build-level.py --validate-only`; a valid
+authoring graph may still have `buildable:false` for this backend. A plan is
+not a native memory measurement. Accept only the assembled budget, legal
+windows, guard space and aligned contiguous gaps. WORLD-01's proposed 3759 byte
+UI recovery is not implemented there; the separate integration actually
+reuses 2904 bytes under a different checked lifetime contract.
+
+Pause/source/instance state must remain stable during complete rendering.
+Do not call clip controls or modify self-patched shader state from IRQ.
+World input temporarily maps KERNAL and must restore zero page, vectors,
+CPU port and CIA 2. Native group files contain whitelisted data, not executable
+code. Follow [the level contract](extensions/gameplay/level/LEVEL-DEV.en.md).
+
+The release is currently local, source-only. Obtain its source ZIP from the
+local delivery or a later published release; do not assume it is already
+available online. Keep release/foundation/frozen projects immutable and build
+in external directories. `MANIFEST.sha256` verifies every source input.
+
 ## Mode 7 fast — 1.7.0
 
 The opt-in fast Q8/perspective/Gouraud C path is specified in
-[MODE7-FAST.en.md](MODE7-FAST.en.md). It preserves full viewport dimensions but
+[MODE 7-FAST.en.md](MODE7-FAST.en.md). It preserves full viewport dimensions but
 samples alternate logical rows and uses eight-pixel projective blocks.
-It reserves UV scratch $E8..$EF and patches scalar shader entry points between
+It reserves UV scratch $E 8..$EF and patches scalar shader entry points between
 spans: custom IRQs must not use that scratch or reenter the renderer.
 The general legacy and other-mode contracts below remain unchanged.
 
 ## Precision profiles / Profili di precisione — 1.10.0
 
 Q8: byte-index ceilings of 255 disjoint objects/runtime vertices, subject to real RAM guards.
-Normalized16: experimental, at most two objects/16 runtime vertices.
+Normalized 16: experimental, at most two objects/16 runtime vertices.
 Q8: tetti di codifica di 255 oggetti disgiunti/vertici runtime, con controlli RAM reali.
-Normalized16: sperimentale, massimo due oggetti/16 vertici runtime.
+Normalized 16: sperimentale, massimo due oggetti/16 vertici runtime.
 See / Vedere [Official contract / Contratto ufficiale](Q8-SCALABILITY.md) and [qualification](Q8-QUALIFICATION.md).
 
 Legacy remains the default; the metric/renderer contracts below describe legacy
@@ -266,7 +297,7 @@ For stable profiling or breakpoints, `render_frame_begin` and `render_frame_end`
 
 With the visual overlay compiled in, each VIC-II bank owns its Screen RAM and compact charset. The IRQ shows three character rows, switches to the bitmap fast path at `TEXT_BITMAP_IRQ_RASTER=$4A`, and starts the body at `TEXT_BODY_FIRST_RASTER=$4B`. `TEXT_HEADER_CELL_ROWS=3` and `TEXT_HEADER_SCREEN_BYTES=120` are a public memory contract: `apply_active_material` must begin after byte 119 in both screen buffers.
 
-The normal 3D body is therefore 160×88 at Y=12; small is 128×80 at Y=12. `-NoFpsOverlay` compiles the unchanged 1.1.0 bitmap-only path. Generic Text uses a `$FF`-terminated compact string; zero is a valid space glyph. The FPS digits and Generic Text are written to both Screen RAM buffers, not copied from one displayed bank to the other.
+The normal 3D body is therefore 160 × 88 at Y=12; small is 128 × 80 at Y=12. `-NoFpsOverlay` compiles the unchanged 1.1.0 bitmap-only path. Generic Text uses a `$FF`-terminated compact string; zero is a valid space glyph. The FPS digits and Generic Text are written to both Screen RAM buffers, not copied from one displayed bank to the other.
 
 At runtime, `F` toggles this complete split, not only the numeric FPS cells. The OFF path still selects VIC bank, Screen RAM and bitmap from `drawbuf`. `TEXT_CHARSET_BYTES` is derived from `TEXT_CHARSET_GLYPH_COUNT`: it is 96 for the FPS-only charset and 184 when Generic Text is emitted. The safe toggle path clears exactly that bitmap prefix while hidden and restores it before re-enabling the text IRQ; `$4A`/`$4B` timing is unchanged.
 
@@ -404,7 +435,7 @@ The mode number is not merely a runtime flag: it affects emitted code and buffer
 
 ## 10. VIC-II, bitmap, and materials
 
-The ordinary renderer uses double-buffered multicolor bitmap mode, with a logical 160×100 image expanded to 320×200 physical pixels.
+The ordinary renderer uses double-buffered multicolor bitmap mode, with a logical 160 × 100 image expanded to 320 × 200 physical pixels.
 
 A typical `stable` build exposes:
 
@@ -697,7 +728,7 @@ A fully internal face and a clipped face have different contracts. Test near cro
 
 ### Testing only one profile
 
-A change can work in Mode 4/fixed/stable and break Mode 2, walkFull, or high-basic-v2. Use a minimum build matrix.
+A change can work in Mode 4/fixed/stable and break Mode 2, walkFull, or high-basic-v 2. Use a minimum build matrix.
 
 ### Updating manifests and checksums immediately
 
@@ -745,7 +776,7 @@ Until the project officially adopts external modules, the PowerShell builder rem
 - Relevant host-side tests pass.
 - Relevant VICE regressions pass, or a new signature is justified.
 - Italian and English documentation describe the same API.
-- Version, package manifest, and checksums will be updated together during release preparation.
+- Version 1.11.0, package manifest and checksums are sealed together for this local source release.
 
 ## 24. Recommended reading path
 
