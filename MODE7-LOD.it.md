@@ -1,13 +1,16 @@
 # LOD graduale delle texture Mode 7 (1.8.0)
 
-Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
 Opzione esplicita di qualità dell'immagine: non raycasting, mipmapping o ottimizzazione a immagine identica. Geometria, copertura, estremi prospettici e illuminazione mantengono i contratti esistenti. `off` è il default. I profili di qualità texture standard e fast restano selezionabili separatamente.
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -SceneFile examples/mode7-perspective-cube.json -TextureQuality fast -TextureLOD gradual -TextureLODNear 28 -TextureLODFar 44 -OutputDirectory ../lod-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -SceneFile ../my-inputs/mode7-perspective-cube.json -TextureQuality fast -TextureLOD gradual -TextureLODNear 28 -TextureLODFar 44 -OutputDirectory ../lod-build
 ```
 
 La scena può invece contenere `"textureLOD": "gradual"`, `"textureLODNear": 28`, `"textureLODFar": 44`. La CLI esplicita prevale sulla scena. Distanze intere in unità mondo: `1 < near < far < 256`, intervallo di transizione di **16 WU**. Le combinazioni non supportate sono rifiutate. Richiede Q8 e texture prospettiche, entro i limiti esistenti di oggetti, camera, profondità e memoria. Standard supporta none/flat/Gouraud C; fast richiede ancora Gouraud C. Il LOD non abilita automaticamente fast.

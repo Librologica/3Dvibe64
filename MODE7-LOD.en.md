@@ -1,13 +1,16 @@
 # Mode 7 gradual texture LOD (1.8.0)
 
-Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
 An explicit image-quality option, not raycasting, mipmapping or an exact-image optimization. Geometry, coverage, projective endpoints and lighting keep their existing contracts. `off` is the default. The standard and fast texture-quality profiles remain separately selectable.
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -SceneFile examples/mode7-perspective-cube.json -TextureQuality fast -TextureLOD gradual -TextureLODNear 28 -TextureLODFar 44 -OutputDirectory ../lod-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -SceneFile ../my-inputs/mode7-perspective-cube.json -TextureQuality fast -TextureLOD gradual -TextureLODNear 28 -TextureLODFar 44 -OutputDirectory ../lod-build
 ```
 
 The scene may instead contain `"textureLOD": "gradual"`, `"textureLODNear": 28`, `"textureLODFar": 44`. Explicit CLI values override scene values. Both distances are integer world units, with `1 < near < far < 256` and a **16 WU** transition interval. Unsupported combinations are rejected. Requires Q8 and perspective texturing, within the existing bounded Q8 object/camera/depth/memory profile. Standard supports none/flat/Gouraud C; fast still requires Gouraud C. LOD does not enable fast automatically.

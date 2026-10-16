@@ -1,9 +1,12 @@
-# VIS-01 — visibilità conservativa per settori e portali — 1.11.0
+# VIS-01 — visibilità conservativa per settori e portali — 1.12.0
 
-La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+Release 1.12.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
+La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
+Contratto corrente incluso nella release 1.12.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](VISIBILITY-DEV.en.md).
 
 Profilo sperimentale `sector-visibility`, erede di `static-light` nella dev8.
@@ -59,7 +62,7 @@ Le prove e i benchmark della build consegnata sono nella cartella esterna
 Questa fase qualifica il compilatore conservativo e il consumo delle sue
 tabelle nella scena delimitata. La riduzione angolare attraverso i portali
 e l'integrazione con livelli generali richiedono ulteriori qualifiche.
-Documentazione corrente inclusa nella release 1.11.0.
+Documentazione corrente inclusa nella release 1.12.0.
 
 Il percorso automatico mantiene le posizioni e le rotazioni orizzontali della
 dev7. Ai keyframe 0–4,24–28,44–47 lo sguardo resta orizzontale per esercitare

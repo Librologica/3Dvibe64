@@ -11,7 +11,7 @@ def main():
     requests=['all']+[','.join(c) for n in range(1,4) for c in itertools.combinations(flags,n)]
     for value in (None,'','none'):
         assert parse(value,'mode8')==set()
-    assert parse('all','q8')=={'uv-texel','q8-arithmetic','camera-table','visibility'}
+    assert parse('all','q8')=={'uv-texel','q8-arithmetic','camera-table','visibility','camera-extremes','zero-terms','degenerate-faces','live-attributes','adapter-outcodes','inside-planes','bounded-divide','packed-samples','unrolled-advance'}
     with tempfile.TemporaryDirectory(prefix='mode8-retired-') as temp:
         for value in requests:
             try:build('missing-input.json',Path(temp)/'out',engine_experiments=value)

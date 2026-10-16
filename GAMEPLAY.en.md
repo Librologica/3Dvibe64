@@ -1,18 +1,15 @@
-# Gameplay source modules — 1.11.0
+# Gameplay source modules — 1.12.0
 
-## Distribution correction within 1.11.0
+Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
 
-New demo projects are excluded, including their source generators, UI,
-character artwork, camera routes, launchers and captured/reference assets.
-The duplicated 1.10.2 SDK is removed. The original examples from v1.10.2 are
-retained. This corrects the existing release; VERSION stays 1.11.0.
 
-Reusable gameplay compilers, validators and bounded assembly emitters remain.
-Native gameplay builds require an external project supplied explicitly with
-`--project-source`; no demo is reconstructed from bundled default inputs.
-The ordinary engine and its existing examples remain directly buildable.
-See [GAMEPLAY](GAMEPLAY.en.md), [quick start](QUICKSTART.md) and
-[qualification](QUALIFICATION-1.11.0.en.md).
+## Source-only release
+
+This is the source release available in the GitHub repository. No demos or examples are shipped, including
+preexisting ones. Supply your own scenes/assets and explicit external project
+inputs. The renderer and reusable gameplay modules remain included. See
+[external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
+and [qualification](QUALIFICATION-1.12.0.en.md).
 
 | ID | Module | Contract |
 |---|---|---|
@@ -42,7 +39,7 @@ root. Its layout is `examples/gameplay/<profile>.json` for the preset and
 `extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` and
 `extensions/gameplay/billboards/<implementation>.py` for caller-owned glue.
 These paths belong to the external project, not this SDK. Presets contain
-`profile`, `engineVersion` (1.11.0), optional `extends`, `buildName`,
+`profile`, `engineVersion` (1.12.0), optional `extends`, `buildName`,
 `billboardImplementation`, `distributionPRG`, `textureQuality`, `textureLOD`,
 `viewportLogical`, `expectedCheckpointPRGSHA256` and optional `scope`.
 The driver overlays the inherited project profiles, copies the current SDK
@@ -118,3 +115,8 @@ contracts remain. No arbitrary topology, disk save, dynamic textured shadows
 or universal combined-feature scene API is introduced.
 
 [Documentation index](DOCS.md).
+
+
+## Packed flat spans
+
+Optional --flat-span-cache / -FlatSpanCache selects exact MAT-01 flat spans. Requires a compatible external material binding; no quality or LOD change. [Contract / Contratto](RENDER-OPTIMIZATIONS.en.md).

@@ -29,8 +29,9 @@ def foundation_identity():
     return dict(version=(root/'VERSION').read_text().strip(),manifestSHA256=sha(root/'MANIFEST.sha256'))
 
 
-def build(profile,out,surface_config=None,gameplay_scene=None,door_config=None,texture_animation=None,light_bake=None,visibility=None,shared_meshes=None,motion_controls=None,world_groups=None,project_source=None):
+def build(profile,out,surface_config=None,gameplay_scene=None,door_config=None,texture_animation=None,light_bake=None,visibility=None,shared_meshes=None,motion_controls=None,world_groups=None,project_source=None,flat_span_cache=False):
     if profile not in PROFILES:raise ValueError('Unknown gameplay profile')
+    if flat_span_cache and profile in ('comparison-ui','dungeon-masked'):raise ValueError('FLAT_CACHE: MAT-01 profile required')
     out=Path(out).resolve()
     if out.is_relative_to(ROOT) or out.exists():
         raise ValueError('Choose a new output directory outside the source repository')
@@ -68,6 +69,12 @@ def build(profile,out,surface_config=None,gameplay_scene=None,door_config=None,t
     if profile in ('mixed-surfaces','interactive-billboard','door-entity','multiple-billboards','animated-textures','static-light','sector-visibility','shared-meshes','controlled-animation','camera-roll','room-groups'):
         shutil.copy2(EXT/'materials/surfaces.py',project/'src/surfaces.py')
         if surface_config is not None:shutil.copy2(surface_config,project/'assets/surfaces.json')
+    if flat_span_cache:
+        binding=project/'src/material_profile.py'
+        if not binding.is_file():raise ValueError('FLAT_CACHE: external adapter must use MAT-01 surfaces')
+        text=binding.read_text();old='return surfaces.hooks(source, TABLE)'
+        if text.count(old)!=1:raise ValueError('FLAT_CACHE: incompatible material binding')
+        binding.write_text(text.replace(old,'return surfaces.hooks(source, TABLE, optimize_flat=True)'))
     if profile in ('interactive-billboard','door-entity','multiple-billboards','animated-textures','static-light','sector-visibility','room-groups'):
         shutil.copy2(EXT/'billboards/scene.py',project/'src/billboard_scene.py')
         shutil.copy2(EXT/'entities/runtime.py',project/'src/entity_runtime.py')
@@ -128,7 +135,7 @@ def build(profile,out,surface_config=None,gameplay_scene=None,door_config=None,t
     program=project/preset['distributionPRG'];target=out/f'{profile}.prg';shutil.copy2(program,target)
     digest=sha(target)
     (out/'launch-demo.cmd').write_bytes(b'@echo off\r\ncall "%~dp0project\\launch-demo.cmd" %*\r\n')
-    info=dict(engineVersion=preset['engineVersion'],profile=profile,experimental=True,
+    info=dict(engineVersion=preset['engineVersion'],profile=profile,experimental=True,flatSpanCache=flat_span_cache,
         foundation=identity,program=target.name,PRGSHA256=digest,
         checkpointPRGSHA256=preset['expectedCheckpointPRGSHA256'],
         checkpointPRGIdentical=digest==preset['expectedCheckpointPRGSHA256'],
@@ -178,4 +185,5 @@ if __name__=='__main__':
     parser.add_argument('--shared-meshes',type=Path,help='Optional Q8 shared mesh instance configuration')
     parser.add_argument('--motion-controls',type=Path,help='Optional Q8-02 playback and camera configuration')
     parser.add_argument('--world-groups',type=Path,help='Optional WORLD-01 group and transition configuration')
-    args=parser.parse_args();build(args.profile,args.out,args.surface_config,args.gameplay_scene,args.door_config,args.texture_animation,args.light_bake,args.visibility,args.shared_meshes,args.motion_controls,args.world_groups,args.project_source)
+    parser.add_argument('--flat-span-cache',action='store_true',help='Opt-in exact packed MAT-01 flat spans')
+    args=parser.parse_args();build(args.profile,args.out,args.surface_config,args.gameplay_scene,args.door_config,args.texture_animation,args.light_bake,args.visibility,args.shared_meshes,args.motion_controls,args.world_groups,args.project_source,args.flat_span_cache)

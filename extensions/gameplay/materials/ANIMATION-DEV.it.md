@@ -1,9 +1,12 @@
-# TEX-01 — texture animate e scorrimento UV — 1.11.0
+# TEX-01 — texture animate e scorrimento UV — 1.12.0
 
-La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+Release 1.12.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
+La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
+Contratto corrente incluso nella release 1.12.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](ANIMATION-DEV.en.md).
 
 Il profilo sperimentale `animated-textures` estende la stanza della dev5,
@@ -81,4 +84,4 @@ stato/collisione/sicurezza della porta. Le fixture controllano dati e
 simulazione tramite monitor senza modificare il file PRG o gli shader.
 I benchmark usano il programma automatico integro e contano soltanto nuove
 viste complete, con riscontro del contatore nativo. Comandi e raw sono
-nell'evidence esterna; Documentazione corrente nella release 1.11.0.
+nell'evidence esterna; Documentazione corrente nella release 1.12.0.

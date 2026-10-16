@@ -1,9 +1,12 @@
-# BB-02 / primo ENT-01 — 1.11.0
+# BB-02 / primo ENT-01 — 1.12.0
 
-La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+Release 1.12.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
+La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
+Contratto corrente incluso nella release 1.12.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](DEV.en.md).
 
 Il profilo `interactive-billboard` eredita la stanza UI con materiali misti.
@@ -57,7 +60,7 @@ L'opzione entity.enabled=false esclude l'interazione e la visita manuale.
 Questo è il primo tratto di ENT-01: oggetto utilizzabile, eventi e
 collisioni locali. Porta mobile e variazione del passaggio sono disponibili nel profilo
 door-entity. Collisioni generali e più entità interattive restano future. Mode 8 e fondazione
-stabile non sono modificate. Documentazione corrente nella release 1.11.0.
+stabile non sono modificate. Documentazione corrente nella release 1.12.0.
 
 Le prove native conservano snapshot e comandi:17 casi di stato/input,
 collisione, scorrimento e animazione; oracoli pixel su tutti i frame;

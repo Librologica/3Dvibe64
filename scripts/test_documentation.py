@@ -57,16 +57,16 @@ def links(files):
 
 
 def main():
-    version=read('VERSION').strip();assert version=='1.11.0'
+    version=read('VERSION').strip();assert version=='1.12.0'
     package=load('PACKAGE-MANIFEST.json');assert package['package']['version']==version
     assert not package['package']['prerelease'] and not package['package']['precompiledPrograms']
     docs=load('DOCUMENTATION.json');assert docs['version']==version and docs['locales']==['en','it']
-    assert docs['sourceOnly'] and docs['publication']=='GitHub' and not docs['newDemosIncluded']
+    assert docs['sourceOnly'] and docs['publication']=='GitHub source repository' and not docs['newDemosIncluded']
     files=set(docs['currentBilingual'])
     for pair in docs['currentPairs']:
         for locale in ['en','it']:
             p=pair[locale];assert (ROOT/p).is_file(),p
-            assert '1.11.0' in read(p),p
+            assert '1.12.0' in read(p),p
             files.add(p)
     files.update(docs['historicalReports'])
     for lang in ['en','it']:
@@ -80,9 +80,9 @@ def main():
         if isinstance(call,ast.Call) and isinstance(call.func,ast.Attribute) and call.func.attr=='add_argument':
             flags.update(a.value for a in call.args if isinstance(a,ast.Constant) and isinstance(a.value,str) and a.value.startswith('--'))
     assert flags==set(docs['gameplayConfigurationOptions'])|set(docs['gameplayRequiredOptions']),flags
-    assert not (ROOT/'examples/gameplay').exists()
+    assert not (ROOT/'examples').exists() and not (ROOT/'validation').exists()
     profiles=docs['gameplayProfiles'];assert len(profiles)==13
-    count=links(sorted(files))
+    count=links(sorted(p.relative_to(ROOT).as_posix() for p in ROOT.rglob('*.md')))
     entries={}
     for line in read('MANIFEST.sha256').splitlines():
         h,n=line.split('  ',1);assert n not in entries;entries[n]=h

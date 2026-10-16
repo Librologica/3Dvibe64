@@ -10,7 +10,8 @@ param(
     [string]$Visibility,
     [string]$SharedMeshes,
     [string]$MotionControls,
-    [string]$WorldGroups
+    [string]$WorldGroups,
+    [switch]$FlatSpanCache
 )
 $ErrorActionPreference='Stop'
 $taskBuildArgs=@('-B',(Join-Path $PSScriptRoot 'build-gameplay.py'),'--profile',$Profile,'--out',$OutputDirectory,'--project-source',$ProjectSource)
@@ -23,5 +24,6 @@ if($Visibility){$taskBuildArgs+=@('--visibility',$Visibility)}
 if($SharedMeshes){$taskBuildArgs+=@('--shared-meshes',$SharedMeshes)}
 if($MotionControls){$taskBuildArgs+=@('--motion-controls',$MotionControls)}
 if($WorldGroups){$taskBuildArgs+=@('--world-groups',$WorldGroups)}
+if($FlatSpanCache){$taskBuildArgs+=@('--flat-span-cache')}
 & python @taskBuildArgs
 if($LASTEXITCODE -ne 0){exit $LASTEXITCODE}

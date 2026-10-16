@@ -11,7 +11,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER = ROOT / "work" / "build-3Dvibe64.ps1"
 SOURCE = BUILDER.read_text(encoding="utf-8").replace("\r\n", "\n")
-VERSION = "1.11.0"
+VERSION = "1.12.0"
 BUILDER_SHA256 = "79510B085B6B786A87F2F2814B2BED0FE2C95313EDAF0A3C121B89EA02C9C14F"
 
 

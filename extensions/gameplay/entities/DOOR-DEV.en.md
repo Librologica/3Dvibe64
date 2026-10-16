@@ -1,6 +1,9 @@
-# ENT-01 — polygonal sliding door, 1.11.0
+# ENT-01 — polygonal sliding door, 1.12.0
 
-Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+Release 1.12.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `door-entity` retains UI, configurable guardian and mixed surfaces. A divider
@@ -57,4 +60,4 @@ the programmed camera does not exercise collision in that control. Actual
 door movement also changes drawn area/occlusion, so its FPS delta includes
 that work. Raw commands and timing remain external source-release evidence.
 
-[Italiano](DOOR-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.11.0.en.md)
+[Italiano](DOOR-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)

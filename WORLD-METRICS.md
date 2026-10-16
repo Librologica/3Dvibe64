@@ -1,10 +1,14 @@
 # 3Dvibe64 world metrics / Metrica del mondo 3Dvibe64
 
-Current 1.11.0 ordinary metric/geometry contract; inherited sections retain their stated profile/version.
-Contratto metrico/geometrico ordinario 1.11.0; sezioni ereditate con profilo/versione dichiarati.
+3Dvibe64 1.12.0: [EN optimization contract](RENDER-OPTIMIZATIONS.en.md) · [Contratto IT](RENDER-OPTIMIZATIONS.it.md).
+All examples require external inputs / Tutti gli esempi richiedono input esterni.
+
+
+Current 1.12.0 ordinary metric/geometry contract; inherited sections retain their stated profile/version.
+Contratto metrico/geometrico ordinario 1.12.0; sezioni ereditate con profilo/versione dichiarati.
 Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
 [gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
-[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
+[qualification EN](QUALIFICATION-1.12.0.en.md), [qualificazione IT](QUALIFICATION-1.12.0.it.md).
 
 ## Precision profiles / Profili di precisione — 1.10.0
 
@@ -613,3 +617,19 @@ The stronger proposed claim that camera, objects, and lights all share one publi
 Il nucleo astratto è valido: WU è l'unità lineare della scena, TU è 1/256 di giro e PAL/NTSC mirano entrambi a circa 50 ST/s. Il default storico pre-1.0 usava un unico near geometrico di 8 WU e manteneva il bias dell'indice fuori dalla profondità geometrica. Il contratto corrente delle Mode 3-5 offre invece tre profili espliciti: `default` conserva reject e divisore minimo a 8 WU; `late` conserva il reject whole-face ma accetta 1 WU con divisore minimo 2; `clip` esegue il clipping poligonale contro il piano camera e conserva la porzione visibile fino al reale attraversamento, con intersezioni generate a 1 WU e divisore minimo 2. Tutti i profili restano monofacciali.
 
 Non e invece valida l'affermazione piu forte secondo cui camera, oggetti e luci condividono tutti un formato pubblico 8.8. L'audit ha inoltre rilevato gli assi locali mesh non convertiti, il precedente intervallo alto non sicuro per la profondita oggetto e l'ambiguita dei campi camera nominati yaw/roll. La pre-1.0 development risolve l'inizializzazione X/Z negativa della camera mobile; la pre-1.0 development risolve la sicurezza della profondita oggetto; la pre-1.0 development registra il contratto storico a due sotto-step; la pre-1.0 development aggiorna deliberatamente i default walk a un sotto-step lineare e ripetizioni angolari deterministiche. La pre-1.0 development non modifica coordinate scena, camera fixed, renderer, proiezione, clipping, materiali, animazioni oggetto o tabelle. Gli altri rilievi restano incarichi separati.
+
+
+## Current optional budgets / Budget opzionali correnti — 1.12.0
+
+Actual assembled allocation remains authoritative. New native flat-cache data
+costs6*N+68bytes; conservative wall data2*F+12*Q+17bytes, plus emitted code and
+guards. Attribute masks use one byte per face. Pool/SID/camera tables have their
+own explicit budgets. None of these bytes is free unless the allocator proves
+placement in that exact combination. Historical profile margins exclude new
+optional helpers. [EN](RENDER-OPTIMIZATIONS.en.md) · [IT](RENDER-OPTIMIZATIONS.it.md).
+
+Conta l'allocazione assemblata reale. Dati cache flat6*N+68byte; occlusione
+pareti2*F+12*Q+17byte, oltre a codice e guardie. Maschere:un byte per faccia.
+Pool/SID/tabelle camera hanno budget espliciti separati. Nessuno spazio è libero
+senza verifica dell'allocatore sulla combinazione reale. I margini dei profili
+storici non includono nuovi helper opzionali.

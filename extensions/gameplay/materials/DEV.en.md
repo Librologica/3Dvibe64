@@ -1,6 +1,9 @@
-# MAT-01 — mixed surfaces, 1.11.0
+# MAT-01 — mixed surfaces, 1.12.0
 
-Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+Release 1.12.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 The bounded `mixed-surfaces` profile retains the comparison room, actors,
@@ -35,4 +38,4 @@ including partial edges, rising/falling levels and one-pixel spans; native
 views check UI/clipping and the texture-only control reproduces the imported
 checkpoint. Matched full-route native FPS/evidence is retained externally.
 
-[Italiano](DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.11.0.en.md)
+[Italiano](DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)

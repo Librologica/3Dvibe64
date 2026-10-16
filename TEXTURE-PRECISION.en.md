@@ -1,6 +1,9 @@
 # Mode 7 texture precision — 1.7.0
 
-Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -30,7 +33,7 @@ An explicit CLI texture setting overrides the scene setting. Affine/perspective
 do not change the source texture format, PNG importer, repeat, palette or lighting.
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -TexturePrecision perspective -SceneFile examples/mode7-perspective-cube.json -Q8Camera stationary -VideoStandard pal -OutputDirectory ../perspective-cube-pal
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 7 -TexturePrecision perspective -SceneFile ../my-inputs/mode7-perspective-cube.json -Q8Camera stationary -VideoStandard pal -OutputDirectory ../perspective-cube-pal
 ```
 
 Use a new output directory outside the SDK. `3Dvibe64.prg`, labels, ASM, memory

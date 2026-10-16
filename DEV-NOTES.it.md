@@ -1,17 +1,5 @@
-# Provenienza dello sviluppo — 1.11.0
+# Note di sviluppo — 1.12.0
 
-## Correzione della distribuzione nella 1.11.0
+Release sorgente basata sulla1.11.0 corretta, con renderer dev14 e primitive esatte generalizzate per adapter. Release precedenti, progetti congelati e dev privata conservati. Sorgenti pubblicati nel repository GitHub; consegna locale e release precedenti conservate. I profili restano espliciti e delimitati; codice/dati runtime rispettano le guardie di allocazione reali. Build, test e prove native restano fuori dai sorgenti.
 
-Esclusi i nuovi progetti demo, compresi generatori sorgente, UI, disegni dei
-personaggi, percorsi camera, launcher e asset di riferimento. Rimossa la copia
-duplicata dell’SDK 1.10.2. Conservati gli esempi già presenti nella v1.10.2.
-Si corregge la release esistente; VERSION resta 1.11.0.
-
-Restano compilatori, validatori ed emitter assembly gameplay riutilizzabili.
-Le build gameplay native richiedono un progetto esterno esplicito tramite
-`--project-source`; nessuna demo è ricostruita da input predefiniti allegati.
-Engine ordinario ed esempi preesistenti restano direttamente compilabili.
-Vedere [GAMEPLAY](GAMEPLAY.it.md), [guida rapida](QUICKSTART.md) e
-[qualificazione](QUALIFICATION-1.11.0.it.md).
-
-Engine ordinario ed esempi preesistenti conservano i byte della v1.10.2. Le funzioni gameplay generiche restano in `extensions/gameplay`; i progetti specifici restano nella dev privata. La correzione non crea una nuova release/versione. Vedere [qualificazione](QUALIFICATION-1.11.0.it.md).
+[Note release](RELEASE-NOTES-1.12.0.it.md) · [Contratti](RENDER-OPTIMIZATIONS.it.md) · [Test](TESTING.md)

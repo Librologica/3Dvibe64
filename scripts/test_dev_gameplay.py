@@ -3,10 +3,11 @@ import hashlib,importlib.util,json,tempfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
 def main():
+    assert b'\r\n' not in (ROOT/'work/build-3Dvibe64.ps1').read_bytes(),'Generator source must retain LF here-string semantics'
     package=json.loads((ROOT/'PACKAGE-MANIFEST.json').read_text())
     policy=package['distributionPolicy']
     assert not policy['newDemosIncluded'] and policy['baseline']=='v1.10.2'
-    assert (ROOT/'VERSION').read_text().strip()=='1.11.0'
+    assert (ROOT/'VERSION').read_text().strip()=='1.12.0'
     assert not package['package']['prerelease']
     for name,digest in policy['ordinaryEngineSHA256'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest().upper()==digest,name

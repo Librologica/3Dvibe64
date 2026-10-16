@@ -1,6 +1,9 @@
-# Common level format and exact memory budget — 1.11.0
+# Common level format and exact memory budget — 1.12.0
 
-Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+Release 1.12.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `work/build-level.py` resolves IDs/assets and lowers groups, rooms, objects,

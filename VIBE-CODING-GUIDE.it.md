@@ -1,23 +1,15 @@
 # Manuale pratico per creare demo e PRG con 3Dvibe64 usando Codex
 
-Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
-## Correzione della distribuzione nella 1.11.0
+## Distribuzione di soli sorgenti
 
-Esclusi i nuovi progetti demo, compresi generatori sorgente, UI, disegni dei
-personaggi, percorsi camera, launcher e asset di riferimento. Rimossa la copia
-duplicata dell’SDK 1.10.2. Conservati gli esempi già presenti nella v1.10.2.
-Si corregge la release esistente; VERSION resta 1.11.0.
-
-Restano compilatori, validatori ed emitter assembly gameplay riutilizzabili.
-Le build gameplay native richiedono un progetto esterno esplicito tramite
-`--project-source`; nessuna demo è ricostruita da input predefiniti allegati.
-Engine ordinario ed esempi preesistenti restano direttamente compilabili.
-Vedere [GAMEPLAY](GAMEPLAY.it.md), [guida rapida](QUICKSTART.md) e
-[qualificazione](QUALIFICATION-1.11.0.it.md).
-
+Questa è la release sorgente disponibile nel repository GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.12.0.it.md).
 
 ## Precision profiles / Profili di precisione — 1.10.0
 

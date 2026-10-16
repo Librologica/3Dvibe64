@@ -56,5 +56,5 @@ Historical releases and frozen demos are preserved.
 Le release precedenti e le demo congelate sono preservate.
 
 [Q8 contract / Contratto Q8](Q8-SCALABILITY.md) ·
-[Examples and expected refusals / Esempi e rifiuti attesi](examples/README.md) ·
+[Examples and expected refusals / Esempi e rifiuti attesi](EXTERNAL-INPUTS.en.md) ·
 [Tests / Test](TESTING.md).

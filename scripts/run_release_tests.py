@@ -13,7 +13,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'work'))
 from mode8.common import require_qualification_checks
 TESTS = (
-    "test_documentation.py",
+    "test_documentation.py", "test_exact_release.py",
     "test_billboard_emitter.py",
     "test_mixed_surfaces.py",
     "test_billboard_scene.py",
@@ -67,7 +67,8 @@ def copy_package(root,dest):
 def main():
     require_qualification_checks()
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("tests", nargs="*", help="Optional test filenames; omit to run all")
+    parser.add_argument("tests", nargs="*", help="Optional test filenames; omit for self-contained suite, or all registered gates with --test-inputs")
+    parser.add_argument('--test-inputs',type=Path,help='External historical examples/validation for legacy regression tests')
     args = parser.parse_args()
     unknown = set(args.tests) - set(TESTS)
     if unknown:
@@ -75,12 +76,18 @@ def main():
     env = os.environ.copy()
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     failures = []
-    for name in args.tests or TESTS:
+    selected=args.tests or (TESTS if args.test_inputs else ('test_documentation.py','test_dev_gameplay.py','test_release_contract.py','test_exact_release.py','test_billboard_emitter.py','test_mixed_surfaces.py','test_billboard_scene.py','test_door_entity.py','test_multiple_billboards.py','test_texture_animation.py','test_light_bake.py','test_sector_visibility.py','test_shared_meshes.py','test_controlled_motion.py','test_world_groups.py','test_common_level.py'))
+    for name in selected:
         started = time.monotonic()
         print(f"START {name}", flush=True)
         with tempfile.TemporaryDirectory(prefix="3dvibe64-release-test-") as temporary:
             sdk = Path(temporary) / "sdk"
             copy_package(ROOT,sdk)
+            if args.test_inputs and name not in ('test_documentation.py','test_release_contract.py','test_dev_gameplay.py','test_exact_release.py'):
+                source=args.test_inputs.resolve(strict=True)
+                if source.is_relative_to(ROOT):raise ValueError('Test inputs must stay outside SDK')
+                for category in ('examples','validation'):
+                    if (source/category).exists():shutil.copytree(source/category,sdk/category)
             result = subprocess.run([sys.executable, "-B", str(sdk / "scripts" / name)], cwd=sdk, env=env)
         print(f"{'PASS' if result.returncode == 0 else 'FAIL'} {name} elapsed={time.monotonic()-started:.1f}s", flush=True)
         if result.returncode:

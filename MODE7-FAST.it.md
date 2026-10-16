@@ -1,6 +1,9 @@
 # Profilo veloce Mode 7 — 1.7.0
 
-Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -28,13 +31,13 @@ Questa release promuove metodi riutilizzabili di campionamento/ricostruzione,
 non la demo delle due stanze, le sue ipotesi di visibilità o la sua LUT.
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 7 -Precision q8 -TextureQuality fast -SceneFile examples/mode7-fast-cube.json -VideoStandard pal -OutputDirectory ../fast-cube-pal
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 7 -Precision q8 -TextureQuality fast -SceneFile ../my-inputs/mode7-fast-cube.json -VideoStandard pal -OutputDirectory ../fast-cube-pal
 ```
 
 Usare una directory nuova esterna all'SDK. La scena dichiara già texture
 prospettiche, Gouraud C e qualità fast. Per una scena compatibile esistente
 aggiungere `-TexturePrecision perspective`. Equivalente Python:
-`python -B work/q8/build.py --scene examples/mode7-fast-cube.json --out ../fast-cube-python --mode 7 --texture-quality fast`.
+`python -B work/q8/build.py --scene ../my-inputs/mode7-fast-cube.json --out ../fast-cube-python --mode 7 --texture-quality fast`.
 PRG, ASM generato, label, mappa memoria e `build.json` restano fuori dal pacchetto.
 
 ## Contratto di rendering e compromessi visivi

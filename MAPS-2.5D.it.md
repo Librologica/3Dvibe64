@@ -1,6 +1,9 @@
 # Costruire mappe Mode 8
 
-Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -10,13 +13,13 @@ Questa guida descrive il contratto delle mappe **implementato e deliberatamente 
 
 | Ambiente | Scena completa | Modificabile | Fisso |
 |---|---|---|---|
-| Un piano, pareti opache e pilastri | [perimeter.json](examples/mode8/perimeter.json) | Celle solide/libere lontano dal bordo e dal percorso | Pavimento 0, soffitto 128, nessuna apertura/rampa; camera iniziale e tutti i waypoint |
-| Un piano con aperture statiche dotate di spessore | [apertures.json](examples/mode8/apertures.json) | Geometria solida/libera intorno alla separazione qualificata | Pavimento 0; soffitto stanza 96, apertura 64; separatore y=14 e due varchi; camera e waypoint |
-| Due piante raccordate da rampe continue | [two-levels.json](examples/mode8/two-levels.json) | Geometria, aperture dichiarate e waypoint entro il contratto heightfield | Camera iniziale, quote ammesse, due formule/footprint delle rampe; budget numerici, percorsi e memoria |
+| Un piano, pareti opache e pilastri | [perimeter.json](EXTERNAL-INPUTS.it.md) | Celle solide/libere lontano dal bordo e dal percorso | Pavimento 0, soffitto 128, nessuna apertura/rampa; camera iniziale e tutti i waypoint |
+| Un piano con aperture statiche dotate di spessore | [apertures.json](EXTERNAL-INPUTS.it.md) | Geometria solida/libera intorno alla separazione qualificata | Pavimento 0; soffitto stanza 96, apertura 64; separatore y=14 e due varchi; camera e waypoint |
+| Due piante raccordate da rampe continue | [two-levels.json](EXTERNAL-INPUTS.it.md) | Geometria, aperture dichiarate e waypoint entro il contratto heightfield | Camera iniziale, quote ammesse, due formule/footprint delle rampe; budget numerici, percorsi e memoria |
 
 Non sono tre editor di livelli completamente generici. Spostare un'apertura monolivello, cambiarne lo spessore, aggiungere rampe arbitrarie o spostare la camera iniziale di un template viene rifiutato. Multilivello significa una sola coppia pavimento/soffitto per posizione XY: **room-over-room escluso**. Non esistono porte animate o comandi di apertura/chiusura.
 
-Tutte le scene contengono mappe complete 32 × 32. Le [piante con coordinate generate dai dati](examples/mode8/PLANS.md) mostrano celle e cambiamenti dei tutorial. Una build valida sintassi, geometria, backend, capacità e percorso automatico: non dimostra di aver campionato esaustivamente ogni possibile vista interattiva.
+Tutte le scene contengono mappe complete 32 × 32. Le [piante con coordinate generate dai dati](EXTERNAL-INPUTS.it.md) mostrano celle e cambiamenti dei tutorial. Una build valida sintassi, geometria, backend, capacità e percorso automatico: non dimostra di aver campionato esaustivamente ogni possibile vista interattiva.
 
 ## 2. Coordinate e unità pubbliche
 
@@ -97,7 +100,7 @@ Quote ordinarie: 0,32,64. I marker 255/254 sono **selettori di formule**, non al
 | 255 | x=8..10, y=11..14 | `8*(Y-11)` | y=11:0; y=15:32 |
 | 254 | x=14..16, y=18..21 | `8*(Y-14)` | y=18:32; y=22:64 |
 
-Gli oggetti esatti sono in [two-levels.json](examples/mode8/two-levels.json): `marker`, `axis:"y"`, `origin`, `start`, `end`, `bottom`, `top`. Tutti gli altri campi sono interi; nessuno è facoltativo; l'array di due oggetti deve coincidere col template. L'origine 14 della seconda formula è deliberatamente diversa dal suo inizio 18.
+Gli oggetti esatti sono in [two-levels.json](EXTERNAL-INPUTS.it.md): `marker`, `axis:"y"`, `origin`, `start`, `end`, `bottom`, `top`. Tutti gli altri campi sono interi; nessuno è facoltativo; l'array di due oggetti deve coincidere col template. L'origine 14 della seconda formula è deliberatamente diversa dal suo inizio 18.
 
 ```text
 pavimento64                           ───────── superiore
@@ -129,9 +132,9 @@ Usare i file finali completi: nessun elemento mancante o modifica assembly. Per 
 
 | Tutorial | Modifiche esatte | File finale completo | Risultato effettivo del precedente studio |
 |---|---|---|---|
-| Spostare un pilastro | `solid[15*32+21]=0`; `solid[16*32+21]=1` | [perimeter-tutorial.json](examples/mode8/perimeter-tutorial.json) | Nessun beneficio pratico significativo sul giro; non un'ottimizzazione prestazionale consigliata |
-| Spostare pilastro 2 × 2 | Liberare x=15..16 a y=18; rendere solidi x=15..16 a y=20; y=19 resta solida | [apertures-tutorial.json](examples/mode8/apertures-tutorial.json) | Calo CPU locale ma nessun miglioramento sostanziale del p 95 del giro; non una raccomandazione generale |
-| Restringere apertura inferiore | Impostare `solid[6*32+16]=1`; nell'apertura y=6 con start 16 cambiare start a 17 | [two-levels-tutorial.json](examples/mode8/two-levels-tutorial.json) | Larghezza 3→2 celle; beneficio parziale sulle pause, worst del piano superiore invariato |
+| Spostare un pilastro | `solid[15*32+21]=0`; `solid[16*32+21]=1` | [perimeter-tutorial.json](EXTERNAL-INPUTS.it.md) | Nessun beneficio pratico significativo sul giro; non un'ottimizzazione prestazionale consigliata |
+| Spostare pilastro 2 × 2 | Liberare x=15..16 a y=18; rendere solidi x=15..16 a y=20; y=19 resta solida | [apertures-tutorial.json](EXTERNAL-INPUTS.it.md) | Calo CPU locale ma nessun miglioramento sostanziale del p 95 del giro; non una raccomandazione generale |
+| Restringere apertura inferiore | Impostare `solid[6*32+16]=1`; nell'apertura y=6 con start 16 cambiare start a 17 | [two-levels-tutorial.json](EXTERNAL-INPUTS.it.md) | Larghezza 3→2 celle; beneficio parziale sulle pause, worst del piano superiore invariato |
 
 Dalla radice dell'SDK estratto, con Python, PowerShell e 64tass disponibili:
 

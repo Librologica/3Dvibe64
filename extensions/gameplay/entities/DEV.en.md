@@ -1,6 +1,9 @@
-# BB-02 / ENT-01 — configured entity, 1.11.0
+# BB-02 / ENT-01 — configured entity, 1.12.0
 
-Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+Release 1.12.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `interactive-billboard` inherits mixed-surfaces. `assets/gameplay-scene.json`
@@ -51,7 +54,7 @@ Native evidence covers 17 state/input/collision/sliding/animation cases, every
 frame against pixel oracles, an alternate asset with three frames every five
 ticks, UI integrity and full-route FPS. No compiled programs ship in the release.
 
-[Italiano](DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.11.0.en.md)
+[Italiano](DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)
 
 ## Complete single-instance data shape
 

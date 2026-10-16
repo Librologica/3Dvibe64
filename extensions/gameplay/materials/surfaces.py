@@ -43,6 +43,18 @@ def compile_surfaces(scene, config):
     return result
 
 
+
+def attribute_masks(table, *, gouraud_channel='q'):
+    """Explicit shader contract for Q8 live-attributes adapters, not a shader.
+
+    q: ordinary MAT-01 screen-linear Gouraud. s-w: adapter-defined unlit
+    perspective scalar carrier. Flat shaders must not read any UV/Q channel.
+    """
+    if gouraud_channel not in ('q','s-w'):raise ValueError('Choose q or s-w Gouraud carrier')
+    modes={'texture':31 if gouraud_channel=='q' else 15,'flat':1,
+           'gouraud':17 if gouraud_channel=='q' else 11}
+    return [modes[e['mode']] for e in table]
+
 def bake(source, table):
     # The bounded profile has already retired dynamic lighting. Use the
     # existing Q channel all the way through near/screen clipping and edges.
@@ -54,7 +66,7 @@ def bake(source, table):
     return source
 
 
-def hooks(source, table):
+def hooks(source, table, *, optimize_flat=False):
     import optimizations as op
     # Select once per clipped polygon/fan. The existing fill loop owns the
     # coverage rule, row addresses, dirty spans and material-cell policy.
@@ -72,7 +84,11 @@ def hooks(source, table):
     advance = re.sub(r'\bm3_(advance_q|q_correct|q_store)\b', lambda m: 'mx_'+m[1], advance)
     modes = ','.join(str(MODES[e['mode']]) for e in table)
     indexes = ','.join(str(e['index']) for e in table)
-    return source + '\n*=$4000\n' + KERNEL + advance + f'''
+    kernel=KERNEL
+    if optimize_flat:
+        kernel=kernel.replace('mx_draw_span:\n','mx_draw_span:\n lda mx_mode\n cmp #1\n bne mx_full_dispatch\n jmp fc_draw\nmx_full_dispatch:\n',1)
+        kernel+=FLAT_KERNEL
+    return source + '\n*=$4000\n' + kernel + advance + f'''
 mx_mode: .byte 0
 mx_flat: .byte 2
 mx_face_mode: .byte {modes}
@@ -209,4 +225,99 @@ mx_advance:
  jsr mx_advance_q
  inc gouraud_scan_x
  rts
+'''
+
+
+FLAT_KERNEL = r'''fc_draw:
+ ldx mx_flat
+ lda fc_patterns,x
+ sta fc_fill
+ lda leftval
+ sta gouraud_scan_x
+ lda rightval
+ sta gouraud_scan_end
+ ldx yrow
+ lda tq_closed,x
+ bne +
+ dec gouraud_scan_end
++
+ lda gouraud_scan_end
+ and #252
+ sta fc_end
+ jsr gouraud_init_span_pointers
+ lda gouraud_scan_x
+ and #3
+ tax
+ lda fc_left,x
+ sta fc_mask
+fc_byte:
+ lda gouraud_scan_x
+ and #252
+ cmp fc_end
+ bne fc_ready
+ lda gouraud_scan_end
+ and #3
+ tax
+ lda fc_right,x
+ and fc_mask
+ sta fc_mask
+fc_ready:
+ lda fc_mask
+ cmp #255
+ beq fc_whole
+ eor #255
+ sta fc_keep
+ lda fc_fill
+ and fc_mask
+ sta fc_bits
+ ldy #0
+ lda (ptr0lo),y
+ and fc_keep
+ ora fc_bits
+ sta (ptr0lo),y
+ lda (ptr1lo),y
+ and fc_keep
+ ora fc_bits
+ sta (ptr1lo),y
+ jmp fc_next
+fc_whole:
+ ldy #0
+ lda fc_fill
+ sta (ptr0lo),y
+ sta (ptr1lo),y
+fc_next:
+ lda gouraud_scan_x
+ and #252
+ cmp fc_end
+ beq fc_done
+ clc
+ adc #4
+ sta gouraud_scan_x
+ clc
+ lda ptr0lo
+ adc #8
+ sta ptr0lo
+ bcc +
+ inc ptr0hi
++
+ clc
+ lda ptr1lo
+ adc #8
+ sta ptr1lo
+ bcc +
+ inc ptr1hi
++
+ lda #255
+ sta fc_mask
+ jmp fc_byte
+fc_done:
+ rts
+fc_fill: .byte 0
+fc_end: .byte 0
+fc_mask: .byte 0
+fc_keep: .byte 0
+fc_bits: .byte 0
+fc_patterns: .byte 0,85,170,255
+fc_left: .byte 255,63,15,3
+fc_right: .byte 192,240,252,255
 '''

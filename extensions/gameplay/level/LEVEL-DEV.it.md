@@ -1,9 +1,12 @@
-# Formato comune e budget del livello — — 1.11.0
+# Formato comune e budget del livello — — 1.12.0
 
-La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+Release 1.12.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto corrente della release 1.11.0; i numeri dei checkpoint indicano
+La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
+Contratto corrente della release 1.12.0; i numeri dei checkpoint indicano
 la provenienza delle prove. [English](LEVEL-DEV.en.md).
 
 La dev12 aggiunge un punto di ingresso per descrivere insieme gruppi,
@@ -214,4 +217,4 @@ entry point non modifica shader, runtime, UI o launcher nativo.
 La consegna conserva una misura nativa del livello ricostruito dal suo
 formato e i comandi/raw fuori dal sorgente: VICE Turbo6510 PAL× 64,
 preciso/LOD, silent, warm-up 101 refresh e misura 3072 refresh del giro A→B→A.
-Il budget ipotetico non introduce un nuovo valore FPS. Documentazione corrente inclusa nella release 1.11.0.
+Il budget ipotetico non introduce un nuovo valore FPS. Documentazione corrente inclusa nella release 1.12.0.

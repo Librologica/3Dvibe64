@@ -1,23 +1,19 @@
 # 3Dvibe64 — Assembly Programmer's Guide
 
-Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
-## Distribution correction within 1.11.0
+## Source-only release
 
-New demo projects are excluded, including their source generators, UI,
-character artwork, camera routes, launchers and captured/reference assets.
-The duplicated 1.10.2 SDK is removed. The original examples from v1.10.2 are
-retained. This corrects the existing release; VERSION stays 1.11.0.
-
-Reusable gameplay compilers, validators and bounded assembly emitters remain.
-Native gameplay builds require an external project supplied explicitly with
-`--project-source`; no demo is reconstructed from bundled default inputs.
-The ordinary engine and its existing examples remain directly buildable.
-See [GAMEPLAY](GAMEPLAY.en.md), [quick start](QUICKSTART.md) and
-[qualification](QUALIFICATION-1.11.0.en.md).
-
+This is the source release available in the GitHub repository. No demos or examples are shipped, including
+preexisting ones. Supply your own scenes/assets and explicit external project
+inputs. The renderer and reusable gameplay modules remain included. See
+[external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
+and [qualification](QUALIFICATION-1.12.0.en.md).
 
 ## Mode 7 fast — 1.7.0
 
@@ -764,7 +760,7 @@ Until the project officially adopts external modules, the PowerShell builder rem
 - Relevant host-side tests pass.
 - Relevant VICE regressions pass, or a new signature is justified.
 - Italian and English documentation describe the same API.
-- Version 1.11.0, package manifest and checksums are sealed together for this source release.
+- Version 1.12.0, package manifest and checksums are sealed together for this source release.
 
 ## 24. Recommended reading path
 

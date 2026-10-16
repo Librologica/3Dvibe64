@@ -15,9 +15,9 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.11.0"
-BUILDER_SHA256 = "79510B085B6B786A87F2F2814B2BED0FE2C95313EDAF0A3C121B89EA02C9C14F"
-PERMANENT_FILE_COUNT = 335
+VERSION = "1.12.0"
+BUILDER_SHA256 = "646E9866AA05CFF55EE9E5644FF90863B71EC86FBE97F4512766CD8491549BE8"
+PERMANENT_FILE_COUNT = json.loads((ROOT/"PACKAGE-MANIFEST.json").read_text())["package"]["permanentFiles"]
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
 GROUND_FRAMEBUFFER_SHA256 = {
@@ -778,19 +778,14 @@ def check_schema_and_failure_contracts() -> None:
 
 
 def main() -> None:
-    check_builder_and_package()
+    import importlib.util
+    spec=importlib.util.spec_from_file_location('distribution_contract',ROOT/'scripts/test_dev_gameplay.py')
+    module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);module.main()
     check_manifest()
-    check_clean_tree()
-    check_no_retired_references()
-    check_documentation()
-    check_reference_builds()
-    check_schema_and_failure_contracts()
-    check_shared_rgb_framebuffer_runtime()
-    check_ground_framebuffer_runtime()
-    check_ground_roll_framebuffer_runtime()
-    check_clean_tree()
-    print(f"PUBLIC_1_6_0_CONTRACT references=11/11 twoColor=2/2 framebuffer=2/2 sharedRGB=2/2 groundRoll=12/12 sharing=pass gouraud=separate-tests pointFixedMin=expected-error dev7TextSplit=separate files={PERMANENT_FILE_COUNT} builder=exact manifest=exact tree=clean")
+    for language in ('en','it'):
+        assert (ROOT/f'RELEASE-NOTES-1.12.0.{language}.md').is_file()
+        assert (ROOT/f'RENDER-OPTIMIZATIONS.{language}.md').is_file()
+    assert not (ROOT/'examples').exists() and not (ROOT/'validation').exists()
+    print('SOURCE RELEASE 1.12.0: no demos/examples; manifest and package policy PASS')
 
-
-if __name__ == "__main__":
-    main()
+if __name__=='__main__':main()

@@ -1,90 +1,47 @@
-# Contributing to 3Dvibe64
+# Contributing / Contribuire — 1.12.0
 
-Thank you for helping improve 3Dvibe64. The project is published as a
-noncommercial source-available engine. Before contributing, read [LICENSE](LICENSE)
-and [LICENSE-DOCUMENTATION.md](LICENSE-DOCUMENTATION.md).
+## English
 
-## Reporting a problem
+Read [LICENSE](LICENSE) and [documentation license](LICENSE-DOCUMENTATION.md).
+3Dvibe64 is noncommercial source-available software. Report ordinary problems
+with version, minimal external JSON/input, full command, GraphicsMode, precision,
+quality, LOD, camera, viewport, memory layout, tool versions and observed output.
+Keep secrets and unrelated third-party assets out. Follow [security policy](SECURITY.md)
+for vulnerabilities rather than posting them in a public issue.
 
-Open a GitHub issue with:
+Use focused branches. Preserve public contracts or document a versioned change.
+Keep work/build-3Dvibe64.ps1 UTF-8 with LF only: changing line endings can alter
+literal assembly substitutions. .gitattributes enforces LF. Update English and
+Italian manuals, indices, options and memory limits together. No demos/examples,
+scene assets, PRGs, media, generated logs or test environments in source releases.
+Engine assembly templates are maintained sources, not generated artifacts.
 
-- the 3Dvibe64 version;
-- the JSON scene and complete build command;
-- the selected GraphicsMode, camera, viewport, projection and memory layout;
-- the exact error message or observed result;
-- the 64tass and VICE versions, when relevant;
-- the smallest reproducible scene that preserves the problem.
+Run `python -B scripts/run_release_tests.py`; historical scene gates additionally
+require external `--test-inputs`. Test current manifest bytes in fresh copies.
+After renderer changes compare native images and complete-view FPS on the actual
+project target/options, at least20emulated seconds after warm-up, preserving raw
+commands, hashes, p95/worst and equal conditions. Never infer FPS from host time,
+warp or CPU replay. [Testing](TESTING.md) · [External inputs](EXTERNAL-INPUTS.en.md).
 
-Do not publish security-sensitive details in a normal issue. Follow
-[SECURITY.md](SECURITY.md) instead.
+## Italiano
 
-## Proposing a change
+Leggere [LICENSE](LICENSE) e [licenza documentazione](LICENSE-DOCUMENTATION.md).
+3Dvibe64 è software source-available non commerciale. Segnalare i problemi con
+versione, input/JSON esterno minimo, comando completo, GraphicsMode, precisione,
+qualità, LOD, camera, viewport, layout memoria, versioni strumenti e risultato.
+Escludere segreti e asset terzi non necessari. Per vulnerabilità seguire la
+[politica di sicurezza](SECURITY.md), evitando dettagli pubblici.
 
-1. Create a branch from the current maintained branch.
-2. Keep changes focused and avoid committing generated PRG, ASM, logs or screenshots.
-3. Preserve public JSON and command-line compatibility unless the change explicitly
-   proposes a documented versioned contract update.
-4. Update Italian and English documentation when public behavior changes.
-5. Run `python scripts/test_world_metrics.py`.
-6. Run `python scripts/test_release_contract.py`; the full contract requires 64tass
-   and VICE x64sc as described in the README.
-7. Explain the motivation, implementation and verification in the pull request.
+Usare branch mirati; conservare contratti pubblici o documentare il cambio di
+versione. Mantenere work/build-3Dvibe64.ps1 UTF-8 con soli LF: CRLF può alterare
+sostituzioni assembly letterali. .gitattributes impone LF. Aggiornare insieme
+manuali, indici, opzioni e limiti memoria in italiano e inglese. Niente demo,
+esempi, asset scena, PRG, media, log generati o ambienti test nelle release
+sorgenti. I template assembly dell'engine sono sorgenti, non output generati.
 
-## Contribution licensing
-
-By submitting a contribution, you confirm that you have the right to submit it
-and agree that it will be distributed under the same license that governs the
-part of the project being changed:
-
-- software, scripts, JSON examples, validation material and generated engine code:
-  PolyForm Noncommercial License 1.0.0;
-- Markdown documentation and manuals: Creative Commons Attribution-NonCommercial
-  4.0 International.
-
-The required author attribution for the original project remains
-`librologica.digital`. A contribution does not grant commercial-use rights.
-
-## Italiano — contribuire a 3Dvibe64
-
-Grazie per il contributo a 3Dvibe64. Il progetto è un engine con sorgenti
-disponibili per uso non commerciale. Prima di contribuire, leggere
-[LICENSE](LICENSE) e [LICENSE-DOCUMENTATION.md](LICENSE-DOCUMENTATION.md).
-
-### Segnalare un problema
-
-Aprire un'issue GitHub con:
-
-- versione di 3Dvibe64;
-- scena JSON e comando di compilazione completo;
-- GraphicsMode, camera, viewport, projection e layout memoria scelti;
-- messaggio di errore esatto o risultato osservato;
-- versioni 64tass e VICE, quando rilevanti;
-- scena riproducibile più piccola che conservi il problema.
-
-Non pubblicare dettagli sensibili di sicurezza in un'issue normale:
-seguire [SECURITY.md](SECURITY.md).
-
-### Proporre una modifica
-
-1. Creare un branch dal branch attualmente mantenuto.
-2. Mantenere le modifiche mirate; evitare commit di PRG, ASM generati, log o screenshot.
-3. Preservare compatibilità JSON pubblica e CLI, salvo proposta esplicita di
-   aggiornamento del contratto documentato e versionato.
-4. Aggiornare documentazione italiana e inglese quando cambia il comportamento pubblico.
-5. Eseguire `python scripts/test_world_metrics.py`.
-6. Eseguire `python scripts/test_release_contract.py`; il contratto completo
-   richiede64tass e VICE x64sc come descritto nel README.
-7. Spiegare motivazione, implementazione e verifiche nella pull request.
-
-### Licenza dei contributi
-
-Inviando un contributo, si conferma di avere il diritto di inviarlo e si accetta
-che sia distribuito sotto la stessa licenza della parte del progetto modificata:
-
-- software, script, esempi JSON, materiale di validazione e codice engine generato:
-  PolyForm Noncommercial License 1.0.0;
-- documentazione Markdown e manuali: Creative Commons
-  Attribution-NonCommercial 4.0 International.
-
-L'attribuzione obbligatoria dell'autore del progetto originale resta
-`librologica.digital`. Un contributo non concede diritti d'uso commerciale.
+Eseguire `python -B scripts/run_release_tests.py`; le regressioni storiche delle
+scene richiedono anche `--test-inputs` esterno. Verificare i byte del manifest
+corrente in copie nuove. Dopo modifiche al renderer confrontare immagini e FPS
+nativi di nuove viste complete sul target/opzioni reali, almeno20secondi emulati
+dopo warm-up; conservare comandi, hash, p95/peggiore e condizioni uguali. Mai
+stimare FPS da tempo host, warp o replay CPU. [Test](TESTING.md) · [Input](EXTERNAL-INPUTS.it.md).

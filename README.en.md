@@ -1,23 +1,20 @@
-# 3Dvibe64 1.11.0
+# 3Dvibe64 1.12.0
+
+Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+
 
 Legacy remains the default. Select precise Q8 explicitly with `-Precision q8`, recommended above 20 MHz. Standard texture quality, precise lines, LOD off and safe presentation remain the ordinary defaults.
 
 
 [Italiano](README.it.md) · [DOCS](DOCS.md) · [QUICKSTART](QUICKSTART.md)
 
-## Distribution correction within 1.11.0
+## Source-only release
 
-New demo projects are excluded, including their source generators, UI,
-character artwork, camera routes, launchers and captured/reference assets.
-The duplicated 1.10.2 SDK is removed. The original examples from v1.10.2 are
-retained. This corrects the existing release; VERSION stays 1.11.0.
-
-Reusable gameplay compilers, validators and bounded assembly emitters remain.
-Native gameplay builds require an external project supplied explicitly with
-`--project-source`; no demo is reconstructed from bundled default inputs.
-The ordinary engine and its existing examples remain directly buildable.
-See [GAMEPLAY](GAMEPLAY.en.md), [quick start](QUICKSTART.md) and
-[qualification](QUALIFICATION-1.11.0.en.md).
+This is the source release available in the GitHub repository. No demos or examples are shipped, including
+preexisting ones. Supply your own scenes/assets and explicit external project
+inputs. The renderer and reusable gameplay modules remain included. See
+[external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
+and [qualification](QUALIFICATION-1.12.0.en.md).
 
 | ID | Module | Contract |
 |---|---|---|
@@ -124,7 +121,7 @@ Under the pre-1.0 convention, roll `+32 TU` makes the horizon slope down to the 
 
 The public API includes a compile-time profile to GraphicsMode 1 and 2, enabled by `materialProfile: multimaterial`. A scene must use exactly two different color families and explicitly map every face; a third family or an incomplete map stops the build without falling back to the global object material. The first family in source order uses bitmap slot `01` and pattern `$55`; the second uses slot `10` and `$AA`. Both pigments share one `screenByte`; fixed Color RAM never distinguishes them. For the two-color multimaterial wire reference the mapping is VIC-II red 2 / white 1, hence `screenByte=$21` and fixed Color RAM `$01`.
 
-Mode 1 keeps unique edges: `wire_edge_slot` assigns each edge to its first adjacent source face, a rotation-independent rule for cross-material shared edges. Mode 2 uses `wire_face_slot` before drawing each face border and preserves hidden-wire mask fill, clipping, culling, painter order, and depth buckets. Within one bucket, the existing chain draws descending face indices, so the lower source face deterministically wins. No runtime edge or owner buffers are added. The regression scene is [examples/wire-two-color-multimaterial.json](examples/wire-two-color-multimaterial.json), with its original 84 faces (42 red and 42 white).
+Mode 1 keeps unique edges: `wire_edge_slot` assigns each edge to its first adjacent source face, a rotation-independent rule for cross-material shared edges. Mode 2 uses `wire_face_slot` before drawing each face border and preserves hidden-wire mask fill, clipping, culling, painter order, and depth buckets. Within one bucket, the existing chain draws descending face indices, so the lower source face deterministically wins. No runtime edge or owner buffers are added. The regression scene is [../my-inputs/wire-two-color-multimaterial.json](EXTERNAL-INPUTS.en.md), with its original 84 faces (42 red and 42 white).
 
 The two-pigment limit is independent of whether faces are triangles or quadrilaterals: mesh topology does not determine the available pigments. In each VIC-II multicolor bitmap cell, `00` selects global background `$D021`, `01` the high Screen RAM nibble, `10` the low Screen RAM nibble, and `11` Color RAM. pre-1.0 assigns its two wire pigments to `01` and `10` while keeping `11` stable, allowing edges from different faces and objects to cross the same cell without requesting another per-cell palette. A third pigment is technically possible through `11`, but competing writers would require explicit conflict arbitration, per-cell ownership, a prepass, or additional runtime state. Two pigments are therefore pre-1.0's safe, compact, deterministic general profile, not an absolute VIC-II limit.
 
@@ -138,7 +135,7 @@ ordered-dithered Gouraud for VIC-II, not a continuous-color framebuffer. There i
 no per-object hybrid flat/Gouraud selector. See `GOURAUD-MODE6-REPORT.md` and `TESTING.md`.
 At creaseAngle 0 faces retain hard boundaries; 60 degrees is the default; 180
 smooths the coarse torus across adjacent faces. Smoothing changes lighting normals,
-not geometry, polygon count or silhouette. Both hard and smooth cube examples are included.
+not geometry, polygon count or silhouette. Hard and smooth cube regressions use external inputs; neither is distributed.
 
 Graphics modes 1 and 2 provide the wire and hidden-wire paths. Mode 3 uses filled faces with static shading. GraphicsMode 4 provides filled faces with dynamic lighting and automatically enables the validated XY-Q2 profile; experimental subpixel flags are not required.
 
@@ -273,7 +270,7 @@ and remain subject to their respective authors' licenses.
 
 ## Build requirements
 
-Use Windows PowerShell and 64tass 1.60 or newer. Put `64tass.exe` on `PATH`, set `TASS64_EXE`/`TASS64_PATH`, or place it below `work/tools/64tass`. Build commands are listed in [examples/README.md](examples/README.md). The full release contract also requires VICE x64sc; put it on `PATH` or set `VICE_X64SC`/`VICE_EXE` before running `python scripts/test_release_contract.py`.
+Use Windows PowerShell and 64tass 1.60 or newer. Put `64tass.exe` on `PATH`, set `TASS64_EXE`/`TASS64_PATH`, or place it below `work/tools/64tass`. Build commands are listed in [../my-inputs/README.md](EXTERNAL-INPUTS.en.md). The full release contract also requires VICE x64sc; put it on `PATH` or set `VICE_X64SC`/`VICE_EXE` before running `python scripts/test_release_contract.py`.
 
 ## Mode 7 pipeline
 
@@ -293,4 +290,4 @@ Textured Gouraud uses `gouraud.creaseAngle` (default 60°, range 0–180°) for 
 
 The default affine path has no perspective correction. Optional projective interpolation requires the bounded Q8 profile; see [texture precision](TEXTURE-PRECISION.en.md). No bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Sampling aliasing remains.
 
-Read the [complete Mode 7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](examples/README.md). The paired Italian guides cover the same contract.
+Read the [complete Mode 7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](EXTERNAL-INPUTS.en.md). The paired Italian guides cover the same contract.

@@ -14,7 +14,7 @@ non vengono introdotte nuove ottimizzazioni del renderer.
 
 - [Architecture EN](MODE8.en.md) / [architettura IT](MODE8.it.md).
 - [Complete map guide EN](MAPS-2.5D.en.md) / [guida completa mappe IT](MAPS-2.5D.it.md).
-- [Generated plans / piante generate](examples/mode8/PLANS.md).
+- [Generated plans / piante generate](EXTERNAL-INPUTS.en.md).
 - [Memory / memoria](MODE8-MEMORY.md), [qualification / qualificazione](MODE8-QUALIFICATION.md), [test commands / comandi test](TESTING.md).
 
 ## Contract and compatibility / Contratto e compatibilità

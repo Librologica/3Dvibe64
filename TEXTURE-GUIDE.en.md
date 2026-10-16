@@ -1,6 +1,9 @@
 # Mode 7 Texture Format Guide
 
-Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -14,7 +17,7 @@ At scene level, `texturePalette: [9,8,1]` assigns the VIC-II color indices (0–
 
 ## Texture declaration
 
-Choose exactly one of `texels` or `source`. A complete inline texture contains 256 integers. [mode 7-cube-gouraud.json](examples/mode7-cube-gouraud.json) contains a complete inline brick pattern. [mode 7-cube-png.json](examples/mode7-cube-png.json) has the equivalent PNG declaration:
+Choose exactly one of `texels` or `source`. A complete inline texture contains 256 integers. [mode 7-cube-gouraud.json](EXTERNAL-INPUTS.en.md) contains a complete inline brick pattern. [mode 7-cube-png.json](EXTERNAL-INPUTS.en.md) has the equivalent PNG declaration:
 
 ```json
 {
@@ -39,7 +42,7 @@ For a quad [0,1,2,3], a full-square corner list is:
 
 For triangle [0,1,2], use three pairs, for example [[0,0],[15.9375,0],[0,15.9375]]. Each list must match its face's corner count. Corner UVs allow different coordinates on either side of a shared geometric vertex/edge; use them at seams. Quad triangulation 0→2 preserves these attributes.
 
-A mesh's `texture: "diagnostic"` supplies its default. `faceTextures: [null,"second",null]` overrides individual faces, in face order; null inherits the mesh texture. The list must have exactly as many entries as source faces, before quad triangulation. See the complete [multi-texture scene](examples/mode7-multi-texture.json).
+A mesh's `texture: "diagnostic"` supplies its default. `faceTextures: [null,"second",null]` overrides individual faces, in face order; null inherits the mesh texture. The list must have exactly as many entries as source faces, before quad triangulation. See the complete [multi-texture scene](EXTERNAL-INPUTS.en.md).
 
 `repeat: [U,V]` defaults to [1,1]; each value must be 1,2,4,8 or 16. It changes sampling frequency only, not the texture bytes. For encoded UV bytes u,v, addressing is:
 `((floor(v*repeatV/16)&15)<<4) | (floor(u*repeatU/16)&15)`.

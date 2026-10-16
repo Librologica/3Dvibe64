@@ -1,6 +1,9 @@
 # Building Mode 8 maps
 
-Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -10,13 +13,13 @@ This guide describes the **implemented, deliberately restricted** 1.4.0 map cont
 
 | Environment | Complete scene | What may change | What stays fixed |
 |---|---|---|---|
-| One floor, opaque walls and pillars | [perimeter.json](examples/mode8/perimeter.json) | Solid/free cells away from the border and route | Floor 0, ceiling 128, no apertures/ramps; initial camera and all waypoints |
-| One floor with thick static apertures | [apertures.json](examples/mode8/apertures.json) | Solid/free geometry around the qualified separator | Floor 0; room ceiling 96; aperture ceiling 64; separator y=14 and its two openings; initial camera and all waypoints |
-| Two floor plans joined by continuous ramps | [two-levels.json](examples/mode8/two-levels.json) | Geometry, declared apertures and waypoints within the heightfield contract | Initial camera, allowed floor values, two ramp formulas and footprints; numeric/path/memory budgets |
+| One floor, opaque walls and pillars | [perimeter.json](EXTERNAL-INPUTS.en.md) | Solid/free cells away from the border and route | Floor 0, ceiling 128, no apertures/ramps; initial camera and all waypoints |
+| One floor with thick static apertures | [apertures.json](EXTERNAL-INPUTS.en.md) | Solid/free geometry around the qualified separator | Floor 0; room ceiling 96; aperture ceiling 64; separator y=14 and its two openings; initial camera and all waypoints |
+| Two floor plans joined by continuous ramps | [two-levels.json](EXTERNAL-INPUTS.en.md) | Geometry, declared apertures and waypoints within the heightfield contract | Initial camera, allowed floor values, two ramp formulas and footprints; numeric/path/memory budgets |
 
 These are not three freely configurable general-purpose level editors. In particular, moving a monolevel aperture, changing its thickness, adding arbitrary ramps or moving a template's initial camera is rejected. Multi-level means a single floor/ceiling pair at each XY position: **no room-over-room**. No animated doors or opening/closing command exist.
 
-All scenes are complete 32 × 32 maps. Generated [coordinate plans](examples/mode8/PLANS.md) show the exact source cells and tutorial changes. A successful build checks syntax, geometry, selected backend, capacities and the automatic route; it does not prove every possible interactive view has been exhaustively sampled.
+All scenes are complete 32 × 32 maps. Generated [coordinate plans](EXTERNAL-INPUTS.en.md) show the exact source cells and tutorial changes. A successful build checks syntax, geometry, selected backend, capacities and the automatic route; it does not prove every possible interactive view has been exhaustively sampled.
 
 ## 2. Public coordinates and units
 
@@ -97,7 +100,7 @@ Ordinary floor levels: 0,32,64. Markers 255 and 254 are **formula selectors**, n
 | 255 | x=8..10, y=11..14 | `8*(Y-11)` | y=11:0; y=15:32 |
 | 254 | x=14..16, y=18..21 | `8*(Y-14)` | y=18:32; y=22:64 |
 
-The exact descriptor objects are in [two-levels.json](examples/mode8/two-levels.json): `marker`, `axis:"y"`, `origin`, `start`, `end`, `bottom`, `top`. All other fields are integers. There are no optional fields in an object and the two-object array must match the template. Formula origins 11 and 14 are deliberately different from the second ramp's start 18.
+The exact descriptor objects are in [two-levels.json](EXTERNAL-INPUTS.en.md): `marker`, `axis:"y"`, `origin`, `start`, `end`, `bottom`, `top`. All other fields are integers. There are no optional fields in an object and the two-object array must match the template. Formula origins 11 and 14 are deliberately different from the second ramp's start 18.
 
 ```text
 floor 64                           ───────── upper
@@ -129,9 +132,9 @@ Use the supplied full final scenes; no missing array elements or assembly edits 
 
 | Tutorial | Exact edits | Full final file | What the earlier map study actually found |
 |---|---|---|---|
-| Move one pillar | `solid[15*32+21]=0`; `solid[16*32+21]=1` | [perimeter-tutorial.json](examples/mode8/perimeter-tutorial.json) | No practically significant tour improvement; not a recommended performance optimization |
-| Move a 2 × 2 pillar | Clear x=15..16 at y=18; set x=15..16 at y=20; y=19 stays solid | [apertures-tutorial.json](examples/mode8/apertures-tutorial.json) | Local CPU reduction, no material improvement of tour p 95; not a general speed recommendation |
-| Narrow a lower aperture | Set `solid[6*32+16]=1`; in the y=6 aperture whose start is 16, change start to 17 | [two-levels-tutorial.json](examples/mode8/two-levels-tutorial.json) | Opening width 3→2 cells; partial improvement of long pauses, upper-level worst remains |
+| Move one pillar | `solid[15*32+21]=0`; `solid[16*32+21]=1` | [perimeter-tutorial.json](EXTERNAL-INPUTS.en.md) | No practically significant tour improvement; not a recommended performance optimization |
+| Move a 2 × 2 pillar | Clear x=15..16 at y=18; set x=15..16 at y=20; y=19 stays solid | [apertures-tutorial.json](EXTERNAL-INPUTS.en.md) | Local CPU reduction, no material improvement of tour p 95; not a general speed recommendation |
+| Narrow a lower aperture | Set `solid[6*32+16]=1`; in the y=6 aperture whose start is 16, change start to 17 | [two-levels-tutorial.json](EXTERNAL-INPUTS.en.md) | Opening width 3→2 cells; partial improvement of long pauses, upper-level worst remains |
 
 From the extracted SDK root, with Python, PowerShell and 64tass available:
 

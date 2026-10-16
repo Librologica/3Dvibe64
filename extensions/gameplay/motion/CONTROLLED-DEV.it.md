@@ -1,9 +1,12 @@
-# Q8-02 — animazioni controllabili e roll — 1.11.0
+# Q8-02 — animazioni controllabili e roll — 1.12.0
 
-La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+Release 1.12.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto corrente della release 1.11.0; i numeri dei checkpoint indicano
+La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
+Contratto corrente della release 1.12.0; i numeri dei checkpoint indicano
 la provenienza delle prove. [English](CONTROLLED-DEV.en.md).
 
 I profili `controlled-animation` e `camera-roll` estendono la prova delle
@@ -108,4 +111,4 @@ Non è una nuova API generale del builder ordinario, né animazione scheletrica,
 fisica di volo o roll dei billboard. Le dieci demo precedenti restano nei
 loro profili, con PRG identici. La prova di volo usa la stanza: navetta,
 release congelate, fondazione e Mode 8 sono preservate. WORLD-01 è disponibile nel profilo separato room-groups.
-Documentazione corrente inclusa nella release 1.11.0.
+Documentazione corrente inclusa nella release 1.12.0.

@@ -1,6 +1,9 @@
-# VIS-01 — conservative sector/portal visibility, 1.11.0
+# VIS-01 — conservative sector/portal visibility, 1.12.0
 
-Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+Release 1.12.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `sector-visibility` extends static-light. The host builds potentially visible
@@ -47,4 +50,4 @@ other portions retain pitch. Both timing controls use that same route.
 Native FPS is measured, never inferred from eliminated-face counts. General
 level integration and angular portal reduction remain future work.
 
-[Italiano](VISIBILITY-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.11.0.en.md)
+[Italiano](VISIBILITY-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)

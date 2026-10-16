@@ -1,9 +1,12 @@
-# Q8-01 — mesh sorgenti condivise — 1.11.0
+# Q8-01 — mesh sorgenti condivise — 1.12.0
 
-La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+Release 1.12.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto corrente della release 1.11.0; i numeri dei checkpoint indicano
+La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
+Contratto corrente della release 1.12.0; i numeri dei checkpoint indicano
 la provenienza delle prove. [English](SHARED-DEV.en.md).
 
 Il profilo sperimentale `shared-meshes` mostra quattro solidi poligonali
@@ -85,4 +88,4 @@ Gli altri nove profili restano disponibili con programmi identici ai propri
 checkpoint. La nuova demo non riunisce porta, billboard, luce e portali.
 Il builder ordinario e la fondazione Q8 restano invariati e mantengono il
 rifiuto dell'opzione pubblica `meshSourceSharing`: questa prova non cambia
-quel contratto generale. Documentazione corrente inclusa nella release 1.11.0.
+quel contratto generale. Documentazione corrente inclusa nella release 1.12.0.

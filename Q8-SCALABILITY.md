@@ -1,14 +1,20 @@
-# Q8 scalability — 1.11.0
+# Q8 scalability — 1.12.0
+
+3Dvibe64 1.12.0: [EN optimization contract](RENDER-OPTIMIZATIONS.en.md) · [Contratto IT](RENDER-OPTIMIZATIONS.it.md).
+All examples require external inputs / Tutti gli esempi richiedono input esterni.
+
 
 The ordinary 1.10.0 geometry contract is retained with the 1.10.2 runtime.
 Il contratto geometrico ordinario 1.10.0 è conservato con runtime 1.10.2.
 Q8-01/Q8-02 use separate profile APIs / usano API di profilo separate.
 
-Current 1.11.0 ordinary metric/geometry contract; inherited sections retain their stated profile/version.
-Contratto metrico/geometrico ordinario 1.11.0; sezioni ereditate con profilo/versione dichiarati.
+Current 1.12.0 ordinary metric/geometry contract; inherited sections retain their stated profile/version.
+Contratto metrico/geometrico ordinario 1.12.0; sezioni ereditate con profilo/versione dichiarati.
 Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
 [gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
-[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
+[qualification EN](QUALIFICATION-1.12.0.en.md), [qualificazione IT](QUALIFICATION-1.12.0.it.md).
+
+## Historical qualification / Qualificazione storica
 
 Official 1.10.0, promoted from the qualified 1.10.0-rc1.
 Promotion changes documentation and package identity only. Q8 arithmetic, rounding, projection, near/screen clipping,
@@ -82,3 +88,19 @@ L'output deve essere nuovo ed esterno a questo SDK. Comandi grezzi e dati nativi
 della qualificazione sono distribuiti separatamente nel pacchetto delle prove.
 Vedere [qualificazione](Q8-QUALIFICATION.md) e
 [note di versione](RELEASE-NOTES-1.10.0.md).
+
+
+## Current optional budgets / Budget opzionali correnti — 1.12.0
+
+Actual assembled allocation remains authoritative. New native flat-cache data
+costs6*N+68bytes; conservative wall data2*F+12*Q+17bytes, plus emitted code and
+guards. Attribute masks use one byte per face. Pool/SID/camera tables have their
+own explicit budgets. None of these bytes is free unless the allocator proves
+placement in that exact combination. Historical profile margins exclude new
+optional helpers. [EN](RENDER-OPTIMIZATIONS.en.md) · [IT](RENDER-OPTIMIZATIONS.it.md).
+
+Conta l'allocazione assemblata reale. Dati cache flat6*N+68byte; occlusione
+pareti2*F+12*Q+17byte, oltre a codice e guardie. Maschere:un byte per faccia.
+Pool/SID/tabelle camera hanno budget espliciti separati. Nessuno spazio è libero
+senza verifica dell'allocatore sulla combinazione reale. I margini dei profili
+storici non includono nuovi helper opzionali.

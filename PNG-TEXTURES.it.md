@@ -1,6 +1,9 @@
 # Mode 7 — Importazione texture PNG
 
-Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -22,6 +25,6 @@ Un'immagine normale di un editor deve quindi essere ridimensionata manualmente a
 
 ## Coppia completa funzionante
 
-[mode 7-cube-png.json](examples/mode7-cube-png.json) usa [textures/bricks.png](examples/textures/bricks.png), con sourceColors `["#542C18","#D06820","#C8C8C8"]`. [mode 7-cube-gouraud.json](examples/mode7-cube-gouraud.json) contiene i 256 texel inline equivalenti. Entrambi usano repeat[2,2], Gouraud C e la stessa geometria/UV/palette; con gli stessi parametri di build producono PRG byte-identici. I nomi delle scene possono differire senza influire sui dati runtime.
+[mode 7-cube-png.json](EXTERNAL-INPUTS.it.md) usa [textures/bricks.png](EXTERNAL-INPUTS.it.md), con sourceColors `["#542C18","#D06820","#C8C8C8"]`. [mode 7-cube-gouraud.json](EXTERNAL-INPUTS.it.md) contiene i 256 texel inline equivalenti. Entrambi usano repeat[2,2], Gouraud C e la stessa geometria/UV/palette; con gli stessi parametri di build producono PRG byte-identici. I nomi delle scene possono differire senza influire sui dati runtime.
 
 Dopo la conversione, la texture resta una tabella runtime unpacked di 256 byte, allineata a pagina. Il PNG non risparmia RAM runtime e non aggiunge decoder. Più texture usate aggiungono pagine; le pagine inutilizzate possono essere omesse. Vedere [formato texture](TEXTURE-GUIDE.it.md) e [parametri build Mode 7](MODE7.it.md).

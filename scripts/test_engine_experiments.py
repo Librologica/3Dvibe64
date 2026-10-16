@@ -9,7 +9,7 @@ sys.path.insert(0,str(ROOT/'work'))
 from experiments import parse
 def main():
     rng=random.Random(110202)
-    assert parse('none','q8')==set() and len(parse('all','q8'))==4
+    assert parse('none','q8')==set() and len(parse('all','q8'))==13
     for value,family in [('mode8-rays','q8'),('camera-table','mode8'),('unknown','q8')]:
         try:parse(value,family)
         except ValueError:pass

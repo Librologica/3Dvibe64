@@ -20,7 +20,7 @@ def assemble(source,out,stem):
     r=subprocess.run(cmd,capture_output=True,text=True,cwd=out);(out/(stem+'.log')).write_text(r.stdout+r.stderr)
     if r.returncode:raise RuntimeError(r.stdout+r.stderr)
     return labels(out/(stem+'.labels'))
-def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True,texture_precision=None,texture_quality=None,frame_presentation='safe',line_raster='precise',texture_lod=None,lod_near=None,lod_far=None,geometry_adapter=None,engine_experiments=None):
+def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True,texture_precision=None,texture_quality=None,frame_presentation='safe',line_raster='precise',texture_lod=None,lod_near=None,lod_far=None,geometry_adapter=None,engine_experiments=None,face_attribute_masks=None):
     scene=Path(scene).resolve();spec=json.loads(scene.read_text(encoding='utf-8-sig'));out=Path(name).resolve()
     validate(spec,mode,standard,out)
     sys.path.insert(0,str(ROOT.parent))
@@ -28,6 +28,12 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
     experiments=parse_experiments(engine_experiments if engine_experiments is not None else spec.get('engineExperiments'),'q8')
     if experiments and (mode<3 or precision!='q8'):
         raise ValueError('ENGINE_EXPERIMENTS: Q8 polygon Modes3..7 required')
+    if 'camera-extremes' in experiments and mode!=7:
+        raise ValueError('RENDER_CAMERA_UNQUALIFIED: camera-extremes currently qualified for Mode7 only; Mode4 image comparison pending')
+    if face_attribute_masks is not None and 'live-attributes' not in experiments:
+        raise ValueError('RENDER_ATTRIBUTES: masks require live-attributes')
+    if 'live-attributes' in experiments and (mode!=7 or texture_precision not in (None,'perspective') or texture_quality=='fast'):
+        raise ValueError('RENDER_ATTRIBUTES: Mode7 perspective standard required')
     lod_distances_explicit=lod_near is not None or lod_far is not None or 'textureLODNear' in spec or 'textureLODFar' in spec
     texture_lod=texture_lod if texture_lod is not None else spec.get('textureLOD','off')
     lod_near=lod_near if lod_near is not None else spec.get('textureLODNear',28)
@@ -47,6 +53,14 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
     if texture_lod!='off' and texture_precision!='perspective':
         raise ValueError('TEXTURE_LOD_PROFILE: Q8 perspective required')
     if precision!='q8' or music or motion:raise ValueError('Q8_INTERNAL: public adapter accepts only the silent Q8 profile')
+    if 'live-attributes' in experiments and (mode!=7 or texture_precision!='perspective' or texture_quality!='standard'):
+        raise ValueError('RENDER_ATTRIBUTES: Mode7 perspective standard required')
+    if experiments & {'bounded-divide','packed-samples','unrolled-advance'} and (mode!=7 or texture_precision!='perspective' or texture_quality!='standard'):
+        raise ValueError('EXACT_DIVIDE: Mode7 perspective standard required')
+    if 'adapter-outcodes' in experiments and (mode!=7 or texture_precision!='perspective'):
+        raise ValueError('RENDER_OUTCODES: Mode7 perspective required')
+    if 'unrolled-advance' in experiments and spec.get('textureLighting')=='gouraud':
+        raise ValueError('EXACT_ADVANCE: unlit perspective shader required')
     camera_mobile=camera_mobile or camera_auto
     if camera_mobile and precision!='q8':raise ValueError('Q8_CAMERA_REQUIRES_Q8')
     if camera_mobile and any(abs(n)>4095 for obj in spec['objects'] for n in obj['position']):raise ValueError('Q8_CAMERA_OBJECT_DOMAIN: +/-4095 WU')
@@ -104,7 +118,7 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
         elif mode==7:
             from texture import prepare_texture,texture_pieces
             source=prepare_texture(source,music,motion)
-            parts=texture_pieces(parts,lab,guard_outcodes=geometry_adapter is None)
+            parts=texture_pieces(parts,lab,guard_outcodes=geometry_adapter is None or 'adapter-outcodes' in experiments)
         else:source=prepare(source,music,motion,mode)
         if camera_mobile:
             from camera import adapt
@@ -127,7 +141,7 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
             from perspective_exact import apply as exact_perspective
             source,parts=exact_perspective(source,parts)
             from perspective_uniform import apply as uniform_perspective
-            source,parts,uniform=uniform_perspective(source,parts,lab,byte,force=texture_lod!='off')
+            source,parts,uniform=uniform_perspective(source,parts,lab,byte,force=texture_lod!='off' or 'live-attributes' in experiments or 'unrolled-advance' in experiments)
             from perspective_uvzp import apply as paired_uv
             source,parts=paired_uv(source,parts,[0] if texture_quality=='fast' else uniform)
             info.update(texturePrecision='perspective',perspectiveDepthDomainWU=[1,256],
@@ -160,10 +174,16 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
         if 'visibility' in experiments:
             from experimental_visibility import apply as ex_visibility
             source,applied['visibility']=ex_visibility(source,parts,object_ranges,lab,byte)
-        if set(applied)!=experiments:raise ValueError('ENGINE_EXPERIMENTS: requested experiment not applied')
-        info['engineExperiments']=dict(requested=sorted(experiments),applied=applied)
         if geometry_adapter is not None:
             source,parts=geometry_adapter(source,parts,lab)
+        from render_optimizations import OPTIONS as render_options,apply as optimize_render
+        if face_attribute_masks is not None and len(face_attribute_masks)!=lab['FACE_COUNT']:
+            raise ValueError('RENDER_ATTRIBUTES: expected one mask per runtime face')
+        source,parts,render_info=optimize_render(source,parts,experiments & render_options,masks=face_attribute_masks)
+        applied.update(render_info)
+        if set(applied)!=experiments:raise ValueError('ENGINE_EXPERIMENTS: requested experiment not applied')
+        info['engineExperiments']=dict(requested=sorted(experiments),applied=applied)
+        if face_attribute_masks is not None:info['faceAttributeMasks']=list(face_attribute_masks)
         sizing_source=attach(source,parts)
         verify_retired_state_absent(sizing_source)
         sizing=assemble(sizing_source,out,'sizing')

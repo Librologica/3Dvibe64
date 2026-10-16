@@ -1,7 +1,8 @@
 """Explicit engine experiments; profile defaults remain unchanged.
 Required Notice: 3Dvibe64. PolyForm Noncommercial 1.0.0.
 """
-Q8={'q8-arithmetic','uv-texel','camera-table','visibility'}
+Q8={'q8-arithmetic','uv-texel','camera-table','visibility',
+    'camera-extremes','degenerate-faces','zero-terms','live-attributes','adapter-outcodes','inside-planes','bounded-divide','packed-samples','unrolled-advance'}
 def parse(value,family):
     if value in (None,'none',''):return set()
     if family=='mode8':

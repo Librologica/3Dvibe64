@@ -1,9 +1,9 @@
 {
-  "version": "1.11.0",
-  "status": "official source modules; corrected existing distribution",
+  "version": "1.12.0",
+  "status": "qualified source release; explicit bounded extensions",
   "newDemosIncluded": false,
   "Mode8Modified": false,
-  "ordinaryEngineModified": false,
+  "ordinaryEngineModified": true,
   "privateDevelopmentPreserved": true,
   "gameplay": {
     "experimental": true,
@@ -179,6 +179,19 @@
       "ordinaryEngineAPIChanged": false
     },
     "profiles": [],
-    "externalProjectOption": "--project-source"
-  }
+    "externalProjectOption": "--project-source",
+    "budgetPolicy": "Historical per-profile budgets exclude new optional helpers; recompute actual assembled map"
+  },
+  "allExamplesExcluded": true,
+  "GitHubPublished": true,
+  "renderOptimizationContracts": "RENDER-OPTIMIZATIONS.en.md",
+  "release": {
+    "version": "1.12.0",
+    "publication": "GitHub source repository",
+    "GitHubPublished": true,
+    "allExamplesExcluded": true
+  },
+  "publication": "GitHub source repository",
+  "repositoryURL": "https://github.com/Librologica/3Dvibe64",
+  "releasePageCreated": false
 }

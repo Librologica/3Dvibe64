@@ -1,9 +1,12 @@
-# ENT-01 — porta poligonale e passaggio — 1.11.0
+# ENT-01 — porta poligonale e passaggio — 1.12.0
 
-La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+Release 1.12.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
+La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
+Contratto corrente incluso nella release 1.12.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](DOOR-DEV.en.md).
 
 `door-entity` conserva UI, guardiano configurabile e materiali misti. Una
@@ -86,4 +89,4 @@ controllo. L'apertura reale modifica superficie disegnata e occlusione:
 gli FPS non misurano soltanto il costo delle istruzioni di stato.
 
 Comandi, raw e misure native sono nell'evidence esterna. I profili precedenti
-mantengono i loro programmi qualificati. Documentazione corrente nella release 1.11.0.
+mantengono i loro programmi qualificati. Documentazione corrente nella release 1.12.0.

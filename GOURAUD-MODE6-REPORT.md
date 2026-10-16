@@ -237,7 +237,7 @@ confronti framebuffer appaiati della qualificazione finale. Output grezzi e
 builder storici restano esterni all'SDK.
 
 La scena esatta Gate5 toro/FPS è `examples/mode6-gouraud-torus-fps.json`;
-il comando è in [examples/README.md](examples/README.md). SHA-256 PRG atteso:
+il comando è in [examples/README.md](EXTERNAL-INPUTS.en.md). SHA-256 PRG atteso:
 `F59587562E2CD78F7E28ACE58108274B88013A7DDC2A4F6949C393CD87844662`.
 Non sono distribuiti PRG, ASM generati, screenshot o output profiler.
 `MANIFEST.sha256` copre ogni file permanente tranne sé stesso; il proprio hash

@@ -263,6 +263,7 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+if (-not $SceneFile) { throw 'SCENE_REQUIRED: pass -SceneFile with your external scene; no demos/examples are distributed.' }
 Set-StrictMode -Version Latest
 
 function Has-Property([object]$Object, [string]$Name) {

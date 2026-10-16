@@ -1,4 +1,7 @@
-# Bounded billboard source contract — 1.11.0
+# Bounded billboard source contract — 1.12.0
+
+Release 1.12.0: [current optimizations](../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
 
 The distribution retains `billboards/masked.py`, `outlined.py`, `scene.py`
 and `multiple.py`, with entity/door, material, light, visibility, mesh, motion,

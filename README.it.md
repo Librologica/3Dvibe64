@@ -1,23 +1,16 @@
-# 3Dvibe64 1.11.0
+# 3Dvibe64 1.12.0
+
+Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
 
 Legacy resta il default. Selezionare Q8 preciso esplicitamente con `-Precision q8`, consigliato sopra 20 MHz. Qualità texture standard, linee precise, LOD off e presentazione safe restano i default ordinari.
 
 
 [English](README.en.md) · [DOCS](DOCS.md) · [QUICKSTART](QUICKSTART.md)
 
-## Correzione della distribuzione nella 1.11.0
+## Distribuzione di soli sorgenti
 
-Esclusi i nuovi progetti demo, compresi generatori sorgente, UI, disegni dei
-personaggi, percorsi camera, launcher e asset di riferimento. Rimossa la copia
-duplicata dell’SDK 1.10.2. Conservati gli esempi già presenti nella v1.10.2.
-Si corregge la release esistente; VERSION resta 1.11.0.
-
-Restano compilatori, validatori ed emitter assembly gameplay riutilizzabili.
-Le build gameplay native richiedono un progetto esterno esplicito tramite
-`--project-source`; nessuna demo è ricostruita da input predefiniti allegati.
-Engine ordinario ed esempi preesistenti restano direttamente compilabili.
-Vedere [GAMEPLAY](GAMEPLAY.it.md), [guida rapida](QUICKSTART.md) e
-[qualificazione](QUALIFICATION-1.11.0.it.md).
+Questa è la release sorgente disponibile nel repository GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.12.0.it.md).
 
 | ID | Modulo | Contratto |
 |---|---|---|
@@ -125,7 +118,7 @@ Con la convenzione storica, roll `+32 TU` produce un orizzonte discendente verso
 
 L'API pubblica include alle GraphicsMode 1 e 2 un profilo compile-time attivato da `materialProfile: multimaterial`. La scena deve usare esattamente due famiglie colore differenti e deve mappare esplicitamente ogni faccia; una terza famiglia o un mapping incompleto interrompono la build senza fallback al materiale globale. La prima famiglia nell'ordine sorgente usa lo slot bitmap `01` e il pattern `$55`, la seconda lo slot `10` e `$AA`. I due pigmenti condividono lo stesso `screenByte`; Color RAM resta fisso e non li distingue. Per la two-color multimaterial wire reference il mapping e rosso VIC-II 2 / bianco VIC-II 1, quindi `screenByte=$21` e Color RAM fisso `$01`.
 
-In Mode 1 gli edge sono unici: `wire_edge_slot` assegna ogni spigolo alla prima faccia adiacente nell'ordine sorgente, regola stabile anche per gli edge condivisi fra materiali differenti. In Mode 2 `wire_face_slot` seleziona il pattern prima dei bordi di ogni faccia; restano invariati fill di mascheramento hidden-wire, clipping, culling, painter order e depth bucket. Nello stesso bucket la catena esistente disegna gli indici faccia in ordine decrescente, quindi la faccia sorgente con indice minore vince deterministicamente. Non sono introdotti buffer runtime per edge o proprietari. La regressione e [examples/wire-two-color-multimaterial.json](examples/wire-two-color-multimaterial.json), con 84 facce inalterate (42 rosse e 42 bianche).
+In Mode 1 gli edge sono unici: `wire_edge_slot` assegna ogni spigolo alla prima faccia adiacente nell'ordine sorgente, regola stabile anche per gli edge condivisi fra materiali differenti. In Mode 2 `wire_face_slot` seleziona il pattern prima dei bordi di ogni faccia; restano invariati fill di mascheramento hidden-wire, clipping, culling, painter order e depth bucket. Nello stesso bucket la catena esistente disegna gli indici faccia in ordine decrescente, quindi la faccia sorgente con indice minore vince deterministicamente. Non sono introdotti buffer runtime per edge o proprietari. La regressione e [../my-inputs/wire-two-color-multimaterial.json](EXTERNAL-INPUTS.it.md), con 84 facce inalterate (42 rosse e 42 bianche).
 
 Il limite a due pigmenti non dipende dal fatto che le facce siano triangoli o quadrilateri: la topologia della mesh non determina i colori disponibili. In ogni cella bitmap multicolore VIC-II, `00` usa il colore globale di sfondo `$D021`, `01` il nibble alto della Screen RAM, `10` il nibble basso della Screen RAM e `11` la Color RAM. pre-1.0 assegna i due pigmenti wire a `01` e `10` e mantiene stabile `11`; edge di facce e oggetti differenti possono cosi attraversare la stessa cella senza richiedere una nuova palette per cella. Un terzo pigmento e tecnicamente possibile tramite `11`, ma writer concorrenti richiederebbero arbitraggio esplicito dei conflitti, proprieta per cella, prepass o stato runtime aggiuntivo. I due pigmenti sono quindi una scelta architetturale generale sicura, compatta e deterministica della pre-1.0, non un limite assoluto del VIC-II.
 
@@ -274,7 +267,7 @@ soggetti alle licenze dei rispettivi autori.
 
 ## Requisiti di compilazione
 
-Servono Windows PowerShell e 64tass 1.60 o successivo. Inserire `64tass.exe` nel `PATH`, impostare `TASS64_EXE`/`TASS64_PATH` oppure collocarlo sotto `work/tools/64tass`. I comandi sono riportati in [examples/README.md](examples/README.md). Il contratto completo richiede anche VICE x64sc: inserirlo nel `PATH` oppure impostare `VICE_X64SC`/`VICE_EXE` prima di eseguire `python scripts/test_release_contract.py`.
+Servono Windows PowerShell e 64tass 1.60 o successivo. Inserire `64tass.exe` nel `PATH`, impostare `TASS64_EXE`/`TASS64_PATH` oppure collocarlo sotto `work/tools/64tass`. I comandi sono riportati in [../my-inputs/README.md](EXTERNAL-INPUTS.it.md). Il contratto completo richiede anche VICE x64sc: inserirlo nel `PATH` oppure impostare `VICE_X64SC`/`VICE_EXE` prima di eseguire `python scripts/test_release_contract.py`.
 
 ## Pipeline Mode 7
 
@@ -294,4 +287,4 @@ Il Gouraud textured usa `gouraud.creaseAngle` (default 60°, intervallo 0–180�
 
 Il default affine non corregge la prospettiva. L’interpolazione prospettica opzionale richiede il profilo Q8 limitato: vedere [precisione texture](TEXTURE-PRECISION.it.md). Niente bilinear, mipmapping, texture runtime packed o quad mapper nativo. Resta l’aliasing di campionamento.
 
-Leggere il [contratto Mode 7 completo](MODE7.it.md), la [guida texture](TEXTURE-GUIDE.it.md), la [guida PNG](PNG-TEXTURES.it.md) e gli [otto esempi pubblici](examples/README.md). Le guide inglesi equivalenti coprono lo stesso contratto.
+Leggere il [contratto Mode 7 completo](MODE7.it.md), la [guida texture](TEXTURE-GUIDE.it.md), la [guida PNG](PNG-TEXTURES.it.md) e gli [otto esempi pubblici](EXTERNAL-INPUTS.it.md). Le guide inglesi equivalenti coprono lo stesso contratto.

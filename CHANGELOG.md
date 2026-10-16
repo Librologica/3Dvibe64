@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.12.0 — source repository update / aggiornamento repository sorgente
+
+Exact opt-in renderer work elimination; reusable conservative wall adapter,
+static pattern/palette and raster emitters, optional pool/camera/SID support.
+No demo/example projects or assets, including preexisting examples. Explicit
+external scene/project/test inputs. GitHub source repository updated. Full bilingual
+contracts, native before/after measurements and source-only package audit.
+
+Ottimizzazioni esatte esplicite, adapter conservativo pareti, emitter raster,
+retini/palette e supporti opzionali pool/camera/SID. Nessuna demo o esempio,
+neppure preesistente. Input scena/progetto/test esterni espliciti. Repository GitHub
+aggiornato. Contratti EN/IT, misure native e controllo del pacchetto sorgente.
+
+[EN](RELEASE-NOTES-1.12.0.en.md) · [IT](RELEASE-NOTES-1.12.0.it.md)
+
 ## 1.11.0 distribution correction / correzione distribuzione
 
 Remove all newly bundled demo projects, including their sources, character/UI

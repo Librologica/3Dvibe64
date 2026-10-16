@@ -1,6 +1,9 @@
 # Mode 7 Texture Format Guide
 
-Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -14,7 +17,7 @@ A livello scena, `texturePalette: [9,8,1]` assegna gli indici colore VIC-II (0�
 
 ## Dichiarazione texture
 
-Scegliere esattamente uno fra `texels` e `source`. Una texture inline completa contiene 256 interi. [mode 7-cube-gouraud.json](examples/mode7-cube-gouraud.json) contiene il pattern completo dei mattoni. [mode 7-cube-png.json](examples/mode7-cube-png.json) contiene la dichiarazione PNG equivalente:
+Scegliere esattamente uno fra `texels` e `source`. Una texture inline completa contiene 256 interi. [mode 7-cube-gouraud.json](EXTERNAL-INPUTS.it.md) contiene il pattern completo dei mattoni. [mode 7-cube-png.json](EXTERNAL-INPUTS.it.md) contiene la dichiarazione PNG equivalente:
 
 ```json
 {
@@ -39,7 +42,7 @@ Per un quad [0,1,2,3], la lista che copre il quadrato intero è:
 
 Per un triangolo [0,1,2], usare tre coppie, ad esempio [[0,0],[15.9375,0],[0,15.9375]]. Ogni lista deve corrispondere al numero di corner della faccia. Le UV per corner permettono coordinate diverse sui due lati di un vertice/edge geometrico condiviso: usarle alle seam. La triangolazione quad 0→2 conserva questi attributi.
 
-`texture: "diagnostic"` nella mesh fornisce il default. `faceTextures: [null,"second",null]` sovrascrive singole facce, nel loro ordine; null eredita la texture mesh. La lista deve avere tante voci quante sono le facce sorgenti, prima della triangolazione. Vedere la [scena multi-texture completa](examples/mode7-multi-texture.json).
+`texture: "diagnostic"` nella mesh fornisce il default. `faceTextures: [null,"second",null]` sovrascrive singole facce, nel loro ordine; null eredita la texture mesh. La lista deve avere tante voci quante sono le facce sorgenti, prima della triangolazione. Vedere la [scena multi-texture completa](EXTERNAL-INPUTS.it.md).
 
 `repeat: [U,V]` ha default [1,1]; ogni valore deve essere 1,2,4,8 o 16. Cambia solo la frequenza di campionamento, non i byte della texture. Per UV codificate nei byte u,v, l'indirizzo è:
 `((floor(v*repeatV/16)&15)<<4) | (floor(u*repeatU/16)&15)`.

@@ -1,6 +1,9 @@
 # Mode 7 fast profile — 1.7.0
 
-Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -28,13 +31,13 @@ not raycasting. This release promotes reusable sampling/reconstruction methods,
 not the two-room development demo, its visibility assumptions or its LUT.
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 7 -Precision q8 -TextureQuality fast -SceneFile examples/mode7-fast-cube.json -VideoStandard pal -OutputDirectory ../fast-cube-pal
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 7 -Precision q8 -TextureQuality fast -SceneFile ../my-inputs/mode7-fast-cube.json -VideoStandard pal -OutputDirectory ../fast-cube-pal
 ```
 
 Use a fresh directory outside the SDK. The scene already specifies perspective
 textures, Gouraud C and fast quality. For an existing compatible scene also use
 `-TexturePrecision perspective`. Python's equivalent is
-`python -B work/q8/build.py --scene examples/mode7-fast-cube.json --out ../fast-cube-python --mode 7 --texture-quality fast`.
+`python -B work/q8/build.py --scene ../my-inputs/mode7-fast-cube.json --out ../fast-cube-python --mode 7 --texture-quality fast`.
 PRG, generated ASM, labels, memory map and `build.json` go outside the package.
 
 ## Rendering contract and quality tradeoffs

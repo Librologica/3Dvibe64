@@ -21,7 +21,7 @@ sperimentale: due oggetti/16 vertici. Nessuna estensione Q8 a mesh sorgenti
 condivise, Ground, timeline o roll camera.
 
 [Contract / Contratto](Q8-SCALABILITY.md) · [Measured qualification / Qualificazione misurata](Q8-QUALIFICATION.md).
-Build examples and expected refusals are documented in [examples](examples/README.md).
+Build examples and expected refusals are documented in [examples](EXTERNAL-INPUTS.en.md).
 The documentation revision corrects package/version labels, all three Precision
 CLI choices and test scope; it changes no measured engine program.
 La revisione documentale corregge versioni, tre scelte CLI Precision e ambito

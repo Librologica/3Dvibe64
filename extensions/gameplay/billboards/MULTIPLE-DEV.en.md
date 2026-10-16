@@ -1,6 +1,9 @@
-# BB-03 — two billboard instances, 1.11.0
+# BB-03 — two billboard instances, 1.12.0
 
-Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+Release 1.12.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `multiple-billboards` extends door-entity with two independently positioned,
@@ -47,4 +50,4 @@ door states. Seven tick samples verify cadence;20 door cases are repeated.
 Default free gaps 3004 bytes,498 less than the door profile. Historical counts
 refer to their recorded profile/hash; raw data and native FPS are external.
 
-[Italiano](MULTIPLE-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.11.0.en.md)
+[Italiano](MULTIPLE-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)

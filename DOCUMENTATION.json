@@ -1,5 +1,5 @@
 {
-  "version": "1.11.0",
+  "version": "1.12.0",
   "locales": [
     "en",
     "it"
@@ -79,11 +79,6 @@
       "id": "README",
       "en": "README.en.md",
       "it": "README.it.md"
-    },
-    {
-      "id": "RELEASE-NOTES-1.11.0",
-      "en": "RELEASE-NOTES-1.11.0.en.md",
-      "it": "RELEASE-NOTES-1.11.0.it.md"
     },
     {
       "id": "ROADMAP",
@@ -166,9 +161,29 @@
       "it": "extensions/gameplay/level/LEVEL-DEV.it.md"
     },
     {
-      "id": "QUALIFICATION-1.11.0",
-      "en": "QUALIFICATION-1.11.0.en.md",
-      "it": "QUALIFICATION-1.11.0.it.md"
+      "id": "RELEASE-NOTES-1.12.0",
+      "en": "RELEASE-NOTES-1.12.0.en.md",
+      "it": "RELEASE-NOTES-1.12.0.it.md"
+    },
+    {
+      "id": "QUALIFICATION-1.12.0",
+      "en": "QUALIFICATION-1.12.0.en.md",
+      "it": "QUALIFICATION-1.12.0.it.md"
+    },
+    {
+      "id": "RENDER-OPTIMIZATIONS",
+      "en": "RENDER-OPTIMIZATIONS.en.md",
+      "it": "RENDER-OPTIMIZATIONS.it.md"
+    },
+    {
+      "id": "ADAPTER-SUPPORT",
+      "en": "ADAPTER-SUPPORT.en.md",
+      "it": "ADAPTER-SUPPORT.it.md"
+    },
+    {
+      "id": "EXTERNAL-INPUTS",
+      "en": "EXTERNAL-INPUTS.en.md",
+      "it": "EXTERNAL-INPUTS.it.md"
     }
   ],
   "currentBilingual": [
@@ -181,9 +196,8 @@
     "CONTRIBUTING.md",
     "SECURITY.md",
     "LICENSE-DOCUMENTATION.md",
-    "examples/README.md",
     "ROADMAP.md",
-    "RELEASE-NOTES-1.11.0.md"
+    "RELEASE-NOTES-1.12.0.md"
   ],
   "historicalReports": [
     "Q8-QUALIFICATION.md",
@@ -191,7 +205,10 @@
     "MODE8-QUALIFICATION.md",
     "MODE8-MEMORY.md",
     "GOURAUD-MODE6-REPORT.md",
-    "examples/mode8/PLANS.md"
+    "RELEASE-NOTES-1.11.0.en.md",
+    "RELEASE-NOTES-1.11.0.it.md",
+    "QUALIFICATION-1.11.0.en.md",
+    "QUALIFICATION-1.11.0.it.md"
   ],
   "historyPolicy": "Preserve versioned measurements and archived release notes; current paired contracts take precedence.",
   "gameplayProfiles": [
@@ -218,14 +235,19 @@
     "--visibility",
     "--shared-meshes",
     "--motion-controls",
-    "--world-groups"
+    "--world-groups",
+    "--flat-span-cache"
   ],
   "sourceOnly": true,
-  "publication": "GitHub",
+  "publication": "GitHub source repository",
   "newDemosIncluded": false,
   "gameplayRequiredOptions": [
     "--profile",
     "--out",
     "--project-source"
-  ]
+  ],
+  "allExamplesExcluded": true,
+  "GitHubPublished": true,
+  "repositoryURL": "https://github.com/Librologica/3Dvibe64",
+  "releasePageCreated": false
 }

@@ -1,10 +1,13 @@
 # GraphicsMode 8 — 2.5D
 
-Contratto sorgente corrente 1.11.0. Il manuale descrive l’exporter ordinario
+Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
-Backend 1.10.2 conservato nella 1.11.0: resta il percorso bitmap qualificato. EngineExperiments omesso/none è accettato; all e i flag Mode 8 ritirati/combinazioni sono rifiutati. Vedere [note di rilascio](RELEASE-NOTES-1.11.0.it.md).
+Backend 1.10.2 conservato nella 1.12.0: resta il percorso bitmap qualificato. EngineExperiments omesso/none è accettato; all e i flag Mode 8 ritirati/combinazioni sono rifiutati. Vedere [note di rilascio](RELEASE-NOTES-1.12.0.it.md).
 <!-- maintenance-1.10.1 -->
 La 1.10.1 ufficiale richiede provenienza acquisizione per riuso nativo e mantiene i vincoli input con Python ottimizzato. Heading coincidente 64. Il renderer adattivo può perdere discontinuità interne: vedere [diagnostica, costo misurato e limite noto](QUALIFICATION-1.10.1-rc1.it.md). Campionamento runtime invariato.
 

@@ -1,6 +1,9 @@
-# TEX-01 — texture frames and UV scrolling, 1.11.0
+# TEX-01 — texture frames and UV scrolling, 1.12.0
 
-Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+Release 1.12.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `animated-textures` extends multiple-billboards, retaining door, mixed
@@ -41,4 +44,4 @@ Inherited native evidence:11 samples across 0–128 ticks,24 frozen ticks,
 three LOD traces at 14/18/22 WU (weights 16/8/0). Billboard/door cases are repeated.
 FPS uses intact automatic programs and counts only newly presented full views.
 
-[Italiano](ANIMATION-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.11.0.en.md)
+[Italiano](ANIMATION-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)

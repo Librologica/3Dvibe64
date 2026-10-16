@@ -1,6 +1,9 @@
 # GraphicsMode 7 — Texture Mapping
 
-Current 1.11.0 source contract. This manual describes the ordinary exporter unless
+Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -83,5 +86,5 @@ narrower camera/viewport/depth limits, extra memory and CPU cost. Nearest-neighb
 aliasing and fixed-point quantization remain in both paths.
 
 See [texture format](TEXTURE-GUIDE.en.md), [PNG import](PNG-TEXTURES.en.md),
-[texture precision](TEXTURE-PRECISION.en.md), [examples](examples/README.md),
+[texture precision](TEXTURE-PRECISION.en.md), [examples](EXTERNAL-INPUTS.en.md),
 and [tests](TESTING.md). Modes 1–6/8 and old affine output retain their references.

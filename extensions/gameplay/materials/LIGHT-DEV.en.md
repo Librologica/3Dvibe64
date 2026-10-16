@@ -1,6 +1,9 @@
-# LIGHT-01 — static vertex lighting bake, 1.11.0
+# LIGHT-01 — static vertex lighting bake, 1.12.0
 
-Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+Release 1.12.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+
+
+Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `static-light` extends animated-textures. The host bakes point lights and
@@ -46,4 +49,4 @@ rebuilds an identical PRG through explicit levels. Six native camera views
 confine changes to the floor with UI/palette/sampler intact; earlier texture,
 billboard and door cases are repeated. Matched FPS differs only in light data.
 
-[Italiano](LIGHT-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.11.0.en.md)
+[Italiano](LIGHT-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)

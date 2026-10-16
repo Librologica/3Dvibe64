@@ -1,5 +1,9 @@
 # Security policy
 
+3Dvibe64 1.12.0: [EN optimization contract](RENDER-OPTIMIZATIONS.en.md) · [Contratto IT](RENDER-OPTIMIZATIONS.it.md).
+All examples require external inputs / Tutti gli esempi richiedono input esterni.
+
+
 ## Supported version
 
 Security fixes are applied to the latest published 1.x release of 3Dvibe64.

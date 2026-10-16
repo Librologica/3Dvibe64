@@ -1,9 +1,12 @@
-# MAT-01 — 1.11.0
+# MAT-01 — 1.12.0
 
-La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+Release 1.12.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
+La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
+Contratto corrente incluso nella release 1.12.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](DEV.en.md).
 
 `mixed-surfaces` estende la stanza UI del confronto: stesse geometrie,
@@ -44,4 +47,4 @@ span flat/Gouraud, bordi parziali, estremi crescenti/decrescenti e singolo
 pixel; viste complete e clipping con controllo UI; controllo solo-texture
 contro dev1 e benchmark dei percorsi completi con condizioni uguali.
 Dati e comandi restano nella cartella esterna reports/builds/verification.
-Documentazione corrente nella release 1.11.0.
+Documentazione corrente nella release 1.12.0.

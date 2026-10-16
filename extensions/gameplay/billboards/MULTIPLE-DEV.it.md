@@ -1,9 +1,12 @@
-# BB-03 — due istanze billboard — 1.11.0
+# BB-03 — due istanze billboard — 1.12.0
 
-La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+Release 1.12.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
+La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
+Contratto corrente incluso nella release 1.12.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](MULTIPLE-DEV.en.md).
 
 Il profilo `multiple-billboards` estende la stanza con porta della dev4.
@@ -83,4 +86,4 @@ sono eseguiti nuovamente nel programma con due istanze.
 Il programma lascia 3004 byte nei gap allocabili, 498 in meno della dev4;
 il solo passaggio fra una e due istanze visibili usa la stessa allocazione.
 Comandi, PRG, dati grezzi, percorso e FPS nativi sono nell'evidence esterna.
-Documentazione corrente nella release 1.11.0.
+Documentazione corrente nella release 1.12.0.
