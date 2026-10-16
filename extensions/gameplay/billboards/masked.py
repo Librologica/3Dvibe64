@@ -1,64 +1,13 @@
-"""Private masked billboard, one checked convex room; no public SDK changes.
-
-Required Notice: 3Dvibe64. Copyright 2026 librologica.digital.
-PolyForm Noncommercial 1.0.0. Original character artwork, no third-party assets.
+"""Bounded billboard assembly emitter; caller supplies frames and scene bindings.
+Required Notice: 3Dvibe64. PolyForm Noncommercial 1.0.0.
+No bundled scene, character artwork, camera route or UI.
 """
-import json, math, re
+import math,re,sys
 from pathlib import Path
-import warrior_room as binding
-from warrior_room import copy, term, combine
-
-ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(Path(__file__).resolve().parents[3]/'work/q8/src'))
+from camera import copy,term,combine
 ENABLED=True
 FACE=36
-
-def scene(create):
-    previous=binding.scene(create)
-    def make():
-        path,stats=previous()
-        doc=json.loads(path.read_text())
-        doc['billboard']=doc.pop('warrior')
-        doc['billboard'].update(position=[4,0,-3],worldSize=[6,14],frames=6,
-            rendering='screen-aligned masked nearest-neighbor, convex-cell painter')
-        path.write_text(json.dumps(doc,indent=2))
-        return path,stats
-    return make
-
-configure_tour=binding.configure_tour
-
-def artwork():
-    """16x32 source frames: 0 transparent, 1 brown, 2 gray, 3 light gray."""
-    frames=[]
-    for frame in range(6):
-        p=[[0]*16 for _ in range(32)]
-        def rect(x0,y0,x1,y1,c):
-            for y in range(y0,y1+1):
-                for x in range(x0,x1+1):
-                    if 0<=x<16 and 0<=y<32:p[y][x]=c
-        # Helmet, face, eyes, breastplate and belt. Clear pixels separate limbs.
-        rect(5,1,10,2,2);rect(4,3,11,6,2);rect(5,3,10,4,3)
-        rect(5,6,10,8,1);rect(5,6,5,6,3);rect(10,6,10,6,3)
-        rect(6,9,9,10,1);rect(4,11,11,18,2);rect(5,11,9,15,3)
-        rect(7,12,7,17,2);rect(4,19,11,20,1);rect(7,19,8,20,3)
-        if frame<4:
-            d=(0,1,0,-1)[frame]
-            rect(2,12+d,3,20+d,2);rect(2,21+d,3,22+d,1)
-            rect(12,12-d,13,20-d,2);rect(12,21-d,13,22-d,1)
-            rect(4,21,6,28+d,2);rect(9,21,11,28-d,2)
-            rect(3,29+d,6,30+d,1);rect(9,29-d,12,30-d,1)
-        else:
-            # Raised hands: two alert poses when the camera enters the trigger.
-            d=frame-4
-            rect(2,8+d,3,15,2);rect(1,6+d,3,8+d,1)
-            rect(12,8-d,13,15,2);rect(12,6-d,14,8-d,1)
-            rect(4,21,6,29,2);rect(9,21,11,29,2)
-            rect(3,30,6,31,1);rect(9,30,12,31,1)
-        frames.append([v for row in p for v in row])
-    assert all(len(p)==512 and set(p)=={0,1,2,3} for p in frames)
-    (ROOT/'assets/billboard-frames.json').write_text(json.dumps(dict(
-        width=16,height=32,transparentIndex=0,paletteVICII=[0,9,12,15],
-        names=['walk0','walk1','walk2','walk3','alert0','alert1'],frames=frames),indent=2))
-    return frames
 
 def data(label,values):
     return label+': .byte '+','.join(str(v&255) for v in values)+'\n'
@@ -388,8 +337,12 @@ def adapt(source,parts):
     assert source.count(old)==1
     return source.replace(old,new),parts
 
-def post(source):
-    frames=artwork()
+def post(source, frames):
+    if not isinstance(frames,list) or len(frames)!=6 or any(
+            not isinstance(frame,list) or len(frame)!=512 or any(
+                type(pixel) is not int or not 0<=pixel<=3 for pixel in frame)
+            for frame in frames):
+        raise ValueError('Caller must supply six 16x32 indexed frames')
     source+='\n*=$d000\nbb_frames:\n'
     for i,frame in enumerate(frames):source+=data('bb_frame'+str(i),frame)
     return source+'''bb_frames_end:

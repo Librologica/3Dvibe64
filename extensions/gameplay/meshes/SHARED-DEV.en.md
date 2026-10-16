@@ -1,17 +1,20 @@
 # Q8-01 — shared source meshes, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `shared-meshes` places four polygonal solids in the LABIRINTO room. One
 editable geometry asset supplies instances with independent position, scale,
 yaw, visibility and shading. Camera 48 keys, exact perspective on all 60 rows,
 viewport 96 × 60 and texture LOD 14–22 are retained.
 
 ```powershell
-python -B work/build-gameplay.py --profile shared-meshes --out ../shared-build
+python -B work/build-gameplay.py --profile shared-meshes --out ../shared-build --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../shared-build --checks --benchmark --launcher
 ```
 
 `--shared-meshes path.json` replaces instance descriptors. Editable mesh:
-`extensions/gameplay/profiles/shared-meshes/assets/crystal-mesh.json`, schema,
+`<project-source>/extensions/gameplay/profiles/shared-meshes/assets/crystal-mesh.json`, schema,
 ID, six integer public X/right,Y/forward,Z/up vertices and eight triangles.
 The validator requires a closed convex solid, public clockwise winding,
 maximum XY radius 3 and local height−5..5. Native layout is deliberately six

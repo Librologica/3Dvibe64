@@ -10,7 +10,7 @@ def main():
     p.add_argument('--benchmark',action='store_true');p.add_argument('--checks',action='store_true')
     p.add_argument('--launcher',action='store_true');a=p.parse_args();out=a.out.resolve()
     info=json.loads((out/'build.json').read_text());project=out/'project';tools=project/'tools'
-    preset=json.loads((Path(__file__).resolve().parents[1]/info['preset']).read_text())
+    preset=info['presetData']
     digest=hashlib.sha256((out/info['program']).read_bytes()).hexdigest().upper()
     assert digest==info['PRGSHA256']
     sys.path.insert(0,str(tools))

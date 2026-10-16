@@ -1,172 +1,120 @@
-# Gameplay source guide — 1.11.0
+# Gameplay source modules — 1.11.0
 
-[Italiano](GAMEPLAY.it.md) · [Index](DOCS.md) · [Release notes](RELEASE-NOTES-1.11.0.en.md)
+## Distribution correction within 1.11.0
 
-The official source release exposes bounded experimental profile builders,
-not a universal combined scene API. Sources/JSON/assets are included so users
-can rebuild and extend these modules. No precompiled PRG, music/video or demo
-archives are distributed. Ordinary `work/build-3Dvibe64.ps1` retains its
-1.10.2 contract; these profiles are explicit separate entry points.
+New demo projects are excluded, including their source generators, UI,
+character artwork, camera routes, launchers and captured/reference assets.
+The duplicated 1.10.2 SDK is removed. The original examples from v1.10.2 are
+retained. This corrects the existing release; VERSION stays 1.11.0.
 
-## Choose a supported composition
+Reusable gameplay compilers, validators and bounded assembly emitters remain.
+Native gameplay builds require an external project supplied explicitly with
+`--project-source`; no demo is reconstructed from bundled default inputs.
+The ordinary engine and its existing examples remain directly buildable.
+See [GAMEPLAY](GAMEPLAY.en.md), [quick start](QUICKSTART.md) and
+[qualification](QUALIFICATION-1.11.0.en.md).
 
-|Profile|Parent composition|Added capability|
+| ID | Module | Contract |
 |---|---|---|
-|`comparison-ui`|—|Skeleton and outlined billboard|
-|`dungeon-masked`|—|Historical masked dungeon profile (fast)|
-|`mixed-surfaces`|comparison-ui|Per-face material selection|
-|`interactive-billboard`|mixed-surfaces|Configured guardian and local interaction|
-|`door-entity`|interactive-billboard|Sliding door and safe local passage|
-|`multiple-billboards`|door-entity|Two instances, shared asset/cache|
-|`animated-textures`|multiple-billboards|Frame pages and UV scroll|
-|`static-light`|animated-textures|Static host-side vertex lighting|
-|`sector-visibility`|static-light|Conservative connectivity PVS|
-|`shared-meshes`|mixed-surfaces|Shared convex source, separate instances|
-|`controlled-animation`|shared-meshes|Application-controlled clips|
-|`camera-roll`|controlled-animation|Controlled clips plus flight camera roll|
-|`room-groups`|door-entity|External two-room groups and state|
+|BB-01|Masked/outlined billboard emitters|[reference](extensions/gameplay/CONTRACT.en.md)|
+|BB-02 / ENT-01|Billboard configuration and local events|[reference](extensions/gameplay/entities/DEV.en.md)|
+|ENT-01 door|Sliding polygonal door|[reference](extensions/gameplay/entities/DOOR-DEV.en.md)|
+|BB-03|Multiple shared-asset billboards|[reference](extensions/gameplay/billboards/MULTIPLE-DEV.en.md)|
+|MAT-01|Per-face texture/flat/Gouraud|[reference](extensions/gameplay/materials/DEV.en.md)|
+|TEX-01|Texture frames and integer UV scroll|[reference](extensions/gameplay/materials/ANIMATION-DEV.en.md)|
+|LIGHT-01|Host-side static lighting|[reference](extensions/gameplay/materials/LIGHT-DEV.en.md)|
+|VIS-01|Conservative sector connectivity|[reference](extensions/gameplay/visibility/VISIBILITY-DEV.en.md)|
+|Q8-01|Shared source mesh and instance caches|[reference](extensions/gameplay/meshes/SHARED-DEV.en.md)|
+|Q8-02|Controlled animation and camera roll|[reference](extensions/gameplay/motion/CONTROLLED-DEV.en.md)|
+|WORLD-01|Bounded group loading and state|[reference](extensions/gameplay/world/WORLD-DEV.en.md)|
+|LEVEL-01|Common level format and memory accounting|[reference](extensions/gameplay/level/LEVEL-DEV.en.md)|
 
-The parent column describes the effective source/profile chain. camera-roll
-inherits controlled-animation in its actual preset chain as well as Q8-01;
-it adds flight roll, not door/billboard support. Defaults: PAL Turbo6510× 64,
-no music, Colodore/filter 0. comparison-ui and later precise profiles use
-96 × 60 logical/all 60 rows and texture LOD 14–22. dungeon-masked deliberately
-keeps its historical 160 × 100 block 8/50 sampled-row reconstruction.
+## Project inputs
 
-Q8-01/Q8-02 branch from mixed-surfaces and replace the comparison actors with
-convex solids; they do not accumulate the door, texture animation, lighting
-or sector modules. room-groups branches from door-entity rather than the
-larger two-billboard chain. Profile names do not promise arbitrary geometry.
+The SDK contains algorithms and bounded adapters, not a complete new game or
+demo. Supply your own scene, textures, billboard frames, mesh/animation data,
+UI, camera path and project glue. No character or three-room scene is bundled.
+The ordinary exporter API remains separate: Q8-01 sharing and Q8-02 roll do
+not become accepted ordinary `meshSourceSharing` or camera-roll scene fields.
 
-## Build API and output
-
-```powershell
-python -B work/build-gameplay.py --help
-python -B work/build-gameplay.py --profile multiple-billboards --out ../billboards-build
-pwsh -NoProfile -File work/build-gameplay.ps1 -Profile camera-roll -OutputDirectory ../roll-build
-```
-
-`--profile` selects one of 13 names and defaults to comparison-ui; `--out` is
-required, new and outside the source tree. Existing/in-source outputs fail
-before overwrite. The PowerShell wrapper exposes Profile/OutputDirectory and
-PascalCase equivalents SurfaceConfig,GameplayScene,DoorConfig,TextureAnimation,
-LightBake,Visibility,SharedMeshes,MotionControls,WorldGroups. Configurations
-are copied into the generated project; unsupported option/profile pairs fail.
-
-|Python option|Accepted profiles|Generated project input|
-|---|---|---|
-|`--surface-config`|mixed-surfaces, interactive-billboard, door-entity, multiple-billboards, animated-textures, static-light, sector-visibility, shared-meshes, controlled-animation, camera-roll, room-groups|`assets/surfaces.json`|
-|`--gameplay-scene`|interactive-billboard, door-entity, multiple-billboards, animated-textures, static-light, sector-visibility, room-groups|`assets/gameplay-scene.json`|
-|`--door-config`|door-entity, multiple-billboards, animated-textures, static-light, sector-visibility, room-groups|`assets/door.json`|
-|`--texture-animation`|animated-textures, static-light, sector-visibility|`assets/texture-animation.json`|
-|`--light-bake`|static-light, sector-visibility|`assets/light-bake.json`|
-|`--visibility`|sector-visibility|`assets/visibility.json`|
-|`--shared-meshes`|shared-meshes, controlled-animation, camera-roll|`assets/shared-meshes.json`|
-|`--motion-controls`|controlled-animation, camera-roll|`assets/motion.json`|
-|`--world-groups`|room-groups|`assets/world-groups.json`|
-
-Default configs/assets live under `extensions/gameplay/profiles/<profile>/`;
-inheritance supplies earlier inputs. Billboard/texture asset files resolve
-relative to their config and must stay inside that directory. Unknown fields,
-counts/types/ranges, invalid geometry and incompatible profiles are rejected
-by the corresponding compiler. Read its contract before editing data.
-
-Output `build.json` records engine/profile/foundation identities, scope,
-configuration hashes, command, PRG hash and `checkpointPRGIdentical`.
-The generated project is in `project`, final program at `<profile>.prg` and
-generated launcher `launch-demo.cmd`. The source release contains none of
-these compiled outputs. For room-groups keep external `project/media` with
-the program/launcher; persistence is per-group RAM state, not disk saves.
-
-## Shared level format
+The compatibility driver `work/build-gameplay.py` accepts an external adapter
+root. Its layout is `examples/gameplay/<profile>.json` for the preset and
+`extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` and
+`extensions/gameplay/billboards/<implementation>.py` for caller-owned glue.
+These paths belong to the external project, not this SDK. Presets contain
+`profile`, `engineVersion` (1.11.0), optional `extends`, `buildName`,
+`billboardImplementation`, `distributionPRG`, `textureQuality`, `textureLOD`,
+`viewportLogical`, `expectedCheckpointPRGSHA256` and optional `scope`.
+The driver overlays the inherited project profiles, copies the current SDK
+as the engine dependency, applies supplied configuration and invokes the
+project’s `build_demo.py`. This is an explicit project build, not an installed
+demo. Qualification also needs the project's own checks/oracles/launcher.
 
 ```powershell
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --out ../level-build
-python -B work/build-level.py --level examples/levels/integration-planning.json --plan-only --out ../level-plan
+python -B work/build-gameplay.py --project-source ../my-project --profile shared-meshes --shared-meshes ../my-project/assets/instances.json --out ../my-build
+pwsh -NoProfile -File work/build-gameplay.ps1 -ProjectSource ../my-project -Profile shared-meshes -OutputDirectory ../my-build-ps
 ```
 
-`--level` is required. `--validate-only` writes nothing; `--plan-only` writes
-resolved portable input/IR and compatibility reasons without claiming a
-native program or measured RAM. Normal compile requires a buildable WORLD-01
-plan. `reserveBytes` and aligned `minimumContiguousBytes` are checked against
-final assembled allocation. Native output is in `native`, portable level in
-`level`, budget in `memory-budget.json`, accepted launcher `launch-level.cmd`.
-The integration-planning example is intentionally unbuildable; it documents
-the remaining combined-feature work instead of silently discarding requests.
+`--out` must be new and outside both SDK and project inputs. Missing project
+inputs fail before output creation. There is no implicit search for a local
+private demo. The following adapter identifiers are retained for compatibility
+with external projects; no corresponding project preset is distributed:
 
-WORLD-01 still reserves its 3759 bytes of startup UI storage. Recovery is a
-plan, not measured free RAM in that backend; the separate integration below
-actually reuses 2904 bytes under a different checked lifetime contract.
+`animated-textures`, `camera-roll`, `comparison-ui`, `controlled-animation`, `door-entity`, `dungeon-masked`, `interactive-billboard`, `mixed-surfaces`, `multiple-billboards`, `room-groups`, `sector-visibility`, `shared-meshes`, `static-light`.
 
-## Separate bounded integration
+## Configuration switches
 
-```powershell
-python -B work/build-underworld.py --out ../integration-build
-```
+- `--surface-config`: per-face materials JSON.
+- `--gameplay-scene`: billboard/entity JSON and relative asset.
+- `--door-config`: door motion configuration.
+- `--texture-animation`: frame/UV timing and relative asset.
+- `--light-bake`: host static lighting configuration.
+- `--visibility`: sector/portal graph.
+- `--shared-meshes`: shared instances and mesh input.
+- `--motion-controls`: transform clips, playback and roll.
+- `--world-groups`: group topology and transition settings.
 
-This distinct adapter combines three rooms/static cubes, skeleton and a
-configured guardian with event-selected clips, conservative negative-Z room
-rejection and 2904 byte post-UI storage reuse. It keeps precise sampling/all
-60 rows; central cube static. It does not load WORLD-01 groups or provide
-manual navigation/general collisions. `--scene-config` and `--no-room-culling`
-are specific to this entry point; they are not build-gameplay switches.
+Billboard/door/multiple/texture/light/visibility adapters form the inherited
+room chain. Shared meshes branch from mixed surfaces; controlled-animation
+and camera-roll build on that branch. Room groups branch from door-entity.
+The driver rejects incompatible options. Inputs remain schema-checked; see
+the complete module contracts for every field, range and ownership rule.
 
-## Controls, timing and qualification
+## Library integration
 
-Controls are profile-specific: SPACE uses guardian/door, WASD enters the local
-manual visit and R resumes/restarts where documented. Q8-02 uses 1–4/SPACE/R/T/F
-for clips and Q/E/HOME/C for flight roll. WORLD-01 adds N/P explicit neighbor
-transitions. The Underworld camera remains automatic. Do not assume one
-profile's controls, near threshold or occlusion solver apply to another.
-State/animation updates use simulation ticks, not rendered-frame counts.
+`billboards/masked.py` and `outlined.py` provide `kernel()`, `adapt(source,
+parts)` and `post(source, frames)`. The caller supplies six 16×32 indexed
+frames (0 transparent, slots 1–3, optional opaque black 4 for outlined).
+There is no `artwork()`, scene/tour generator or implicit asset write.
+The existing bounded face labels/depth bands must match the project;
+`billboards/scene.py` binds validated anchors, size and animation.
+`multiple.py` uses one shared asset with independent instance state.
 
-```powershell
-python -B work/qualify-gameplay.py --out ../billboards-build --checks --benchmark --launcher
-```
+Materials, lighting, visibility, mesh, motion and world modules retain their
+documented emit/validate functions and native ABIs (`an_control`,
+`cr_set_roll`, `cr_resume`, `wg_request`, `wg_service`). Emitters depend on
+the declared source labels and memory ownership, not a general stable ABI.
 
-Configure `TASS64_EXE` and `VICE_TURBO6510` to installed tools. Host build and
-qualification tools honor these overrides; historical local fallbacks are
-not dependencies. Pillow and py65 are test/UI dependencies. Use `python -B`
-without optimization. Saved native results are reusable only with matching
-program/conditions; use new outputs for fresh acquisition. Complete-view FPS
-requires native target timing, warm-up,≥20 emulated seconds/full route,
-commands/hash/raw and p 95/worst. CPU correctness replay is not an FPS source.
-See [testing](TESTING.md) and [release qualification](QUALIFICATION-1.11.0.en.md).
+## Common level and memory
 
-## Complete module contracts
+`work/build-level.py --level ../my-level/level.json --validate-only` checks
+the caller's graph/assets without writing. `--plan-only --out ../plan` emits
+portable data, not a PRG or measured native budget. All assets use
+`file:assets/name.json` inside the level directory; built-in demo assets
+are excluded. Native builds additionally require `--project-source` and
+an actually supported WORLD-01 template. `reserveBytes` and
+`minimumContiguousBytes` are checked against assembled maps, never an estimate.
+WORLD-01’s proposed 3759-byte startup UI recovery is not applied.
 
-- BB-01: [Imported masked/outlined billboard profiles](extensions/gameplay/CONTRACT.en.md).
-- BB-02 / ENT-01: [Configured billboard, use events and local collision](extensions/gameplay/entities/DEV.en.md).
-- ENT-01 door: [Sliding polygonal door and safe passage](extensions/gameplay/entities/DOOR-DEV.en.md).
-- BB-03: [One/two shared-asset billboard instances](extensions/gameplay/billboards/MULTIPLE-DEV.en.md).
-- MAT-01: [Per-face texture, flat and Gouraud selection](extensions/gameplay/materials/DEV.en.md).
-- TEX-01: [Texture frames and signed integer UV scroll](extensions/gameplay/materials/ANIMATION-DEV.en.md).
-- LIGHT-01: [Deterministic host-side static vertex lighting](extensions/gameplay/materials/LIGHT-DEV.en.md).
-- VIS-01: [Conservative sector/portal connectivity](extensions/gameplay/visibility/VISIBILITY-DEV.en.md).
-- Q8-01: [Shared source mesh, independent instance caches](extensions/gameplay/meshes/SHARED-DEV.en.md).
-- Q8-02: [Controlled clips and Q8 camera roll](extensions/gameplay/motion/CONTROLLED-DEV.en.md).
-- WORLD-01: [External room groups and per-group state](extensions/gameplay/world/WORLD-DEV.en.md).
-- LEVEL-01: [Common level authoring and exact assembled budget](extensions/gameplay/level/LEVEL-DEV.en.md).
-- Integration: [Bounded three-room actors/cubes and phased memory reuse](extensions/gameplay/experiments/underworld/README.en.md).
+## Evidence and limitations
 
-## Complete default configuration files
+Previous native demo captures are development evidence outside this package.
+They qualify their exact historical program/options only. Source cleanup adds
+no rendering optimization. Ordinary runtime files and old example inputs
+are preserved. New native FPS must count complete views for at least 20
+emulated seconds after warm-up; preserve command/hash/raw data and p95/worst.
+Binary masks, shared palette, disjoint geometry and bounded room/group
+contracts remain. No arbitrary topology, disk save, dynamic textured shadows
+or universal combined-feature scene API is introduced.
 
-These are the actual complete source JSON shapes, including optional/application fields. Copy a configuration together with its relative assets; do not mix schemas or profile chains. The matching module contract explains numeric/geometry limits.
-
-|Configuration|JSON|
-|---|---|
-|surfaces|[surfaces.json](extensions/gameplay/profiles/mixed-surfaces/assets/surfaces.json)|
-|single billboard/entity|[gameplay-scene.json](extensions/gameplay/profiles/interactive-billboard/assets/gameplay-scene.json)|
-|billboard asset|[guard-frames.json](extensions/gameplay/profiles/interactive-billboard/assets/guard-frames.json)|
-|door|[door.json](extensions/gameplay/profiles/door-entity/assets/door.json)|
-|two billboards|[gameplay-scene.json](extensions/gameplay/profiles/multiple-billboards/assets/gameplay-scene.json)|
-|texture animation|[texture-animation.json](extensions/gameplay/profiles/animated-textures/assets/texture-animation.json)|
-|texture frames|[texture-frames.json](extensions/gameplay/profiles/animated-textures/assets/texture-frames.json)|
-|static lighting|[light-bake.json](extensions/gameplay/profiles/static-light/assets/light-bake.json)|
-|visibility|[visibility.json](extensions/gameplay/profiles/sector-visibility/assets/visibility.json)|
-|shared instances|[shared-meshes.json](extensions/gameplay/profiles/shared-meshes/assets/shared-meshes.json)|
-|shared mesh asset|[crystal-mesh.json](extensions/gameplay/profiles/shared-meshes/assets/crystal-mesh.json)|
-|controlled clips|[motion.json](extensions/gameplay/profiles/controlled-animation/assets/motion.json)|
-|flight roll|[motion.json](extensions/gameplay/profiles/camera-roll/assets/motion.json)|
-|world groups|[world-groups.json](extensions/gameplay/profiles/room-groups/assets/world-groups.json)|
+[Documentation index](DOCS.md).

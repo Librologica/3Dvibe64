@@ -1,5 +1,8 @@
 # ENT-01 — porta poligonale e passaggio — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](DOOR-DEV.en.md).
 
@@ -10,7 +13,7 @@ architrave. Il budget del modello skeleton è usato per geometria e logica
 della porta; il confronto originale resta nel profilo comparison-ui.
 
 ```powershell
-python -B work/build-gameplay.py --profile door-entity --out ../builds/door-dev4
+python -B work/build-gameplay.py --profile door-entity --out ../builds/door-dev4 --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/door-dev4 --checks --benchmark --launcher
 ```
 

@@ -1,5 +1,8 @@
 # Q8-01 — mesh sorgenti condivise — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente della release 1.11.0; i numeri dei checkpoint indicano
 la provenienza delle prove. [English](SHARED-DEV.en.md).
 
@@ -11,12 +14,12 @@ e varia lo sguardo verticale. Pareti precise per pixel, tutte le 60 righe,
 viewport 96 × 60 e LOD delle texture 14–22 restano attivi.
 
 ```powershell
-python -B work/build-gameplay.py --profile shared-meshes --out ../builds/shared-dev9
+python -B work/build-gameplay.py --profile shared-meshes --out ../builds/shared-dev9 --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/shared-dev9 --checks --benchmark --launcher
 ```
 
 `--shared-meshes percorso.json` sostituisce i descrittori delle istanze.
-L'asset modificabile è `extensions/gameplay/profiles/shared-meshes/assets/crystal-mesh.json`:
+L'asset modificabile è `<project-source>/extensions/gameplay/profiles/shared-meshes/assets/crystal-mesh.json`:
 schema, id, sei vertici interi X/destra,Y/avanti,Z/alto e otto triangoli.
 Il validatore richiede solido convesso chiuso, avvolgimento pubblico orario,
 raggio XY massimo 3 e altezza locale compresa fra −5 e 5. Il layout nativo

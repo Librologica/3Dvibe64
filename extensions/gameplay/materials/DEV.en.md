@@ -1,11 +1,14 @@
 # MAT-01 — mixed surfaces, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 The bounded `mixed-surfaces` profile retains the comparison room, actors,
 3072 tick camera,96 × 60 viewport, exact perspective/all 60 rows and LOD 14–22.
 Walls use textures, the floor uses Gouraud, the ceiling uses flat color.
 
 ```powershell
-python -B work/build-gameplay.py --profile mixed-surfaces --out ../mixed-build
+python -B work/build-gameplay.py --profile mixed-surfaces --out ../mixed-build --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../mixed-build --checks --benchmark --launcher
 ```
 

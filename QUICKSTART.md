@@ -1,10 +1,14 @@
 # Quick start / Guida rapida — 1.11.0
 
+No new demo source/assets or default gameplay project is bundled. Supply your own external project/level for the gameplay commands below. Ordinary examples remain bundled.
+Nessuna nuova demo o relativo asset è allegato; per i comandi gameplay/livello fornire il proprio progetto esterno. Gli esempi ordinari preesistenti restano inclusi.
+
+
 [English](#english) · [Italiano](#italiano) · [Documentation / Documentazione](DOCS.md)
 
 ## English
 
-This is the official local source release. Online publication is deferred.
+This is the official source release, with its existing 1.11.0 distribution corrected.
 No precompiled programs, demo archives, video or music are supplied. Keep an
 untouched source copy and use new build directories outside the checkout.
 
@@ -57,9 +61,9 @@ pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile example
 Experimental source modules and common level:
 
 ```powershell
-python -B work/build-gameplay.py --profile controlled-animation --out ../first-motion
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --out ../first-level
+python -B work/build-gameplay.py --profile controlled-animation --out ../first-motion --project-source ../my-project
+python -B work/build-level.py --level ../my-level/level.json --validate-only
+python -B work/build-level.py --level ../my-level/level.json --out ../first-level --project-source ../my-project
 ```
 
 Read [GAMEPLAY](GAMEPLAY.en.md) before editing profile-specific configurations.
@@ -139,9 +143,9 @@ pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile example
 Moduli sperimentali e formato comune:
 
 ```powershell
-python -B work/build-gameplay.py --profile controlled-animation --out ../first-motion
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --out ../first-level
+python -B work/build-gameplay.py --profile controlled-animation --out ../first-motion --project-source ../my-project
+python -B work/build-level.py --level ../my-level/level.json --validate-only
+python -B work/build-level.py --level ../my-level/level.json --out ../first-level --project-source ../my-project
 ```
 
 Leggere [GAMEPLAY](GAMEPLAY.it.md) prima di modificare le configurazioni.

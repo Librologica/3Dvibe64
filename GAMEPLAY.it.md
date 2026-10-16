@@ -1,172 +1,119 @@
-# Guida ai sorgenti gameplay — 1.11.0
+# Moduli sorgente gameplay — 1.11.0
 
-[English](GAMEPLAY.en.md) · [Indice](DOCS.md) · [Note di rilascio](RELEASE-NOTES-1.11.0.it.md)
+## Correzione della distribuzione nella 1.11.0
 
-La release ufficiale espone builder di profili sperimentali delimitati, non
-un’API universale di scena integrata. Sorgenti/JSON/asset permettono di
-ricostruire ed estendere i moduli. Non sono distribuiti PRG precompilati,
-musica/video o archivi demo. Il builder ordinario conserva il contratto 1.10.2;
-i profili seguenti hanno entry point espliciti e separati.
+Esclusi i nuovi progetti demo, compresi generatori sorgente, UI, disegni dei
+personaggi, percorsi camera, launcher e asset di riferimento. Rimossa la copia
+duplicata dell’SDK 1.10.2. Conservati gli esempi già presenti nella v1.10.2.
+Si corregge la release esistente; VERSION resta 1.11.0.
 
-## Scegliere una composizione supportata
+Restano compilatori, validatori ed emitter assembly gameplay riutilizzabili.
+Le build gameplay native richiedono un progetto esterno esplicito tramite
+`--project-source`; nessuna demo è ricostruita da input predefiniti allegati.
+Engine ordinario ed esempi preesistenti restano direttamente compilabili.
+Vedere [GAMEPLAY](GAMEPLAY.it.md), [guida rapida](QUICKSTART.md) e
+[qualificazione](QUALIFICATION-1.11.0.it.md).
 
-|Profilo|Composizione di base|Funzione aggiunta|
+| ID | Modulo | Contratto |
 |---|---|---|
-|`comparison-ui`|—|Skeleton e billboard contornato|
-|`dungeon-masked`|—|Profilo dungeon mascherato storico (fast)|
-|`mixed-surfaces`|comparison-ui|Materiali per faccia|
-|`interactive-billboard`|mixed-surfaces|Guardiano configurabile e interazione locale|
-|`door-entity`|interactive-billboard|Porta scorrevole e passaggio locale sicuro|
-|`multiple-billboards`|door-entity|Due istanze, asset/cache condivisi|
-|`animated-textures`|multiple-billboards|Pagine dei frame e scorrimento UV|
-|`static-light`|animated-textures|Luce statica per vertici calcolata sul PC|
-|`sector-visibility`|static-light|PVS conservativo per connettività|
-|`shared-meshes`|mixed-surfaces|Sorgente convessa condivisa, istanze separate|
-|`controlled-animation`|shared-meshes|Clip controllate dall’applicazione|
-|`camera-roll`|controlled-animation|Clip controllabili e roll della camera volo|
-|`room-groups`|door-entity|Gruppi esterni di due stanze e stato|
+|BB-01|Emitter billboard mascherati/contornati|[reference](extensions/gameplay/CONTRACT.it.md)|
+|BB-02 / ENT-01|Configurazione billboard ed eventi locali|[reference](extensions/gameplay/entities/DEV.it.md)|
+|ENT-01 door|Porta poligonale scorrevole|[reference](extensions/gameplay/entities/DOOR-DEV.it.md)|
+|BB-03|Billboard multipli con asset condiviso|[reference](extensions/gameplay/billboards/MULTIPLE-DEV.it.md)|
+|MAT-01|Texture/flat/Gouraud per faccia|[reference](extensions/gameplay/materials/DEV.it.md)|
+|TEX-01|Frame texture e scorrimento UV intero|[reference](extensions/gameplay/materials/ANIMATION-DEV.it.md)|
+|LIGHT-01|Luce statica calcolata sul PC|[reference](extensions/gameplay/materials/LIGHT-DEV.it.md)|
+|VIS-01|Connettività conservativa dei settori|[reference](extensions/gameplay/visibility/VISIBILITY-DEV.it.md)|
+|Q8-01|Mesh sorgente condivisa e cache per istanza|[reference](extensions/gameplay/meshes/SHARED-DEV.it.md)|
+|Q8-02|Animazione controllabile e roll camera|[reference](extensions/gameplay/motion/CONTROLLED-DEV.it.md)|
+|WORLD-01|Caricamento e stato di gruppi delimitati|[reference](extensions/gameplay/world/WORLD-DEV.it.md)|
+|LEVEL-01|Formato comune di livello e contabilità memoria|[reference](extensions/gameplay/level/LEVEL-DEV.it.md)|
 
-La colonna base descrive la catena effettiva dei sorgenti. camera-roll
-eredita anche controlled-animation nella catena del preset e aggiunge il
-roll di volo a Q8-01, non porta/billboard. Default: VICE Turbo6510 PAL× 64,
-senza musica, Colodore/filtro 0. comparison-ui e i successivi profili precisi
-usano 96 × 60 logici, tutte 60 righe e LOD 14–22. dungeon-masked conserva
-deliberatamente il fast storico 160 × 100, block 8/50 righe con ricostruzione.
+## Input del progetto
 
-Q8-01/Q8-02 si diramano da mixed-surfaces e sostituiscono gli attori con
-solidi convessi: non accumulano porta, texture animate, luce e settori.
-room-groups deriva da door-entity, non dalla catena con due billboard.
-Il nome del profilo non promette supporto a geometrie arbitrarie.
+L’SDK contiene algoritmi e adattatori delimitati, non un nuovo gioco o demo
+completo. Scena, texture, frame billboard, mesh/animazioni, UI, percorso camera
+e collegamenti del progetto sono forniti dall’utilizzatore. Nessun personaggio
+o scena a tre stanze è allegato. L’exporter ordinario resta separato: sharing
+Q8-01 e roll Q8-02 non diventano campi accettati nelle scene Q8 ordinarie.
 
-## API di compilazione e output
-
-```powershell
-python -B work/build-gameplay.py --help
-python -B work/build-gameplay.py --profile multiple-billboards --out ../billboards-build
-pwsh -NoProfile -File work/build-gameplay.ps1 -Profile camera-roll -OutputDirectory ../roll-build
-```
-
-`--profile` sceglie uno dei 13 nomi, default comparison-ui; `--out` è obbligatorio,
-nuovo e fuori dai sorgenti. Output esistenti/interni sono rifiutati prima di
-sovrascrivere. Il wrapper PowerShell espone Profile/OutputDirectory e i nomi
-SurfaceConfig,GameplayScene,DoorConfig,TextureAnimation,LightBake,Visibility,
-SharedMeshes,MotionControls,WorldGroups. Le configurazioni vengono copiate
-nel progetto generato; le combinazioni opzione/profilo non ammesse falliscono.
-
-|Opzione Python|Profili accettati|Input nel progetto generato|
-|---|---|---|
-|`--surface-config`|mixed-surfaces, interactive-billboard, door-entity, multiple-billboards, animated-textures, static-light, sector-visibility, shared-meshes, controlled-animation, camera-roll, room-groups|`assets/surfaces.json`|
-|`--gameplay-scene`|interactive-billboard, door-entity, multiple-billboards, animated-textures, static-light, sector-visibility, room-groups|`assets/gameplay-scene.json`|
-|`--door-config`|door-entity, multiple-billboards, animated-textures, static-light, sector-visibility, room-groups|`assets/door.json`|
-|`--texture-animation`|animated-textures, static-light, sector-visibility|`assets/texture-animation.json`|
-|`--light-bake`|static-light, sector-visibility|`assets/light-bake.json`|
-|`--visibility`|sector-visibility|`assets/visibility.json`|
-|`--shared-meshes`|shared-meshes, controlled-animation, camera-roll|`assets/shared-meshes.json`|
-|`--motion-controls`|controlled-animation, camera-roll|`assets/motion.json`|
-|`--world-groups`|room-groups|`assets/world-groups.json`|
-
-Default e asset sono in `extensions/gameplay/profiles/<profilo>/`; l’ereditarietà
-fornisce gli input precedenti. Gli asset billboard/texture sono relativi al
-JSON e devono restare nella sua cartella. Campi, conteggi, tipi, intervalli,
-geometrie e profili incompatibili sono rifiutati dal compilatore corrispondente.
-Leggere il suo contratto prima di cambiare i dati.
-
-`build.json` conserva identità engine/profilo/fondazione, ambito, hash delle
-configurazioni, comando, hash PRG e `checkpointPRGIdentical`. Il progetto è
-in `project`, il programma finale in `<profilo>.prg`, il launcher generato
-in `launch-demo.cmd`. Nessuno di questi output compilati è nella release
-sorgente. Con room-groups conservare `project/media` insieme a programma e
-launcher; lo stato dei gruppi persiste in RAM, senza salvataggi su disco.
-
-## Formato comune di livello
+Il driver di compatibilità `work/build-gameplay.py` riceve una radice esterna:
+`examples/gameplay/<profile>.json` per il preset e
+`extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` e
+`extensions/gameplay/billboards/<implementation>.py` per i collegamenti
+dell’utilizzatore. Questi percorsi appartengono al progetto esterno, non
+all’SDK. Il preset contiene `profile`, `engineVersion` (1.11.0), `extends`
+opzionale, `buildName`, `billboardImplementation`, `distributionPRG`,
+`textureQuality`, `textureLOD`, `viewportLogical`,
+`expectedCheckpointPRGSHA256` e `scope` opzionale. Il driver sovrappone i
+profili del progetto, copia l’SDK corrente come dipendenza dell’engine,
+applica la configurazione e avvia il `build_demo.py` del progetto.
+Verifiche, oracoli e launcher devono essere forniti dal progetto stesso.
 
 ```powershell
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --out ../level-build
-python -B work/build-level.py --level examples/levels/integration-planning.json --plan-only --out ../level-plan
+python -B work/build-gameplay.py --project-source ../my-project --profile shared-meshes --shared-meshes ../my-project/assets/instances.json --out ../my-build
+pwsh -NoProfile -File work/build-gameplay.ps1 -ProjectSource ../my-project -Profile shared-meshes -OutputDirectory ../my-build-ps
 ```
 
-`--level` è obbligatorio. `--validate-only` non scrive; `--plan-only` produce
-input portabile/IR e motivi di compatibilità senza dichiarare un programma
-nativo o RAM misurata. La compilazione richiede un piano WORLD-01 costruibile.
-`reserveBytes` e `minimumContiguousBytes` allineato vengono verificati sulla
-mappa assemblata. Output nativo in `native`, livello portabile in `level`,
-budget in `memory-budget.json`, launcher accettato `launch-level.cmd`.
-integration-planning è volutamente non costruibile: descrive il lavoro di
-integrazione mancante, senza eliminare richieste silenziosamente.
+`--out` deve essere nuovo ed esterno a SDK e input del progetto. Input mancanti
+sono rifiutati prima di creare output. Nessuna ricerca implicita di demo
+private locali. Restano questi identificatori compatibili con i progetti
+esterni; nessun relativo preset dimostrativo è distribuito:
 
-WORLD-01 conserva ancora i 3759 byte della UI iniziale: recuperarli è un
-piano, non RAM libera misurata in quel backend. L’integrazione seguente
-riusa realmente 2904 byte con un diverso contratto di durata verificato.
+`animated-textures`, `camera-roll`, `comparison-ui`, `controlled-animation`, `door-entity`, `dungeon-masked`, `interactive-billboard`, `mixed-surfaces`, `multiple-billboards`, `room-groups`, `sector-visibility`, `shared-meshes`, `static-light`.
 
-## Integrazione delimitata separata
+## Opzioni di configurazione
 
-```powershell
-python -B work/build-underworld.py --out ../integration-build
-```
+- `--surface-config`: JSON materiali per faccia.
+- `--gameplay-scene`: JSON billboard/entità e asset relativo.
+- `--door-config`: configurazione movimento porta.
+- `--texture-animation`: tempi frame/UV e asset relativo.
+- `--light-bake`: configurazione luce statica sul PC.
+- `--visibility`: grafo settori/portali.
+- `--shared-meshes`: istanze condivise e input mesh.
+- `--motion-controls`: clip trasformazioni, riproduzione e roll.
+- `--world-groups`: topologia gruppi e transizioni.
 
-Questo adattatore combina tre stanze/cubi statici, skeleton e guardiano
-configurabile, clip selezionate da eventi, esclusione delle stanze con Z
-negativo e riuso di 2904 byte dopo l’avvio UI. Mantiene prospettiva precisa e
-tutte 60 righe; cubo centrale statico. Non carica gruppi WORLD-01 né aggiunge
-visita manuale/collisioni generali. `--scene-config` e `--no-room-culling`
-appartengono a questo entry point, non a build-gameplay.
+Billboard/porta/multipli/texture/luce/visibilità seguono la catena delimitata
+delle stanze. Mesh condivise derivano dai materiali misti; animazioni e roll
+derivano da tale ramo. I gruppi derivano dal ramo porta. Le opzioni incompatibili
+sono rifiutate. Schemi, campi, intervalli e proprietà della memoria rimangono
+quelli dei contratti completi collegati sopra.
 
-## Comandi, tempo e qualifica
+## Integrazione delle librerie
 
-I comandi dipendono dal profilo: SPACE usa guardiano/porta, WASD avvia la
-visita locale, R riprende/riavvia dove documentato. Q8-02 usa 1–4/SPACE/R/T/F
-per le clip e Q/E/HOME/C per il roll volo. WORLD-01 aggiunge N/P per i vicini.
-La camera Underworld resta automatica. Comandi, near e solver di occlusione
-di un profilo non si estendono agli altri. Stato e animazioni avanzano nei
-tick di simulazione, non in base ai frame disegnati.
+`billboards/masked.py` e `outlined.py` espongono `kernel()`, `adapt(source,
+parts)` e `post(source, frames)`. Il chiamante fornisce sei frame indicizzati
+16×32 (0 trasparente, slot 1–3, nero opaco 4 opzionale per outlined).
+Non esistono `artwork()`, generatori scena/percorso o scritture implicite
+degli asset. Etichette delle facce e bande di profondità devono corrispondere
+al progetto delimitato; `billboards/scene.py` configura ancora, dimensioni e
+animazione. `multiple.py` condivide un asset e mantiene stato per istanza.
 
-```powershell
-python -B work/qualify-gameplay.py --out ../billboards-build --checks --benchmark --launcher
-```
+Materiali, luce, visibilità, mesh, movimento e gruppi conservano le funzioni
+emit/validate e le ABI native documentate (`an_control`, `cr_set_roll`,
+`cr_resume`, `wg_request`, `wg_service`). Sono richieste le etichette sorgente
+e le regole di memoria dichiarate; non viene promessa una ABI generale stabile.
 
-Configurare `TASS64_EXE` e `VICE_TURBO6510`. Gli strumenti host di build e
-qualifica rispettano queste variabili; i fallback locali storici non sono
-dipendenze. Pillow e py65 servono a UI/test. Python senza ottimizzazioni,
-con `-B`. I risultati salvati si riusano solo con programma e condizioni
-coincidenti; per una nuova acquisizione scegliere output nuovi. Gli FPS
-richiedono target nativo, warm-up,≥20 secondi emulati/giro completo,
-comandi/hash/raw e p 95/peggiore. Il replay CPU prova correttezza, non FPS.
-Vedere [test](TESTING.md) e [qualificazione](QUALIFICATION-1.11.0.it.md).
+## Livello comune e memoria
 
-## Contratti completi dei moduli
+`work/build-level.py --level ../my-level/level.json --validate-only` controlla
+grafo e asset dell’utilizzatore senza scrivere. `--plan-only --out ../plan`
+produce dati portabili, non un PRG o un budget nativo misurato. Tutti gli asset
+usano `file:assets/name.json` dentro la cartella del livello; esclusi gli asset
+demo builtin. La build nativa richiede anche `--project-source` e un template
+WORLD-01 realmente supportato. `reserveBytes` e `minimumContiguousBytes` sono
+verificati sulle mappe assemblate. Recupero UI WORLD-01 di 3759 byte non applicato.
 
-- BB-01: [Profili billboard mascherati e contornati](extensions/gameplay/CONTRACT.it.md).
-- BB-02 / ENT-01: [Billboard configurabile, eventi d’uso e collisioni locali](extensions/gameplay/entities/DEV.it.md).
-- ENT-01 door: [Porta poligonale scorrevole e passaggio sicuro](extensions/gameplay/entities/DOOR-DEV.it.md).
-- BB-03: [Una/due istanze billboard con asset condiviso](extensions/gameplay/billboards/MULTIPLE-DEV.it.md).
-- MAT-01: [Selezione per faccia texture, flat e Gouraud](extensions/gameplay/materials/DEV.it.md).
-- TEX-01: [Frame delle texture e scorrimento UV intero](extensions/gameplay/materials/ANIMATION-DEV.it.md).
-- LIGHT-01: [Illuminazione statica deterministica calcolata sul PC](extensions/gameplay/materials/LIGHT-DEV.it.md).
-- VIS-01: [Connettività conservativa di settori e portali](extensions/gameplay/visibility/VISIBILITY-DEV.it.md).
-- Q8-01: [Mesh sorgente condivisa, cache indipendenti](extensions/gameplay/meshes/SHARED-DEV.it.md).
-- Q8-02: [Clip controllabili e roll Q8 della camera](extensions/gameplay/motion/CONTROLLED-DEV.it.md).
-- WORLD-01: [Gruppi di stanze esterni e stato per gruppo](extensions/gameplay/world/WORLD-DEV.it.md).
-- LEVEL-01: [Formato comune di livello e budget assemblato esatto](extensions/gameplay/level/LEVEL-DEV.it.md).
-- Integration: [Integrazione delimitata a tre stanze e riuso memoria per fasi](extensions/gameplay/experiments/underworld/README.it.md).
+## Prove e limiti
 
-## File completi delle configurazioni predefinite
+Le vecchie catture native delle demo restano prove di sviluppo esterne al
+pacchetto e valgono per gli esatti programmi/opzioni storici. La pulizia non
+introduce ottimizzazioni del rendering. Engine ordinario ed esempi preesistenti
+sono conservati. Nuovi FPS nativi richiedono almeno 20 secondi emulati dopo
+warm-up, sole viste complete, comando/hash/raw e p95/peggiore intervallo.
+Restano maschere binarie, palette condivisa, geometria disgiunta e contratti
+delimitati di stanze/gruppi. Non si aggiungono topologie arbitrarie, salvataggi
+disco, ombre texturizzate dinamiche o API generali di integrazione completa.
 
-Questi JSON sorgente mostrano la forma completa dei dati, compresi i campi applicativi. Copiare configurazione e asset relativi insieme, senza mescolare schemi o catene di profili. I contratti dei moduli spiegano limiti numerici e geometrici.
-
-|Configurazione|JSON|
-|---|---|
-|superfici|[surfaces.json](extensions/gameplay/profiles/mixed-surfaces/assets/surfaces.json)|
-|billboard/entità singola|[gameplay-scene.json](extensions/gameplay/profiles/interactive-billboard/assets/gameplay-scene.json)|
-|asset billboard|[guard-frames.json](extensions/gameplay/profiles/interactive-billboard/assets/guard-frames.json)|
-|porta|[door.json](extensions/gameplay/profiles/door-entity/assets/door.json)|
-|due billboard|[gameplay-scene.json](extensions/gameplay/profiles/multiple-billboards/assets/gameplay-scene.json)|
-|animazione texture|[texture-animation.json](extensions/gameplay/profiles/animated-textures/assets/texture-animation.json)|
-|frame texture|[texture-frames.json](extensions/gameplay/profiles/animated-textures/assets/texture-frames.json)|
-|illuminazione statica|[light-bake.json](extensions/gameplay/profiles/static-light/assets/light-bake.json)|
-|visibilità|[visibility.json](extensions/gameplay/profiles/sector-visibility/assets/visibility.json)|
-|istanze condivise|[shared-meshes.json](extensions/gameplay/profiles/shared-meshes/assets/shared-meshes.json)|
-|asset mesh condivisa|[crystal-mesh.json](extensions/gameplay/profiles/shared-meshes/assets/crystal-mesh.json)|
-|clip controllate|[motion.json](extensions/gameplay/profiles/controlled-animation/assets/motion.json)|
-|roll volo|[motion.json](extensions/gameplay/profiles/camera-roll/assets/motion.json)|
-|gruppi di stanze|[world-groups.json](extensions/gameplay/profiles/room-groups/assets/world-groups.json)|
+[Indice documentazione](DOCS.md).

@@ -1,5 +1,8 @@
 # Q8-02 — animazioni controllabili e roll — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente della release 1.11.0; i numeri dei checkpoint indicano
 la provenienza delle prove. [English](CONTROLLED-DEV.en.md).
 
@@ -10,8 +13,8 @@ solidi hanno clip indipendenti di posizione, yaw, scala e visibilità. Le
 pareti mantengono texture precise per pixel, 60 righe, LOD 14–22 e UI 96 × 60.
 
 ```powershell
-python -B work/build-gameplay.py --profile controlled-animation --out ../builds/motion-dev10
-python -B work/build-gameplay.py --profile camera-roll --out ../builds/roll-dev10
+python -B work/build-gameplay.py --profile controlled-animation --out ../builds/motion-dev10 --project-source ../my-project
+python -B work/build-gameplay.py --profile camera-roll --out ../builds/roll-dev10 --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/motion-dev10 --checks --benchmark --launcher
 python -B work/qualify-gameplay.py --out ../builds/roll-dev10 --checks --benchmark --launcher
 ```

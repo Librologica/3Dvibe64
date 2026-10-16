@@ -1,5 +1,8 @@
 # TEX-01 — texture frames and UV scrolling, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `animated-textures` extends multiple-billboards, retaining door, mixed
 materials, UI 96 × 60, exact sampling on all 60 rows and LOD 14–22. One wall uses
 four frames, another signed integer U/V scrolling. Build/qualify with this

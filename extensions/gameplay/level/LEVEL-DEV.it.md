@@ -1,5 +1,8 @@
 # Formato comune e budget del livello — — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente della release 1.11.0; i numeri dei checkpoint indicano
 la provenienza delle prove. [English](LEVEL-DEV.en.md).
 
@@ -18,8 +21,8 @@ la fondazione e Mode 8 mantengono i rispettivi contratti.
 ## Uso
 
 ```powershell
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --out ../builds/common-level
+python -B work/build-level.py --level ../my-level/level.json --validate-only
+python -B work/build-level.py --level ../my-level/level.json --out ../builds/common-level --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/common-level/native --benchmark --launcher
 ```
 
@@ -34,7 +37,7 @@ Il tool usa soltanto la libreria standard di Python.
 Per progettare l'integrazione:
 
 ```powershell
-python -B work/build-level.py --level examples/levels/integration-planning.json --plan-only --out ../plans/integration
+python -B work/build-level.py --level ../my-level/level.json --plan-only --out ../plans/integration
 ```
 
 Questo secondo esempio richiede un altro guardiano, una mesh e moduli
@@ -76,8 +79,7 @@ in fasi di 16 bit. Gli ID dei riferimenti diventano indici densi per categoria;
 il gruppo dell'ingresso iniziale è indice 0. Gli ID restano nel rapporto
 per la diagnosi. Non sono indirizzi di memoria o nomi di routine 6502.
 
-Gli asset builtin sono `builtin:guardian`, `builtin:mixed-room` e
-`builtin:crystal`, con tipi controllati. Per asset propri si usa
+Gli asset demo builtin sono esclusi e i relativi identificatori sono rifiutati. Si usa
 `file:assets/nome.json`, relativo al file del livello. Il file deve restare
 entro quella cartella anche dopo la risoluzione dei symlink. Percorsi
 assoluti, uscite dalla cartella e URL remoti vengono rifiutati. I rapporti

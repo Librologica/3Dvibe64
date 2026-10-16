@@ -5,6 +5,7 @@ import json
 import math
 import sys
 from pathlib import Path
+from gameplay_test_inputs import FIXTURES
 ROOT=Path(__file__).resolve().parents[1]
 
 
@@ -14,8 +15,8 @@ def main():
     require_qualification_checks()
     spec=importlib.util.spec_from_file_location('shared_mesh',ROOT/'extensions/gameplay/meshes/shared.py')
     m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
-    asset=json.loads((ROOT/'extensions/gameplay/profiles/shared-meshes/assets/crystal-mesh.json').read_text(encoding='utf-8'))
-    config=json.loads((ROOT/'extensions/gameplay/profiles/shared-meshes/assets/shared-meshes.json').read_text(encoding='utf-8'))
+    asset=json.loads((FIXTURES/'extensions/gameplay/profiles/shared-meshes/assets/crystal-mesh.json').read_text(encoding='utf-8'))
+    config=json.loads((FIXTURES/'extensions/gameplay/profiles/shared-meshes/assets/shared-meshes.json').read_text(encoding='utf-8'))
     original=copy.deepcopy((asset,config));m.configure_asset(asset);m.validate(config)
     assert (asset,config)==original
     for count in (2,3,4):

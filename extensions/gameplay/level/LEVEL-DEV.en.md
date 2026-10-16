@@ -1,5 +1,8 @@
 # Common level format and exact memory budget — 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `work/build-level.py` resolves IDs/assets and lowers groups, rooms, objects,
 connections, spawns and events into the already qualified native WORLD-01
 adapter. The buildable example reproduces its native program/group data
@@ -8,10 +11,10 @@ two divider rooms, one guardian/door per group and shared assets. Requests
 outside that backend are diagnosed and rejected, never silently omitted.
 
 ```powershell
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --out ../level-build
+python -B work/build-level.py --level ../my-level/level.json --validate-only
+python -B work/build-level.py --level ../my-level/level.json --out ../level-build --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../level-build/native --benchmark --launcher
-python -B work/build-level.py --level examples/levels/integration-planning.json --plan-only --out ../level-plan
+python -B work/build-level.py --level ../my-level/level.json --plan-only --out ../level-plan
 ```
 
 Output is new/outside sources and inputs. `launch-level.cmd` launches an
@@ -53,8 +56,7 @@ Positions/volumes are finite multiples 1/256 WU, mesh scales 1/64. IR stores
 Q8 XYZ and 16 bit spawn angles. References become dense indices by category,
 initial group index 0; IDs remain in diagnostics, not 6502 addresses/routine names.
 
-Builtins: `builtin:guardian`, `builtin:mixed-room`, `builtin:crystal` with
-checked types. Custom `file:assets/name.json` is relative to level directory
+Built-in demo assets are excluded. Caller-supplied `file:assets/name.json` is relative to level directory
 and must remain inside it after symlink resolution. Absolute/escaping/remote
 paths are rejected. Reports store asset hashes/sizes; equal content is shared
 rather than duplicated merely because IDs differ.

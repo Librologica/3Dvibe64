@@ -1,5 +1,8 @@
 # TEX-01 — texture animate e scorrimento UV — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](ANIMATION-DEV.en.md).
 
@@ -10,7 +13,7 @@ Mantiene 96 × 60 pixel logici, campionamento preciso per pixel su tutte le
 un'altra scorre in U/V con passi interi, anche negativi.
 
 ```powershell
-python -B work/build-gameplay.py --profile animated-textures --out ../builds/textures-dev6
+python -B work/build-gameplay.py --profile animated-textures --out ../builds/textures-dev6 --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/textures-dev6 --checks --benchmark --launcher
 ```
 

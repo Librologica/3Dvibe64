@@ -1,12 +1,15 @@
 # ENT-01 — polygonal sliding door, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `door-entity` retains UI, configurable guardian and mixed surfaces. A divider
 at public Y=8 spans the room with a 10 WU wide/18 WU high opening. A uniform
 polygonal door retracts into its lintel. Skeleton storage is reused for the
 door; the original comparison profile remains separate.
 
 ```powershell
-python -B work/build-gameplay.py --profile door-entity --out ../door-build
+python -B work/build-gameplay.py --profile door-entity --out ../door-build --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../door-build --checks --benchmark --launcher
 ```
 

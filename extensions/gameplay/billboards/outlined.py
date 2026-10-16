@@ -1,81 +1,13 @@
-"""Private masked billboard, one checked convex room; no public SDK changes.
-
-Required Notice: 3Dvibe64. Copyright 2026 librologica.digital.
-PolyForm Noncommercial 1.0.0. Original character artwork, no third-party assets.
+"""Bounded billboard assembly emitter; caller supplies frames and scene bindings.
+Required Notice: 3Dvibe64. PolyForm Noncommercial 1.0.0.
+No bundled scene, character artwork, camera route or UI.
 """
-import json, math, re
+import math,re,sys
 from pathlib import Path
-import warrior_room as binding
-from warrior_room import copy, term, combine
-
-ROOT=Path(__file__).resolve().parents[1]
+sys.path.insert(0,str(Path(__file__).resolve().parents[3]/'work/q8/src'))
+from camera import copy,term,combine
 ENABLED=True
 FACE=36
-
-def scene(create):
-    previous=binding.scene(create)
-    def make():
-        path,stats=previous()
-        doc=json.loads(path.read_text())
-        doc['billboard']=doc.pop('warrior')
-        doc['billboard'].update(position=[4,0,-2.5],worldSize=[6,16],bodyHeight=15,frames=6,
-            rendering='screen-aligned masked nearest-neighbor, convex-cell painter')
-        path.write_text(json.dumps(doc,indent=2))
-        return path,stats
-    return make
-
-configure_tour=binding.configure_tour
-
-def artwork():
-    """16x32: 0 transparent, 1..3 color, 4 opaque black silhouette outline.
-
-    Index4 is deliberately different from transparent0. The bitmap writer
-    masks opaque texels with3, so4 writes VIC-II background color0 (black).
-    """
-    frames=[]
-    for frame in range(6):
-        p=[[0]*16 for _ in range(32)]
-        def rect(x0,y0,x1,y1,c):
-            for y in range(y0,y1+1):
-                for x in range(x0,x1+1):
-                    if 0<=x<16 and 0<=y<32:p[y][x]=c
-        # Helmet, face, eyes, breastplate and belt. Clear pixels separate limbs.
-        rect(5,1,10,2,2);rect(4,3,11,6,2);rect(5,3,10,4,3)
-        rect(5,6,10,8,1);rect(5,6,5,6,3);rect(10,6,10,6,3)
-        rect(6,9,9,10,1);rect(4,11,11,18,2);rect(5,11,9,15,3)
-        rect(7,12,7,17,2);rect(4,19,11,20,1);rect(7,19,8,20,3)
-        if frame<4:
-            d=(0,1,0,-1)[frame]
-            rect(2,12+d,3,20+d,2);rect(2,21+d,3,22+d,1)
-            rect(12,12-d,13,20-d,2);rect(12,21-d,13,22-d,1)
-            rect(4,21,6,28+d,2);rect(9,21,11,28-d,2)
-            rect(3,29+d,6,30+d,1);rect(9,29-d,12,30-d,1)
-        else:
-            # Raised hands: two alert poses when the camera enters the trigger.
-            d=frame-4
-            rect(2,8+d,3,15,2);rect(1,6+d,3,8+d,1)
-            rect(12,8-d,13,15,2);rect(12,6-d,14,8-d,1)
-            rect(4,21,6,29,2);rect(9,21,11,29,2)
-            rect(3,30,6,31,1);rect(9,30,12,31,1)
-        # Fit each animated silhouette into rows1..30. Reserve a complete
-        # transparent border before dilation, including below the feet.
-        bottom=max(y for y,row in enumerate(p) if any(row))
-        body=[[0]*16]+[p[1+round(y*(bottom-1)/29)][:] for y in range(30)]+[[0]*16]
-        outlined=[row[:] for row in body]
-        for y in range(32):
-            for x in range(16):
-                if body[y][x]:continue
-                if any(body[ny][nx] for ny in range(max(0,y-1),min(32,y+2))
-                       for nx in range(max(0,x-1),min(16,x+2))):
-                    outlined[y][x]=4
-        frames.append([v for row in outlined for v in row])
-    assert all(len(p)==512 and set(p)=={0,1,2,3,4} for p in frames)
-    (ROOT/'assets/billboard-frames.json').write_text(json.dumps(dict(
-        width=16,height=32,transparentIndex=0,opaqueBlackIndex=4,paletteVICII=[0,9,12,15,0],
-        outline=dict(color='black',VICIIColor=0,radiusSourcePixels=1,neighbors=8,
-                     includesFeet=True,transparentExterior=True),
-        names=['walk0','walk1','walk2','walk3','alert0','alert1'],frames=frames),indent=2))
-    return frames
 
 def data(label,values):
     return label+': .byte '+','.join(str(v&255) for v in values)+'\n'
@@ -406,8 +338,12 @@ def adapt(source,parts):
     assert source.count(old)==1
     return source.replace(old,new),parts
 
-def post(source):
-    frames=artwork()
+def post(source, frames):
+    if not isinstance(frames,list) or len(frames)!=6 or any(
+            not isinstance(frame,list) or len(frame)!=512 or any(
+                type(pixel) is not int or not 0<=pixel<=4 for pixel in frame)
+            for frame in frames):
+        raise ValueError('Caller must supply six 16x32 indexed frames')
     source+='\n*=$d000\nbb_frames:\n'
     for i,frame in enumerate(frames):source+=data('bb_frame'+str(i),frame)
     return source+'''bb_frames_end:

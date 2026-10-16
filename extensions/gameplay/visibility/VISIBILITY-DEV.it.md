@@ -1,5 +1,8 @@
 # VIS-01 — visibilità conservativa per settori e portali — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](VISIBILITY-DEV.en.md).
 
@@ -41,7 +44,7 @@ del viewport 96 × 60, focale 41 e near 4 WU, per ogni orientamento supportato;
 evita esclusioni basate su un occludente già tagliato dal near plane.
 
 ```powershell
-python -B work/build-gameplay.py --profile sector-visibility --out ../builds/visibility
+python -B work/build-gameplay.py --profile sector-visibility --out ../builds/visibility --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/visibility --checks --benchmark --launcher
 ```
 

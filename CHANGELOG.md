@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.11.0 distribution correction / correzione distribuzione
+
+Remove all newly bundled demo projects, including their sources, character/UI
+assets, camera tours, launchers and duplicate old SDK. Retain reusable engine
+modules and only the preexisting examples; native gameplay requires explicit
+external project inputs. Version/release stays 1.11.0. / Rimossi i nuovi demo,
+anche sorgenti e asset; conservati moduli generici ed esempi preesistenti.
+Nessuna nuova versione/release.
+
+
 ## 1.11.0 — 2026-10-16 — official local source release / release sorgente ufficiale locale
 
 - Promote the qualified dev13/cubes-restored line with all bounded gameplay modules, common level authoring and exact assembled memory checks. Promote tutti i moduli delimitati e il formato/budget di livello qualificati.

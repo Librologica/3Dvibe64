@@ -1,13 +1,16 @@
 # Q8-02 — controlled animation and camera roll, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `controlled-animation` and `camera-roll` extend Q8-01. The first keeps the
 dungeon camera without roll; the second banks the camera in the same bounded
 room. Four solids have independent position/yaw/scale/visibility clips.
 Precise textured walls, all 60 rows, LOD 14–22 and UI 96 × 60 remain.
 
 ```powershell
-python -B work/build-gameplay.py --profile controlled-animation --out ../motion-build
-python -B work/build-gameplay.py --profile camera-roll --out ../roll-build
+python -B work/build-gameplay.py --profile controlled-animation --out ../motion-build --project-source ../my-project
+python -B work/build-gameplay.py --profile camera-roll --out ../roll-build --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../roll-build --checks --benchmark --launcher
 ```
 

@@ -1,5 +1,8 @@
 # LIGHT-01 — bake statico per vertici Gouraud — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](LIGHT-DEV.en.md).
 
@@ -10,7 +13,7 @@ billboard, porta, texture animate, UI 96 × 60, campionamento preciso e LOD 14�
 conservano il loro funzionamento.
 
 ```powershell
-python -B work/build-gameplay.py --profile static-light --out ../builds/light-dev7
+python -B work/build-gameplay.py --profile static-light --out ../builds/light-dev7 --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/light-dev7 --checks --benchmark --launcher
 ```
 

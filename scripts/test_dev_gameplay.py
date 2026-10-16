@@ -1,42 +1,32 @@
-"""Check release identity, sealed foundation and isolation of the new entry point."""
-import importlib.util,json,sys,tempfile
+"""Distribution exclusion and ordinary engine preservation contract."""
+import hashlib,importlib.util,json,tempfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
-sys.path.insert(0,str(ROOT/'work'))
-spec=importlib.util.spec_from_file_location('gameplay_build',ROOT/'work/build-gameplay.py')
-builder=importlib.util.module_from_spec(spec);spec.loader.exec_module(builder)
-
-
 def main():
-    from mode8.common import require_qualification_checks
-    require_qualification_checks()
     package=json.loads((ROOT/'PACKAGE-MANIFEST.json').read_text())
-    assert (ROOT/'VERSION').read_text().strip()==package['package']['version']=='1.11.0'
-    assert not package['package']['prerelease'] and not package['gameplayDevelopment']['publicSceneAPI']
-    base=ROOT/'extensions/gameplay/foundation-1.10.2';identity=builder.foundation_identity()
-    assert identity['version']=='1.10.2'
-    checked=0
-    for path in (base/'work').rglob('*'):
-        if path.is_file():
-            relative=path.relative_to(base)
-            assert builder.sha(ROOT/relative)==builder.sha(path),('Inherited engine changed',relative)
-            checked+=1
-    for name in builder.PROFILES:
-        p=json.loads((ROOT/f'examples/gameplay/{name}.json').read_text())
-        assert p['profile']==name and p['engineVersion']=='1.11.0'
-        assert p['standard']=='pal' and p['multiplier']==64 and not p['music']
-        assert (ROOT/f"extensions/gameplay/billboards/{p['billboardImplementation']}.py").exists()
-    # A mistaken in-source build must fail before creating or overwriting files.
-    for bad in (ROOT,ROOT/'build-that-must-not-exist'):
-        try:builder.build('comparison-ui',bad)
+    policy=package['distributionPolicy']
+    assert not policy['newDemosIncluded'] and policy['baseline']=='v1.10.2'
+    assert (ROOT/'VERSION').read_text().strip()=='1.11.0'
+    assert not package['package']['prerelease']
+    for name,digest in policy['ordinaryEngineSHA256'].items():
+        assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest().upper()==digest,name
+    expected=set(policy['preexistingExampleFiles'])
+    actual={p.relative_to(ROOT).as_posix() for p in (ROOT/'examples').rglob('*') if p.is_file()}
+    assert actual==expected,(actual-expected,expected-actual)
+    for name in ['common','profiles','experiments','foundation-1.10.2']:
+        assert not (ROOT/'extensions/gameplay'/name).exists(),name
+    assert not (ROOT/'work/build-underworld.py').exists()
+    spec=importlib.util.spec_from_file_location('builder',ROOT/'work/build-gameplay.py')
+    b=importlib.util.module_from_spec(spec);spec.loader.exec_module(b)
+    with tempfile.TemporaryDirectory() as folder:
+        out=Path(folder)/'absent'
+        try:b.build('shared-meshes',out)
+        except ValueError as e:assert '--project-source' in str(e)
+        else:raise AssertionError('Missing external project inputs were accepted')
+        assert not out.exists()
+    for out in (ROOT,ROOT/'must-not-exist'):
+        try:b.build('shared-meshes',out)
         except ValueError:pass
         else:raise AssertionError('In-source output accepted')
-    with tempfile.TemporaryDirectory() as existing:
-        try:builder.build('comparison-ui',existing)
-        except ValueError:pass
-        else:raise AssertionError('Existing output accepted')
-    assert not (ROOT/'build-that-must-not-exist').exists()
-    print('DEV GAMEPLAY CONTRACT PASS; inherited engine files unchanged:',checked)
-
-
+    print('DISTRIBUTION PASS; no new demos; ordinary engine files unchanged:',len(policy['ordinaryEngineSHA256']))
 if __name__=='__main__':main()

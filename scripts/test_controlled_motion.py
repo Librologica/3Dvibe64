@@ -5,6 +5,7 @@ import json
 import math
 import sys
 from pathlib import Path
+from gameplay_test_inputs import FIXTURES
 ROOT=Path(__file__).resolve().parents[1]
 
 
@@ -14,8 +15,8 @@ def main():
     require_qualification_checks()
     spec=importlib.util.spec_from_file_location('controlled',ROOT/'extensions/gameplay/motion/controlled.py')
     m=importlib.util.module_from_spec(spec);spec.loader.exec_module(m)
-    cfg=json.loads((ROOT/'extensions/gameplay/profiles/controlled-animation/assets/motion.json').read_text())
-    shared=json.loads((ROOT/'extensions/gameplay/profiles/shared-meshes/assets/shared-meshes.json').read_text())
+    cfg=json.loads((FIXTURES/'extensions/gameplay/profiles/controlled-animation/assets/motion.json').read_text())
+    shared=json.loads((FIXTURES/'extensions/gameplay/profiles/shared-meshes/assets/shared-meshes.json').read_text())
     old=copy.deepcopy(cfg);checked=m.validate(cfg,shared);assert checked==cfg==old
     checked['camera']['mode']='flight';assert cfg['camera']['mode']=='dungeon'
     m.validate(checked,shared)

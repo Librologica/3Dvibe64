@@ -32,7 +32,7 @@ def write(path, data):
     path.write_text(json.dumps(data, indent=2, ensure_ascii=False)+'\n', encoding='utf-8', newline='\n')
 
 
-def build(level, out=None, validate_only=False, plan_only=False):
+def build(level, out=None, validate_only=False, plan_only=False, project_source=None):
     level = Path(level).resolve(strict=True)
     document = read_level(level)
     ir, assets = FORMAT.compile_level(document, level.parent)
@@ -46,6 +46,7 @@ def build(level, out=None, validate_only=False, plan_only=False):
         raise ValueError('Choose a new output directory outside the source tree and level inputs')
     if not plan_only and not ir['compatibility']['buildable']:
         raise ValueError('LEVEL_BACKEND_UNSUPPORTED:\n'+'\n'.join(ir['compatibility']['reasons']))
+    if not plan_only and project_source is None:raise ValueError('--project-source is required for native assembly; demo inputs are not bundled')
     out.mkdir(parents=True)
     data = out/'level';data.mkdir()
     write(data/'source-level.json', document)
@@ -69,7 +70,7 @@ def build(level, out=None, validate_only=False, plan_only=False):
     builder = load_module('gameplay_builder', ROOT/'work/build-gameplay.py')
     native = out/'native'
     built = builder.build('room-groups', native, surface_config=data/'surfaces.json',
-                          gameplay_scene=data/'gameplay-scene.json', world_groups=data/'world-groups.json')
+                          gameplay_scene=data/'gameplay-scene.json', world_groups=data/'world-groups.json',project_source=project_source)
     budget = BUDGET.report(native, document['memory'])
     write(out/'memory-budget.json', budget)
     if not budget['policy']['passed']:
@@ -102,12 +103,13 @@ def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--level', required=True, type=Path)
     parser.add_argument('--out', type=Path)
+    parser.add_argument('--project-source', type=Path, help='External project adapter inputs required for a native build')
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument('--validate-only', action='store_true')
     mode.add_argument('--plan-only', action='store_true')
     args = parser.parse_args()
     try:
-        result = build(args.level, args.out, args.validate_only, args.plan_only)
+        result = build(args.level, args.out, args.validate_only, args.plan_only, args.project_source)
     except (ValueError, OSError) as error:
         parser.exit(2, str(error)+'\n')
     print(json.dumps(result, indent=2, ensure_ascii=False))

@@ -4,6 +4,7 @@ import importlib.util
 import json
 import sys
 from pathlib import Path
+from gameplay_test_inputs import FIXTURES
 ROOT=Path(__file__).resolve().parents[1]
 
 
@@ -13,8 +14,8 @@ def main():
     require_qualification_checks()
     spec=importlib.util.spec_from_file_location('texture_animation',ROOT/'extensions/gameplay/materials/animation.py')
     mod=importlib.util.module_from_spec(spec);spec.loader.exec_module(mod)
-    cfg=json.loads((ROOT/'extensions/gameplay/profiles/animated-textures/assets/texture-animation.json').read_text(encoding='utf-8'))
-    asset=json.loads((ROOT/'extensions/gameplay/profiles/animated-textures/assets/texture-frames.json').read_text(encoding='utf-8'))
+    cfg=json.loads((FIXTURES/'extensions/gameplay/profiles/animated-textures/assets/texture-animation.json').read_text(encoding='utf-8'))
+    asset=json.loads((FIXTURES/'extensions/gameplay/profiles/animated-textures/assets/texture-frames.json').read_text(encoding='utf-8'))
     mesh=dict(id='room',faces=[[0,1,2]]*16,faceTextures=['stone']*16)
     scene=dict(meshes=[mesh],textures=[dict(id='stone',width=16,height=16,texels=asset['frames'][0])])
     surfaces=[dict(mode='texture') for _ in range(16)];surfaces[8]=dict(mode='gouraud')

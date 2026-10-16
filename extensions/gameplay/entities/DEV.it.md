@@ -1,5 +1,8 @@
 # BB-02 / primo ENT-01 — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](DEV.en.md).
 
@@ -10,7 +13,7 @@ e used e durata dei frame in tick di simulazione. La prova alternativa
 cambia asset, posizione, dimensioni e animazione modificando solo i dati.
 
 ```powershell
-python -B work/build-gameplay.py --profile interactive-billboard --out ../builds/interactive-dev3
+python -B work/build-gameplay.py --profile interactive-billboard --out ../builds/interactive-dev3 --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/interactive-dev3 --checks --benchmark --launcher
 ```
 

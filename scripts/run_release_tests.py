@@ -14,6 +14,7 @@ sys.path.insert(0,str(ROOT/'work'))
 from mode8.common import require_qualification_checks
 TESTS = (
     "test_documentation.py",
+    "test_billboard_emitter.py",
     "test_mixed_surfaces.py",
     "test_billboard_scene.py",
     "test_door_entity.py",

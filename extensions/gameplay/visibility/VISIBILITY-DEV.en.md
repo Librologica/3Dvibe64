@@ -1,5 +1,8 @@
 # VIS-01 — conservative sector/portal visibility, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `sector-visibility` extends static-light. The host builds potentially visible
 sector masks per start sector and open-door combination. It unions every
 graph path; closing a door does not hide sectors reachable through another
@@ -31,7 +34,7 @@ occluder edges. The reserve contains the complete near-view volume for the
 96 × 60 viewport, focal 41 and near 4 WU at supported orientations.
 
 ```powershell
-python -B work/build-gameplay.py --profile sector-visibility --out ../visibility-build
+python -B work/build-gameplay.py --profile sector-visibility --out ../visibility-build --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../visibility-build --checks --benchmark --launcher
 ```
 

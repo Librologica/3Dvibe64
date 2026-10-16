@@ -1,5 +1,8 @@
 # BB-03 — two billboard instances, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `multiple-billboards` extends door-entity with two independently positioned,
 sized and animated characters. UI 96 × 60, exact perspective on all 60 rows and
 LOD 14–22 remain. Build/qualify with the corresponding `--profile` and a new

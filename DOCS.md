@@ -1,8 +1,7 @@
 # Documentation index / Indice documentazione — 1.11.0
 
-Current source-only local release. No online publication or compiled/demo
-assets in this delivery. Release ufficiale locale solo sorgenti, senza
-pubblicazione online né eseguibili/archivi demo.
+Current source-only release. Existing 1.11.0 corrected on GitHub: no new demo sources/assets.
+Corretta la 1.11.0 esistente su GitHub: nessun nuovo sorgente/asset demo.
 
 ## Paired current manuals / Manuali correnti nelle due lingue
 
@@ -46,7 +45,6 @@ ordinario e adattatori delimitati restano distinti.
 |Q8-02|[English](extensions/gameplay/motion/CONTROLLED-DEV.en.md)|[Italiano](extensions/gameplay/motion/CONTROLLED-DEV.it.md)|
 |WORLD-01|[English](extensions/gameplay/world/WORLD-DEV.en.md)|[Italiano](extensions/gameplay/world/WORLD-DEV.it.md)|
 |LEVEL-01|[English](extensions/gameplay/level/LEVEL-DEV.en.md)|[Italiano](extensions/gameplay/level/LEVEL-DEV.it.md)|
-|Integration|[English](extensions/gameplay/experiments/underworld/README.en.md)|[Italiano](extensions/gameplay/experiments/underworld/README.it.md)|
 |QUALIFICATION-1.11.0|[English](QUALIFICATION-1.11.0.en.md)|[Italiano](QUALIFICATION-1.11.0.it.md)|
 
 ## Bilingual shared references / Riferimenti bilingui condivisi
@@ -69,13 +67,11 @@ Versioned RELEASE-NOTES files, Q8/Normalized 16/Mode 8 qualification reports,
 Gouraud report and Mode 8 plan history retain their original statements,
 measurements and hashes. They do not override current 1.11.0 contracts.
 The current qualification identifies reused evidence and fresh checks.
-`extensions/gameplay/foundation-1.10.2` is immutable source provenance,
-including its original documentation/version/manifest.
+Previous releases remain in Git history; no duplicated SDK is bundled.
 
 Le note di versione e i rapporti storici conservano affermazioni, misure e
 hash originari; non sostituiscono i contratti 1.11.0 correnti. La qualifica
-corrente distingue prove riusate e controlli rieseguiti. La documentazione
-interna a foundation-1.10.2 resta immutabile, insieme a versione e manifest.
+corrente distingue prove riusate e controlli rieseguiti. Le release precedenti restano nella cronologia Git, senza SDK duplicato nel pacchetto.
 
 Machine-readable coverage / Copertura verificabile: [DOCUMENTATION.json](DOCUMENTATION.json).
 `scripts/test_documentation.py` checks pairs, profiles, CLI coverage, local

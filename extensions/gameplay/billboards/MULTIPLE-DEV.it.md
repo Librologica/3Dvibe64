@@ -1,5 +1,8 @@
 # BB-03 — due istanze billboard — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](MULTIPLE-DEV.en.md).
 
@@ -9,7 +12,7 @@ tempi e stato di animazione indipendenti. Mantiene UI LABIRINTO, viewport
 96 × 60, Q8 preciso su tutti i pixel e le righe e LOD texture 14–22.
 
 ```powershell
-python -B work/build-gameplay.py --profile multiple-billboards --out ../builds/multiple-dev5
+python -B work/build-gameplay.py --profile multiple-billboards --out ../builds/multiple-dev5 --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/multiple-dev5 --checks --benchmark --launcher
 ```
 

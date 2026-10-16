@@ -1,58 +1,39 @@
-# Contratti dei sorgenti gameplay — 1.11.0
+# Contratto sorgente billboard delimitato — 1.11.0
 
-La release ufficiale include tredici profili sperimentali delimitati, il
-formato comune di livello e un esperimento integrato separato. Dev1–dev13
-identificano checkpoint storici; non sono attività future. La guida corrente
-è [GAMEPLAY](../../GAMEPLAY.it.md); i contratti dei singoli moduli sono
-indicizzati in [DOCS](../../DOCS.md). [English](CONTRACT.en.md).
+La distribuzione conserva `billboards/masked.py`, `outlined.py`, `scene.py`
+e `multiple.py`, insieme ai moduli entità/porta, materiali, luce, visibilità,
+mesh, movimento, mondo e livello. Nessun generatore scena, UI, disegno del
+personaggio, percorso camera, launcher, progetto demo o SDK duplicato è
+allegato. Gli input nativi sono esterni ed espliciti. [GAMEPLAY](../../GAMEPLAY.it.md).
 
-Il builder ordinario `work/build-3Dvibe64.ps1` conserva l’API 1.10.2.
-`work/build-gameplay.py` seleziona i profili; `work/build-level.py` compila
-il formato comune tramite WORLD-01; `work/build-underworld.py` rimane
-separato. Le combinazioni non disponibili sono rifiutate esplicitamente.
-`common` contiene sorgenti/asset condivisi; `profiles` le specializzazioni;
-le cartelle billboard, entità, materiali, mesh, motion, visibility, world
-e level i moduli corrispondenti. Ogni dipendenza sorgente è inclusa.
-La foundation-1.10.2 rimane un input immutabile, non una seconda release.
+## API e input del chiamante
 
-## Profili e composizione
+`kernel()` emette codice e stato. `adapt(source, parts)` collega etichette e
+ordinamento dichiarati del renderer delimitato. `post(source, frames)` aggiunge
+sei frame indicizzati 16×32 forniti dal chiamante: valori 0–3 per masked,
+0–4 per outlined. Zero è trasparente; 4 è nero opaco in outlined. Non disegna
+personaggi né scrive asset. `scene.validate(config, asset)` valida la
+configurazione; `scene.bind(code, config)` configura ancora/dimensioni e
+`scene.animation(config)` emette stato e controlli. `multiple.validate/load/adapt`
+gestisce una/due istanze con asset condiviso.
 
-`comparison-ui`: stanza chiusa, skeleton 38 vertici/52 segmenti con spada e
-scudo, billboard contornato alto uguale,96 × 60 logici, prospettiva precisa
-su tutte 60 righe, LOD 14–22 WU, orbita 3072 tick. `dungeon-masked`: un billboard
-16 × 32/seiframe, cinque celle fisse,160 × 100, fast storico block 8/50 righe
-ricostruite, LOD 14–22,7680 tick. Le qualità diverse impediscono un confronto
-FPS diretto fra questi due profili.
+## Contratto nativo delimitato
 
-La catena mixed-surfaces → interactive-billboard → door-entity →
-multiple-billboards → animated-textures → static-light → sector-visibility
-aggiunge progressivamente le funzioni descritte. Da mixed-surfaces si
-dirama shared-meshes, poi controlled-animation/camera-roll: questo ramo
-non include porta/billboard. room-groups deriva da door-entity; è il backend
-del formato comune. L’integrazione a tre stanze è separata da WORLD-01.
+Ancora nello spazio mondo e trasformazione/proiezione Q8. L’immagine resta
+parallela al piano della vista e rispetta profondità e dimensioni prospettiche.
+Near a 8 WU per istanza singola; BB-03 accetta profondità costante >=4 WU.
+Maschera binaria, palette residente condivisa e cache decodificata da 512 byte.
+Stato animazione per istanza. Il progetto deve rispettare etichette della
+stanza convessa, nodo painter riservato 36 e hook delle bande di profondità.
+Non è un’API generale di occlusione/intersezione o piani inclinati arbitrari.
+Nessuna scena, texture o palette è installata implicitamente. Exporter ordinario invariato.
 
-## Geometria e palette dei billboard
+## Integrazione e qualificazione
 
-Asset 16 × 32, maschera binaria:0 trasparente,1–3 pigmenti,4 nero opaco nei
-profili contornati. Nessuna semitrasparenza. Il piano resta parallelo alla
-vista, con profondità e dimensioni prospettiche. Gli adattatori storici a
-istanza singola scartano il centro sotto 8 WU; BB-03 accetta 4 WU incluso e
-scarta l’intero piano sotto tale valore. Le due istanze condividono asset
-e cache 512 byte, mantenendo animazione indipendente. Appartenenza e
-occlusione sono quelle del singolo profilo: intersezioni arbitrarie e piani
-billboard inclinati non sono supportati.
-
-## Ricostruzione e prove
-
-```powershell
-python -B work/build-gameplay.py --profile comparison-ui --out ../comparison-build
-python -B work/build-gameplay.py --profile door-entity --out ../door-build
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
-```
-
-Output nuovi e fuori dai sorgenti. I launcher generati usano VICE Turbo6510
-PAL× 64, filtro 0, Colodore e nessuna musica. L’hash PRG decide il riuso delle
-prove: cambiamenti richiedono controlli e misure native pertinenti, contando
-soltanto nuove viste complete. La distribuzione sorgente non contiene
-programmi precompilati o archivi demo. Restano futuri l’API generale di scena,
-le topologie arbitrarie e la qualificazione congiunta di tutti i moduli.
+Fornire renderer/progetto compatibile, frame e configurazione propri. Il
+driver richiede `--project-source`; vedere [struttura degli input](../../GAMEPLAY.it.md#input-del-progetto).
+Input mancanti sono rifiutati esplicitamente. I test usano array sintetici in
+cartelle temporanee, senza distribuire demo. Verificata identità di emissione
+codice/stato/frame rispetto all’emitter precedente. Le prove native storiche
+restano esterne e valgono per hash PRG, target e opzioni registrati. Nessun
+nuovo risultato FPS deriva dalla correzione. [Indice](../../DOCS.md), [English](CONTRACT.en.md).

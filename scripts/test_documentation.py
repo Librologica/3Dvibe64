@@ -55,32 +55,13 @@ def links(files):
     return count
 
 
-def tool_overrides():
-    prior={k:os.environ.get(k) for k in ['TASS64_EXE','VICE_TURBO6510']}
-    try:
-        with tempfile.TemporaryDirectory() as temp:
-            path=Path(temp)/'external-tool.fixture'
-            path.write_text('path-resolution fixture; never executed',encoding='utf-8')
-            os.environ['TASS64_EXE']=str(path);os.environ['VICE_TURBO6510']=str(path)
-            cases=[('extensions/gameplay/common/src/package_prg.py','TASS'),
-                ('extensions/gameplay/common/src/native_probe.py','VICE'),
-                ('extensions/gameplay/experiments/underworld/tools/native_helpers.py','VICE')]
-            for i,(name,variable) in enumerate(cases):
-                spec=importlib.util.spec_from_file_location('release_tool_'+str(i),ROOT/name)
-                module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module)
-                assert getattr(module,variable)==path,(name,variable)
-    finally:
-        for k,v in prior.items():
-            if v is None:os.environ.pop(k,None)
-            else:os.environ[k]=v
-
 
 def main():
     version=read('VERSION').strip();assert version=='1.11.0'
     package=load('PACKAGE-MANIFEST.json');assert package['package']['version']==version
     assert not package['package']['prerelease'] and not package['package']['precompiledPrograms']
     docs=load('DOCUMENTATION.json');assert docs['version']==version and docs['locales']==['en','it']
-    assert docs['sourceOnly'] and docs['publication']=='local only'
+    assert docs['sourceOnly'] and docs['publication']=='GitHub' and not docs['newDemosIncluded']
     files=set(docs['currentBilingual'])
     for pair in docs['currentPairs']:
         for locale in ['en','it']:
@@ -92,20 +73,15 @@ def main():
         text=read('GAMEPLAY.'+lang+'.md')
         for name in docs['gameplayProfiles']:assert name in text,(lang,name)
         for flag in docs['gameplayConfigurationOptions']:assert flag in text,(lang,flag)
-        for token in ['--profile','--out','--validate-only','--plan-only','--scene-config','--no-room-culling','reserveBytes','minimumContiguousBytes','3759','2904']:
+        for token in ['--profile','--out','--project-source','--validate-only','--plan-only','reserveBytes','minimumContiguousBytes','3759']:
             assert token in text,(lang,token)
     flags=set()
     for call in ast.walk(ast.parse(read('work/build-gameplay.py'))):
         if isinstance(call,ast.Call) and isinstance(call.func,ast.Attribute) and call.func.attr=='add_argument':
             flags.update(a.value for a in call.args if isinstance(a,ast.Constant) and isinstance(a.value,str) and a.value.startswith('--'))
-    assert flags==set(docs['gameplayConfigurationOptions'])|{'--profile','--out'},flags
-    profiles=sorted(p.stem for p in (ROOT/'examples/gameplay').glob('*.json'))
-    assert profiles==docs['gameplayProfiles'] and len(profiles)==13
-    for profile in profiles:
-        cfg=load('examples/gameplay/'+profile+'.json');assert cfg['engineVersion']==version
-        for lang in ['en','it']:
-            parent=cfg.get('extends','—')
-            assert '|`'+profile+'`|'+parent+'|' in read('GAMEPLAY.'+lang+'.md'),(lang,profile,parent)
+    assert flags==set(docs['gameplayConfigurationOptions'])|set(docs['gameplayRequiredOptions']),flags
+    assert not (ROOT/'examples/gameplay').exists()
+    profiles=docs['gameplayProfiles'];assert len(profiles)==13
     count=links(sorted(files))
     entries={}
     for line in read('MANIFEST.sha256').splitlines():
@@ -115,7 +91,6 @@ def main():
     assert set(entries)|{'MANIFEST.sha256'}==actual
     forbidden={'.prg','.d64','.d71','.d81','.tap','.t64','.mp3','.wav','.mp4','.webm','.zip','.vsf','.pyc'}
     assert not [n for n in entries if Path(n).suffix.lower() in forbidden]
-    tool_overrides()
     print('DOCUMENTATION PASS; pairs=',len(docs['currentPairs']),'local links=',count,'profiles=',len(profiles),'source files=',len(actual))
 
 

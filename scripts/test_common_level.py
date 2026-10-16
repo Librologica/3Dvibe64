@@ -4,6 +4,7 @@ import importlib.util
 import json
 import tempfile
 from pathlib import Path
+from gameplay_test_inputs import FIXTURES
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -18,7 +19,7 @@ def main():
     f = load('level_format_test', 'extensions/gameplay/level/format.py')
     b = load('level_budget_test', 'extensions/gameplay/level/budget.py')
     entry = load('level_entry_test', 'work/build-level.py')
-    path = ROOT/'examples/levels/integrated-foundation.json'
+    path = FIXTURES/'examples/levels/integrated-foundation.json'
     d = f.read_json(path);original = copy.deepcopy(d)
     schema = f.read_json(ROOT/'extensions/gameplay/level/level.schema.json')
     assert set(schema['properties']) == set(schema['required']) == set(d)
@@ -33,8 +34,8 @@ def main():
     schema_refs(schema)
     ir, assets = f.compile_level(d, path.parent)
     assert d == original and ir['compatibility']['buildable']
-    assert ir['nativeTranslation']['world'] == f.read_json(ROOT/'extensions/gameplay/profiles/room-groups/assets/world-groups.json')
-    assert ir['nativeTranslation']['gameplay'] == f.read_json(ROOT/'extensions/gameplay/profiles/door-entity/assets/gameplay-scene.json')
+    assert ir['nativeTranslation']['world'] == f.read_json(FIXTURES/'extensions/gameplay/profiles/room-groups/assets/world-groups.json')
+    assert ir['nativeTranslation']['gameplay'] == f.read_json(FIXTURES/'extensions/gameplay/profiles/door-entity/assets/gameplay-scene.json')
     assert len(ir['groups']) == 2 and len(ir['rooms']) == 4 and len(ir['objects']) == 4 and len(ir['events']) == 2
     assert ir['objects'][0]['positionQ8'] == [1792, 0, -640]
     assert ir['groups'][1]['neighbors'] == [0] and ir['persistentState'][1]['bytes'] == 17
@@ -57,7 +58,7 @@ def main():
     for feature in f.FEATURES:
         changed = copy.deepcopy(d);changed['features'] = [feature];unsupported.append(changed)
     changed = copy.deepcopy(d);extra = copy.deepcopy(changed['objects'][0]);extra['id'] = 'second-guardian';changed['objects'].append(extra);unsupported.append(changed)
-    changed = copy.deepcopy(d);changed['assets'].append(dict(id='crystal-art', kind='mesh', source='builtin:crystal'))
+    changed = copy.deepcopy(d);changed['assets'].append(dict(id='crystal-art', kind='mesh', source='file:assets/test-mesh.json'))
     changed['objects'].append(dict(id='crystal-object', kind='mesh', room='hall-front', position=[-8, -8, -5], asset='crystal-art', yawDegrees=0, scale=1, visible=True, level=20));unsupported.append(changed)
     changed = copy.deepcopy(d);changed['spawns'][0]['position'] = [1, -20, 0];unsupported.append(changed)
     changed = copy.deepcopy(d);changed['objects'][1]['size'] = [8, 18];unsupported.append(changed)

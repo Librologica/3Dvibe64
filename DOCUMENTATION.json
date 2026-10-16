@@ -166,11 +166,6 @@
       "it": "extensions/gameplay/level/LEVEL-DEV.it.md"
     },
     {
-      "id": "Integration",
-      "en": "extensions/gameplay/experiments/underworld/README.en.md",
-      "it": "extensions/gameplay/experiments/underworld/README.it.md"
-    },
-    {
       "id": "QUALIFICATION-1.11.0",
       "en": "QUALIFICATION-1.11.0.en.md",
       "it": "QUALIFICATION-1.11.0.it.md"
@@ -199,7 +194,6 @@
     "examples/mode8/PLANS.md"
   ],
   "historyPolicy": "Preserve versioned measurements and archived release notes; current paired contracts take precedence.",
-  "frozenDocumentation": "extensions/gameplay/foundation-1.10.2",
   "gameplayProfiles": [
     "animated-textures",
     "camera-roll",
@@ -227,5 +221,11 @@
     "--world-groups"
   ],
   "sourceOnly": true,
-  "publication": "local only"
+  "publication": "GitHub",
+  "newDemosIncluded": false,
+  "gameplayRequiredOptions": [
+    "--profile",
+    "--out",
+    "--project-source"
+  ]
 }

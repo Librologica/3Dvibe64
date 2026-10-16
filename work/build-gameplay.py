@@ -9,31 +9,43 @@ EXT=ROOT/'extensions/gameplay'
 PROFILES=('comparison-ui','dungeon-masked','mixed-surfaces','interactive-billboard','door-entity','multiple-billboards','animated-textures','static-light','sector-visibility','shared-meshes','controlled-animation','camera-roll','room-groups')
 
 
-def profile_chain(profile, seen=()):
+def profile_chain(profile, seen=(), project_source=None):
     if profile not in PROFILES or profile in seen: raise ValueError('Invalid/cyclic profile inheritance')
-    preset=json.loads((ROOT/f'examples/gameplay/{profile}.json').read_text(encoding='utf-8-sig'))
-    return (profile_chain(preset['extends'],seen+(profile,)) if 'extends' in preset else [])+[profile]
+    project_source=Path(project_source).resolve(strict=True) if project_source is not None else None
+    if project_source is None:raise ValueError('--project-source is required; demo templates are not distributed')
+    preset=json.loads((project_source/f'examples/gameplay/{profile}.json').read_text(encoding='utf-8-sig'))
+    return (profile_chain(preset['extends'],seen+(profile,),project_source) if 'extends' in preset else [])+[profile]
 
 
 def sha(path):return hashlib.sha256(path.read_bytes()).hexdigest().upper()
 
 
 def foundation_identity():
-    root=EXT/'foundation-1.10.2'
+    root=ROOT
     entries={name:digest for line in (root/'MANIFEST.sha256').read_text().splitlines()
              for digest,name in [line.split('  ',1)]}
-    assert set(entries)|{'MANIFEST.sha256'}=={p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file()}
+    assert set(entries)|{'MANIFEST.sha256'}=={p.relative_to(root).as_posix() for p in root.rglob('*') if p.is_file() and '.git' not in p.relative_to(root).parts}
     for name,digest in entries.items():assert sha(root/name)==digest,name
     return dict(version=(root/'VERSION').read_text().strip(),manifestSHA256=sha(root/'MANIFEST.sha256'))
 
 
-def build(profile,out,surface_config=None,gameplay_scene=None,door_config=None,texture_animation=None,light_bake=None,visibility=None,shared_meshes=None,motion_controls=None,world_groups=None):
+def build(profile,out,surface_config=None,gameplay_scene=None,door_config=None,texture_animation=None,light_bake=None,visibility=None,shared_meshes=None,motion_controls=None,world_groups=None,project_source=None):
     if profile not in PROFILES:raise ValueError('Unknown gameplay profile')
     out=Path(out).resolve()
     if out.is_relative_to(ROOT) or out.exists():
         raise ValueError('Choose a new output directory outside the source repository')
+    if project_source is None:raise ValueError('--project-source is required; new demo sources/assets are not distributed')
+    project_source=Path(project_source).resolve(strict=True)
+    if project_source.is_relative_to(ROOT) or project_source==ROOT:
+        raise ValueError('Project templates must be outside this SDK')
+    project_ext=project_source/'extensions/gameplay'
+    chain=profile_chain(profile,project_source=project_source)
+    required=[project_ext/'common',project_ext/'billboards',project_source/'examples/gameplay'/f'{profile}.json']
+    required.extend(project_ext/'profiles'/p for p in chain)
+    if any(not path.exists() for path in required):raise ValueError('Incomplete external project adapter inputs')
+    if project_source.is_relative_to(out) or out.is_relative_to(project_source):raise ValueError('Output must not overlap project inputs')
     identity=foundation_identity()
-    preset=json.loads((ROOT/f'examples/gameplay/{profile}.json').read_text())
+    preset=json.loads((project_source/f'examples/gameplay/{profile}.json').read_text())
     if surface_config is not None and profile not in ('mixed-surfaces','interactive-billboard','door-entity','multiple-billboards','animated-textures','static-light','sector-visibility','shared-meshes','controlled-animation','camera-roll','room-groups'):
         raise ValueError('Surface configuration requires mixed-surfaces')
     if surface_config is not None: surface_config=Path(surface_config).resolve(strict=True)
@@ -47,9 +59,9 @@ def build(profile,out,surface_config=None,gameplay_scene=None,door_config=None,t
     if world_groups is not None and profile!='room-groups':raise ValueError('World configuration requires room-groups profile')
     if preset['engineVersion']!=(ROOT/'VERSION').read_text().strip():raise ValueError('Preset/dev version mismatch')
     out.mkdir(parents=True);project=out/'project';project.mkdir()
-    shutil.copytree(EXT/'common',project,dirs_exist_ok=True)
-    for profile_name in profile_chain(profile):
-        for path in (EXT/'profiles'/profile_name).iterdir():
+    shutil.copytree(project_ext/'common',project,dirs_exist_ok=True)
+    for profile_name in chain:
+        for path in (project_ext/'profiles'/profile_name).iterdir():
             if path.name=='origin.json':continue
             if path.is_dir():shutil.copytree(path,project/path.name,dirs_exist_ok=True)
             else:shutil.copy2(path,project/path.name)
@@ -104,8 +116,8 @@ def build(profile,out,surface_config=None,gameplay_scene=None,door_config=None,t
         shutil.copy2(EXT/'world/groups.py',project/'src/world_groups.py')
         shutil.copy2(EXT/'world/io.asm',project/'src/world_io.asm')
         if world_groups is not None:shutil.copy2(Path(world_groups).resolve(strict=True),project/'assets/world-groups.json')
-    shutil.copy2(EXT/'billboards'/f"{preset['billboardImplementation']}.py",project/'src/billboard_room.py')
-    shutil.copytree(EXT/'foundation-1.10.2',project/'sdk')
+    shutil.copy2(project_ext/'billboards'/f"{preset['billboardImplementation']}.py",project/'src/billboard_room.py')
+    shutil.copytree(ROOT,project/'sdk',ignore=shutil.ignore_patterns('.git','__pycache__','*.pyc'))
     for name in ('room','room/scenes','room/reports','reports','artifacts'):(project/name).mkdir(exist_ok=True)
     command=[sys.executable,'-B','build_demo.py','--name',preset['buildName'],'--artifact-tag',preset['buildName']]
     if preset['textureQuality']=='precise':command.append('--precise')
@@ -120,7 +132,7 @@ def build(profile,out,surface_config=None,gameplay_scene=None,door_config=None,t
         foundation=identity,program=target.name,PRGSHA256=digest,
         checkpointPRGSHA256=preset['expectedCheckpointPRGSHA256'],
         checkpointPRGIdentical=digest==preset['expectedCheckpointPRGSHA256'],
-        preset=str(Path('examples/gameplay')/(profile+'.json')),command=command,
+        presetData=preset,projectInputsExternal=True,command=command,
         scope=preset.get('scope','bounded imported profile; no general public scene API'),target='VICE Turbo6510 PAL multiplier64',
         music=False,viewportLogical=preset['viewportLogical'],textureQuality=preset['textureQuality'],textureLOD=preset['textureLOD'],
         rootSourceVersion=(ROOT/'VERSION').read_text().strip())
@@ -156,6 +168,7 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--profile',choices=PROFILES,default='comparison-ui')
     parser.add_argument('--out',required=True,type=Path)
+    parser.add_argument('--project-source',required=True,type=Path,help='External project adapter root; no demo inputs are bundled')
     parser.add_argument('--surface-config',type=Path,help='Experimental mixed-surfaces face configuration')
     parser.add_argument('--gameplay-scene',type=Path,help='Experimental billboard/entity scene JSON')
     parser.add_argument('--door-config',type=Path,help='Door motion switch for equal-condition native control')
@@ -165,4 +178,4 @@ if __name__=='__main__':
     parser.add_argument('--shared-meshes',type=Path,help='Optional Q8 shared mesh instance configuration')
     parser.add_argument('--motion-controls',type=Path,help='Optional Q8-02 playback and camera configuration')
     parser.add_argument('--world-groups',type=Path,help='Optional WORLD-01 group and transition configuration')
-    args=parser.parse_args();build(args.profile,args.out,args.surface_config,args.gameplay_scene,args.door_config,args.texture_animation,args.light_bake,args.visibility,args.shared_meshes,args.motion_controls,args.world_groups)
+    args=parser.parse_args();build(args.profile,args.out,args.surface_config,args.gameplay_scene,args.door_config,args.texture_animation,args.light_bake,args.visibility,args.shared_meshes,args.motion_controls,args.world_groups,args.project_source)

@@ -1,2 +1,0 @@
-# Optional host dependency for PNG textures; inline texels use the standard library.
-Pillow>=10

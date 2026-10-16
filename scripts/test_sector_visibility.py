@@ -6,6 +6,7 @@ import json
 import math
 import sys
 from pathlib import Path
+from gameplay_test_inputs import FIXTURES
 ROOT=Path(__file__).resolve().parents[1]
 
 
@@ -15,7 +16,7 @@ def main():
     require_qualification_checks()
     spec=importlib.util.spec_from_file_location('visibility_compiler',ROOT/'extensions/gameplay/visibility/compiler.py')
     c=importlib.util.module_from_spec(spec);spec.loader.exec_module(c)
-    config=json.loads((ROOT/'extensions/gameplay/profiles/sector-visibility/assets/visibility.json').read_text(encoding='utf-8'))
+    config=json.loads((FIXTURES/'extensions/gameplay/profiles/sector-visibility/assets/visibility.json').read_text(encoding='utf-8'))
     q=lambda p:[round(x*256) for x in p]
     vertices=[q(p) for p in [(-1,-2,0),(1,-2,0),(0,2,1),(-1,12,0),(1,12,0),(0,16,1),(0,8,1)]]
     faces=[[0,1,2],[3,4,5],[2,5,6],[0,1,6]]

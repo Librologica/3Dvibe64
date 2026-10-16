@@ -4,32 +4,20 @@ Current 1.11.0 source contract. This manual describes the ordinary exporter unle
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
-## Gameplay modules in1.11.0
+## Distribution correction within 1.11.0
 
-Choose a profile/entry point before editing geometry. Ordinary Q8 fields do
-not configure the separate source-sharing, roll, event or room-group adapters.
-Use [GAMEPLAY](GAMEPLAY.en.md) for all 13 profiles, nine optional configuration
-switches and compatibility. The detailed module references include the
-`an_control`, `cr_set_roll`, `cr_resume`, `wg_request`, `wg_service` ABIs,
-event pulse/counter rules, near thresholds and storage ownership.
+New demo projects are excluded, including their source generators, UI,
+character artwork, camera routes, launchers and captured/reference assets.
+The duplicated 1.10.2 SDK is removed. The original examples from v1.10.2 are
+retained. This corrects the existing release; VERSION stays 1.11.0.
 
-Level editing starts with `work/build-level.py --validate-only`; a valid
-authoring graph may still have `buildable:false` for this backend. A plan is
-not a native memory measurement. Accept only the assembled budget, legal
-windows, guard space and aligned contiguous gaps. WORLD-01's proposed 3759 byte
-UI recovery is not implemented there; the separate integration actually
-reuses 2904 bytes under a different checked lifetime contract.
+Reusable gameplay compilers, validators and bounded assembly emitters remain.
+Native gameplay builds require an external project supplied explicitly with
+`--project-source`; no demo is reconstructed from bundled default inputs.
+The ordinary engine and its existing examples remain directly buildable.
+See [GAMEPLAY](GAMEPLAY.en.md), [quick start](QUICKSTART.md) and
+[qualification](QUALIFICATION-1.11.0.en.md).
 
-Pause/source/instance state must remain stable during complete rendering.
-Do not call clip controls or modify self-patched shader state from IRQ.
-World input temporarily maps KERNAL and must restore zero page, vectors,
-CPU port and CIA 2. Native group files contain whitelisted data, not executable
-code. Follow [the level contract](extensions/gameplay/level/LEVEL-DEV.en.md).
-
-The release is currently local, source-only. Obtain its source ZIP from the
-local delivery or a later published release; do not assume it is already
-available online. Keep release/foundation/frozen projects immutable and build
-in external directories. `MANIFEST.sha256` verifies every source input.
 
 ## Mode 7 fast — 1.7.0
 
@@ -776,7 +764,7 @@ Until the project officially adopts external modules, the PowerShell builder rem
 - Relevant host-side tests pass.
 - Relevant VICE regressions pass, or a new signature is justified.
 - Italian and English documentation describe the same API.
-- Version 1.11.0, package manifest and checksums are sealed together for this local source release.
+- Version 1.11.0, package manifest and checksums are sealed together for this source release.
 
 ## 24. Recommended reading path
 

@@ -15,11 +15,3 @@ LICENSE text eol=lf
 *.bmp binary
 *.gif binary
 *.zip binary
-
-# Preserve the imported experimental checkpoints and exact reference assets.
-extensions/gameplay/common/** -text
-extensions/gameplay/profiles/** -text
-extensions/gameplay/billboards/** -text
-
-# Keep the imported Windows launcher byte-identical in Git and source ZIPs.
-extensions/gameplay/experiments/** -text

@@ -1,7 +1,8 @@
 # 3Dvibe64 1.11.0
 
-Official local source SDK / Release ufficiale locale dei sorgenti.
-No online publication in this delivery. / Pubblicazione online rinviata.
+Official source SDK / SDK sorgente ufficiale.
+Existing 1.11.0 distribution corrected: no newly added demos, including sources/assets.
+Corretta la distribuzione 1.11.0: esclusi i nuovi demo, anche sorgenti e asset.
 
 - [English manual](README.en.md) · [Manuale italiano](README.it.md)
 - [Documentation index / Indice documentazione](DOCS.md)
@@ -17,8 +18,8 @@ static lighting, sector visibility, source sharing, controlled clips/roll,
 room groups and common level authoring, within documented profile boundaries.
 
 Sorgenti senza PRG precompilati: **no precompiled PRG**, video, music or demo
-archives. JSON/PNG source inputs and profile/compiler sources are retained.
-L’archivio include gli input e gli adattatori sorgente, senza eseguibili demo.
+archives. Only preexisting examples are retained; new project inputs are external.
+Conservati soltanto gli esempi preesistenti; input dei nuovi progetti esterni.
 
 The ordinary options `Mode4NearProfile`, `FaceCullProfile`, `meshSourceSharing`,
 and the mode-specific limits are documented in both manuals. Q8-01 source

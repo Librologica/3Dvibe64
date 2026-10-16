@@ -204,7 +204,7 @@
         },
         "source": {
           "type": "string",
-          "pattern": "^(builtin:[a-z][a-z0-9-]*|file:[^\\\\:]+\\.[jJ][sS][oO][nN])$"
+          "pattern": "^file:[^\\\\:]+\\.[jJ][sS][oO][nN]$"
         }
       },
       "required": [

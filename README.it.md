@@ -1,68 +1,38 @@
 # 3Dvibe64 1.11.0
 
-[English](README.en.md) · [Indice documentazione](DOCS.md) · [Note di rilascio](RELEASE-NOTES-1.11.0.it.md) · [Guida rapida](QUICKSTART.md)
+Legacy resta il default. Selezionare Q8 preciso esplicitamente con `-Precision q8`, consigliato sopra 20 MHz. Qualità texture standard, linee precise, LOD off e presentazione safe restano i default ordinari.
 
-Release ufficiale **locale del source SDK**, preparata il 2026-10-16 dalla
-linea qualificata 1.11.0-dev13. La consegna non contiene PRG precompilati,
-video, musica o archivi demo. Sono inclusi scene sorgenti, adattatori dei
-profili e input di test necessari a ricostruire le funzioni dell’engine.
-La pubblicazione online è rinviata.
 
-Il builder ordinario GraphicsMode 1–8 conserva runtime e default della 1.10.2:
-geometria legacy, texture standard, linee precise, LOD texture disattivato e
-presentazione safe. Q8 è esplicito (`-Precision q8`); Mode 8 resta il backend
-bitmap 2.5D separato. Indicazioni storiche a 20 MHz e domini numerici sono in
-[precisione](PRECISION.it.md); i nuovi profili gameplay usano PAL× 64.
+[English](README.en.md) · [DOCS](DOCS.md) · [QUICKSTART](QUICKSTART.md)
 
-## Nuovi moduli sorgente
+## Correzione della distribuzione nella 1.11.0
 
-La [guida gameplay](GAMEPLAY.it.md) spiega entry point e compatibilità.
-I moduli sono inclusi nella release ufficiale con **contratti sperimentali
-delimitati**: non trasformano tutte le scene ordinarie in un engine integrato.
-Le integrazioni non disponibili sono rifiutate esplicitamente.
+Esclusi i nuovi progetti demo, compresi generatori sorgente, UI, disegni dei
+personaggi, percorsi camera, launcher e asset di riferimento. Rimossa la copia
+duplicata dell’SDK 1.10.2. Conservati gli esempi già presenti nella v1.10.2.
+Si corregge la release esistente; VERSION resta 1.11.0.
 
-| ID | Funzione inclusa | Contratto completo |
+Restano compilatori, validatori ed emitter assembly gameplay riutilizzabili.
+Le build gameplay native richiedono un progetto esterno esplicito tramite
+`--project-source`; nessuna demo è ricostruita da input predefiniti allegati.
+Engine ordinario ed esempi preesistenti restano direttamente compilabili.
+Vedere [GAMEPLAY](GAMEPLAY.it.md), [guida rapida](QUICKSTART.md) e
+[qualificazione](QUALIFICATION-1.11.0.it.md).
+
+| ID | Modulo | Contratto |
 |---|---|---|
-| BB-01 | Profili billboard mascherati e contornati | [contract](extensions/gameplay/CONTRACT.it.md) |
-| BB-02 / ENT-01 | Billboard configurabile, eventi d’uso e collisioni locali | [contract](extensions/gameplay/entities/DEV.it.md) |
-| ENT-01 door | Porta poligonale scorrevole e passaggio sicuro | [contract](extensions/gameplay/entities/DOOR-DEV.it.md) |
-| BB-03 | Una/due istanze billboard con asset condiviso | [contract](extensions/gameplay/billboards/MULTIPLE-DEV.it.md) |
-| MAT-01 | Selezione per faccia texture, flat e Gouraud | [contract](extensions/gameplay/materials/DEV.it.md) |
-| TEX-01 | Frame delle texture e scorrimento UV intero | [contract](extensions/gameplay/materials/ANIMATION-DEV.it.md) |
-| LIGHT-01 | Illuminazione statica deterministica calcolata sul PC | [contract](extensions/gameplay/materials/LIGHT-DEV.it.md) |
-| VIS-01 | Connettività conservativa di settori e portali | [contract](extensions/gameplay/visibility/VISIBILITY-DEV.it.md) |
-| Q8-01 | Mesh sorgente condivisa, cache indipendenti | [contract](extensions/gameplay/meshes/SHARED-DEV.it.md) |
-| Q8-02 | Clip controllabili e roll Q8 della camera | [contract](extensions/gameplay/motion/CONTROLLED-DEV.it.md) |
-| WORLD-01 | Gruppi di stanze esterni e stato per gruppo | [contract](extensions/gameplay/world/WORLD-DEV.it.md) |
-| LEVEL-01 | Formato comune di livello e budget assemblato esatto | [contract](extensions/gameplay/level/LEVEL-DEV.it.md) |
-| Integration | Integrazione delimitata a tre stanze e riuso memoria per fasi | [contract](extensions/gameplay/experiments/underworld/README.it.md) |
-
-`work/build-gameplay.py` seleziona 13 profili. `work/build-level.py` valida e
-compila `3Dvibe64.level/1` mediante l’adattatore WORLD-01 delimitato, con
-controllo della memoria effettiva. `work/build-underworld.py` è un esperimento
-integrato separato. Le funzioni dei diversi profili non vengono combinate
-implicitamente. Topologie generali, intersezioni arbitrarie dei billboard,
-ombre animate, salvataggi su disco e allocatore WORLD-01 per fasi restano futuri.
-
-## Compilazione e verifica
-
-Host verificato: Windows, PowerShell 7 (`pwsh`), Python 3.13 e64tass 1.60.3243.
-Pillow serve per PNG/UI; py65 per i test delle routine. Le dipendenze esterne
-vanno installate separatamente: non sono distribuite. Configurare `TASS64_EXE`
-e le variabili VICE indicate nei [test](TESTING.md). Usare un output nuovo,
-esterno alla cartella dei sorgenti.
-
-```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -SceneFile examples/mode7-perspective-cube.json -GraphicsMode 7 -Precision q8 -TexturePrecision perspective -TextureQuality standard -Q8Camera stationary -OutputDirectory ../mode7-build
-python -B work/build-gameplay.py --profile controlled-animation --out ../motion-build
-python -B work/build-level.py --level examples/levels/integrated-foundation.json --validate-only
-python -B scripts/run_release_tests.py
-```
-
-Qualifiche senza `-O`, `-OO` e `PYTHONOPTIMIZE`. `MANIFEST.sha256` definisce
-l’integrità del pacchetto. La [qualificazione](QUALIFICATION-1.11.0.it.md)
-distingue prove native ereditate, controlli di release e limiti delle misure.
-Questa release non estende la qualifica a Linux o all’hardware C64 fisico.
+|BB-01|Emitter billboard mascherati/contornati|[reference](extensions/gameplay/CONTRACT.it.md)|
+|BB-02 / ENT-01|Configurazione billboard ed eventi locali|[reference](extensions/gameplay/entities/DEV.it.md)|
+|ENT-01 door|Porta poligonale scorrevole|[reference](extensions/gameplay/entities/DOOR-DEV.it.md)|
+|BB-03|Billboard multipli con asset condiviso|[reference](extensions/gameplay/billboards/MULTIPLE-DEV.it.md)|
+|MAT-01|Texture/flat/Gouraud per faccia|[reference](extensions/gameplay/materials/DEV.it.md)|
+|TEX-01|Frame texture e scorrimento UV intero|[reference](extensions/gameplay/materials/ANIMATION-DEV.it.md)|
+|LIGHT-01|Luce statica calcolata sul PC|[reference](extensions/gameplay/materials/LIGHT-DEV.it.md)|
+|VIS-01|Connettività conservativa dei settori|[reference](extensions/gameplay/visibility/VISIBILITY-DEV.it.md)|
+|Q8-01|Mesh sorgente condivisa e cache per istanza|[reference](extensions/gameplay/meshes/SHARED-DEV.it.md)|
+|Q8-02|Animazione controllabile e roll camera|[reference](extensions/gameplay/motion/CONTROLLED-DEV.it.md)|
+|WORLD-01|Caricamento e stato di gruppi delimitati|[reference](extensions/gameplay/world/WORLD-DEV.it.md)|
+|LEVEL-01|Formato comune di livello e contabilità memoria|[reference](extensions/gameplay/level/LEVEL-DEV.it.md)|
 
 ## Contratto del builder ordinario
 

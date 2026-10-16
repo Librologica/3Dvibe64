@@ -1,5 +1,8 @@
 # MAT-01 — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente incluso nella release 1.11.0. I riferimenti dev descrivono
 la provenienza delle prove. [English](DEV.en.md).
 
@@ -18,7 +21,7 @@ sullo schermo, texture prospettica precisa. Nessun nuovo solver di occlusione.
 Build dalla radice SDK, con output nuovo fuori dai sorgenti:
 
 ```powershell
-python -B work/build-gameplay.py --profile mixed-surfaces --out ../builds/mixed-surfaces-dev2
+python -B work/build-gameplay.py --profile mixed-surfaces --out ../builds/mixed-surfaces-dev2 --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/mixed-surfaces-dev2 --checks --benchmark --launcher
 ```
 

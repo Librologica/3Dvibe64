@@ -1,6 +1,6 @@
 # 3Dvibe64 1.11.0
 
-Official local source release / Release ufficiale locale dei sorgenti.
+Official source release / Release ufficiale dei sorgenti.
 Online publication deferred / Pubblicazione online rinviata.
 
 - [English release notes](RELEASE-NOTES-1.11.0.en.md)

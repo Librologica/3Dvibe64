@@ -1,13 +1,14 @@
 """WORLD-01 bounded graph, data-only channels, CRC and placement contracts."""
 import copy,importlib.util,json,binascii
 from pathlib import Path
+from gameplay_test_inputs import FIXTURES
 ROOT=Path(__file__).resolve().parents[1]
 
 
 def main():
     spec=importlib.util.spec_from_file_location('world',ROOT/'extensions/gameplay/world/groups.py')
     w=importlib.util.module_from_spec(spec);spec.loader.exec_module(w)
-    cfg=json.loads((ROOT/'extensions/gameplay/profiles/room-groups/assets/world-groups.json').read_text())
+    cfg=json.loads((FIXTURES/'extensions/gameplay/profiles/room-groups/assets/world-groups.json').read_text())
     checked=w.validate(cfg);checked['groups'][0]['halfWidth']=18;assert cfg['groups'][0]['halfWidth']==24
     for count in range(2,9):
         d=copy.deepcopy(cfg);d['groups']=[]

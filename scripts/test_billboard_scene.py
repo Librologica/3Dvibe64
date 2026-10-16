@@ -1,6 +1,7 @@
 """Validate real scene limits and reject unsupported billboard requests."""
 import copy,importlib.util,json,sys
 from pathlib import Path
+from gameplay_test_inputs import FIXTURES
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'work'))
 spec=importlib.util.spec_from_file_location('bbscene',ROOT/'extensions/gameplay/billboards/scene.py')
@@ -10,7 +11,7 @@ scene=importlib.util.module_from_spec(spec);spec.loader.exec_module(scene)
 def main():
     from mode8.common import require_qualification_checks
     require_qualification_checks()
-    cfg,asset=scene.load(ROOT/'extensions/gameplay/profiles/interactive-billboard/assets/gameplay-scene.json')
+    cfg,asset=scene.load(FIXTURES/'extensions/gameplay/profiles/interactive-billboard/assets/gameplay-scene.json')
     changed=copy.deepcopy(cfg);changed['billboards'][0].update(position=[-6,2,-1],size=[8,12])
     changed['billboards'][0]['animations']['idle']={'frames':[3,1,2],'ticksPerFrame':5}
     scene.validate(changed,asset)

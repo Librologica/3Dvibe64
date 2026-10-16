@@ -11,11 +11,8 @@ import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
-BUILTINS = {
-    'guardian': ('billboard', 'profiles/interactive-billboard/assets/guard-frames.json'),
-    'mixed-room': ('materials', 'profiles/mixed-surfaces/assets/surfaces.json'),
-    'crystal': ('mesh', 'profiles/shared-meshes/assets/crystal-mesh.json'),
-}
+BUILTINS = {}  # Project artwork is deliberately not distributed.
+
 FEATURES = ('multiple-billboards', 'shared-meshes', 'controlled-animation',
             'camera-roll', 'texture-animation', 'static-light', 'sector-visibility')
 
@@ -85,13 +82,8 @@ def asset_path(asset, directory):
     source = asset['source']
     if not isinstance(source, str):
         fail(asset['id'], 'asset source must be a string')
-    if source.startswith('builtin:'):
-        item = BUILTINS.get(source[8:])
-        if item is None or item[0] != asset['kind']:
-            fail(asset['id'], 'unknown builtin or mismatched asset kind')
-        return ROOT/'extensions/gameplay'/item[1]
     if not source.startswith('file:'):
-        fail(asset['id'], 'use builtin:name or file:relative/path.json')
+        fail(asset['id'], 'use file:relative/path.json; built-in demo assets are not distributed')
     relative = source[5:]
     if not relative or '\\' in relative or ':' in relative or relative.startswith('/'):
         fail(asset['id'], 'asset path must be relative to the level directory')

@@ -1,12 +1,15 @@
 # BB-02 / ENT-01 — configured entity, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `interactive-billboard` inherits mixed-surfaces. `assets/gameplay-scene.json`
 configures a 16 × 32 JSON asset with 1–6 frames, public XYZ position, world size,
 idle/used sequences and frame duration in simulation ticks. Asset, position,
 size and animation can change through data rather than renderer edits.
 
 ```powershell
-python -B work/build-gameplay.py --profile interactive-billboard --out ../entity-build
+python -B work/build-gameplay.py --profile interactive-billboard --out ../entity-build --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../entity-build --checks --benchmark --launcher
 ```
 

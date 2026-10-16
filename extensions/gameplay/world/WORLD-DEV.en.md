@@ -1,12 +1,15 @@
 # WORLD-01 — external resident room groups, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `room-groups` loads real external data through C64 KERNAL. The default route
 visits hall→crypt→hall: two groups of two rooms with different widths, floor
 and door. One group occupies active geometry/material arrays; textures,
 palette and guardian frames remain resident/shared.
 
 ```powershell
-python -B work/build-gameplay.py --profile room-groups --out ../world-build
+python -B work/build-gameplay.py --profile room-groups --out ../world-build --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../world-build --checks --benchmark --launcher
 ```
 

@@ -4,6 +4,7 @@ import importlib.util
 import json
 import sys
 from pathlib import Path
+from gameplay_test_inputs import FIXTURES
 ROOT=Path(__file__).resolve().parents[1]
 
 
@@ -19,8 +20,8 @@ def main():
     require_qualification_checks()
     module('billboard_scene',ROOT/'extensions/gameplay/billboards/scene.py')
     multi=module('billboard_multiple',ROOT/'extensions/gameplay/billboards/multiple.py')
-    cfg=json.loads((ROOT/'extensions/gameplay/profiles/multiple-billboards/assets/gameplay-scene.json').read_text())
-    asset=json.loads((ROOT/'extensions/gameplay/profiles/interactive-billboard/assets/guard-frames.json').read_text())
+    cfg=json.loads((FIXTURES/'extensions/gameplay/profiles/multiple-billboards/assets/gameplay-scene.json').read_text())
+    asset=json.loads((FIXTURES/'extensions/gameplay/profiles/interactive-billboard/assets/guard-frames.json').read_text())
     multi.validate(cfg,asset)
     one=copy.deepcopy(cfg);one['billboards']=one['billboards'][:1];multi.validate(one,asset)
     equal=copy.deepcopy(cfg);equal['billboards'][1]['position']=equal['billboards'][0]['position'][:];multi.validate(equal,asset)

@@ -1,5 +1,8 @@
 # WORLD-01 — gruppi residenti — 1.11.0
 
+La distribuzione 1.11.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
+
+
 Contratto corrente della release 1.11.0; i numeri dei checkpoint indicano
 la provenienza delle prove. [English](WORLD-DEV.en.md).
 
@@ -10,7 +13,7 @@ Un solo gruppo occupa gli array attivi di geometria e materiali; texture,
 palette e fotogrammi del guardiano restano condivisi e residenti.
 
 ```powershell
-python -B work/build-gameplay.py --profile room-groups --out ../builds/world
+python -B work/build-gameplay.py --profile room-groups --out ../builds/world --project-source ../my-project
 python -B work/qualify-gameplay.py --out ../builds/world --checks --benchmark --launcher
 ```
 

@@ -1,5 +1,8 @@
 # LIGHT-01 — static vertex lighting bake, 1.11.0
 
+Current 1.11.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+
 `static-light` extends animated-textures. The host bakes point lights and
 static divider shadows into existing floor Gouraud tables. Door, two
 billboards, animated textures, precise 96 × 60/all 60 rows and LOD 14–22 remain.

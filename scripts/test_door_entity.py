@@ -1,6 +1,7 @@
 """Fail closed on unsupported door configuration and profile inheritance."""
 import importlib.util,sys
 from pathlib import Path
+from gameplay_test_inputs import FIXTURES
 ROOT=Path(__file__).resolve().parents[1]
 sys.path.insert(0,str(ROOT/'work'))
 spec=importlib.util.spec_from_file_location('entity_runtime',ROOT/'extensions/gameplay/entities/runtime.py')
@@ -23,8 +24,8 @@ def main():
     assert door.CLEAR_Q8==12*256+64 and door.HEIGHT*256//door.STEP_Q8==72
     spec=importlib.util.spec_from_file_location('gameplay_build',ROOT/'work/build-gameplay.py')
     b=importlib.util.module_from_spec(spec);spec.loader.exec_module(b)
-    assert b.profile_chain('door-entity')==['comparison-ui','mixed-surfaces','interactive-billboard','door-entity']
-    try:b.profile_chain('door-entity',('door-entity',))
+    assert b.profile_chain('door-entity',project_source=FIXTURES)==['comparison-ui','mixed-surfaces','interactive-billboard','door-entity']
+    try:b.profile_chain('door-entity',('door-entity',),project_source=FIXTURES)
     except ValueError:pass
     else:raise AssertionError('Cyclic profile accepted')
     print('DOOR CONFIG PASS;',len(invalid),'invalid configurations and cyclic inheritance refused')
