@@ -292,6 +292,7 @@ if ($LegacyPlusClipEdges) {
  }
 }
 if ($LegacyStability -in @('camera','rotation') -and ((-not $LegacyPlusClipEdges -and $GraphicsMode -ne '2') -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal')) {
+ if ($LegacyPlusClipEdges) { throw 'Legacy-plus requires walkLite, normal viewport and high-basic-v2.' }
  throw 'The camera experiment requires Mode2, walkLite, normal viewport and high-basic-v2.'
 }
 if ($LegacyStability -eq 'rotation' -and -not $NoFpsOverlay) {

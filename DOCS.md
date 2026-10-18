@@ -1,4 +1,4 @@
-# Documentation / Documentazione — 1.13.0
+# Documentation / Documentazione — 1.14.0-dev1
 
 Source SDK only; no demos/examples. / Solo SDK sorgente, senza demo/esempi.
 
@@ -46,5 +46,8 @@ Source SDK only; no demos/examples. / Solo SDK sorgente, senza demo/esempi.
 | CAMERA-ROTATION | [EN](CAMERA-ROTATION.en.md) | [IT](CAMERA-ROTATION.it.md) |
 | RELEASE-NOTES-1.13.0 | [EN](RELEASE-NOTES-1.13.0.en.md) | [IT](RELEASE-NOTES-1.13.0.it.md) |
 | QUALIFICATION-1.13.0 | [EN](QUALIFICATION-1.13.0.en.md) | [IT](QUALIFICATION-1.13.0.it.md) |
+
+| DEVELOPMENT-1.14.0-dev1 | [EN](DEVELOPMENT-1.14.0-dev1.en.md) | [IT](DEVELOPMENT-1.14.0-dev1.it.md) |
+| QUALIFICATION-1.14.0-dev1 | [EN](QUALIFICATION-1.14.0-dev1.en.md) | [IT](QUALIFICATION-1.14.0-dev1.it.md) |
 
 All current paired contracts are listed in DOCUMENTATION.json. Historical reports preserve original inputs and measurements; they do not create new FPS claims. / Tutti i contratti correnti sono nel catalogo DOCUMENTATION.json. I rapporti storici conservano input e misure originali e non dimostrano nuovi FPS.

@@ -1,18 +1,11 @@
-# 3Dvibe64 1.13.0
+# 3Dvibe64 1.14.0-dev1
 
-## Precision selection in1.13.0
+## Separate development 1.14.0-dev1
 
-`-Precision legacy` remains the default. `-Precision legacy-plus` is the
-bounded intermediate Mode2 profile: fractional camera rotation, Q4 near and
-screen clipping, integer final raster, no Q8 backend. It is a separate pipeline,
-not an alias of `-LegacyStability rotation`. Q8 stays explicit; Normalized16
-stays experimental. See [complete legacy-plus contract](LEGACY-PLUS.en.md),
-[precision profiles](PRECISION.en.md) and [current qualification](QUALIFICATION-1.13.0.en.md).
-The current IT/EN manuals describe1.13.0; versioned reports retain their original
-measurements. All commands assume caller-supplied external inputs; none are bundled.
+`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [native qualification](QUALIFICATION-1.14.0-dev1.en.md). Local development, not published; external scenes/assets only.
 
 
-Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+Local development 1.14.0-dev1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
 
 
 Legacy remains the default. Select precise Q8 explicitly with `-Precision q8`, recommended above 20 MHz. Standard texture quality, precise lines, LOD off and safe presentation remain the ordinary defaults.
@@ -20,13 +13,13 @@ Legacy remains the default. Select precise Q8 explicitly with `-Precision q8`, r
 
 [Italiano](README.it.md) · [DOCS](DOCS.md) · [QUICKSTART](QUICKSTART.md)
 
-## Source-only release
+## Local source development
 
-This source release is available in the GitHub repository. No demos or examples are shipped, including
+This separate source development is local and unpublished. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.13.0.en.md).
+and [qualification](QUALIFICATION-1.14.0-dev1.en.md).
 
 | ID | Module | Contract |
 |---|---|---|
@@ -232,7 +225,7 @@ If `-ControlRotation` and `-ControlReflectivity` are forced together, both handl
 
 | Option | Values | Default / effect |
 |---|---|---|
-| `-Precision` | `legacy`, `legacy-plus`, `q8`, `normalized16` | legacy default; plus explicit/bounded Mode2; Q8 explicit; Normalized16 experimental |
+| `-Precision` | `legacy`, `legacy-plus`, `q8`, `normalized16` | legacy default; plus explicit/bounded Mode1–7; Q8 explicit; Normalized16 experimental |
 | `-LegacyStability` | `historical`, `corrected`, `camera`, `rotation` | legacy compatibility profiles; see LEGACY-STABILITY and CAMERA contracts |
 | `-Q8Camera` | `stationary`, `interactive`, `auto` | `stationary`; only with Q8 |
 | `-GraphicsMode` | `1`-`8` | `4`; Mode 8 uses its separate map API |
@@ -301,6 +294,6 @@ PNG import is host-side, through Pillow: `source` and mandatory ordered `sourceC
 
 Textured Gouraud uses `gouraud.creaseAngle` (default 60°, range 0–180°) for hard edges or smooth normals, with the applicable 255-shade-vertex limit. Mode 7 has its own memory/geometry constraints and does not inherit every Mode 6 override/source-sharing API.
 
-The default affine path has no perspective correction. Optional projective interpolation requires the bounded Q8 profile; see [texture precision](TEXTURE-PRECISION.en.md). No bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Sampling aliasing remains.
+The default affine path has no perspective correction. Optional projective interpolation requires the bounded Q8 or legacy-plus profile; see [texture precision](TEXTURE-PRECISION.en.md). No bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Sampling aliasing remains.
 
 Read the [complete Mode 7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](EXTERNAL-INPUTS.en.md). The paired Italian guides cover the same contract.

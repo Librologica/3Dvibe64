@@ -1,5 +1,5 @@
 {
-  "version": "1.13.0",
+  "version": "1.14.0-dev1",
   "locales": [
     "en",
     "it"
@@ -196,14 +196,14 @@
       "it": "CAMERA-ROTATION.it.md"
     },
     {
-      "id": "RELEASE-NOTES-1.13.0",
-      "en": "RELEASE-NOTES-1.13.0.en.md",
-      "it": "RELEASE-NOTES-1.13.0.it.md"
+      "id": "DEVELOPMENT-1.14.0-dev1",
+      "en": "DEVELOPMENT-1.14.0-dev1.en.md",
+      "it": "DEVELOPMENT-1.14.0-dev1.it.md"
     },
     {
-      "id": "QUALIFICATION-1.13.0",
-      "en": "QUALIFICATION-1.13.0.en.md",
-      "it": "QUALIFICATION-1.13.0.it.md"
+      "id": "QUALIFICATION-1.14.0-dev1",
+      "en": "QUALIFICATION-1.14.0-dev1.en.md",
+      "it": "QUALIFICATION-1.14.0-dev1.it.md"
     }
   ],
   "currentBilingual": [
@@ -233,7 +233,11 @@
     "RELEASE-NOTES-1.11.0.it.md",
     "RELEASE-NOTES-1.12.0.en.md",
     "RELEASE-NOTES-1.12.0.it.md",
-    "RELEASE-NOTES-1.12.0.md"
+    "RELEASE-NOTES-1.12.0.md",
+    "RELEASE-NOTES-1.13.0.en.md",
+    "RELEASE-NOTES-1.13.0.it.md",
+    "QUALIFICATION-1.13.0.en.md",
+    "QUALIFICATION-1.13.0.it.md"
   ],
   "historyPolicy": "Preserve versioned measurements and archived release notes; current paired contracts take precedence.",
   "gameplayProfiles": [
@@ -264,7 +268,7 @@
     "--flat-span-cache"
   ],
   "sourceOnly": true,
-  "publication": "GitHub source repository and stable release",
+  "publication": "local separate development; not published",
   "newDemosIncluded": false,
   "gameplayRequiredOptions": [
     "--profile",
@@ -272,8 +276,8 @@
     "--project-source"
   ],
   "allExamplesExcluded": true,
-  "GitHubPublished": true,
+  "GitHubPublished": false,
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0",
-  "releasePageCreated": true
+  "releaseURL": null,
+  "releasePageCreated": false
 }

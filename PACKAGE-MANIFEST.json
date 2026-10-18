@@ -2,19 +2,19 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.13.0",
-    "version": "1.13.0",
+    "displayName": "3Dvibe64 1.14.0-dev1",
+    "version": "1.14.0-dev1",
     "distribution": "source-sdk",
-    "permanentFiles": 309,
+    "permanentFiles": 318,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
     "documentationLicense": "CC-BY-NC-4.0",
-    "prerelease": false
+    "prerelease": true
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "A4796E8840D5036497B8F17F45B71F029195686B2DB4CFC21643823E23F75F30"
+    "sha256": "F76F154D7A4A2E7D4DEF1ED568566F852C93F301506446EF89F85BD6B8C7E2F5"
   },
   "examples": [],
   "releaseEngine": {
@@ -1134,17 +1134,41 @@
       "selector": "-Precision legacy-plus",
       "aliasOfRotation": false,
       "modes": [
-        2
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
       ],
       "camera": "walkLite",
       "viewport": "normal",
       "layout": "high-basic-v2",
       "fpsOverlay": false,
       "near": "Q4",
-      "screenClip": "Q4 before integer raster",
+      "screenClip": "Q4 then native raster contract",
       "angularPhases": 4096,
       "q8Introduced": false,
-      "qualification": "QUALIFICATION-1.13.0.json"
+      "qualification": "QUALIFICATION-1.14.0-dev1.json",
+      "texturePrecision": [
+        "affine",
+        "perspective"
+      ],
+      "textureLighting": [
+        "none",
+        "flat",
+        "gouraud"
+      ],
+      "gouraudCompositors": [
+        "A",
+        "B",
+        "C"
+      ],
+      "projectiveDepthWU": [
+        8,
+        256
+      ]
     }
   },
   "maintenance": {
@@ -1871,7 +1895,7 @@
       "RELEASE-NOTES-1.10.2.it.md"
     ],
     "developmentCycle": "closed; no further experiment added",
-    "publication": "historical preparation record; current release is published on GitHub",
+    "publication": "historical stable promotion; this development is unpublished",
     "qualifications": "Windows/VICE named profiles; Linux and physical hardware untested",
     "evidenceArchive": "3Dvibe64_1.10.2_evidence.zip"
   },
@@ -2053,23 +2077,23 @@
     "budgetPolicy": "Historical per-profile byte budgets exclude new optional helpers; use actual assembled map and allocator guards"
   },
   "release": {
-    "status": "qualified stable source release",
-    "sourceDevelopment": "1.12.1-dev7",
-    "publication": "GitHub source repository and stable release",
+    "status": "separate qualified local development",
+    "sourceDevelopment": "1.14.0-dev1",
+    "publication": "local separate development; not published",
     "demoArchives": false,
     "documentation": "DOCUMENTATION.json",
     "releaseNotes": {
-      "en": "RELEASE-NOTES-1.13.0.en.md",
-      "it": "RELEASE-NOTES-1.13.0.it.md"
+      "en": "DEVELOPMENT-1.14.0-dev1.en.md",
+      "it": "DEVELOPMENT-1.14.0-dev1.it.md"
     },
     "newDemosIncluded": false,
-    "GitHubPublished": true,
-    "qualification": "QUALIFICATION-1.13.0.json",
-    "version": "1.13.0",
-    "prerelease": false,
+    "GitHubPublished": false,
+    "qualification": "QUALIFICATION-1.14.0-dev1.json",
+    "version": "1.14.0-dev1",
+    "prerelease": true,
     "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0",
-    "releasePageCreated": true
+    "releaseURL": null,
+    "releasePageCreated": false
   },
   "distributionPolicy": {
     "newDemosIncluded": false,
@@ -2159,15 +2183,15 @@
     "referenceInputs": "Historical examples/validation references are external, not shipped",
     "engineTemplates": "Mode8 assembly is the bounded backend implementation; no default scene is built",
     "promotedEngineSHA256": {
-      "work/build-3Dvibe64.ps1": "A4796E8840D5036497B8F17F45B71F029195686B2DB4CFC21643823E23F75F30",
+      "work/build-3Dvibe64.ps1": "F76F154D7A4A2E7D4DEF1ED568566F852C93F301506446EF89F85BD6B8C7E2F5",
       "work/build-gameplay.ps1": "4F2B1E58B0329F706F885F8A24EB55990D8128087CE88F846606EC134792B70B",
       "work/build-gameplay.py": "143A449EEBBB0BC550D9F0D19FE1E0E547958A6308C67FC9B2D9EEFEE8229844",
       "work/build-level.py": "562E0478EBBE7E3FC8D409FE93828AF87AD0E7B7194BF7B02FD0988F61C32577",
       "work/experiments.py": "2DC25ED75837E6A3F0769DF6A58C679B6B21C6FC408E9C67A83DC4868597A0F5",
-      "work/legacy_camera.py": "D7931F5D5BFBECA9F813F252807F2DBD31F810B03662DDE902EF9E78D4E43537",
-      "work/legacy_plus_clip.py": "82FBBC6EC2B3EBE431DEF9659461EAEFE038370514D9818810E58FFBE63F569D",
-      "work/legacy_plus_near.py": "A3D6CCB23817A903F49FCBDE9B4C10B6E12B781744F13EB13846457FC1BFFFF3",
-      "work/legacy_plus_near_screen.py": "563FEA58EB243DBD2246FE7F673C2AEA498AEF93494E22860C27D5EE64F7353D",
+      "work/legacy_camera.py": "D96E3F74AF5E22051CDB9720976CBFC6A6D3D2E1851EE07DCB5D15674FF2E280",
+      "work/legacy_plus_clip.py": "B99E330176F382DEEA603AA31AC42C4AEC57C32CD5E9BF1D6EF25792F33BC0EE",
+      "work/legacy_plus_near.py": "A68848C1B71E8F28D59F4436395B31D6E3FF289F4C10F9625B6709037DB3EBD8",
+      "work/legacy_plus_near_screen.py": "BD5094F7329D03D8693C340ECB7B3D92238229EF2B9CA4C0BA4A997C4EABEB47",
       "work/legacy_rotation.py": "6C8763A1C604ACE2B59E75B1208A6DBF8F0A4F0F3828DCCAF7623C4C023EBBBC",
       "work/legacy_rotation_products.py": "85EDA6B81A95B30FD8E855F380ACC1865DC11BD0792E5720C85CE3A06DCC95C4",
       "work/legacy_rotation_terms.py": "1BD81E8598B4B6C54107D352A67FFB1D1AAB761F19F883658C68454A3C097D34",
@@ -2251,14 +2275,18 @@
       "work/mode8/asm/perimeter-auto.asm": "077DB9A83F12922DE9C75B960333009DF38CC67CF66A242B014433DBEA3234EB",
       "work/mode8/asm/perimeter-interactive.asm": "8DB36FDE1A9C85B3BE546E7048260DC4304EA10C5236D964469BC2A4172963DC",
       "work/mode8/asm/two-levels-auto.asm": "539D1D15D55E6C7DB0DEE31F0D699156D01FF31EDCCB312FBE06426B97F79207",
-      "work/mode8/asm/two-levels-interactive.asm": "F78CC063D1CAE9E95F13F88FA7360F3B88140A1F7F43D045D32539C9094911D0"
+      "work/mode8/asm/two-levels-interactive.asm": "F78CC063D1CAE9E95F13F88FA7360F3B88140A1F7F43D045D32539C9094911D0",
+      "work/legacy_plus_attributes.py": "DE6F1C908714CD8CBED17F8AE00780A235D4FB40FCE354D51047DE851C2EE0F2",
+      "work/legacy_plus_memory.py": "B46D04696B137669FC0B33F95377A44AD8E27CCC175CECB6E91F5DABADFD86B6",
+      "work/legacy_plus_modes.py": "5EC2342769692E3C2B6F48099E6B474C14B16A3F4B0E8973641968BC8DCF4400",
+      "work/legacy_plus_projective.py": "B3ED84D78D5A37013B01BA78118BA25144BE76BD32670FB4D198F7B674B8A24A"
     },
-    "promotedFrom": "1.12.1-dev7",
-    "publication": "GitHub source repository and stable release",
-    "GitHubPublished": true,
+    "promotedFrom": "separate development based on 1.13.0",
+    "publication": "local separate development; not published",
+    "GitHubPublished": false,
     "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0",
-    "releasePageCreated": true
+    "releaseURL": null,
+    "releasePageCreated": false
   },
   "renderOptimizations": {
     "default": false,
@@ -2282,11 +2310,16 @@
   },
   "development": {
     "officialRelease": false,
-    "baseVersion": "1.12.0",
+    "baseVersion": "1.13.0",
     "defaultLegacyStability": "historical",
     "nativeQualifiedModes": [
+      1,
       2,
-      4
+      3,
+      4,
+      5,
+      6,
+      7
     ],
     "correctedGenerator": "work/legacy_stability.py",
     "preservedBackendSources": {
@@ -2294,9 +2327,6 @@
       "work/build-gameplay.py": "143a449eebbb0bc550d9f0d19fe1e0e547958a6308c67fc9b2d9eefee8229844",
       "work/build-level.py": "562e0478ebbe7e3fc8d409fe93828af87ad0e7b7194bf7b02fd0988f61c32577",
       "work/experiments.py": "2dc25ed75837e6a3f0769df6a58c679b6b21c6fc408e9c67a83dc4868597a0f5",
-      "work/legacy_camera.py": "d7931f5d5bfbeca9f813f252807f2dbd31f810b03662dde902ef9e78d4e43537",
-      "work/legacy_plus_clip.py": "82fbbc6ec2b3ebe431def9659461eaefe038370514d9818810e58ffbe63f569d",
-      "work/legacy_plus_near_screen.py": "563fea58eb243dbd2246fe7f673c2aea498aef93494e22860c27d5ee64f7353d",
       "work/legacy_rotation.py": "6c8763a1c604ace2b59e75b1208a6dbf8f0a4f0f3828dccaf7623c4c023ebbbc",
       "work/legacy_rotation_products.py": "85eda6b81a95b30fd8e855f380acc1865dc11bd0792e5720c85ce3a06dcc95c4",
       "work/legacy_rotation_terms.py": "1bd81e8598b4b6c54107d352a67ffb1d1aab761f19f883658c68454a3c097d34",
@@ -2404,19 +2434,27 @@
       "alias": false,
       "baseTransform": "rotation",
       "default": false,
-      "testedMode": 2,
       "cameraMotionQualified": true,
       "clippingQualified": true,
       "q8Introduced": false,
       "nearGeometry": "Q4",
-      "nearScreenClip": "Q4 before integer raster",
-      "changesThisDev": 1,
-      "baseDevelopment": "1.12.1-dev7",
+      "nearScreenClip": "Q4 then native raster contract",
+      "changesThisDev": "mode adapters, native Y precision, coherent near/screen attributes, guarded RAM, projective texture carriers",
+      "baseDevelopment": "1.13.0",
       "cameraCadenceQualified": true,
-      "stableSince": "1.13.0",
-      "qualification": "QUALIFICATION-1.13.0.json"
+      "stableSince": "Mode2 only:1.13.0; extensions in separate dev",
+      "qualification": "QUALIFICATION-1.14.0-dev1.json",
+      "testedModes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ]
     },
-    "promotedDevelopment": "1.12.1-dev7",
-    "localStableRelease": true
+    "promotedDevelopment": "1.14.0-dev1",
+    "localStableRelease": false
   }
 }

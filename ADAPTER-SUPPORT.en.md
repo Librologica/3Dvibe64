@@ -1,4 +1,8 @@
-# Optional adapter support — 1.13.0
+# Optional adapter support — 1.14.0-dev1
+
+## Legacy-plus in 1.14.0-dev1
+
+Mode1–7 plus and Mode7 affine/perspective are qualified in the separate development. Its near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [native qualification](QUALIFICATION-1.14.0-dev1.en.md).
 
 `extensions/gameplay/runtime_support.py` exports native assembly emitters and
 host tables. They are opt-in primitives for external adapters, not an automatic
@@ -61,6 +65,6 @@ Self-contained assembled tests execute the pool success/failure path,1024
 synthetic player calls with bank/ZP restoration, camera bounds and native span
 math. They do not measure FPS or establish arbitrary SID compatibility.
 Native performance and image tests use external projects and are listed in
-[qualification](QUALIFICATION-1.13.0.en.md). [Inputs](EXTERNAL-INPUTS.en.md).
+[qualification](QUALIFICATION-1.14.0-dev1.en.md). [Inputs](EXTERNAL-INPUTS.en.md).
 
 Pool callbacks must stage their writes or restore the old slot on failure: the manager does not roll back arbitrary geometry writes. Use unique assembly prefixes when emitting multiple helpers.

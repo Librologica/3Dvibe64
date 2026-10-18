@@ -1,9 +1,13 @@
-# Precisione texture Mode 7 — 1.13.0
+# Precisione texture Mode 7 — 1.14.0-dev1
 
-Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+## Profilo prospettico legacy-plus
+
+Nella 1.14.0-dev1, Mode7 prospettica è disponibile anche con `-Precision legacy-plus`. Usare il [contratto build/configurazione plus](LEGACY-PLUS.it.md): geometria Q4, near8, profondità lungo camera8–256WU, qualità texture standard e LOD off. Sono supportati none/flat/Gouraud A/B/C. I carrier unsigned16 UW/VW/W riusano il campionatore texture senza collegare geometria Q8. I vincoli Q8 depth1–256 e compositor C delle sezioni seguenti valgono solo per Q8. [Confronto nativo](QUALIFICATION-1.14.0-dev1.it.md).
+
+Dev locale 1.14.0-dev1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.13.0. Il manuale descrive l’exporter ordinario
+Contratto sorgente corrente 1.14.0-dev1. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -29,7 +33,7 @@ MHz inclusi: non è una garanzia FPS. Le texture prospettiche costano molto anch
 su CPU accelerate.
 
 Selezionare `"texturePrecision":"perspective"` nella scena oppure
-`-TexturePrecision perspective`, insieme a `-Precision q8 -GraphicsMode 7`.
+`-TexturePrecision perspective`, insieme a `-Precision q8 -GraphicsMode 7` oppure al profilo legacy-plus delimitato sopra.
 Un'opzione CLI esplicita prevale sul campo scena. Affine/perspective non cambiano
 formato texture, import PNG, repeat, palette o modello di illuminazione.
 
@@ -41,7 +45,7 @@ Scegliere una nuova directory esterna all'SDK. PRG, label, ASM, mappa memoria e
 metadati build vengono scritti lì. Non distribuiamo PRG, demo di produzione o
 musica. L'esempio deriva dal cubo diagnostico pubblico, non dalla scena di sviluppo.
 
-## Profilo supportato
+## Profilo Q8 supportato
 
 Restano tutti i vincoli Q8: viewport normal 160 × 100 logici senza split header/FPS;
 walkLite stationary/interactive/auto; PAL/NTSC esplicito; oggetti con geometria non

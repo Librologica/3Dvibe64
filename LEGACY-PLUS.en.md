@@ -1,90 +1,44 @@
-# Legacy-plus — 1.13.0
+# Legacy-plus — 1.14.0-dev1
 
-`-Precision legacy-plus` selects the bounded intermediate Mode2 renderer.
-Legacy stays the default; Q8, Normalized16, Mode8 and the compatibility
-`-LegacyStability rotation` path retain their contracts. Legacy-plus is not an
-alias of rotation: it inherits that transform and adds corrected wire clipping,
-Q4 near/screen geometry and the dev7 camera cadence optimization. No Q8 backend
-or additional visible resolution is introduced.
+`-Precision legacy-plus` is the explicit intermediate renderer for Mode1–7. It combines the legacy Q6 object matrix with Q4 camera geometry, Q10 camera coefficients and 4096 yaw/pitch phases. Legacy stays default. The compatibility `-LegacyStability rotation` remains Mode2 only. Mode8 and Normalized16 keep separate contracts. This local development is unpublished.
 
-## Build and supported configuration
+## Build and configuration
+
+Copy the entire source SDK to a fresh working directory before building ordinary legacy/plus. Supply an external scene declaring the same graphicsMode and walkLite camera. Python3, PowerShell7,64tass and optional Pillow are external dependencies; `TASS64_EXE` selects the assembler.
 
 ```powershell
-Copy-Item -LiteralPath . -Destination ../my-build-sdk -Recurse
-pwsh -NoProfile -File ../my-build-sdk/work/build-3Dvibe64.ps1 -SceneFile ../my-inputs/scene.json -Precision legacy-plus -GraphicsMode 2 -CameraMode walkLite -CameraViewport normal -MemoryLayout high-basic-v2 -Quality fast -Projection extended-table -VideoStandard pal -FramePresentation safe -NoFpsOverlay -ExplorerClipMode near -ExplorerNearCrossMode poly -MinFaceAreaOverride 0 -ScreenMinSpanOverride 0
+Copy-Item -LiteralPath ./repository -Destination ./my-build-sdk -Recurse
+pwsh -NoProfile -File ./my-build-sdk/work/build-3Dvibe64.ps1 -SceneFile ../my-inputs/scene7.json -Precision legacy-plus -GraphicsMode 7 -TexturePrecision perspective -CameraMode walkLite -CameraViewport normal -MemoryLayout high-basic-v2 -Quality fast -Projection extended-table -VideoStandard pal -FramePresentation safe -NoFpsOverlay -ExplorerClipMode near -ExplorerNearCrossMode poly -SkipCmdUpdate
 ```
 
-The scene must be external and declare compatible Mode2/walkLite inputs.
-First copy the complete SDK to a new sibling working directory. The ordinary
-legacy/plus builder writes ASM/labels/map/PRG into that copy's `work/`, with a
-PRG copy in `work/build/`. It rejects `-OutputDirectory`; that parameter belongs
-to the Q8, Normalized16 and Mode8 branches, not ordinary legacy. This release includes no scene,
-demo, route, launcher or compiled program. Python3, PowerShell7 and64tass are
-external dependencies; `TASS64_EXE` can select the assembler.
+If running inside the SDK, copy `.` instead of `./repository`. Use `-TexturePrecision affine` for affine Mode7; omit this option in Modes1–6. The builder writes `work/3Dvibe64.asm`, `work/3Dvibe64.prg` and a PRG copy in `work/build/`; placement metadata accompanies solid builds. Full diagnostic labels/map require an explicit64tass invocation (`--vice-labels-numeric --labels=... --map=...`). Ordinary legacy/plus reject `-OutputDirectory`; Q8/Normalized16/Mode8 have their own external-output adapters.
 
-The bounded selector requires Mode2, walkLite, normal160×100, high-basic-v2 and
-`-NoFpsOverlay`; incompatible combinations are rejected. Do not combine it with
-an explicit conflicting LegacyStability value. Area/span0 are explicit benchmark
-settings, not new quality defaults. The new near pass requires ordinary
-near-poly with camera-plane profile0 and world-ground-plane clipping0. The native
-qualification has no Ground. Other clip selections preserve the inherited path;
-they do not acquire the new near precision. Default screen-poly also enables
-near-poly internally. Explicit `-ExplorerClipMode near -ExplorerNearCrossMode poly`
-reproduces the documented qualification selection.
+Supported plus configuration: **walkLite, normal160×100, high-basic-v2, -NoFpsOverlay**; near8 polygon and screen clipping, `Mode4NearProfile default`. Near/poly defaults are selected by plus; conflicting clip profiles are rejected. No roll, small viewport, text/FPS split or Ground plane clipping. Qualification uses no Ground; explicit floor meshes use ordinary polygon clipping. Horizon/Ground combinations have no new qualification. Area/span0 are explicit benchmark settings, not changed quality defaults. Match them with `-MinFaceAreaOverride 0 -ScreenMinSpanOverride 0` when reproducing the comparisons.
 
-## Arithmetic and camera input
+| Mode | Plus rendering |
+|---|---|
+|1|Source wire edges, including segment near/screen crossings|
+|2|Hidden wire, original source-edge flags retained|
+|3|Static solid|
+|4|Dynamic flat, inherited Q2 screen-Y contract|
+|5|Dynamic flat + outlines, inherited Q2 screen-Y contract|
+|6|Gouraud, shade interpolation follows the same near/screen parameter|
+|7|16×16 VIC-II texture, affine or perspective; none/flat/Gouraud A/B/C|
 
-Object matrices remain Q6. Camera positions/temporary coordinates retain Q4;
-camera rotation coefficients use Q10 and4096 angular phases. The final raster
-is integer. Relative camera coordinates must stay in[-1024,1024)WU per axis;
-inspect `legacy_camera_fault` and the actual assembled memory map.
+## Camera, clipping and memory
 
-The public fractional input ABI is documented in
-[camera rotation](CAMERA-ROTATION.en.md): set all position/yaw/pitch inputs before
-`render_frame_begin`. Keyboard controls still use their inherited byte-angle
-steps; choosing plus does not automatically make a byte-only input fractional.
-The automatic qualification driver supplies fractional public input and is
-external to the SDK. Object rotation precision is not increased by this option.
+The public input ABI uses signed24 positions with8 fraction bits, engine-y-up axes; JSON uses world-z-up. The low byte is the fraction, not a Q8 geometry selector. Internal plus geometry is Q4. Yaw/pitch use byte angle plus the upper4 fraction bits (4096 phases); write all fields before `render_frame_begin`. Existing keyboard byte-angle steps and Q6 object rotations remain. See [camera ABI](CAMERA-ROTATION.en.md).
 
-Near classification/intersections read a separate Q4 camera cache,6bytes per
-vertex, preserving original integer geometry buffers. Near8WU is128 Q4 units.
-Original source-edge flags are retained: clipping does not invent wire closing
-edges. Intersections use more accurate rational weights; projected coordinates
-stay Q4 through screen clipping and convert to pixels afterwards. Temporary
-screen bounds are restored after every face. Offsets at/above$3a00 activate the
-inherited wide integer fallback, keeping signed interpolation spans below32768.
-Helpers/cache have assembly guards against IO overlap. The transform may use a
-3072byte product LUT when the runtime pool fits, otherwise its serial fallback.
-Scene capacity follows the actual map, not a fixed promised vertex count.
+Relative camera coordinates must remain in **[-1024,1024)WU per axis**; check `legacy_camera_fault`. A separate6-byte/vertex Q4 cache preserves legacy integer buffers. Near8WU is128Q4. Raw near attributes and geometry share the same16-bit interpolation weight and signed nearest rounding. Screen clipping retains Q4 until raster conversion. Modes4–6 keep native Q2 screen-Y; projective Mode7 uses the shared Q2 coverage rules over plus endpoints. No extra visible resolution or colors are introduced.
 
-The dev7 optimization expands the four Q4 signed rounding shifts. Addition,
-numeric results and final register/flag state are unchanged;21 PRG bytes replace
-loop-control overhead. Raster, safe presentation and input driver are unchanged.
+Original wire-edge ownership survives clipping; screen bounds reset per face. Offsets at/above$3a00 retain the wide fallback. Mode1/2 can use the3072-byte camera product LUT when it fits. Modes3–7 use exact serial camera products because that LUT would overlap live solid code. Helpers are placed in measured free RAM with assembly guards; Mode7 Gouraud can use only the verified tail after `RUNTIME_BUFFER_COLOR_POLICY_END+32`, below$9000, when the rotation LUT/FPS overlay are disabled. Scene capacity follows the actual map, not a universal vertex count.
 
-## Native qualification and limits
+## Mode7 perspective
 
-VICE Turbo6510 MOS8565 PAL ×64, safe, Colodore/filter0, silent. After128 simulation
-events of warm-up, each moving case measures one complete2048-tick route,
-about41emulated seconds. Only new complete buffer swaps are counted; host time,
-warp and CPU replay are not FPS. Final release rebuilds must match the measured
-dev7 PRG hashes before reusing these data.
+Source UV remains Q4.4. After raw-UV near clipping, compute unsigned16 `W=floor(524288/Z_Q4)`, `UW=floor(U_Q4.4*W/128)`, and VW likewise. Screen clipping transports UW/VW/W with the geometry weight. Quotient/remainder edge and span DDAs sample `floor(carrier*128/W)`. Gouraud Q retains its screen-space shading DDA. Half-open zero-width internal spans write no pixels; closed viewport caps retain their boundary coverage.
 
-| Case | Legacy | Plus dev6 | Plus1.13.0/dev7 | Q8 |
-|---|---:|---:|---:|---:|
-| Camera FPS |25.06227|25.05004|25.06227|4.86338|
-| Clipping FPS |41.09331|41.19121|41.19121|37.17733|
+Camera-forward depth must stay **8–256WU inclusive** after near clipping. `ps_fault` is sticky: invalid depth/denominator stops publication with a red border. There is no affine fallback. Finite Q4/carrier rounding and nearest sampling remain. `TextureQuality standard`, LOD off; fast/LOD options remain Q8-only. LP perspective reuses generic host allocation and texture DDA/sampler code, with private symbols; it links no Q8 geometry transform, projection or clipping backend. Texture carriers are not Q8 geometry.
 
-The camera worst interval is39.9006ms, previously59.8509ms; p95 is39.9006ms.
-Clipping p95/worst are39.9006ms. A second native timing trace and a controlled
-one-tick trajectory offset confirm the camera result. All658 native plus images
-match dev6:158 camera,368 clipping,114 dense crossings,12 exact-near/±1/16/wide
-cases and6 near-torus poses. Frozen poses test geometry/buffers, not their FPS.
-No observed unexpected disappearance, source-edge-free residue, shared-vertex
-mismatch or unstable buffer remains in these tests. Finite Q4, integer raster
-and the wide fallback do not promise pixel-exact float/Q8 output or a universal
-frame budget. Other scenes, modes, NTSC and physical hardware have no new
-qualification from this release.
+## Qualification
 
-[Qualification](QUALIFICATION-1.13.0.en.md) ·
-[Machine-readable aggregates](QUALIFICATION-1.13.0.json) ·
-[Testing](TESTING.md) · [Precision](PRECISION.en.md)
+[Native comparison and limitations](QUALIFICATION-1.14.0-dev1.en.md) · [machine-readable evidence](QUALIFICATION-1.14.0-dev1.json) · [testing](TESTING.md). The final delivered builds must match the measured PRG hashes before reusing their FPS. PAL Turbo6510×64, safe, silent; complete routes after warm-up. No new NTSC or physical-hardware claim. The original1.13.0 Mode2 report remains [historical](QUALIFICATION-1.13.0.en.md), not a measurement of other scenes.

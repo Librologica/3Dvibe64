@@ -1,6 +1,6 @@
-# Contratto sorgente billboard delimitato — 1.13.0
+# Contratto sorgente billboard delimitato — 1.14.0-dev1
 
-Release 1.13.0: [ottimizzazioni correnti](../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Dev locale 1.14.0-dev1: [ottimizzazioni correnti](../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 La distribuzione conserva `billboards/masked.py`, `outlined.py`, `scene.py`

@@ -1,3 +1,9 @@
+# 1.14.0-dev1 — separate local development / dev locale separata
+
+Extends opt-in legacy-plus to Mode1–7, affine and perspective Mode7, without Q8 geometry. Q4 near/screen and shade/UV carriers remain coherent; half-open projective spans and guarded solid/Gouraud RAM allocation are corrected. Native PAL Turbo6510×64 comparisons include camera routes, near/screen crossings, frozen buffers and full orbit/pitch. Mode4 camera FPS regresses vs legacy; finite quantization and memory/profile bounds remain. Default legacy/Q8 reference bytes are preserved. Unpublished, no demos or official/frozen changes. [Evidence](QUALIFICATION-1.14.0-dev1.en.md).
+
+Legacy-plus estesa a Mode1–7 e texture Mode7 affini/prospettiche senza geometria Q8. Clipping Q4, attributi coerenti, span half-open e RAM Gouraud verificati. Confronti nativi di stabilità/FPS per camera e clipping; regressione FPS camera Mode4 dichiarata. Dev non pubblicata, nessuna modifica a release ufficiali o demo congelate. [Prove](QUALIFICATION-1.14.0-dev1.it.md).
+
 # 1.13.0 — stable engine source release / release stabile
 
 Promotes the byte-preserved dev7 engine and opt-in legacy-plus. Default legacy,

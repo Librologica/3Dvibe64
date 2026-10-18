@@ -1,8 +1,8 @@
 # 3Dvibe64 — Guida per il programmatore assembly
 
-## Copia di lavoro e output nella1.13.0
+## Copia di lavoro e output nella1.14.0-dev1
 
-Legacy e legacy-plus ordinari scrivono ASM/label/mappa/PRG nel `work/` della
+Legacy e legacy-plus ordinari scrivono ASM/PRG nel `work/` della
 copia SDK usata, più `work/build/3Dvibe64.prg`. Copiare prima l'intero SDK in
 una cartella di lavoro esterna nuova ed eseguire lì i comandi ordinari.
 Rifiutano `-OutputDirectory`; Q8, Normalized16 e Mode8 accettano invece quel
@@ -10,28 +10,21 @@ parametro per un output esterno nuovo. I file descritti sotto sono generati,
 non file precompilati distribuiti con questo SDK.
 
 
-## Scelta della precisione nella1.13.0
+## Dev separata 1.14.0-dev1
 
-`-Precision legacy` resta il default. `-Precision legacy-plus` è il profilo
-intermedio delimitato Mode2: rotazioni camera frazionarie, clipping near e
-schermo Q4, raster finale intero, nessun backend Q8. È una pipeline distinta,
-non un alias di `-LegacyStability rotation`. Q8 resta esplicito; Normalized16
-resta sperimentale. Vedere [contratto completo legacy-plus](LEGACY-PLUS.it.md),
-[profili di precisione](PRECISION.it.md) e [qualificazione corrente](QUALIFICATION-1.13.0.it.md).
-I manuali IT/EN descrivono la1.13.0; i rapporti versionati conservano le proprie
-misure. I comandi presuppongono input esterni del chiamante, non distribuiti.
+`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica nativa](QUALIFICATION-1.14.0-dev1.it.md). Dev locale non pubblicata; solo scene/asset esterni.
 
 
-Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Dev locale 1.14.0-dev1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.13.0. Il manuale descrive l’exporter ordinario
+Contratto sorgente corrente 1.14.0-dev1. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
 ## Distribuzione di soli sorgenti
 
-Questa release sorgente è disponibile nel repository GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.13.0.it.md).
+Questa dev sorgente separata è locale e non pubblicata. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0-dev1.it.md).
 
 ## Mode 7 veloce — 1.7.0
 

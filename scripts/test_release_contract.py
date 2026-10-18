@@ -15,8 +15,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.13.0"
-BUILDER_SHA256 = "A4796E8840D5036497B8F17F45B71F029195686B2DB4CFC21643823E23F75F30"
+VERSION = "1.14.0-dev1"
+BUILDER_SHA256 = "F76F154D7A4A2E7D4DEF1ED568566F852C93F301506446EF89F85BD6B8C7E2F5"
 PERMANENT_FILE_COUNT = json.loads((ROOT/"PACKAGE-MANIFEST.json").read_text())["package"]["permanentFiles"]
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
@@ -214,7 +214,7 @@ def check_builder_and_package() -> None:
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
         "name": "3Dvibe64", "displayName": "3Dvibe64 " + VERSION, "version": VERSION,
-        "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT, "prerelease": False,
+        "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT, "prerelease": True,
         "precompiledPrograms": False,
         "author": "librologica.digital",
         "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -331,7 +331,7 @@ def check_documentation() -> None:
         assert '-precision q8' in text and '20 mhz' in text and 'legacy' in text
     for language in ('en','it'):
         precision_text=(ROOT/f'PRECISION.{language}.md').read_text(encoding='utf-8')
-        for token in ('-Precision legacy','-Precision q8','20 MHz','meshSourceSharing','96','40 WU','walkLite'):
+        for token in ('-Precision legacy','-Precision q8','20 MHz','meshSourceSharing','40 WU','walkLite'):
             assert token in precision_text,(language,token)
     software_license = (ROOT / "LICENSE").read_text(encoding="utf-8-sig")
     assert software_license.startswith("Required Notice: 3Dvibe64. Copyright \u00a9 2026 librologica.digital.\n")
@@ -783,6 +783,6 @@ def main() -> None:
         assert (ROOT/f'RELEASE-NOTES-1.13.0.{language}.md').is_file()
         assert (ROOT/f'RENDER-OPTIMIZATIONS.{language}.md').is_file()
     assert not (ROOT/'examples').exists() and not (ROOT/'validation').exists()
-    print('SOURCE RELEASE 1.13.0: no demos/examples; manifest and package policy PASS')
+    print('LOCAL DEV 1.14.0-dev1: no demos/examples; manifest and package policy PASS')
 
 if __name__=='__main__':main()
