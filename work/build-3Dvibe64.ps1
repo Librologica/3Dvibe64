@@ -353,8 +353,8 @@ if ($TextureQuality -eq 'fast' -and ($Precision -ne 'q8' -or $GraphicsMode -ne '
  throw 'TextureQuality fast requires GraphicsMode 7, -Precision q8 and -TexturePrecision perspective.'
 }
 if ($PSBoundParameters.ContainsKey('TextureQuality') -and $GraphicsMode -ne '7') { throw '-TextureQuality is only applicable to GraphicsMode 7.' }
-if ($TexturePrecision -eq 'perspective' -and ($Precision -ne 'q8' -or $GraphicsMode -ne '7')) {
- throw 'TexturePrecision perspective requires GraphicsMode 7 and -Precision q8.'
+if ($TexturePrecision -eq 'perspective' -and (($Precision -ne 'q8' -and -not $LegacyPlusClipEdges) -or $GraphicsMode -ne '7')) {
+ throw 'TexturePrecision perspective requires GraphicsMode 7 and -Precision q8 or legacy-plus.'
 }
 if ($PSBoundParameters.ContainsKey('TexturePrecision') -and $GraphicsMode -ne '7') {
  throw '-TexturePrecision is only applicable to GraphicsMode 7.'
@@ -506,7 +506,8 @@ if ($Mode7Experimental) {
  # Share resolved JSON/CLI texture settings with preparation. Keep the
  # original scene path so relative PNG assets resolve in its directory.
  $mode7Config = Join-Path $Root 'build/mode7-effective-config.json'
- @{ texturePrecision=$TexturePrecision; textureQuality=$TextureQuality; textureLOD=$TextureLOD } | ConvertTo-Json | Set-Content -LiteralPath $mode7Config -Encoding utf8
+ $preparedTexturePrecision = if ($LegacyPlusClipEdges -and $TexturePrecision -eq 'perspective') { 'affine' } else { $TexturePrecision }
+ @{ texturePrecision=$preparedTexturePrecision; textureQuality=$TextureQuality; textureLOD=$TextureLOD } | ConvertTo-Json | Set-Content -LiteralPath $mode7Config -Encoding utf8
  & python -B (Join-Path $Root 'mode7.py') prepare $mode7SceneInput $mode7Prepared --config $mode7Config
  if ($LASTEXITCODE -ne 0) { throw 'Mode 7 texture/UV validation failed' }
  $SceneFile = $mode7Prepared
@@ -38600,6 +38601,10 @@ if ($Mode7Experimental) {
 if ($LegacyPlusClipEdges -and ($GraphicsMode -eq '6' -or $Mode7Experimental)) {
  & python -B (Join-Path $Root 'legacy_plus_attributes.py') $AsmPath
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus Gouraud/UV attribute integration failed' }
+}
+if ($LegacyPlusClipEdges -and $Mode7Experimental -and $TexturePrecision -eq 'perspective') {
+ & python -B (Join-Path $Root 'legacy_plus_projective.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus projective texture integration failed' }
 }
 if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2')) {
  & python -B (Join-Path $Root 'legacy_plus_memory.py') $AsmPath --assembler $Tass
