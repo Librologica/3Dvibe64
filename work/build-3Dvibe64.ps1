@@ -281,8 +281,8 @@ if ($PSBoundParameters.ContainsKey('LegacyStability') -and ($Precision -ne 'lega
  throw '-LegacyStability is only applicable to the ordinary legacy Mode1-7 renderer.'
 }
 if ($LegacyStability -in @('corrected','camera','rotation')) { $NoExplorerMatrixFold = $true }
-if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2','3')) {
- throw 'This development stage supports legacy-plus Mode1, Mode2 and Mode3.'
+if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2','3','4')) {
+ throw 'This development stage supports legacy-plus Mode1 to Mode4.'
 }
 if ($LegacyStability -in @('camera','rotation') -and ((-not $LegacyPlusClipEdges -and $GraphicsMode -ne '2') -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal')) {
  throw 'The camera experiment requires Mode2, walkLite, normal viewport and high-basic-v2.'
