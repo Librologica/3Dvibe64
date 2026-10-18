@@ -16,6 +16,8 @@ def parts_of(source):
     marks=[('camera','\nlc_helpers_begin:\n'),('rotation','\nlr_helpers_begin:\n'),
       ('products','\n; Runtime-only allocation after every existing vertex/face/color buffer.'),
       ('terms','\nlr_terms_valid:'),('near','\nlpn_helpers_begin:\n'),('screen','\nlps_helpers_begin:\n')]
+    for name,marker in [('attributes','\nlpa_attributes_begin:\n')]+[(n,'\nlpp_'+n+'_begin:\n') for n in ('bridge','edge','ratio','sample','span','state')]:
+        if marker in source:marks.append((name,marker))
     positions=[(name,source.index(marker)) for name,marker in marks]
     assert positions==sorted(positions,key=lambda p:p[1])
     base=source[:positions[0][1]];parts={}
