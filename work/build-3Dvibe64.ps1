@@ -281,7 +281,18 @@ if ($PSBoundParameters.ContainsKey('LegacyStability') -and ($Precision -ne 'lega
  throw '-LegacyStability is only applicable to the ordinary legacy Mode1-7 renderer.'
 }
 if ($LegacyStability -in @('corrected','camera','rotation')) { $NoExplorerMatrixFold = $true }
-if ($LegacyStability -in @('camera','rotation') -and ($GraphicsMode -ne '2' -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal')) {
+if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2','3','4','5','6','7')) {
+ throw 'Legacy-plus supports Mode1 to Mode7.'
+}
+if ($LegacyPlusClipEdges) {
+ if (-not $PSBoundParameters.ContainsKey('ExplorerClipMode')) { $ExplorerClipMode='near'; $PSBoundParameters['ExplorerClipMode']='near' }
+ if (-not $PSBoundParameters.ContainsKey('ExplorerNearCrossMode')) { $ExplorerNearCrossMode='poly'; $PSBoundParameters['ExplorerNearCrossMode']='poly' }
+ if ($ExplorerClipMode -ne 'near' -or $ExplorerNearCrossMode -ne 'poly' -or $ExplorerScreenClipMode -ne 'poly' -or $Mode4NearProfile -ne 'default') {
+  throw 'Legacy-plus requires near8 polygon/screen clipping: ExplorerClipMode near, ExplorerNearCrossMode poly, ExplorerScreenClipMode poly, Mode4NearProfile default.'
+ }
+}
+if ($LegacyStability -in @('camera','rotation') -and ((-not $LegacyPlusClipEdges -and $GraphicsMode -ne '2') -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal')) {
+ if ($LegacyPlusClipEdges) { throw 'Legacy-plus requires walkLite, normal viewport and high-basic-v2.' }
  throw 'The camera experiment requires Mode2, walkLite, normal viewport and high-basic-v2.'
 }
 if ($LegacyStability -eq 'rotation' -and -not $NoFpsOverlay) {
@@ -343,8 +354,8 @@ if ($TextureQuality -eq 'fast' -and ($Precision -ne 'q8' -or $GraphicsMode -ne '
  throw 'TextureQuality fast requires GraphicsMode 7, -Precision q8 and -TexturePrecision perspective.'
 }
 if ($PSBoundParameters.ContainsKey('TextureQuality') -and $GraphicsMode -ne '7') { throw '-TextureQuality is only applicable to GraphicsMode 7.' }
-if ($TexturePrecision -eq 'perspective' -and ($Precision -ne 'q8' -or $GraphicsMode -ne '7')) {
- throw 'TexturePrecision perspective requires GraphicsMode 7 and -Precision q8.'
+if ($TexturePrecision -eq 'perspective' -and (($Precision -ne 'q8' -and -not $LegacyPlusClipEdges) -or $GraphicsMode -ne '7')) {
+ throw 'TexturePrecision perspective requires GraphicsMode 7 and -Precision q8 or legacy-plus.'
 }
 if ($PSBoundParameters.ContainsKey('TexturePrecision') -and $GraphicsMode -ne '7') {
  throw '-TexturePrecision is only applicable to GraphicsMode 7.'
@@ -487,14 +498,17 @@ if ($Mode7Experimental) {
  if ($Projection -ne 'extended-table') { throw 'Mode 7 v1 requires Projection=extended-table' }
  if (-not $PSBoundParameters.ContainsKey('Quality')) { $Quality = 'fast' }
  if ($Quality -ne 'fast') { throw 'Mode 7 v1 is qualified only with Quality=fast' }
- if ($Mode4NearProfile -eq 'default') { $Mode4NearProfile = 'clip' }
- if ($Mode4NearProfile -ne 'clip') { throw 'Mode 7 v1 requires the camera-plane clipping profile' }
+ if (-not $LegacyPlusClipEdges) {
+  if ($Mode4NearProfile -eq 'default') { $Mode4NearProfile = 'clip' }
+  if ($Mode4NearProfile -ne 'clip') { throw 'Mode 7 v1 requires the camera-plane clipping profile' }
+ }
  $mode7SceneInput = (Resolve-Path -LiteralPath $SceneFile).Path
  $mode7Prepared = Join-Path $Root 'build/mode7-scene.json'
  # Share resolved JSON/CLI texture settings with preparation. Keep the
  # original scene path so relative PNG assets resolve in its directory.
  $mode7Config = Join-Path $Root 'build/mode7-effective-config.json'
- @{ texturePrecision=$TexturePrecision; textureQuality=$TextureQuality; textureLOD=$TextureLOD } | ConvertTo-Json | Set-Content -LiteralPath $mode7Config -Encoding utf8
+ $preparedTexturePrecision = if ($LegacyPlusClipEdges -and $TexturePrecision -eq 'perspective') { 'affine' } else { $TexturePrecision }
+ @{ texturePrecision=$preparedTexturePrecision; textureQuality=$TextureQuality; textureLOD=$TextureLOD } | ConvertTo-Json | Set-Content -LiteralPath $mode7Config -Encoding utf8
  & python -B (Join-Path $Root 'mode7.py') prepare $mode7SceneInput $mode7Prepared --config $mode7Config
  if ($LASTEXITCODE -ne 0) { throw 'Mode 7 texture/UV validation failed' }
  $SceneFile = $mode7Prepared
@@ -4009,6 +4023,7 @@ $CameraFullRuntimeFlag = $CameraWalkFullFlag
 $ExplorerRuntimeModeInitial = if ($CameraWalkLiteFlag -ne 0) { 1 } else { 2 }
 $ExplorerResetOnSpaceFlag = if (($CameraMovableFlag -ne 0) -and $ExplorerResetOnSpace.IsPresent) { 1 } else { 0 }
 $WorldGroundPlaneRequestedFlag = if (@($WorldGrounds | Where-Object { [int]$_.Enabled -ne 0 -and [string]$_.Mode -eq "plane" }).Count -gt 0) { 1 } else { 0 }
+if ($LegacyPlusClipEdges -and $WorldGroundPlaneRequestedFlag -ne 0) { throw 'Legacy-plus near8 currently requires Ground plane clipping disabled; explicit room/floor meshes are supported.' }
 $ExplorerNearClipFlag = if (($CameraMovableFlag -ne 0 -or $WorldGroundPlaneRequestedFlag -ne 0) -and ($ExplorerClipMode -eq "near" -or $WorldGroundPlaneRequestedFlag -ne 0)) { 1 } else { 0 }
 $ExplorerNearSkipCrossFlag = if ($WorldGroundPlaneRequestedFlag -eq 0 -and $WireOnlyRenderFlag -eq 0 -and $ExplorerNearClipFlag -ne 0 -and $ExplorerNearCrossMode -eq "skip") { 1 } else { 0 }
 $ExplorerNearFillFlag = if ($ExplorerNearClipFlag -ne 0 -and $ExplorerNearCrossMode -eq "fill") { 1 } else { 0 }
@@ -38564,6 +38579,8 @@ if ($LegacyStability -ne 'historical') {
 }
 
 if ($LegacyPlusClipEdges) {
+ & python -B (Join-Path $Root 'legacy_plus_modes.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus mode integration failed' }
  & python -B (Join-Path $Root 'legacy_plus_clip.py') $AsmPath
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus wire edge provenance generation failed' }
  & python -B (Join-Path $Root 'legacy_plus_near.py') $AsmPath
@@ -38582,6 +38599,18 @@ if ($Mode7Experimental) {
  if ($LASTEXITCODE -ne 0) { throw 'Mode 7 code generation failed' }
 }
 
+if ($LegacyPlusClipEdges -and ($GraphicsMode -eq '6' -or $Mode7Experimental)) {
+ & python -B (Join-Path $Root 'legacy_plus_attributes.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus Gouraud/UV attribute integration failed' }
+}
+if ($LegacyPlusClipEdges -and $Mode7Experimental -and $TexturePrecision -eq 'perspective') {
+ & python -B (Join-Path $Root 'legacy_plus_projective.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus projective texture integration failed' }
+}
+if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2')) {
+ & python -B (Join-Path $Root 'legacy_plus_memory.py') $AsmPath --assembler $Tass
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus solid helper placement failed' }
+}
 $tassArgs = @("-a", "-B", "-o", $PrgPath)
 if ($StableRelocatedCodeFlag -ne 0) {
  Remove-Item -LiteralPath $Mode5StableSegmentLabelsPath -Force -ErrorAction SilentlyContinue

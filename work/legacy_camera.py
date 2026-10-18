@@ -83,7 +83,8 @@ def apply(source):
     hook='.if EXPLORER_NEAR_POLY != 0 || CAMERA_PLANE_CLIP_PROFILE != 0\n ldy tmpidx\n lda explorer_view_x_lo\n'
     code=once(code,hook,' jsr lc_commit_q4\n'+hook)
     code=once(code,' jsr explorer_project_x16\n',' jsr lc_project_x\n')
-    code=once(code,' jsr explorer_project_y16\n',' jsr lc_project_y\n')
+    y_projector='explorer_project_yq2_16' if ' jsr explorer_project_yq2_16\n' in code else 'explorer_project_y16'
+    code=once(code,' jsr '+y_projector+'\n',' jsr lc_project_y\n')
     source=source[:begin]+code+source[end:]
     source=once(source,'explorer_project_axis_offset:\n','''explorer_project_axis_offset:
  lda lc_project_active
@@ -241,4 +242,7 @@ lc_helpers_end:
 .cerror * > $d000,"Camera helpers overlap IO; bounded experiment does not fit this scene"
 ; LEGACY_CAMERA_Q4=1
 '''
+    # Preserve each mode's existing integer/Q2 screen-Y contract. Both
+    # projectors enter the same Q4-aware exact axis divider above.
+    helpers=helpers.replace(' jsr explorer_project_y16\n',' jsr '+y_projector+'\n')
     return fast_product(source)+helpers

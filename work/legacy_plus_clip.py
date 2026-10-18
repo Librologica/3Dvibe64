@@ -25,6 +25,7 @@ def patch(source):
     end = source.index('clip_wire_edge_is_screen_border:\n', start)
     source = source[:start] + '''; Flag belongs to the incoming edge, not to the vertex's origin.
 clip_wire_edge_is_generated_cap:
+.if WIRE_RENDER_ENABLE != 0
  ldx clip_cur_idx
  lda clip_a_flag,x
  beq cwigc_draw
@@ -33,6 +34,10 @@ clip_wire_edge_is_generated_cap:
 cwigc_draw:
  clc
  rts
+.else
+ clc
+ rts
+.endif
 
 ''' + source[end:]
 
@@ -73,10 +78,11 @@ lp_edge_flag_{i}:
     # Screen compaction moves vertices: keep the incoming edge aligned.
     # Removing a duplicate final vertex transfers its incoming edge to the
     # first vertex, since it now closes the compacted polygon.
-    replace(' lda clip_a_y,x\n sta clip_a_y,y\ncpcsa_inc_write:',
-            ' lda clip_a_y,x\n sta clip_a_y,y\n lda clip_a_flag,x\n sta clip_a_flag,y\ncpcsa_inc_write:')
-    replace(' bne cpcsa_done\n dec clip_a_count\ncpcsa_done:',
-            ' bne cpcsa_done\n lda clip_a_flag,x\n sta clip_a_flag\n dec clip_a_count\ncpcsa_done:')
+    if 'WIRE_RENDER_ENABLE = $01' in source:
+        replace(' lda clip_a_y,x\n sta clip_a_y,y\ncpcsa_inc_write:',
+                ' lda clip_a_y,x\n sta clip_a_y,y\n lda clip_a_flag,x\n sta clip_a_flag,y\ncpcsa_inc_write:')
+        replace(' bne cpcsa_done\n dec clip_a_count\ncpcsa_done:',
+                ' bne cpcsa_done\n lda clip_a_flag,x\n sta clip_a_flag\n dec clip_a_count\ncpcsa_done:')
     # Second isolated correction: near_depth_byte clamps negative depth to
     # zero. That changes the intersection parameter for camera-plane crossings.
     # Use signed 16-bit endpoint depths, with positive unsigned numerator and
