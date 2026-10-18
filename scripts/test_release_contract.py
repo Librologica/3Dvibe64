@@ -15,8 +15,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.12.0"
-BUILDER_SHA256 = "646E9866AA05CFF55EE9E5644FF90863B71EC86FBE97F4512766CD8491549BE8"
+VERSION = "1.13.0"
+BUILDER_SHA256 = "A4796E8840D5036497B8F17F45B71F029195686B2DB4CFC21643823E23F75F30"
 PERMANENT_FILE_COUNT = json.loads((ROOT/"PACKAGE-MANIFEST.json").read_text())["package"]["permanentFiles"]
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
@@ -221,7 +221,7 @@ def check_builder_and_package() -> None:
         "documentationLicense": "CC-BY-NC-4.0",
     }
     assert manifest["builder"]["sha256"] == BUILDER_SHA256
-    assert len(manifest["examples"]) == 57
+    assert manifest["examples"] == []
     assert manifest['framePresentation']['default']=='safe' and manifest['framePresentation']['waitRaster']==252
     assert manifest['historicalReferences']['expectedHashesChanged'] is False
     assert manifest['lineRaster']['modes']==[1,2,5] and manifest['lineRaster']['default']=='precise'
@@ -347,14 +347,8 @@ def check_documentation() -> None:
     assert (ROOT / "CONTRIBUTING.md").is_file()
     assert (ROOT / "SECURITY.md").is_file()
     assert (ROOT / "scripts" / "test_dev7_text_split.py").is_file()
-    examples_readme = (ROOT / "examples" / "README.md").read_text(encoding="utf-8-sig")
-    for filename in (
-        "wire-two-color-multimaterial.json", "basic-solid-reference.json",
-        "shared-instances-timeline-static-light.json", "mode5-solid-color-outline.json",
-        "ground-plane-near-clip.json",
-    ):
-        assert filename in examples_readme
-    assert examples_readme.count("-NoFpsOverlay") >= 2
+    assert not (ROOT / "examples").exists()
+    assert (ROOT / "EXTERNAL-INPUTS.en.md").is_file()
 
 
 def build(root: Path, scene: str, args: tuple[str, ...], expect_ok: bool = True) -> subprocess.CompletedProcess[str]:
@@ -782,10 +776,13 @@ def main() -> None:
     spec=importlib.util.spec_from_file_location('distribution_contract',ROOT/'scripts/test_dev_gameplay.py')
     module=importlib.util.module_from_spec(spec);spec.loader.exec_module(module);module.main()
     check_manifest()
+    check_clean_tree()
+    check_builder_and_package()
+    check_documentation()
     for language in ('en','it'):
-        assert (ROOT/f'RELEASE-NOTES-1.12.0.{language}.md').is_file()
+        assert (ROOT/f'RELEASE-NOTES-1.13.0.{language}.md').is_file()
         assert (ROOT/f'RENDER-OPTIMIZATIONS.{language}.md').is_file()
     assert not (ROOT/'examples').exists() and not (ROOT/'validation').exists()
-    print('SOURCE RELEASE 1.12.0: no demos/examples; manifest and package policy PASS')
+    print('SOURCE RELEASE 1.13.0: no demos/examples; manifest and package policy PASS')
 
 if __name__=='__main__':main()
