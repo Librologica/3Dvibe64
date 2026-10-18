@@ -14,6 +14,25 @@ def parts_of(source):
     matches=list(PAT.finditer(source))
     existing={m[1]:m[2] for m in matches}
     if matches:source=PAT.sub('',source)
+    if 'MODE7_UV_CARRIER = $01' in source and 'm3_q0:' in source:
+        # The Gouraud emitter adds a complete lighting/metadata bundle to
+        # the crowded middle segment. Relocate the unchanged bundle using
+        # the same bounded allocator, rather than widening that segment.
+        start='\nm3_code_begin = *\n'
+        if start in source:
+            a=source.index(start);b=source.index('mode3_high_basic_middle_end = *\n',a)
+            existing['lighting']=source[a:b]
+            source=source[:a]+source[b:]
+        # The plus near/screen dispatch no longer references these integer
+        # camera-side passes. Retain their live projection helpers.
+        start='clip_poly_clip_camera_x_current:\n'
+        if start in source:
+            a=source.index(start);b=source.index('clip_poly_project_a_from_camera:\n',a)
+            old=source[a:b];outside=source[:a]+source[b:]+'\n'+'\n'.join(existing.values())
+            for name in re.findall(r'(?m)^(\w+):',old):
+                assert not re.search(r'\b'+name+r'\b',outside),('Live camera-side clip consumer',name)
+            assert old.count('.if ')==old.count('.endif')
+            source=source[:a]+'; Plus M3: unreferenced camera-side clip removed.\n'+source[b:]
     marks=[('camera','\nlc_helpers_begin:\n'),('rotation','\nlr_helpers_begin:\n'),
       ('products','\n; Runtime-only allocation after every existing vertex/face/color buffer.'),
       ('terms','\nlr_terms_valid:'),('near','\nlpn_helpers_begin:\n'),('screen','\nlps_helpers_begin:\n')]
@@ -62,6 +81,13 @@ def allocate(source,assembler,directory):
             if start<a:gaps.append((start,a))
             start=max(start,b)
         if start<end:gaps.append((start,end))
+    if 'm3_q0' in lab:
+        # No FPS overlay and no rotation LUT are active in this qualified
+        # profile. The actual live-buffer end, not $8000, determines which
+        # tail of runtime RAM is free. Preserve32 bytes before any helper.
+        assert lab['FPS_OVERLAY_ENABLE']==0 and lab['LR_PRODUCT_LUT_ACTIVE']==0
+        tail=(lab['RUNTIME_BUFFER_COLOR_POLICY_END']+33)&~1
+        if tail<0x9000:gaps.append((tail,0x9000))
     sizes={n:lab['lpa_block_'+n+'_end']-lab['lpa_block_'+n+'_begin'] for n in parts}
     # Shared host-only bounded RAM placer. It emits addresses, no target math.
     import sys
@@ -70,6 +96,9 @@ def allocate(source,assembler,directory):
     result,search=bounded_place(sizes,gaps,60000);placed=result[0]
     for n,(a,b) in placed.items():assert all(b<=x or a>=y for x,y in used)
     (directory/'allocation.json').write_text(json.dumps(dict(command=cmd,partsSHA256={n:hashlib.sha256(v.encode('ascii')).hexdigest() for n,v in parts.items()},sizes=sizes,baseRanges=used,gaps=gaps,placed=placed,search=search),indent=2))
+    tail=[a for a,b in placed.values() if 0x8000<=a<0x9000]
+    if tail:
+        base+=f'\n.cerror RUNTIME_BUFFER_COLOR_POLICY_END+32 > ${min(tail):04x},"Plus helpers overlap live runtime buffers"\n.cerror LR_PRODUCT_LUT_ACTIVE != 0,"Plus tail allocation requires serial rotation products"\n'
     return attach(base,parts,placed)
 
 if __name__=='__main__':
