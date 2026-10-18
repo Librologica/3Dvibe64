@@ -1,0 +1,821 @@
+{
+  "type": "object",
+  "properties": {
+    "schema": {
+      "const": 1
+    },
+    "format": {
+      "const": "3Dvibe64.level"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,47}$"
+    },
+    "axisConvention": {
+      "const": "world-z-up"
+    },
+    "target": {
+      "type": "object",
+      "properties": {
+        "standard": {
+          "const": "pal"
+        },
+        "multiplier": {
+          "const": 64
+        },
+        "quality": {
+          "const": "precise"
+        },
+        "textureLOD": {
+          "const": [
+            14,
+            22
+          ]
+        },
+        "music": {
+          "const": false
+        },
+        "autoTransitions": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "standard",
+        "multiplier",
+        "quality",
+        "textureLOD",
+        "music",
+        "autoTransitions"
+      ],
+      "additionalProperties": false
+    },
+    "memory": {
+      "type": "object",
+      "properties": {
+        "reserveBytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "minimumContiguousBytes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 65535
+        },
+        "stagingBytes": {
+          "const": 1024
+        }
+      },
+      "required": [
+        "reserveBytes",
+        "minimumContiguousBytes",
+        "stagingBytes"
+      ],
+      "additionalProperties": false
+    },
+    "features": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "multiple-billboards",
+          "shared-meshes",
+          "controlled-animation",
+          "camera-roll",
+          "texture-animation",
+          "static-light",
+          "sector-visibility"
+        ]
+      },
+      "uniqueItems": true,
+      "maxItems": 7
+    },
+    "assets": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/asset"
+      },
+      "minItems": 1,
+      "maxItems": 64
+    },
+    "groups": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/group"
+      },
+      "minItems": 2,
+      "maxItems": 8
+    },
+    "rooms": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/room"
+      },
+      "minItems": 2,
+      "maxItems": 64
+    },
+    "objects": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/billboard"
+          },
+          {
+            "$ref": "#/$defs/door"
+          },
+          {
+            "$ref": "#/$defs/mesh"
+          }
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 255
+    },
+    "connections": {
+      "type": "array",
+      "items": {
+        "oneOf": [
+          {
+            "$ref": "#/$defs/doorway"
+          },
+          {
+            "$ref": "#/$defs/transition"
+          }
+        ]
+      },
+      "minItems": 1,
+      "maxItems": 128
+    },
+    "spawns": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/spawn"
+      },
+      "minItems": 1,
+      "maxItems": 64
+    },
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/event"
+      },
+      "minItems": 0,
+      "maxItems": 255
+    },
+    "start": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]{0,47}$"
+    }
+  },
+  "required": [
+    "schema",
+    "format",
+    "id",
+    "axisConvention",
+    "target",
+    "memory",
+    "features",
+    "assets",
+    "groups",
+    "rooms",
+    "objects",
+    "connections",
+    "spawns",
+    "events",
+    "start"
+  ],
+  "additionalProperties": false,
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:3dvibe64:level:1",
+  "$defs": {
+    "asset": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "kind": {
+          "enum": [
+            "billboard",
+            "materials",
+            "mesh"
+          ]
+        },
+        "source": {
+          "type": "string",
+          "pattern": "^file:[^\\\\:]+\\.[jJ][sS][oO][nN]$"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "group": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "geometry": {
+          "type": "object",
+          "properties": {
+            "template": {
+              "const": "two-room-divider-v1"
+            },
+            "halfWidth": {
+              "type": "integer",
+              "minimum": 18,
+              "maximum": 24
+            },
+            "floorLevel": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 32
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "doorIndex": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3
+            }
+          },
+          "required": [
+            "template",
+            "halfWidth",
+            "floorLevel",
+            "doorIndex"
+          ],
+          "additionalProperties": false
+        },
+        "materials": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "entry": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        }
+      },
+      "required": [
+        "id",
+        "geometry",
+        "materials",
+        "entry"
+      ],
+      "additionalProperties": false
+    },
+    "room": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "group": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "bounds": {
+          "type": "object",
+          "properties": {
+            "min": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -128,
+                "maximum": 127,
+                "multipleOf": 0.00390625
+              },
+              "minItems": 3,
+              "maxItems": 3
+            },
+            "max": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": -128,
+                "maximum": 127,
+                "multipleOf": 0.00390625
+              },
+              "minItems": 3,
+              "maxItems": 3
+            }
+          },
+          "required": [
+            "min",
+            "max"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "group",
+        "bounds"
+      ],
+      "additionalProperties": false
+    },
+    "spawn": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "room": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -128,
+            "maximum": 127,
+            "multipleOf": 0.00390625
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "yawDegrees": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 359.99609375,
+          "multipleOf": 0.00390625
+        },
+        "pitchDegrees": {
+          "type": "number",
+          "minimum": -90,
+          "maximum": 90,
+          "multipleOf": 0.00390625
+        }
+      },
+      "required": [
+        "id",
+        "room",
+        "position",
+        "yawDegrees",
+        "pitchDegrees"
+      ],
+      "additionalProperties": false
+    },
+    "billboard": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "kind": {
+          "const": "billboard"
+        },
+        "room": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -128,
+            "maximum": 127,
+            "multipleOf": 0.00390625
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "asset": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "size": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 20,
+            "multipleOf": 0.00390625
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "animations": {
+          "type": "object",
+          "properties": {
+            "idle": {
+              "type": "object",
+              "properties": {
+                "frames": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 5
+                  },
+                  "minItems": 1,
+                  "maxItems": 16
+                },
+                "ticksPerFrame": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 255
+                }
+              },
+              "required": [
+                "frames",
+                "ticksPerFrame"
+              ],
+              "additionalProperties": false
+            },
+            "used": {
+              "type": "object",
+              "properties": {
+                "frames": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 5
+                  },
+                  "minItems": 1,
+                  "maxItems": 16
+                },
+                "ticksPerFrame": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 255
+                }
+              },
+              "required": [
+                "frames",
+                "ticksPerFrame"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "idle",
+            "used"
+          ],
+          "additionalProperties": false
+        },
+        "interaction": {
+          "type": "object",
+          "properties": {
+            "useRange": {
+              "type": "number",
+              "minimum": 1,
+              "maximum": 24,
+              "multipleOf": 0.00390625
+            },
+            "collisionHalfSize": {
+              "type": "array",
+              "items": {
+                "type": "number",
+                "minimum": 0.25,
+                "maximum": 10,
+                "multipleOf": 0.00390625
+              },
+              "minItems": 2,
+              "maxItems": 2
+            }
+          },
+          "required": [
+            "useRange",
+            "collisionHalfSize"
+          ],
+          "additionalProperties": false
+        },
+        "state": {
+          "type": "object",
+          "properties": {
+            "used": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "used"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "room",
+        "position",
+        "asset",
+        "size",
+        "animations",
+        "interaction",
+        "state"
+      ],
+      "additionalProperties": false
+    },
+    "door": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "kind": {
+          "const": "sliding-door"
+        },
+        "room": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -128,
+            "maximum": 127,
+            "multipleOf": 0.00390625
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "size": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": 1,
+            "maximum": 32,
+            "multipleOf": 0.00390625
+          },
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "state": {
+          "type": "object",
+          "properties": {
+            "open": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "open"
+          ],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "room",
+        "position",
+        "size",
+        "state"
+      ],
+      "additionalProperties": false
+    },
+    "mesh": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "kind": {
+          "const": "mesh"
+        },
+        "room": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "position": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "minimum": -128,
+            "maximum": 127,
+            "multipleOf": 0.00390625
+          },
+          "minItems": 3,
+          "maxItems": 3
+        },
+        "asset": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "yawDegrees": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 359.99609375,
+          "multipleOf": 0.00390625
+        },
+        "scale": {
+          "type": "number",
+          "minimum": 0.5,
+          "maximum": 1,
+          "multipleOf": 0.015625
+        },
+        "visible": {
+          "type": "boolean"
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 4,
+          "maximum": 28
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "room",
+        "position",
+        "asset",
+        "yawDegrees",
+        "scale",
+        "visible",
+        "level"
+      ],
+      "additionalProperties": false
+    },
+    "doorway": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "kind": {
+          "const": "doorway"
+        },
+        "from": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "door": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "from",
+        "to",
+        "door"
+      ],
+      "additionalProperties": false
+    },
+    "transition": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "kind": {
+          "const": "group-transition"
+        },
+        "from": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "to": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "fromSpawn": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "toSpawn": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "from",
+        "to",
+        "fromSpawn",
+        "toSpawn"
+      ],
+      "additionalProperties": false
+    },
+    "toggle": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "toggle"
+        },
+        "object": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "field": {
+          "const": "open"
+        }
+      },
+      "required": [
+        "type",
+        "object",
+        "field"
+      ],
+      "additionalProperties": false
+    },
+    "animate": {
+      "type": "object",
+      "properties": {
+        "type": {
+          "const": "animate-from"
+        },
+        "object": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "source": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "field": {
+          "const": "open"
+        },
+        "whenFalse": {
+          "const": "idle"
+        },
+        "whenTrue": {
+          "const": "used"
+        }
+      },
+      "required": [
+        "type",
+        "object",
+        "source",
+        "field",
+        "whenFalse",
+        "whenTrue"
+      ],
+      "additionalProperties": false
+    },
+    "event": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9-]{0,47}$"
+        },
+        "trigger": {
+          "type": "object",
+          "properties": {
+            "object": {
+              "type": "string",
+              "pattern": "^[a-z][a-z0-9-]{0,47}$"
+            },
+            "signal": {
+              "const": "use"
+            }
+          },
+          "required": [
+            "object",
+            "signal"
+          ],
+          "additionalProperties": false
+        },
+        "actions": {
+          "type": "array",
+          "items": {
+            "oneOf": [
+              {
+                "$ref": "#/$defs/toggle"
+              },
+              {
+                "$ref": "#/$defs/animate"
+              }
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 8
+        }
+      },
+      "required": [
+        "id",
+        "trigger",
+        "actions"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "$comment": "Syntax schema only. build-level.py additionally checks finite Q8 data, IDs, references, asset files, geometry, active-group events, backend compatibility and actual assembled memory. JSON booleans are never numeric values in the Python validator."
+}

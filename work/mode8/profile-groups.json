@@ -1,0 +1,258 @@
+[
+  {
+    "scene": "01-perimeter",
+    "mean": 169584.29411764705,
+    "groups": [
+      {
+        "category": "DDA + setup + descriptor",
+        "cycles": 60079.147058823524,
+        "percent": 35.427306149674656,
+        "routines": [
+          "dm_patch",
+          "dm_x",
+          "dm_y",
+          "load_direction",
+          "ray_next",
+          "raycast_all",
+          "raycast_layers",
+          "store_wall_owner"
+        ]
+      },
+      {
+        "category": "Proiezione e prodotti",
+        "cycles": 20051.970588235294,
+        "percent": 11.824190850082191,
+        "routines": [
+          "fx_height",
+          "fx_offset",
+          "fx_slope",
+          "layer_heights",
+          "mul16x8_shift8",
+          "pf_project_floor",
+          "ss_center_magnitude",
+          "ss_center_signed"
+        ]
+      },
+      {
+        "category": "Endpoint, selezione e raffinamento",
+        "cycles": 20495.5,
+        "percent": 12.085730053386603,
+        "routines": [
+          "fx_edges",
+          "select_strips",
+          "sr_restore_coarse",
+          "ss_mark",
+          "ss_refine"
+        ]
+      },
+      {
+        "category": "Raster bande e maschere",
+        "cycles": 58199.55882352941,
+        "percent": 34.31895573015398,
+        "routines": [
+          "band_address",
+          "build_bottom_mask",
+          "build_top_mask",
+          "draw_band",
+          "fill_rows",
+          "ss_compose",
+          "ss_draw_band"
+        ]
+      },
+      {
+        "category": "Fondo e soffitto",
+        "cycles": 6324.941176470588,
+        "percent": 3.729673911950087,
+        "routines": [
+          "ef_clear_gaps"
+        ]
+      },
+      {
+        "category": "Controllo composizione",
+        "cycles": 4433.176470588235,
+        "percent": 2.6141433047524862,
+        "routines": [
+          "compose_screen"
+        ]
+      }
+    ]
+  },
+  {
+    "scene": "02-milestone",
+    "mean": 200306.5588235294,
+    "groups": [
+      {
+        "category": "DDA + setup + descriptor",
+        "cycles": 62597.91176470588,
+        "percent": 31.251054449921835,
+        "routines": [
+          "dm_patch",
+          "dm_x",
+          "dm_y",
+          "load_direction",
+          "portal_exit",
+          "ray_next",
+          "raycast_all",
+          "raycast_layers",
+          "store_wall_owner"
+        ]
+      },
+      {
+        "category": "Proiezione e prodotti",
+        "cycles": 31291.0,
+        "percent": 15.621555371817582,
+        "routines": [
+          "fx_capture_plane",
+          "fx_height",
+          "fx_offset",
+          "fx_project_door",
+          "fx_slope",
+          "layer_heights",
+          "mul16x8_shift8",
+          "pf_project_floor",
+          "pf_project_front",
+          "ss_center_magnitude",
+          "ss_center_signed"
+        ]
+      },
+      {
+        "category": "Endpoint, selezione e raffinamento",
+        "cycles": 27401.323529411762,
+        "percent": 13.679693610808023,
+        "routines": [
+          "fx_edges",
+          "select_strips",
+          "sr_restore_coarse",
+          "ss_mark",
+          "ss_refine"
+        ]
+      },
+      {
+        "category": "Raster bande e maschere",
+        "cycles": 67008.02941176471,
+        "percent": 33.45273854502137,
+        "routines": [
+          "band_address",
+          "build_bottom_mask",
+          "build_top_mask",
+          "draw_band",
+          "fill_rows",
+          "oc_near_refined",
+          "oc_near_regular",
+          "ss_compose",
+          "ss_draw_band"
+        ]
+      },
+      {
+        "category": "Fondo e soffitto",
+        "cycles": 7582.088235294118,
+        "percent": 3.785242120790442,
+        "routines": [
+          "ef_clear_gaps"
+        ]
+      },
+      {
+        "category": "Controllo composizione",
+        "cycles": 4426.205882352941,
+        "percent": 2.209715901640765,
+        "routines": [
+          "compose_screen"
+        ]
+      }
+    ]
+  },
+  {
+    "scene": "03-two-levels",
+    "mean": 272074.72,
+    "groups": [
+      {
+        "category": "DDA + setup raggi",
+        "cycles": 57675.56,
+        "percent": 21.198426667497813,
+        "routines": [
+          "ray_prepare",
+          "ray_product_x",
+          "ray_product_y",
+          "trace_path"
+        ]
+      },
+      {
+        "category": "Proiezione e aritmetica profili",
+        "cycles": 40915.6,
+        "percent": 15.038368871609977,
+        "routines": [
+          "fh_height_delta",
+          "fh_ratio",
+          "p_div32x16",
+          "p_lookup_g",
+          "p_mul32x16",
+          "p_mul8",
+          "project_profile",
+          "ramp_endpoint_correction"
+        ]
+      },
+      {
+        "category": "Cache e generazione campioni",
+        "cycles": 30020.6,
+        "percent": 11.033954201992747,
+        "routines": [
+          "get_fine_sample",
+          "get_profile",
+          "lazy_samples"
+        ]
+      },
+      {
+        "category": "Visibilita, eventi e clipping",
+        "cycles": 26822.36,
+        "percent": 9.85845358951394,
+        "routines": [
+          "emit_band",
+          "get_bottom_band",
+          "get_ceiling_fused",
+          "get_header_fused",
+          "render_fine_path",
+          "render_path"
+        ]
+      },
+      {
+        "category": "Clear bitmap",
+        "cycles": 27404,
+        "percent": 10.072233098319463,
+        "routines": [
+          "clear_view"
+        ]
+      },
+      {
+        "category": "Raster bande e maschere",
+        "cycles": 40928.8,
+        "percent": 15.04322048002108,
+        "routines": [
+          "band_address",
+          "build_bottom_mask",
+          "build_top_mask",
+          "draw_samples",
+          "fill_rows"
+        ]
+      },
+      {
+        "category": "Raster fine e buffer intermedio",
+        "cycles": 34424.159999999996,
+        "percent": 12.652465469779772,
+        "routines": [
+          "compose_fine",
+          "init_fine_column",
+          "init_fine_group",
+          "scalar_fill"
+        ]
+      },
+      {
+        "category": "Controllo frame e classificazione gruppi",
+        "cycles": 13883.64,
+        "percent": 5.102877621265217,
+        "routines": [
+          "compose_screen"
+        ]
+      }
+    ]
+  }
+]

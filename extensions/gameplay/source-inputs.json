@@ -1,0 +1,6 @@
+{
+  "allowedStaticInputs": [
+    "extensions/gameplay/world/io.asm"
+  ],
+  "policy": "No new demo scenes, assets, UI, camera routes, launchers or duplicated prior SDK in the public source tree."
+}

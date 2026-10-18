@@ -1,0 +1,244 @@
+# GraphicsMode 6 — Gouraud ordered-dithered for VIC-II
+
+Historical/versioned evidence. Measurements, hashes and implementation stages below
+retain their original scope; they are not a new1.11.0 acquisition or feature promise.
+Evidenza storica/versionata: misure, hash e fasi seguenti mantengono l’ambito
+originale; non sono nuove acquisizioni o promesse di funzioni1.11.0.
+Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
+[gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
+[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
+
+## Release identity
+
+Historical Mode 6 qualification: 3Dvibe64 1.2.0 promoted the validated Gate 5 engine without engine edits.
+The 1.3.0 PowerShell entry point also dispatches Mode 7; its current SHA-256 and
+all Mode 7 module hashes are recorded in PACKAGE-MANIFEST.json. The Mode 6 runtime
+and its frozen PRG references remain the validated Gate 5 implementation.
+Mode 1–5 code generation remains frozen. No hybrid flat/Gouraud selector is included.
+
+Mode 6 requires `-MemoryLayout high-basic-v2`; `stable` is explicitly rejected.
+This is per-vertex lighting rendered through three VIC-II multicolor pigments,
+not a continuous-color framebuffer. Geometry, depth sorting, clipping, materials,
+Ground, cameras and double buffering retain the validated implementation.
+
+## Smooth normals and shade vertices
+
+Mesh property `"gouraud": { "creaseAngle": 60 }` accepts 0–180 degrees and defaults
+to 60. Adjacent normals within the crease threshold are area-weighted and normalized
+to Q6; hard creases use separate shade vertices. Smoothing changes lighting normals,
+not geometry, face count, winding or silhouette.
+
+- A cube at 0 or default 60 degrees keeps hard edges: 24 shade vertices.
+- A cube at 180 degrees shares normals: 8 shade vertices, unchanged cube silhouette.
+- The integer-quantized low-poly torus6x6 uses 180 in the smooth reference: 36 shade
+  vertices. At default 60 some of its edges remain creases.
+
+Exact-coordinate duplicate vertices are already canonicalized by the solid importer.
+The duplicate-corner test checks 24 source corners resolving to 8 geometric and 8
+shade vertices at 180 degrees. This release adds no geometry rewrite.
+
+Runtime indices permit **at most 255 shade vertices**, counting expanded per-instance
+state with `meshSourceSharing`. Overflow is a build error. Source geometry is shared;
+transformed vertices and temporal shade state remain per instance.
+
+## Lighting, materials and time
+
+Q6 normals and object-space light vectors address eleven intensity tables producing
+levels 0–32. After the first sample, temporal changes are limited to four levels per
+rendered simulation tick. The existing 50 ST/s simulation contract is unchanged.
+
+Compatible families: `gray`, `white`, `red`, `green`, `blue`, `yellow`, `cyan`,
+`magenta`, `orange`, `brown` (0–9). They supply Dark/High/Highlight.
+Reflectivity `satin`, `gloss`, `reflective`, `mirror` (0–3) adds 0, +2, +4, +6 to
+the Mode 6 shade, saturated at 32.
+
+`materialOverride`, `reflectivityOverride`, `colorOverride` and source-local
+`faceOverrides` retain their semantics. With sharing, plain `material` is not an
+instance override. Per-instance `faceOverrides` on reused sources remain unsupported.
+`solidColor` with `shading:false` is an unlit pigment override, not dynamic flat shading.
+Screen RAM/Color RAM retain VIC-II cell-level palette and ownership constraints.
+
+## Clipping and rasterization
+
+Convex triangles and native quads transport shade through near/camera-plane, screen
+and Ground clipping using the same integer edge parameter as position. Internal
+clipping fans retain interpolated shade. Geometry and shade edge walks remain separate;
+rejected Edge Fusion work is not included.
+
+Integer DDAs generate shade samples. The Bayer matrix stays screen-anchored:
+
+```text
+ 0  8  2 10
+12  4 14  6
+ 3 11  1  9
+15  7 13  5
+```
+
+An exact 33 × 16 LUT selects position-shifted multicolor bits: Dark/High at levels
+0–16 and High/Highlight at 17–32. Covered face pixels use 01, 10 or 11; 00 is background.
+There is no temporal rotation of Bayer phases.
+
+| Promoted component | Implementation |
+|---|---|
+| Gate 1 | Exact 528-byte Gouraud/Bayer LUT and compile-time specialized viewport clear |
+| Gate 3 | Byte-oriented spans with exact scalar endpoint fallback |
+| Gate 4 | Byte-seeded restoring division / accumulator remainder and exact fallback; no approximate reciprocal LUT |
+| Gate 5 | Exact partial-byte aggregation preserving masked pixels and the DDA sequence |
+
+Both physical rows, material composition and A/B buffers are preserved. No quality,
+precision, polygon-count, resolution, sorting, clipping or timing reduction is used.
+`wait_raster` is unchanged; accelerated CPU MHz do not change VIC-II PAL/NTSC timing.
+
+## Memory and configurations
+
+Shade data costs four corner indices per runtime face, seven bytes per runtime shade
+vertex, range descriptors and scratch. Shade row arrays use 200 bytes; clipping adds
+two 12-byte shade payload arrays where emitted. Intensity tables use 704 bytes plus
+22 pointer bytes; the Gouraud/Bayer LUT uses 528 bytes. Code/data are specialized
+by configuration and excluded from Modes 1–5 where unused.
+
+The frozen torus/FPS build ends runtime at $8768; camera occupies $8800–$8B49,
+raster $9000–$9BA7, and high code ends at $CC41. These are scene-specific observations,
+not capacity guarantees. Ground configurations can approach $D000 closely: builder
+segment-overlap checks remain authoritative.
+
+Fixed/walkLite/walkFull, PAL/NTSC, normal/small, Ground, depth sorting, double buffering
+and the FPS/text split remain supported. F toggles the complete header;
+`-NoFpsOverlay` removes the split. The known isolated right-edge split-transition
+pixel documented in the localized README remains unchanged. H remains Mode 4/5-only.
+
+## Reproduction and tests
+
+See `TESTING.md` for the clean-copy test runner. It retains frozen Mode 1–5 hash and
+framebuffer contracts and provides self-contained LUT, span and division checks.
+Host tests cover temporal levels, clipping, normals, duplicates and the 255 limit.
+Emulator smoke tests cover PAL/NTSC × normal/small on x64sc, xscpu64 and Turbo6510.
+Smoke tests are distinct from the paired framebuffer comparisons used in final
+qualification. Raw qualification output and historical builders stay outside the SDK.
+
+The exact Gate 5 torus/FPS scene is `examples/mode6-gouraud-torus-fps.json`;
+its build command is in `examples/README.md`. Expected PRG SHA-256:
+`F59587562E2CD78F7E28ACE58108274B88013A7DDC2A4F6949C393CD87844662`.
+No PRG, generated ASM, screenshot or profiler output is distributed.
+`MANIFEST.sha256` covers every permanent file except itself; its own hash accompanies
+the ZIP in the release handoff.
+
+## Italiano — rapporto completo
+
+### Identità della release
+
+Qualificazione storica Mode6: 3Dvibe64 1.2.0 ha promosso l'engine Gate5 validato
+senza modifiche all'engine. L'ingresso PowerShell 1.3.0 gestisce anche Mode7;
+il suo SHA-256 corrente e gli hash dei moduli Mode7 sono in PACKAGE-MANIFEST.json.
+Runtime Mode6 e riferimenti PRG congelati restano l'implementazione Gate5
+validata. La generazione di codice Mode1–5 resta congelata. Non è incluso un
+selettore ibrido flat/Gouraud.
+
+Mode6 richiede `-MemoryLayout high-basic-v2`; `stable` è esplicitamente rifiutato.
+È illuminazione per vertice resa con tre pigmenti multicolor VIC-II, non un
+framebuffer a colori continui. Geometria, ordinamento depth, clipping,
+materiali, Ground, camere e double buffering conservano l'implementazione validata.
+
+### Normali smooth e shade vertices
+
+La proprietà mesh `"gouraud": { "creaseAngle": 60 }` accetta 0–180 gradi,
+default60. Le normali adiacenti entro la soglia sono pesate per area e
+normalizzate in Q6; gli spigoli duri usano shade vertices separati. Lo smoothing
+modifica le normali di illuminazione, non geometria, numero di facce, winding
+o silhouette.
+
+- Cubo a0 o al default60 gradi: spigoli duri, 24 shade vertices.
+- Cubo a180 gradi: normali condivise, 8 shade vertices, silhouette invariata.
+- Toro low-poly torus6x6 quantizzato intero: il riferimento smooth usa180,
+  36 shade vertices; al default60 alcuni bordi restano spigoli.
+
+L'importer solid canonicalizza già i vertici duplicati con coordinate identiche.
+Il test dei corner duplicati verifica24 corner sorgenti che diventano8 vertici
+geometrici e8 shade vertices a180 gradi. La release non riscrive la geometria.
+
+Gli indici runtime ammettono **al massimo255 shade vertices**, incluso lo
+stato espanso per istanza con `meshSourceSharing`. Il superamento è un errore
+di build. La geometria sorgente è condivisa; vertici trasformati e stato shade
+temporale restano separati per istanza.
+
+### Illuminazione, materiali e tempo
+
+Normali Q6 e vettori luce nello spazio oggetto indicizzano undici tabelle di
+intensità che producono livelli0–32. Dopo il primo campione, le variazioni
+temporali sono limitate a quattro livelli per tick di simulazione renderizzato.
+Il contratto di simulazione esistente a50 ST/s resta invariato.
+
+Famiglie compatibili: `gray`, `white`, `red`, `green`, `blue`, `yellow`, `cyan`,
+`magenta`, `orange`, `brown` (0–9), con Dark/High/Highlight.
+Reflectivity `satin`, `gloss`, `reflective`, `mirror` (0–3) aggiunge rispettivamente
+0, +2, +4, +6 allo shade Mode6, saturato a32.
+
+`materialOverride`, `reflectivityOverride`, `colorOverride` e `faceOverrides`
+locali della sorgente conservano la semantica. Con sharing, `material` semplice
+non è un override d'istanza. Restano non supportati `faceOverrides` per istanza
+su sorgenti riusate. `solidColor` con `shading:false` è un override di pigmento
+senza luce, non flat shading dinamico. Screen RAM/Color RAM mantengono i vincoli
+di palette e proprietà delle celle VIC-II.
+
+### Clipping e rasterizzazione
+
+Triangoli convessi e quad nativi trasportano lo shade nel clipping near/piano
+camera, screen e Ground usando lo stesso parametro intero di edge della
+posizione. I fan interni del clipping conservano lo shade interpolato. I
+percorsi degli edge geometrici e shade rimangono separati; Edge Fusion,
+scartata in sviluppo, non è inclusa.
+
+DDA intere generano i campioni shade. La matrice Bayer4×4 riportata nella
+sezione inglese resta ancorata allo schermo. La LUT esatta33×16 seleziona i
+bit multicolor traslati per posizione: Dark/High ai livelli0–16 e
+High/Highlight ai livelli17–32. I pixel coperti usano01,10 o11;00 è sfondo.
+Non c'è rotazione temporale delle fasi Bayer.
+
+| Componente promosso | Implementazione |
+|---|---|
+| Gate1 | LUT Gouraud/Bayer esatta da528 byte e clear viewport specializzato a compile time |
+| Gate3 | Span byte-oriented con fallback scalare esatto per gli estremi |
+| Gate4 | Divisione restoring inizializzata per byte, resto nell'accumulatore e fallback esatto; nessuna LUT reciproca approssimata |
+| Gate5 | Aggregazione esatta dei byte parziali, preservando pixel mascherati e sequenza DDA |
+
+Conservati entrambe le righe fisiche, composizione dei materiali e buffer A/B.
+Nessuna riduzione di qualità, precisione, numero di poligoni, risoluzione,
+ordinamento, clipping o timing. `wait_raster` è invariato: i MHz della CPU
+accelerata non cambiano il timing PAL/NTSC del VIC-II.
+
+### Memoria e configurazioni
+
+I dati shade costano quattro indici corner per faccia runtime, sette byte per
+shade vertex runtime, descrittori di intervallo e scratch. Gli array shade per
+riga usano200 byte; il clipping aggiunge due array payload shade da12 byte dove
+emessi. Tabelle intensità:704 byte più22 byte di puntatori; LUT Gouraud/Bayer:
+528 byte. Codice/dati sono specializzati per configurazione ed esclusi da
+Mode1–5 quando inutilizzati.
+
+La build congelata toro/FPS termina il runtime a$8768; camera$8800–$8B49,
+raster$9000–$9BA7 e codice alto fino a$CC41. Sono osservazioni specifiche della
+scena, non capacità garantite. Le configurazioni Ground possono avvicinarsi
+a$D000: restano vincolanti i controlli overlap dei segmenti del builder.
+
+Restano supportati fixed/walkLite/walkFull, PAL/NTSC, normal/small, Ground,
+ordinamento depth, double buffering e split FPS/testo. F commuta l'intero header;
+`-NoFpsOverlay` rimuove lo split. Resta invariato il pixel isolato noto al bordo
+destro durante la transizione dello split, documentato nei README localizzati.
+H resta esclusivo delle Mode4/5.
+
+### Riproduzione e test
+
+Vedere [TESTING.md](TESTING.md) per il runner su copie pulite. Conserva i
+contratti hash/framebuffer congelati Mode1–5 e offre verifiche autosufficienti
+di LUT, span e divisione. I test host coprono livelli temporali, clipping,
+normali, duplicati e limite255. Gli smoke test degli emulatori coprono
+PAL/NTSC × normal/small su x64sc, xscpu64 e Turbo6510. Sono distinti dai
+confronti framebuffer appaiati della qualificazione finale. Output grezzi e
+builder storici restano esterni all'SDK.
+
+La scena esatta Gate5 toro/FPS è `examples/mode6-gouraud-torus-fps.json`;
+il comando è in [examples/README.md](EXTERNAL-INPUTS.en.md). SHA-256 PRG atteso:
+`F59587562E2CD78F7E28ACE58108274B88013A7DDC2A4F6949C393CD87844662`.
+Non sono distribuiti PRG, ASM generati, screenshot o output profiler.
+`MANIFEST.sha256` copre ogni file permanente tranne sé stesso; il proprio hash
+accompagna lo ZIP nella consegna della release.

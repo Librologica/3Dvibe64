@@ -1,0 +1,176 @@
+{
+  "version": "1.11.0",
+  "status": "PASS",
+  "distributionCorrection": true,
+  "newReleaseCreated": false,
+  "correction": "Remove newly added demo projects, source scenes, UI/artwork, camera routes, launchers and duplicate prior SDK. Preserve reusable modules and preexisting examples.",
+  "newDemosIncluded": false,
+  "sourceFiles": 335,
+  "languagePairs": 33,
+  "gateCoverage": {
+    "registered": 42,
+    "freshPassed": 16,
+    "inheritedPassedWithSourceIdentity": 26,
+    "fresh": [
+      {
+        "name": "test_documentation.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_billboard_emitter.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_dev_gameplay.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_mixed_surfaces.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_billboard_scene.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_door_entity.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_multiple_billboards.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_texture_animation.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_light_bake.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_sector_visibility.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_shared_meshes.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_controlled_motion.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_world_groups.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_common_level.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_world_metrics.py",
+        "status": "PASS",
+        "evidence": "cleanup-checks.log"
+      },
+      {
+        "name": "test_release_contract.py",
+        "status": "PASS",
+        "evidence": "cleanup-native-package.log"
+      }
+    ],
+    "inherited": [
+      "test_camera_angular_repeat.py",
+      "test_camera_move_step.py",
+      "test_dev7_text_split.py",
+      "test_engine_experiments.py",
+      "test_frame_presentation.py",
+      "test_gouraud_mode6.py",
+      "test_gouraud_mode6_emulators.py",
+      "test_line_hybrid.py",
+      "test_maintenance_host.py",
+      "test_maintenance_numeric.py",
+      "test_mobile_yq2.py",
+      "test_mode7.py",
+      "test_mode8.py",
+      "test_mode8_lintels.py",
+      "test_mode8_retirement.py",
+      "test_normalized16.py",
+      "test_object_depth_domain.py",
+      "test_optimization_gate1_lut.py",
+      "test_optimization_gate3_span.py",
+      "test_optimization_gate4_division.py",
+      "test_precision_q8.py",
+      "test_qualification_guard.py",
+      "test_texture_fast.py",
+      "test_texture_lod.py",
+      "test_texture_perspective.py",
+      "test_texture_uvzp.py"
+    ],
+    "initialDocumentationFailureResolved": "Explicit Q8/legacy and 20 MHz introduction restored; entire package/native gate rerun passed"
+  },
+  "preservation": {
+    "ordinaryEngineFilesByteIdentical": 80,
+    "previousExamplePathsRetained": 66,
+    "previousExampleDataFilesByteIdentical": 64,
+    "privateDevelopmentPreserved": true
+  },
+  "externalProjectRebuilds": [
+    {
+      "name": "camera-roll",
+      "programSHA256": "EC3A434DFB61AC472EB1FF94D90E5C257D2D767CEA9553E464D2CAFEF5B5CEB2",
+      "identical": true,
+      "command": [
+        "C:\\Users\\rapso\\Desktop\\TEST 3Dvibe64\\3Dvibe64_Release_1.11.0\\test-env\\Scripts\\python.exe",
+        "-B",
+        "C:\\Users\\rapso\\Desktop\\TEST 3Dvibe64\\3Dvibe64_Release_1.11.0\\qualification\\cleanup-candidate\\work\\build-gameplay.py",
+        "--profile",
+        "camera-roll",
+        "--project-source",
+        "C:\\Users\\rapso\\Desktop\\TEST 3Dvibe64\\3Dvibe64_Release_1.11.0\\repository",
+        "--out",
+        "C:\\Users\\rapso\\Desktop\\TEST 3Dvibe64\\3Dvibe64_Release_1.11.0\\qualification\\cleanup-external-project-checks\\camera-roll"
+      ],
+      "externalInputsNotDistributed": true
+    },
+    {
+      "name": "room-groups",
+      "programSHA256": "3601C88421777E33147BE70000035C977A22CCE70B628929CB16F01253B057B7",
+      "identical": true,
+      "command": [
+        "C:\\Users\\rapso\\Desktop\\TEST 3Dvibe64\\3Dvibe64_Release_1.11.0\\test-env\\Scripts\\python.exe",
+        "-B",
+        "C:\\Users\\rapso\\Desktop\\TEST 3Dvibe64\\3Dvibe64_Release_1.11.0\\qualification\\cleanup-candidate\\work\\build-gameplay.py",
+        "--profile",
+        "room-groups",
+        "--project-source",
+        "C:\\Users\\rapso\\Desktop\\TEST 3Dvibe64\\3Dvibe64_Release_1.11.0\\repository",
+        "--out",
+        "C:\\Users\\rapso\\Desktop\\TEST 3Dvibe64\\3Dvibe64_Release_1.11.0\\qualification\\cleanup-external-project-checks\\room-groups"
+      ],
+      "externalInputsNotDistributed": true
+    }
+  ],
+  "billboardEmission": "Prior assembly code/state/frame bytes identical with caller-supplied synthetic arrays; no artwork/scene generator remains",
+  "package": "Complete CRC, manifest and extracted-file checks; no new demo assets; old examples only",
+  "nativePerformance": "No rendering/runtime change. Exact native checkpoint PRGs retained with explicit external inputs; no new FPS claim or delivered demo PRG.",
+  "limitations": [
+    "bounded experimental adapter contracts; explicit external project input required for native gameplay builds",
+    "no new Linux/physical hardware qualification",
+    "WORLD-01 proposed startup UI recovery remains unapplied"
+  ]
+}
