@@ -1,4 +1,7 @@
-param(
+﻿param(
+ [ValidateSet('historical','corrected','camera','rotation')]
+ [string]$LegacyStability = 'historical',
+
  [string]$EngineExperiments = 'none',
  [ValidateSet('safe','legacy')]
  [string]$FramePresentation = 'safe',
@@ -8,7 +11,7 @@ param(
  [string]$TextureLOD = 'off',
  [int]$TextureLODNear = 28,
  [int]$TextureLODFar = 44,
- [ValidateSet("legacy", "q8", "normalized16")]
+ [ValidateSet("legacy", "legacy-plus", "q8", "normalized16")]
  [string]$Precision = "legacy",
 
  [ValidateSet("affine", "perspective")]
@@ -263,6 +266,27 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
+# Public dev5 opt-in; old rotation remains byte-compatible.
+$LegacyPlusClipEdges = $Precision -eq 'legacy-plus'
+if ($Precision -eq 'legacy-plus') {
+ if ($PSBoundParameters.ContainsKey('LegacyStability') -and $LegacyStability -ne 'rotation') {
+  throw '-Precision legacy-plus maps to LegacyStability rotation; conflicting LegacyStability is not allowed.'
+ }
+ $Precision = 'legacy'
+ $LegacyStability = 'rotation'
+ $PSBoundParameters['Precision'] = 'legacy'
+ $PSBoundParameters['LegacyStability'] = 'rotation'
+}
+if ($PSBoundParameters.ContainsKey('LegacyStability') -and ($Precision -ne 'legacy' -or $GraphicsMode -eq '8')) {
+ throw '-LegacyStability is only applicable to the ordinary legacy Mode1-7 renderer.'
+}
+if ($LegacyStability -in @('corrected','camera','rotation')) { $NoExplorerMatrixFold = $true }
+if ($LegacyStability -in @('camera','rotation') -and ($GraphicsMode -ne '2' -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal')) {
+ throw 'The camera experiment requires Mode2, walkLite, normal viewport and high-basic-v2.'
+}
+if ($LegacyStability -eq 'rotation' -and -not $NoFpsOverlay) {
+ throw 'Fine camera rotation requires -NoFpsOverlay for its bounded memory profile.'
+}
 if (-not $SceneFile) { throw 'SCENE_REQUIRED: pass -SceneFile with your external scene; no demos/examples are distributed.' }
 Set-StrictMode -Version Latest
 
@@ -38533,6 +38557,20 @@ $presentationRaster = if ($FramePresentation -eq 'safe') { '$fc' } else { '$f0' 
 $presentationLegacy = if ($FramePresentation -eq 'legacy') { '1' } else { '0' }
 $asm = $asm.Replace('FRAME_PRESENTATION_RASTER_PLACEHOLDER', $presentationRaster).Replace('FRAME_PRESENTATION_LEGACY_PLACEHOLDER', $presentationLegacy)
 Set-Content -LiteralPath $AsmPath -Encoding ASCII -Value $asm
+
+if ($LegacyStability -ne 'historical') {
+ & python -B (Join-Path $Root 'legacy_stability.py') $AsmPath --profile $LegacyStability
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy stability generation failed' }
+}
+
+if ($LegacyPlusClipEdges) {
+ & python -B (Join-Path $Root 'legacy_plus_clip.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus wire edge provenance generation failed' }
+ & python -B (Join-Path $Root 'legacy_plus_near.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus Q4 near generation failed' }
+ & python -B (Join-Path $Root 'legacy_plus_near_screen.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus Q4 screen generation failed' }
+}
 
 if ($ExperimentalSubpixelXProbe) {
  & python -B (Join-Path $Root 'subpixel_probe.py') $AsmPath
