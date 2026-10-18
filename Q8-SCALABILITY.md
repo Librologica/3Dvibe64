@@ -1,4 +1,4 @@
-# Q8 scalability — 1.12.0
+# Q8 scalability — 1.13.0
 
 3Dvibe64 1.12.0: [EN optimization contract](RENDER-OPTIMIZATIONS.en.md) · [Contratto IT](RENDER-OPTIMIZATIONS.it.md).
 All examples require external inputs / Tutti gli esempi richiedono input esterni.
@@ -12,7 +12,7 @@ Current 1.12.0 ordinary metric/geometry contract; inherited sections retain thei
 Contratto metrico/geometrico ordinario 1.12.0; sezioni ereditate con profilo/versione dichiarati.
 Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
 [gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
-[qualification EN](QUALIFICATION-1.12.0.en.md), [qualificazione IT](QUALIFICATION-1.12.0.it.md).
+[qualification EN](QUALIFICATION-1.13.0.en.md), [qualificazione IT](QUALIFICATION-1.13.0.it.md).
 
 ## Historical qualification / Qualificazione storica
 
@@ -46,7 +46,7 @@ scope with an explicit object guard; expanding Q8 does not silently expand NF.
 ## Build / Compilazione
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 5 -SceneFile examples/q8/scalability/13-objects-mode5.json -Q8Camera auto -VideoStandard pal -OutputDirectory ../q8-13-objects-mode5
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 5 -SceneFile ../my-inputs/q8/scalability/13-objects-mode5.json -Q8Camera auto -VideoStandard pal -OutputDirectory ../q8-13-objects-mode5
 ```
 
 Requires Python 3, PowerShell 7, 64tass. Tests additionally require py65.

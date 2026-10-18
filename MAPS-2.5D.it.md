@@ -1,9 +1,9 @@
 # Costruire mappe Mode 8
 
-Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
+Contratto sorgente corrente 1.13.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -139,7 +139,7 @@ Usare i file finali completi: nessun elemento mancante o modifica assembly. Per 
 Dalla radice dell'SDK estratto, con Python, PowerShell e 64tass disponibili:
 
 ```powershell
-Copy-Item examples/mode8/perimeter-tutorial.json ../my-perimeter.json
+Copy-Item ../my-inputs/mode8/perimeter-tutorial.json ../my-perimeter.json
 pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile ../my-perimeter.json -ValidateOnly
 pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile ../my-perimeter.json -Mode8Run interactive -OutputDirectory ../my-perimeter-build
 x64sc -default -pal -autostartprgmode 1 ../my-perimeter-build/3Dvibe64.prg
@@ -148,8 +148,8 @@ x64sc -default -pal -autostartprgmode 1 ../my-perimeter-build/3Dvibe64.prg
 Build complete degli altri tutorial:
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/apertures-tutorial.json -Mode8Run interactive -OutputDirectory ../my-apertures-build
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/two-levels-tutorial.json -Mode8Run auto -OutputDirectory ../my-two-levels-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile ../my-inputs/mode8/apertures-tutorial.json -Mode8Run interactive -OutputDirectory ../my-apertures-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile ../my-inputs/mode8/two-levels-tutorial.json -Mode8Run auto -OutputDirectory ../my-two-levels-build
 ```
 
 Scegliere una cartella esterna nuova e vuota per ciascuna build: output interno all'SDK rifiutato. `-Mode8Run` ha default `interactive`; `auto` percorre l'itinerario validato. Il PRG rileva PAL/NTSC; provare NTSC sostituendo l'opzione dell'emulatore con `-ntsc`. I test Mode 8 e la qualificazione dello ZIP estratto controllano i comandi pubblici. La build minima richiede solo libreria standard Python, PowerShell e 64tass: non importa emulatori o profiler.
@@ -177,7 +177,7 @@ Raggi lunghi nello spazio vuoto, discontinuità degli owner, aperture successive
 Dipendenze opzionali: `python -m pip install py65==1.2.0 Pillow`. Compilare prima la scena, poi eseguire:
 
 ```powershell
-python -B scripts/analyze_mode8.py --scene examples/mode8/perimeter.json --build ../perimeter-reference-build --sampling examples/mode8/sampling/perimeter.json --out ../perimeter-cost
+python -B scripts/analyze_mode8.py --scene ../my-inputs/mode8/perimeter.json --build ../perimeter-reference-build --sampling ../my-inputs/mode8/sampling/perimeter.json --out ../perimeter-cost
 ```
 
 Usare una build della **stessa** scena, per esempio quella del comando in [MODE 8.it.md](MODE8.it.md). Il campionamento contiene `poses`, ciascuna `[xQ8,yQ8,yaw,eyeInteger,eyeFraction]`, valutate in ordine con RAM persistente. Su una mappa diversa ricontrollare le pose: campioni con impronta/quota/intervallo errati vengono registrati e saltati, non convertiti.

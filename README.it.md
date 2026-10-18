@@ -1,6 +1,18 @@
-# 3Dvibe64 1.12.0
+# 3Dvibe64 1.13.0
 
-Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+## Scelta della precisione nella1.13.0
+
+`-Precision legacy` resta il default. `-Precision legacy-plus` è il profilo
+intermedio delimitato Mode2: rotazioni camera frazionarie, clipping near e
+schermo Q4, raster finale intero, nessun backend Q8. È una pipeline distinta,
+non un alias di `-LegacyStability rotation`. Q8 resta esplicito; Normalized16
+resta sperimentale. Vedere [contratto completo legacy-plus](LEGACY-PLUS.it.md),
+[profili di precisione](PRECISION.it.md) e [qualificazione corrente](QUALIFICATION-1.13.0.it.md).
+I manuali IT/EN descrivono la1.13.0; i rapporti versionati conservano le proprie
+misure. I comandi presuppongono input esterni del chiamante, non distribuiti.
+
+
+Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 Legacy resta il default. Selezionare Q8 preciso esplicitamente con `-Precision q8`, consigliato sopra 20 MHz. Qualità texture standard, linee precise, LOD off e presentazione safe restano i default ordinari.
@@ -10,7 +22,7 @@ Legacy resta il default. Selezionare Q8 preciso esplicitamente con `-Precision q
 
 ## Distribuzione di soli sorgenti
 
-Questa è la release sorgente disponibile nel repository GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.12.0.it.md).
+Questa release sorgente è disponibile nel repository GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.13.0.it.md).
 
 | ID | Modulo | Contratto |
 |---|---|---|
@@ -217,7 +229,8 @@ Se `-ControlRotation` e `-ControlReflectivity` vengono forzati insieme, entrambi
 
 | Opzione | Valori | Default / effetto |
 |---|---|---|
-| `-Precision` | `legacy`, `q8`, `normalized16` | **legacy**; Q8 e Normalized 16 sperimentale richiedono selezione esplicita; [limiti qualificati](PRECISION.it.md) |
+| `-Precision` | `legacy`, `legacy-plus`, `q8`, `normalized16` | legacy default; plus esplicito/Mode2 delimitato; Q8 esplicito; Normalized16 sperimentale |
+| `-LegacyStability` | `historical`, `corrected`, `camera`, `rotation` | profili di compatibilità legacy; vedere contratti LEGACY-STABILITY e CAMERA |
 | `-Q8Camera` | `stationary`, `interactive`, `auto` | `stationary`; solo con Q8 |
 | `-GraphicsMode` | `1`-`8` | `4`; Mode 8 usa la propria API mappe separata |
 | `-CameraMode` | `fixed`, `walkLite`, `walkFull` | modo della camera nella scena, altrimenti `fixed`; il valore CLI esplicito prevale |

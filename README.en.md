@@ -1,6 +1,18 @@
-# 3Dvibe64 1.12.0
+# 3Dvibe64 1.13.0
 
-Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+## Precision selection in1.13.0
+
+`-Precision legacy` remains the default. `-Precision legacy-plus` is the
+bounded intermediate Mode2 profile: fractional camera rotation, Q4 near and
+screen clipping, integer final raster, no Q8 backend. It is a separate pipeline,
+not an alias of `-LegacyStability rotation`. Q8 stays explicit; Normalized16
+stays experimental. See [complete legacy-plus contract](LEGACY-PLUS.en.md),
+[precision profiles](PRECISION.en.md) and [current qualification](QUALIFICATION-1.13.0.en.md).
+The current IT/EN manuals describe1.13.0; versioned reports retain their original
+measurements. All commands assume caller-supplied external inputs; none are bundled.
+
+
+Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
 
 
 Legacy remains the default. Select precise Q8 explicitly with `-Precision q8`, recommended above 20 MHz. Standard texture quality, precise lines, LOD off and safe presentation remain the ordinary defaults.
@@ -10,11 +22,11 @@ Legacy remains the default. Select precise Q8 explicitly with `-Precision q8`, r
 
 ## Source-only release
 
-This is the source release available in the GitHub repository. No demos or examples are shipped, including
+This source release is available in the GitHub repository. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.12.0.en.md).
+and [qualification](QUALIFICATION-1.13.0.en.md).
 
 | ID | Module | Contract |
 |---|---|---|
@@ -220,7 +232,8 @@ If `-ControlRotation` and `-ControlReflectivity` are forced together, both handl
 
 | Option | Values | Default / effect |
 |---|---|---|
-| `-Precision` | `legacy`, `q8`, `normalized16` | **legacy**; Q8 and experimental Normalized 16 require explicit selection; [qualified limits](PRECISION.en.md) |
+| `-Precision` | `legacy`, `legacy-plus`, `q8`, `normalized16` | legacy default; plus explicit/bounded Mode2; Q8 explicit; Normalized16 experimental |
+| `-LegacyStability` | `historical`, `corrected`, `camera`, `rotation` | legacy compatibility profiles; see LEGACY-STABILITY and CAMERA contracts |
 | `-Q8Camera` | `stationary`, `interactive`, `auto` | `stationary`; only with Q8 |
 | `-GraphicsMode` | `1`-`8` | `4`; Mode 8 uses its separate map API |
 | `-CameraMode` | `fixed`, `walkLite`, `walkFull` | scene camera mode, otherwise `fixed`; an explicit CLI value wins |

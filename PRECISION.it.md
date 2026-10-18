@@ -1,9 +1,21 @@
-# Profili di precisione — 1.10.0
+# Profili di precisione — 1.13.0
 
-Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+## Scelta della precisione nella1.13.0
+
+`-Precision legacy` resta il default. `-Precision legacy-plus` è il profilo
+intermedio delimitato Mode2: rotazioni camera frazionarie, clipping near e
+schermo Q4, raster finale intero, nessun backend Q8. È una pipeline distinta,
+non un alias di `-LegacyStability rotation`. Q8 resta esplicito; Normalized16
+resta sperimentale. Vedere [contratto completo legacy-plus](LEGACY-PLUS.it.md),
+[profili di precisione](PRECISION.it.md) e [qualificazione corrente](QUALIFICATION-1.13.0.it.md).
+I manuali IT/EN descrivono la1.13.0; i rapporti versionati conservano le proprie
+misure. I comandi presuppongono input esterni del chiamante, non distribuiti.
 
 
-Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
+Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.13.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -98,8 +110,7 @@ pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 4 -Sce
 Qui vengono scritti `3Dvibe64.prg`, ASM, label, mappa memoria, metadati e copia
 di lavoro isolata dell'SDK. Directory output già esistenti vengono rifiutate;
 nessuna scrittura nel pacchetto distribuito. Per NTSC usare un'altra directory
-e `-VideoStandard ntsc`. Sono inclusi gli esempi `two-objects-mode1.json` fino
-a `mode7.json`. Mantenere `-GraphicsMode` coerente con `graphicsMode` della scena.
+e `-VideoStandard ntsc`. Quei nomi identificano input storici esterni: nessun esempio è incluso in questo SDK sorgente. Mantenere `-GraphicsMode` coerente con `graphicsMode` della scena.
 
 | Q8Camera | Comportamento |
 |---|---|

@@ -1,10 +1,10 @@
-# Documentation / Documentazione — 1.12.0
+# Documentation / Documentazione — 1.13.0
 
-No demos/examples in this source release. / Nessuna demo o esempio nella release sorgente.
+Source SDK only; no demos/examples. / Solo SDK sorgente, senza demo/esempi.
 
-[Quick start / Guida rapida](QUICKSTART.md) · [Testing / Test](TESTING.md)
+[Quick start / Guida rapida](QUICKSTART.md) · [Testing / Verifiche](TESTING.md)
 
-| Manual / Manuale | English | Italiano |
+| Contract / Contratto | English | Italiano |
 |---|---|---|
 | ASSEMBLY-GUIDE | [EN](ASSEMBLY-GUIDE.en.md) | [IT](ASSEMBLY-GUIDE.it.md) |
 | DEV-NOTES | [EN](DEV-NOTES.en.md) | [IT](DEV-NOTES.it.md) |
@@ -37,10 +37,14 @@ No demos/examples in this source release. / Nessuna demo o esempio nella release
 | Q8-02 | [EN](extensions/gameplay/motion/CONTROLLED-DEV.en.md) | [IT](extensions/gameplay/motion/CONTROLLED-DEV.it.md) |
 | WORLD-01 | [EN](extensions/gameplay/world/WORLD-DEV.en.md) | [IT](extensions/gameplay/world/WORLD-DEV.it.md) |
 | LEVEL-01 | [EN](extensions/gameplay/level/LEVEL-DEV.en.md) | [IT](extensions/gameplay/level/LEVEL-DEV.it.md) |
-| RELEASE-NOTES-1.12.0 | [EN](RELEASE-NOTES-1.12.0.en.md) | [IT](RELEASE-NOTES-1.12.0.it.md) |
-| QUALIFICATION-1.12.0 | [EN](QUALIFICATION-1.12.0.en.md) | [IT](QUALIFICATION-1.12.0.it.md) |
 | RENDER-OPTIMIZATIONS | [EN](RENDER-OPTIMIZATIONS.en.md) | [IT](RENDER-OPTIMIZATIONS.it.md) |
 | ADAPTER-SUPPORT | [EN](ADAPTER-SUPPORT.en.md) | [IT](ADAPTER-SUPPORT.it.md) |
 | EXTERNAL-INPUTS | [EN](EXTERNAL-INPUTS.en.md) | [IT](EXTERNAL-INPUTS.it.md) |
+| LEGACY-PLUS | [EN](LEGACY-PLUS.en.md) | [IT](LEGACY-PLUS.it.md) |
+| LEGACY-STABILITY | [EN](LEGACY-STABILITY.en.md) | [IT](LEGACY-STABILITY.it.md) |
+| CAMERA-ISOLATION | [EN](CAMERA-ISOLATION.en.md) | [IT](CAMERA-ISOLATION.it.md) |
+| CAMERA-ROTATION | [EN](CAMERA-ROTATION.en.md) | [IT](CAMERA-ROTATION.it.md) |
+| RELEASE-NOTES-1.13.0 | [EN](RELEASE-NOTES-1.13.0.en.md) | [IT](RELEASE-NOTES-1.13.0.it.md) |
+| QUALIFICATION-1.13.0 | [EN](QUALIFICATION-1.13.0.en.md) | [IT](QUALIFICATION-1.13.0.it.md) |
 
-Historical versioned reports retain their original conditions and do not establish new FPS. / I rapporti storici mantengono condizioni originali e non dimostrano nuovi FPS. See DOCUMENTATION.json for the complete catalogue.
+All current paired contracts are listed in DOCUMENTATION.json. Historical reports preserve original inputs and measurements; they do not create new FPS claims. / Tutti i contratti correnti sono nel catalogo DOCUMENTATION.json. I rapporti storici conservano input e misure originali e non dimostrano nuovi FPS.

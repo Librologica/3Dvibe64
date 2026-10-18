@@ -1,9 +1,9 @@
-# Normalized16 — profilo geometrico sperimentale, 1.9.0
+# Normalized16 — profilo geometrico sperimentale, 1.13.0
 
-Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
+Contratto sorgente corrente 1.13.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -16,7 +16,7 @@ aumento della risoluzione. Mode 8 non cambia.
 
 ```powershell
 $env:TASS64_EXE = 'C:\tools\64tass.exe'
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision normalized16 -GraphicsMode 4 -SceneFile examples/q8/two-objects-mode4.json -Q8Camera interactive -VideoStandard pal -OutputDirectory ../normalized-mode4-pal
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision normalized16 -GraphicsMode 4 -SceneFile ../my-inputs/q8/two-objects-mode4.json -Q8Camera interactive -VideoStandard pal -OutputDirectory ../normalized-mode4-pal
 ```
 
 Output nuovo, esterno all'SDK. Genera ASM, PRG, label, mappa reale e build.json,

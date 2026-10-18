@@ -1,15 +1,15 @@
-# Gameplay source modules — 1.12.0
+# Gameplay source modules — 1.13.0
 
-Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
 
 
 ## Source-only release
 
-This is the source release available in the GitHub repository. No demos or examples are shipped, including
+This source release is available in the GitHub repository. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.12.0.en.md).
+and [qualification](QUALIFICATION-1.13.0.en.md).
 
 | ID | Module | Contract |
 |---|---|---|
@@ -39,7 +39,7 @@ root. Its layout is `examples/gameplay/<profile>.json` for the preset and
 `extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` and
 `extensions/gameplay/billboards/<implementation>.py` for caller-owned glue.
 These paths belong to the external project, not this SDK. Presets contain
-`profile`, `engineVersion` (1.12.0), optional `extends`, `buildName`,
+`profile`, `engineVersion` (1.13.0), optional `extends`, `buildName`,
 `billboardImplementation`, `distributionPRG`, `textureQuality`, `textureLOD`,
 `viewportLogical`, `expectedCheckpointPRGSHA256` and optional `scope`.
 The driver overlays the inherited project profiles, copies the current SDK

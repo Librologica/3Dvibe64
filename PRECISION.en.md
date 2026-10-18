@@ -1,6 +1,18 @@
-# Precision profiles — 1.10.0
+# Precision profiles — 1.13.0
 
-Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+## Precision selection in1.13.0
+
+`-Precision legacy` remains the default. `-Precision legacy-plus` is the
+bounded intermediate Mode2 profile: fractional camera rotation, Q4 near and
+screen clipping, integer final raster, no Q8 backend. It is a separate pipeline,
+not an alias of `-LegacyStability rotation`. Q8 stays explicit; Normalized16
+stays experimental. See [complete legacy-plus contract](LEGACY-PLUS.en.md),
+[precision profiles](PRECISION.en.md) and [current qualification](QUALIFICATION-1.13.0.en.md).
+The current IT/EN manuals describe1.13.0; versioned reports retain their original
+measurements. All commands assume caller-supplied external inputs; none are bundled.
+
+
+Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
 
 
 Current 1.12.0 source contract. This manual describes the ordinary exporter unless
@@ -97,7 +109,7 @@ pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 4 -Sce
 `3Dvibe64.prg`, ASM, labels, memory map, build metadata and an isolated SDK work
 copy are written there. Existing output directories are refused; nothing is
 written into the distributed SDK. Use another folder with `-VideoStandard ntsc`.
-Matching examples `two-objects-mode1.json` through `mode7.json` are included.
+Those filenames identify historical external regression inputs; no example scenes are included in this source SDK.
 Keep `-GraphicsMode` consistent with the scene's `graphicsMode`.
 
 | Q8Camera | Behavior |

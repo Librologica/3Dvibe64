@@ -1,4 +1,4 @@
-# Supporti opzionali per adapter — 1.12.0
+# Supporti opzionali per adapter — 1.13.0
 
 `extensions/gameplay/runtime_support.py` espone emitter assembly nativi e tabelle
 host. Sono primitive esplicite per adapter esterni, non un generatore Backrooms,
@@ -61,7 +61,7 @@ volume/mix e registrazione IRQ restano al chiamante. Nessun brano SID incluso.
 I test autonomi eseguono successo/errore del pool,1024chiamate a un player
 sintetico con ripristino banca/ZP, limiti camera e matematica degli span.
 Non misurano FPS e non qualificano player SID arbitrari. Le prove native usano
-progetti esterni: [qualificazione](QUALIFICATION-1.12.0.it.md),
+progetti esterni: [qualificazione](QUALIFICATION-1.13.0.it.md),
 [input](EXTERNAL-INPUTS.it.md).
 
 I callback del pool devono usare staging o ripristinare lo slot precedente in caso di errore: il manager non annulla scritture geometriche arbitrarie. Usare prefissi assembly unici quando si emettono più helper.

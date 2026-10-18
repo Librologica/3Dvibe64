@@ -1,16 +1,48 @@
+# 1.13.0 — stable engine source release / release stabile
+
+Promotes the byte-preserved dev7 engine and opt-in legacy-plus. Default legacy,
+old rotation, Q8, Normalized16 and Mode8 retain their contracts. Q4 near/screen
+clipping and finer camera rotation; camera cadence39.9006ms on the qualified
+PAL Turbo6510 ×64 route. Complete current IT/EN contracts, source-only tests,
+no demos/examples/PRGs/media. Published on GitHub.
+
+Promozione dell'engine dev7 senza variazioni dei byte. Legacy-plus opzionale;
+default legacy e altri backend preservati. Contratti, limiti e prove IT/EN
+aggiornati; nessuna demo, esempio, PRG o media; pubblicata su GitHub.
+
+## Development history / Storia dello sviluppo
+
+# Local 1.12.1-dev7 — legacy-plus camera cadence
+
+One isolated plus-only Q4 rounding-loop expansion. Native PAL Turbo6510 ×64 camera worst59.85→39.90ms; mean25.05004→25.06227 FPS. Clipping41.19121 FPS unchanged. All658 native pose images unchanged from dev6. No Q8 introduction or publication; all earlier developments/releases/frozen demos preserved.
+
+**Local dev6 / dev locale 1.12.1-dev6:** Q4 near/screen clipping for legacy-plus; default legacy, old rotation and Q8 preserved. See [LEGACY-PLUS.it.md](LEGACY-PLUS.it.md) / [LEGACY-PLUS.en.md](LEGACY-PLUS.en.md). Earlier documentation follows.
+
+**Local1.12.1-dev3:** finer legacy camera rotations and exact optimizations; [CAMERA-ROTATION.en.md](CAMERA-ROTATION.en.md), evidence in DEV-QUALIFICATION.json. Inherited documents/references follow.
+
+**Dev locale1.12.1-dev3:** rotazioni camera legacy più fini e ottimizzazioni esatte; [CAMERA-ROTATION.it.md](CAMERA-ROTATION.it.md), dati in DEV-QUALIFICATION.json. Seguono documenti e riferimenti ereditati.
+
+**Local 1.12.1-dev2:** legacy camera lab, optional Q4 profile and limits in [CAMERA-ISOLATION.en.md](CAMERA-ISOLATION.en.md). The following retains dev1/official baseline references.
+
+**Dev locale 1.12.1-dev2:** laboratorio camera legacy, profilo Q4 opzionale e limiti in [CAMERA-ISOLATION.it.md](CAMERA-ISOLATION.it.md). La documentazione seguente include i riferimenti ereditati dalla dev1/base ufficiale.
+
+**Local1.12.1-dev1:** optional legacy corrections, Mode2/4 qualification and limits in [LEGACY-STABILITY.en.md](LEGACY-STABILITY.en.md). The following documents the inherited1.12.0 APIs.
+
+**Dev locale1.12.1-dev1:** correzioni legacy opzionali, qualifica Mode2/4 e limiti in [LEGACY-STABILITY.it.md](LEGACY-STABILITY.it.md). Il seguito documenta le API ereditate dalla base1.12.0.
+
 # Changelog
 
-## 1.12.0 — source repository update / aggiornamento repository sorgente
+## 1.12.0 — local source release / release locale
 
 Exact opt-in renderer work elimination; reusable conservative wall adapter,
 static pattern/palette and raster emitters, optional pool/camera/SID support.
 No demo/example projects or assets, including preexisting examples. Explicit
-external scene/project/test inputs. GitHub source repository updated. Full bilingual
+external scene/project/test inputs. No GitHub publication. Full bilingual
 contracts, native before/after measurements and source-only package audit.
 
 Ottimizzazioni esatte esplicite, adapter conservativo pareti, emitter raster,
 retini/palette e supporti opzionali pool/camera/SID. Nessuna demo o esempio,
-neppure preesistente. Input scena/progetto/test esterni espliciti. Repository GitHub
+neppure preesistente. Input scena/progetto/test esterni espliciti. GitHub non
 aggiornato. Contratti EN/IT, misure native e controllo del pacchetto sorgente.
 
 [EN](RELEASE-NOTES-1.12.0.en.md) · [IT](RELEASE-NOTES-1.12.0.it.md)

@@ -1,6 +1,6 @@
 # Mode 7 — PNG Texture Import
 
-Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
 
 
 Current 1.12.0 source contract. This manual describes the ordinary exporter unless

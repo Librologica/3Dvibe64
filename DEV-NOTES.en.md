@@ -1,5 +1,13 @@
-# Development notes — 1.12.0
+# Development notes — 1.13.0
 
-Source release based on corrected1.11.0 plus dev14 renderer changes and generalized exact adapter primitives. Previous releases, frozen projects and private dev are preserved. Sources are published in the GitHub repository; the local delivery and earlier releases are preserved. New profiles remain explicit and bounded; runtime code/data pass through actual allocation guards. Build/test/native evidence stays outside the source checkout.
+This stable release promotes the unchanged dev7 engine, not a new
+arithmetic experiment. Default legacy stays historical; legacy-plus is explicit
+and bounded. Prior developments isolated winding/origin errors, camera position
+rounding, angular steps, source-edge clipping, near fractional loss, signed screen
+span limits and the missed camera presentation slot. Their final integration is
+documented in the current legacy-plus contract and qualification. Compatibility
+profiles remain separate. Existing releases/frozen demos are preserved. Sources are published on GitHub
+without bundled examples. Normalized16/gameplay limitations remain.
 
-[Release notes](RELEASE-NOTES-1.12.0.en.md) · [Contracts](RENDER-OPTIMIZATIONS.en.md) · [Testing](TESTING.md)
+[Release notes](RELEASE-NOTES-1.13.0.en.md) · [Legacy-plus](LEGACY-PLUS.en.md)
+[Qualification](QUALIFICATION-1.13.0.en.md) · [Tests](TESTING.md)

@@ -1,4 +1,4 @@
-# Exact renderer optimizations — 1.12.0
+# Exact renderer optimizations — 1.13.0
 
 All new options are explicit. Legacy precision, standard texture quality,
 precise lines, safe presentation and texture LOD off remain ordinary defaults.
@@ -105,7 +105,7 @@ z-buffer or a general occlusion solver. Counters oc_frames/oc_culled_total are
 
 ## Qualification and migration
 
-See [native qualification](QUALIFICATION-1.12.0.en.md), [testing](TESTING.md),
+See [native qualification](QUALIFICATION-1.13.0.en.md), [testing](TESTING.md),
 [external inputs](EXTERNAL-INPUTS.en.md) and [optional support](ADAPTER-SUPPORT.en.md).
 Compare equal camera ticks and native complete-view FPS before selecting options
 for another project. Existing build calls with no options keep renderer behavior;

@@ -1,6 +1,6 @@
 # Building Mode 8 maps
 
-Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
 
 
 Current 1.12.0 source contract. This manual describes the ordinary exporter unless
@@ -139,7 +139,7 @@ Use the supplied full final scenes; no missing array elements or assembly edits 
 From the extracted SDK root, with Python, PowerShell and 64tass available:
 
 ```powershell
-Copy-Item examples/mode8/perimeter-tutorial.json ../my-perimeter.json
+Copy-Item ../my-inputs/mode8/perimeter-tutorial.json ../my-perimeter.json
 pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile ../my-perimeter.json -ValidateOnly
 pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile ../my-perimeter.json -Mode8Run interactive -OutputDirectory ../my-perimeter-build
 x64sc -default -pal -autostartprgmode 1 ../my-perimeter-build/3Dvibe64.prg
@@ -148,8 +148,8 @@ x64sc -default -pal -autostartprgmode 1 ../my-perimeter-build/3Dvibe64.prg
 Corresponding complete builds for the other tutorials:
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/apertures-tutorial.json -Mode8Run interactive -OutputDirectory ../my-apertures-build
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/two-levels-tutorial.json -Mode8Run auto -OutputDirectory ../my-two-levels-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile ../my-inputs/mode8/apertures-tutorial.json -Mode8Run interactive -OutputDirectory ../my-apertures-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile ../my-inputs/mode8/two-levels-tutorial.json -Mode8Run auto -OutputDirectory ../my-two-levels-build
 ```
 
 Use a new empty output directory for each build. Output inside the SDK is rejected. `-Mode8Run` defaults to `interactive`; `auto` uses the validated itinerary. The PRG auto-detects PAL/NTSC; test NTSC by changing the emulator option to `-ntsc`. Public commands are checked by the Mode 8 tests and release extraction qualification. Normal build requires only the Python standard library, PowerShell and 64tass; no emulator or profiler is imported by the builder.
@@ -177,7 +177,7 @@ Long empty rays, owner discontinuities, successive overhead apertures and distin
 Install optional dependencies separately: `python -m pip install py65==1.2.0 Pillow`. Build the map first, then run:
 
 ```powershell
-python -B scripts/analyze_mode8.py --scene examples/mode8/perimeter.json --build ../perimeter-reference-build --sampling examples/mode8/sampling/perimeter.json --out ../perimeter-cost
+python -B scripts/analyze_mode8.py --scene ../my-inputs/mode8/perimeter.json --build ../perimeter-reference-build --sampling ../my-inputs/mode8/sampling/perimeter.json --out ../perimeter-cost
 ```
 
 Use a build of that **same** scene (for example the public command in [MODE 8.en.md](MODE8.en.md)). The sampling document contains `poses`, each `[xQ8,yQ8,yaw,eyeInteger,eyeFraction]`, evaluated in order with persistent RAM. For another map check every sampling pose; invalid footprint/eye/range samples are explicitly recorded and skipped, not converted.

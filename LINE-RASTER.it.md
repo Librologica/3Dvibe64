@@ -1,16 +1,16 @@
 # Linee ibride: geometria Q8, raster intero additivo
 
-Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.12.0. Il manuale descrive l’exporter ordinario
+Contratto sorgente corrente 1.13.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
 `-Precision q8 -LineRaster hybrid` è supportato nelle GraphicsMode 1, 2 e 5. Conserva camera Q8, trasformazioni mesh, proiezione degli estremi e clipping near/schermo. Cambia soltanto il raster finale della linea clippata. `precise` resta il default delle linee Q8; la geometria `legacy` resta il default dell'engine. Hybrid non semplifica la proiezione né modifica lo shading del fill solido.
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 2 -SceneFile examples/q8/two-objects-mode2.json -Q8Camera auto -LineRaster hybrid -OutputDirectory ../hybrid-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision q8 -GraphicsMode 2 -SceneFile ../my-inputs/q8/two-objects-mode2.json -Q8Camera auto -LineRaster hybrid -OutputDirectory ../hybrid-build
 ```
 
 Gli estremi Q2 clippati e limitati vengono arrotondati al pixel intero più vicino, con parità verso la coordinata positiva. L'asse maggiore canonico crescente produce un campione Bresenham connesso per posizione. L'errore unsigned a 8 bit usa il carry per il nono bit; estensione massima 159. Nessun prodotto, divisione o codice automodificante nel walker. Invertire gli estremi produce la stessa sequenza. L'IRQ non usa il suo scratch.
