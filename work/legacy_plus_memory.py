@@ -12,15 +12,17 @@ PAT=re.compile(r'\n; Plus allocation block (\w+)\n(?:\* = \$[0-9a-f]+|\.virtual 
 
 def parts_of(source):
     matches=list(PAT.finditer(source))
-    if matches:return PAT.sub('',source),{m[1]:m[2] for m in matches}
+    existing={m[1]:m[2] for m in matches}
+    if matches:source=PAT.sub('',source)
     marks=[('camera','\nlc_helpers_begin:\n'),('rotation','\nlr_helpers_begin:\n'),
       ('products','\n; Runtime-only allocation after every existing vertex/face/color buffer.'),
       ('terms','\nlr_terms_valid:'),('near','\nlpn_helpers_begin:\n'),('screen','\nlps_helpers_begin:\n')]
-    for name,marker in [('attributes','\nlpa_attributes_begin:\n')]+[(n,'\nlpp_'+n+'_begin:\n') for n in ('bridge','edge','ratio','sample','span','state')]:
+    for name,marker in [('attributes','\nlpa_attributes_begin:\n')]+[(n,'\nlpp_'+n+'_begin:\n') for n in ('bridge','edge','ratio','screen_attrs','sample','span','state')]:
         if marker in source:marks.append((name,marker))
-    positions=[(name,source.index(marker)) for name,marker in marks]
+    positions=[(name,source.index(marker)) for name,marker in marks if marker in source]
+    if not positions:return source,existing
     assert positions==sorted(positions,key=lambda p:p[1])
-    base=source[:positions[0][1]];parts={}
+    base=source[:positions[0][1]];parts=dict(existing)
     for i,(name,start) in enumerate(positions):
         end=positions[i+1][1] if i+1<len(positions) else len(source)
         parts[name]=source[start:end]
@@ -28,8 +30,9 @@ def parts_of(source):
     # solid renderer already has live code. Keep its existing exact serial
     # fallback until a separately measured LUT placement is introduced.
     old='.if LR_PRODUCT_LUT_END <= RUNTIME_BUFFER_LIMIT\n'
-    assert parts['products'].count(old)==1
-    parts['products']=parts['products'].replace(old,'.if 0 ; plus solid modes: existing exact serial fallback\n',1)
+    if old in parts['products']:
+        assert parts['products'].count(old)==1
+        parts['products']=parts['products'].replace(old,'.if 0 ; plus solid modes: existing exact serial fallback\n',1)
     return base,parts
 
 def attach(base,parts,placed=None):

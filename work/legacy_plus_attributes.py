@@ -15,6 +15,10 @@ def patch(s):
         nonlocal s
         assert s.count(old)==1,(old[:80],s.count(old))
         s=s.replace(old,new,1)
+    if textured and 'CAMERA_PLANE_CLIP_PROFILE = $00' in s:
+        # Mode7's old emitter injected a camera-plane classifier. Plus uses
+        # the ordinary near8 polygon path, whose loader already classifies.
+        replace(' jsr camera_plane_face_classify\n beq sfd_no\n','')
     # The original Gouraud transfer changes X from vertex index to face slot.
     # Reload the original vertex before copying its camera-space Q4 cache.
     a=s.index('near_append_current_vertex:\n');b=s.index('near_append_intersection:\n',a)

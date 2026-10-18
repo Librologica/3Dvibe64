@@ -281,8 +281,15 @@ if ($PSBoundParameters.ContainsKey('LegacyStability') -and ($Precision -ne 'lega
  throw '-LegacyStability is only applicable to the ordinary legacy Mode1-7 renderer.'
 }
 if ($LegacyStability -in @('corrected','camera','rotation')) { $NoExplorerMatrixFold = $true }
-if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2','3','4','5','6')) {
- throw 'This development stage supports legacy-plus Mode1 to Mode6.'
+if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2','3','4','5','6','7')) {
+ throw 'Legacy-plus supports Mode1 to Mode7.'
+}
+if ($LegacyPlusClipEdges) {
+ if (-not $PSBoundParameters.ContainsKey('ExplorerClipMode')) { $ExplorerClipMode='near'; $PSBoundParameters['ExplorerClipMode']='near' }
+ if (-not $PSBoundParameters.ContainsKey('ExplorerNearCrossMode')) { $ExplorerNearCrossMode='poly'; $PSBoundParameters['ExplorerNearCrossMode']='poly' }
+ if ($ExplorerClipMode -ne 'near' -or $ExplorerNearCrossMode -ne 'poly' -or $ExplorerScreenClipMode -ne 'poly' -or $Mode4NearProfile -ne 'default') {
+  throw 'Legacy-plus requires near8 polygon/screen clipping: ExplorerClipMode near, ExplorerNearCrossMode poly, ExplorerScreenClipMode poly, Mode4NearProfile default.'
+ }
 }
 if ($LegacyStability -in @('camera','rotation') -and ((-not $LegacyPlusClipEdges -and $GraphicsMode -ne '2') -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal')) {
  throw 'The camera experiment requires Mode2, walkLite, normal viewport and high-basic-v2.'
@@ -490,8 +497,10 @@ if ($Mode7Experimental) {
  if ($Projection -ne 'extended-table') { throw 'Mode 7 v1 requires Projection=extended-table' }
  if (-not $PSBoundParameters.ContainsKey('Quality')) { $Quality = 'fast' }
  if ($Quality -ne 'fast') { throw 'Mode 7 v1 is qualified only with Quality=fast' }
- if ($Mode4NearProfile -eq 'default') { $Mode4NearProfile = 'clip' }
- if ($Mode4NearProfile -ne 'clip') { throw 'Mode 7 v1 requires the camera-plane clipping profile' }
+ if (-not $LegacyPlusClipEdges) {
+  if ($Mode4NearProfile -eq 'default') { $Mode4NearProfile = 'clip' }
+  if ($Mode4NearProfile -ne 'clip') { throw 'Mode 7 v1 requires the camera-plane clipping profile' }
+ }
  $mode7SceneInput = (Resolve-Path -LiteralPath $SceneFile).Path
  $mode7Prepared = Join-Path $Root 'build/mode7-scene.json'
  # Share resolved JSON/CLI texture settings with preparation. Keep the
@@ -4012,6 +4021,7 @@ $CameraFullRuntimeFlag = $CameraWalkFullFlag
 $ExplorerRuntimeModeInitial = if ($CameraWalkLiteFlag -ne 0) { 1 } else { 2 }
 $ExplorerResetOnSpaceFlag = if (($CameraMovableFlag -ne 0) -and $ExplorerResetOnSpace.IsPresent) { 1 } else { 0 }
 $WorldGroundPlaneRequestedFlag = if (@($WorldGrounds | Where-Object { [int]$_.Enabled -ne 0 -and [string]$_.Mode -eq "plane" }).Count -gt 0) { 1 } else { 0 }
+if ($LegacyPlusClipEdges -and $WorldGroundPlaneRequestedFlag -ne 0) { throw 'Legacy-plus near8 currently requires Ground plane clipping disabled; explicit room/floor meshes are supported.' }
 $ExplorerNearClipFlag = if (($CameraMovableFlag -ne 0 -or $WorldGroundPlaneRequestedFlag -ne 0) -and ($ExplorerClipMode -eq "near" -or $WorldGroundPlaneRequestedFlag -ne 0)) { 1 } else { 0 }
 $ExplorerNearSkipCrossFlag = if ($WorldGroundPlaneRequestedFlag -eq 0 -and $WireOnlyRenderFlag -eq 0 -and $ExplorerNearClipFlag -ne 0 -and $ExplorerNearCrossMode -eq "skip") { 1 } else { 0 }
 $ExplorerNearFillFlag = if ($ExplorerNearClipFlag -ne 0 -and $ExplorerNearCrossMode -eq "fill") { 1 } else { 0 }
