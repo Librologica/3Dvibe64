@@ -442,7 +442,10 @@ lps_helpers_end:
 .cerror * > $d000,"Plus subpixel near helpers overlap IO; reduce scene size"
 ; LEGACY_PLUS_NEAR_SCREEN_Q4=1
 '''
-    return source+helpers
+    result=source+helpers
+    if re.search(r'(?m)^GRAPHICS_MODE = \$01$', source):
+        result+='\n.cerror * > $a000,"Mode1 plus helpers overlap high code"\n'
+    return result
 
 
 def main():

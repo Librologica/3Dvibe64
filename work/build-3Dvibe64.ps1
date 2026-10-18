@@ -281,7 +281,10 @@ if ($PSBoundParameters.ContainsKey('LegacyStability') -and ($Precision -ne 'lega
  throw '-LegacyStability is only applicable to the ordinary legacy Mode1-7 renderer.'
 }
 if ($LegacyStability -in @('corrected','camera','rotation')) { $NoExplorerMatrixFold = $true }
-if ($LegacyStability -in @('camera','rotation') -and ($GraphicsMode -ne '2' -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal')) {
+if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2')) {
+ throw 'This development stage supports legacy-plus Mode1 and Mode2.'
+}
+if ($LegacyStability -in @('camera','rotation') -and ((-not $LegacyPlusClipEdges -and $GraphicsMode -ne '2') -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal')) {
  throw 'The camera experiment requires Mode2, walkLite, normal viewport and high-basic-v2.'
 }
 if ($LegacyStability -eq 'rotation' -and -not $NoFpsOverlay) {
@@ -38564,6 +38567,8 @@ if ($LegacyStability -ne 'historical') {
 }
 
 if ($LegacyPlusClipEdges) {
+ & python -B (Join-Path $Root 'legacy_plus_modes.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus mode integration failed' }
  & python -B (Join-Path $Root 'legacy_plus_clip.py') $AsmPath
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus wire edge provenance generation failed' }
  & python -B (Join-Path $Root 'legacy_plus_near.py') $AsmPath
