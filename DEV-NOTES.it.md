@@ -1,14 +1,7 @@
-# Note di sviluppo — 1.13.0
+# Note di sviluppo — 1.14.0
 
-Questa release stabile promuove l'engine dev7 invariato, non un nuovo
-esperimento aritmetico. Legacy default resta historical; legacy-plus è esplicito
-e delimitato. Le dev precedenti hanno isolato errori winding/origine,
-arrotondamento posizione camera, passi angolari, clipping degli spigoli sorgente,
-perdita frazioni near, limiti signed schermo e mancata finestra di presentazione
-camera. L'integrazione finale è descritta nel contratto legacy-plus e nella
-qualificazione correnti. I profili di compatibilità restano distinti.
-Release/demo congelate preservate. Sorgenti pubblicati su GitHub senza esempi
-distribuiti. Rimangono i limiti Normalized16/gameplay.
+SDK sorgente stabile promosso dalla dev qualificata1.14.0-dev1, basata sulla1.13.0. Aggiunge legacy-plus Mode1–7 e Mode7 affine/prospettica senza geometria Q8. Selezione sempre esplicita; controlli legacy/Q8 e riferimento Mode2 plus originario invariati nei byte. Nessuna modifica a cartelle ufficiali/congelate o demo.
 
-[Note release](RELEASE-NOTES-1.13.0.it.md) · [Legacy-plus](LEGACY-PLUS.it.md)
-[Qualificazione](QUALIFICATION-1.13.0.it.md) · [Test](TESTING.md)
+Gli adapter conservano le convenzioni raster native; il near/schermo Q4 trasporta UV/luce coerenti. UW/VW/W prospettici usano carrier16 bit delimitati e DDA texture comuni. Span half-open vuoti esclusi; helper solidi/Gouraud nella RAM realmente libera con guardie. Rifiuti di profilo/profondità/RAM espliciti.
+
+[Build, ABI e vincoli](LEGACY-PLUS.it.md) · [FPS/stabilità nativi e regressioni](QUALIFICATION-1.14.0.it.md) · [test](TESTING.md). Le prestazioni camera Mode4 regrediscono rispetto a legacy; il costo prospettico dipende dalla scena. È un profilo stabile qualificato, non l'estensione di ogni opzione legacy a plus.

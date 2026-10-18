@@ -1,9 +1,13 @@
 # GraphicsMode 7 — Texture Mapping
 
-Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+## Legacy-plus in 1.14.0
+
+Mode1–7 plus and Mode7 affine/perspective are promoted from the qualified development into this stable SDK. The near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [native qualification](QUALIFICATION-1.14.0.en.md).
+
+Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
-Current 1.12.0 source contract. This manual describes the ordinary exporter unless
+Current 1.14.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -88,3 +92,8 @@ aliasing and fixed-point quantization remain in both paths.
 See [texture format](TEXTURE-GUIDE.en.md), [PNG import](PNG-TEXTURES.en.md),
 [texture precision](TEXTURE-PRECISION.en.md), [examples](EXTERNAL-INPUTS.en.md),
 and [tests](TESTING.md). Modes 1–6/8 and old affine output retain their references.
+
+
+## 1.14.0 application boundary
+
+Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](RELEASE-NOTES-1.14.0.en.md#distribution-and-private-application-boundary).

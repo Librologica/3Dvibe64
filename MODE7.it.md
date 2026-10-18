@@ -1,9 +1,13 @@
 # GraphicsMode 7 — Texture mapping
 
-Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+## Legacy-plus nella 1.14.0
+
+Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica nativa](QUALIFICATION-1.14.0.it.md).
+
+Release stabile 1.14.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.13.0. Il manuale descrive l’exporter ordinario
+Contratto sorgente corrente 1.14.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -88,3 +92,8 @@ quantizzazione fixed-point in entrambi i percorsi.
 Vedere [formato texture](TEXTURE-GUIDE.it.md), [import PNG](PNG-TEXTURES.it.md),
 [precisione texture](TEXTURE-PRECISION.it.md), [esempi](EXTERNAL-INPUTS.it.md) e
 [test](TESTING.md). Mode 1–6/8 e output affine precedente conservano i riferimenti.
+
+
+## Confine applicativo 1.14.0
+
+Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).

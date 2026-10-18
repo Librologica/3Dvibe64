@@ -1,4 +1,4 @@
-# LEGACY STABILITY — 1.13.0
+# LEGACY STABILITY — 1.14.0
 
 Il selettore di compatibilità è `-Precision legacy -LegacyStability corrected`.
 Omettere LegacyStability o scegliere `historical` conserva il legacy ordinario.
@@ -16,7 +16,7 @@ fra mesh arbitrarie trasformate indipendentemente.
 È un profilo numerico di compatibilità, distinto da legacy-plus. Gli angoli
 camera restano a byte (1,40625gradi), i coefficienti Q6 e il near intero.
 Le prove native Mode2/Mode4 dev1 sono storiche, non una nuova promessa FPS1.13.0.
-Usare [legacy-plus](LEGACY-PLUS.it.md) per la qualifica Mode2 near/camera corrente.
+Usare [legacy-plus](LEGACY-PLUS.it.md) per la qualifica Mode1–7 near/camera corrente.
 Non si deduce una nuova qualifica Ground, altri modi, NTSC o hardware.
 
 I controlli aritmetici indipendenti richiedono build esterne prima/dopo fornite

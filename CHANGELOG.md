@@ -1,3 +1,15 @@
+# 1.14.0 — stable source SDK / SDK sorgente stabile
+
+Promote the qualified1.14.0-dev1 legacy-plus Mode1–7 extension, with affine/perspective Mode7 and none/flat/Gouraud A/B/C. Q4 geometry/fine camera, coherent clipping attributes, empty-span handling and guarded RAM retain their qualified runtime bytes. Legacy stays default. No demos/examples or private Underworld application changes are included. Current version/publication metadata and the complete IT/EN contracts are aligned. [English notes](RELEASE-NOTES-1.14.0.en.md) · [native qualification](QUALIFICATION-1.14.0.en.md).
+
+Promossa l'estensione legacy-plus Mode1–7 qualificata nella1.14.0-dev1, con Mode7 affine/prospettica e none/flat/Gouraud A/B/C. Geometria Q4/camera fine, attributi di clipping coerenti, span vuoti e RAM protetta conservano i byte runtime qualificati. Legacy resta default. Escluse demo/esempi e modifiche applicative private Underworld. Allineati metadati di versione/pubblicazione e tutti i contratti IT/EN. [Note italiane](RELEASE-NOTES-1.14.0.it.md) · [qualifica nativa](QUALIFICATION-1.14.0.it.md).
+
+# 1.14.0-dev1 — separate local development / dev locale separata
+
+Extends opt-in legacy-plus to Mode1–7, affine and perspective Mode7, without Q8 geometry. Q4 near/screen and shade/UV carriers remain coherent; half-open projective spans and guarded solid/Gouraud RAM allocation are corrected. Native PAL Turbo6510×64 comparisons include camera routes, near/screen crossings, frozen buffers and full orbit/pitch. Mode4 camera FPS regresses vs legacy; finite quantization and memory/profile bounds remain. Default legacy/Q8 reference bytes are preserved. Unpublished, no demos or official/frozen changes. [Evidence](QUALIFICATION-1.14.0-dev1.en.md).
+
+Legacy-plus estesa a Mode1–7 e texture Mode7 affini/prospettiche senza geometria Q8. Clipping Q4, attributi coerenti, span half-open e RAM Gouraud verificati. Confronti nativi di stabilità/FPS per camera e clipping; regressione FPS camera Mode4 dichiarata. Dev non pubblicata, nessuna modifica a release ufficiali o demo congelate. [Prove](QUALIFICATION-1.14.0-dev1.it.md).
+
 # 1.13.0 — stable engine source release / release stabile
 
 Promotes the byte-preserved dev7 engine and opt-in legacy-plus. Default legacy,

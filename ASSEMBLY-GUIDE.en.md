@@ -1,8 +1,8 @@
 # 3Dvibe64 — Assembly Programmer's Guide
 
-## Working copy and output paths in1.13.0
+## Working copy and output paths in1.14.0
 
-Ordinary legacy and legacy-plus write generated ASM/labels/map/PRG in their
+Ordinary legacy and legacy-plus write generated ASM/PRG in their
 SDK working copy's `work/`, plus `work/build/3Dvibe64.prg`. Copy the complete
 source SDK to a new external working directory first and run ordinary commands
 there. They reject `-OutputDirectory`. Q8, Normalized16 and Mode8 instead accept
@@ -10,32 +10,25 @@ there. They reject `-OutputDirectory`. Q8, Normalized16 and Mode8 instead accept
 below are generated files, never precompiled files included in this SDK.
 
 
-## Precision selection in1.13.0
+## Stable release 1.14.0
 
-`-Precision legacy` remains the default. `-Precision legacy-plus` is the
-bounded intermediate Mode2 profile: fractional camera rotation, Q4 near and
-screen clipping, integer final raster, no Q8 backend. It is a separate pipeline,
-not an alias of `-LegacyStability rotation`. Q8 stays explicit; Normalized16
-stays experimental. See [complete legacy-plus contract](LEGACY-PLUS.en.md),
-[precision profiles](PRECISION.en.md) and [current qualification](QUALIFICATION-1.13.0.en.md).
-The current IT/EN manuals describe1.13.0; versioned reports retain their original
-measurements. All commands assume caller-supplied external inputs; none are bundled.
+`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [native qualification](QUALIFICATION-1.14.0.en.md). Stable source distribution published on GitHub; external scenes/assets only.
 
 
-Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
-Current 1.12.0 source contract. This manual describes the ordinary exporter unless
+Current 1.14.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
 ## Source-only release
 
-This source release is available in the GitHub repository. No demos or examples are shipped, including
+This stable source distribution is published on GitHub. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.13.0.en.md).
+and [qualification](QUALIFICATION-1.14.0.en.md).
 
 ## Mode 7 fast — 1.7.0
 

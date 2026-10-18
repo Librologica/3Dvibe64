@@ -1,5 +1,5 @@
 {
-  "version": "1.13.0",
+  "version": "1.14.0",
   "locales": [
     "en",
     "it"
@@ -196,14 +196,14 @@
       "it": "CAMERA-ROTATION.it.md"
     },
     {
-      "id": "RELEASE-NOTES-1.13.0",
-      "en": "RELEASE-NOTES-1.13.0.en.md",
-      "it": "RELEASE-NOTES-1.13.0.it.md"
+      "id": "RELEASE-NOTES-1.14.0",
+      "en": "RELEASE-NOTES-1.14.0.en.md",
+      "it": "RELEASE-NOTES-1.14.0.it.md"
     },
     {
-      "id": "QUALIFICATION-1.13.0",
-      "en": "QUALIFICATION-1.13.0.en.md",
-      "it": "QUALIFICATION-1.13.0.it.md"
+      "id": "QUALIFICATION-1.14.0",
+      "en": "QUALIFICATION-1.14.0.en.md",
+      "it": "QUALIFICATION-1.14.0.it.md"
     }
   ],
   "currentBilingual": [
@@ -217,9 +217,11 @@
     "SECURITY.md",
     "LICENSE-DOCUMENTATION.md",
     "ROADMAP.md",
-    "RELEASE-NOTES-1.13.0.md"
+    "RELEASE-NOTES-1.14.0.md"
   ],
   "historicalReports": [
+    "DEVELOPMENT-1.14.0-dev1.en.md",
+    "DEVELOPMENT-1.14.0-dev1.it.md",
     "GOURAUD-MODE6-REPORT.md",
     "MODE8-MEMORY.md",
     "MODE8-QUALIFICATION.md",
@@ -229,11 +231,18 @@
     "QUALIFICATION-1.11.0.it.md",
     "QUALIFICATION-1.12.0.en.md",
     "QUALIFICATION-1.12.0.it.md",
+    "QUALIFICATION-1.13.0.en.md",
+    "QUALIFICATION-1.13.0.it.md",
+    "QUALIFICATION-1.14.0-dev1.en.md",
+    "QUALIFICATION-1.14.0-dev1.it.md",
     "RELEASE-NOTES-1.11.0.en.md",
     "RELEASE-NOTES-1.11.0.it.md",
     "RELEASE-NOTES-1.12.0.en.md",
     "RELEASE-NOTES-1.12.0.it.md",
-    "RELEASE-NOTES-1.12.0.md"
+    "RELEASE-NOTES-1.12.0.md",
+    "RELEASE-NOTES-1.13.0.en.md",
+    "RELEASE-NOTES-1.13.0.it.md",
+    "RELEASE-NOTES-1.13.0.md"
   ],
   "historyPolicy": "Preserve versioned measurements and archived release notes; current paired contracts take precedence.",
   "gameplayProfiles": [
@@ -274,6 +283,6 @@
   "allExamplesExcluded": true,
   "GitHubPublished": true,
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0",
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0",
   "releasePageCreated": true
 }

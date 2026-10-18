@@ -1,9 +1,13 @@
-# Mode 7 texture precision — 1.13.0
+# Mode 7 texture precision — 1.14.0
 
-Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
+## Legacy-plus projective profile
+
+In 1.14.0, Mode7 perspective is also available with `-Precision legacy-plus`. Use the [plus build/configuration contract](LEGACY-PLUS.en.md): Q4 geometry, near8, camera-forward depth8–256WU, standard texture quality and LOD off. Lighting none/flat/Gouraud A/B/C is supported. UW/VW/W unsigned16 carriers reuse a texture sampler without linking Q8 geometry. The Q8-specific depth1–256 and compositor-C restrictions below apply to Q8 only. [Native comparison](QUALIFICATION-1.14.0.en.md).
+
+Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
-Current 1.12.0 source contract. This manual describes the ordinary exporter unless
+Current 1.14.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -28,7 +32,7 @@ by itself. Recommend Q8 above 20 MHz, legacy at 20 MHz and below; this is not an
 FPS guarantee. Projective textures add substantial cost even on accelerated CPUs.
 
 Select projective interpolation with scene `"texturePrecision":"perspective"`
-or `-TexturePrecision perspective`, together with `-Precision q8 -GraphicsMode 7`.
+or `-TexturePrecision perspective`, together with `-Precision q8 -GraphicsMode 7` or the bounded legacy-plus profile above.
 An explicit CLI texture setting overrides the scene setting. Affine/perspective
 do not change the source texture format, PNG importer, repeat, palette or lighting.
 
@@ -41,7 +45,7 @@ map and build metadata are written there. No PRG, production demo or soundtrack
 is distributed. The example is the existing public diagnostic cube specialized
 for this profile, not the development scene.
 
-## Supported profile
+## Q8 supported profile
 
 All existing Q8 restrictions apply: normal 160 × 100 logical viewport without
 header/FPS split; walkLite stationary/interactive/auto; explicit PAL/NTSC; disjoint nonshared
@@ -128,3 +132,8 @@ cube is 673 bytes, with no extra absolute scratch. A measured cube pose saves
 wait and presentation. This is not a native FPS measurement or universal gain.
 Additional code reduces scene-specific memory headroom; unsafe layouts are
 still rejected, not silently simplified. See [release notes](RELEASE-NOTES-1.6.1.md).
+
+
+## 1.14.0 application boundary
+
+Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](RELEASE-NOTES-1.14.0.en.md#distribution-and-private-application-boundary).

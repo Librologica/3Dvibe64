@@ -1,4 +1,8 @@
-# Ottimizzazioni esatte del renderer — 1.13.0
+# Ottimizzazioni esatte del renderer — 1.14.0
+
+## Legacy-plus nella 1.14.0
+
+Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica nativa](QUALIFICATION-1.14.0.it.md).
 
 Tutte le nuove opzioni sono esplicite. Restano i default ordinari: precisione
 legacy, texture standard, linee precise, presentazione safe e LOD texture off.
@@ -103,7 +107,7 @@ oc_frames/oc_culled_total sono16bit; contano occorrenze, non pareti uniche.
 
 ## Qualificazione e migrazione
 
-Vedere [prove native](QUALIFICATION-1.13.0.it.md), [test](TESTING.md),
+Vedere [prove native](QUALIFICATION-1.14.0.it.md), [test](TESTING.md),
 [input esterni](EXTERNAL-INPUTS.it.md) e [supporti opzionali](ADAPTER-SUPPORT.it.md).
 Confrontare immagini agli stessi tick e FPS nativi prima di scegliere opzioni
 per un altro progetto. Senza nuove opzioni il comportamento del renderer resta;
@@ -143,3 +147,8 @@ L’occlusione pareti richiede anche una palette hardware VIC condivisa e immuta
 `palette_indices=None` controlla tutto il catalogo materiali. Se contiene palette inutilizzate, fornire una lista esplicita non vuota di tutte le voci raggiungibili, inclusi materiale+offset riflettività, inizializzazione e override istanza/colore. L’adapter garantisce che nessun’altra voce/colore diventi attivo. Sono controllate omogenee solo queste voci; transizioni dinamiche non dichiarate restano fuori contratto.
 
 `static_patterns.native_cache(face_count,low=0,high=1,prefix='sf',row_cache='sp_current_row')` emette codice/dati di cache nativa alla generazione. Supporta1..255facce; dati6*face_count+68byte più codice/guardie. `sf_assign`: A=livello0..16,X=faccia, chiamare solo alla generazione/modifica. `sf_load`: X=faccia, copia quattro byte già pronti nella cache dello span; una faccia non assegnata restituisce carry zero senza cambiarla. `sf_invalidate`: X=faccia. Carry impostato indica successo; A/Y modificati,X conservato. Voci iniziali non assegnate; faccia/livello errati rifiutati. Aggiornare soltanto fra viste complete. L’adapter gestisce fallback e invalidazione per geometria/materiale/luce. Nessun calcolo di luce per frame viene installato.
+
+
+## Confine applicativo 1.14.0
+
+Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).

@@ -1,4 +1,4 @@
-# Quick start / Guida rapida — 1.13.0
+# Quick start / Guida rapida — 1.14.0
 
 ## English
 
@@ -16,7 +16,7 @@ python -B scripts/run_release_tests.py
 ```
 
 The scene must declare a compatible graphicsMode/camera. The legacy-plus command
-and required Mode2 options are in [LEGACY-PLUS.en.md](LEGACY-PLUS.en.md).
+and required Mode1–7 profile options are in [LEGACY-PLUS.en.md](LEGACY-PLUS.en.md).
 Legacy stays default; plus, Q8 and experimental Normalized16 are explicit.
 Do not use Python -O/-OO or PYTHONOPTIMIZE for qualification.
 
@@ -30,7 +30,7 @@ sono nel `work/` della copia e `-OutputDirectory` è rifiutato. Q8, Normalized16
 e Mode8 accettano quel parametro. Nessun esempio, demo o strumento eseguibile è incluso.
 
 I comandi sopra richiedono graphicsMode/camera compatibili nella scena. Comando
-legacy-plus e opzioni Mode2 obbligatorie sono in [LEGACY-PLUS.it.md](LEGACY-PLUS.it.md).
+legacy-plus e opzioni obbligatorie del profilo Mode1–7 sono in [LEGACY-PLUS.it.md](LEGACY-PLUS.it.md).
 Legacy resta default; plus, Q8 e Normalized16 sperimentale sono espliciti.
 Non usare -O/-OO/PYTHONOPTIMIZE per la qualifica.
 
