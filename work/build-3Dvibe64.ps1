@@ -281,8 +281,8 @@ if ($PSBoundParameters.ContainsKey('LegacyStability') -and ($Precision -ne 'lega
  throw '-LegacyStability is only applicable to the ordinary legacy Mode1-7 renderer.'
 }
 if ($LegacyStability -in @('corrected','camera','rotation')) { $NoExplorerMatrixFold = $true }
-if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2')) {
- throw 'This development stage supports legacy-plus Mode1 and Mode2.'
+if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2','3')) {
+ throw 'This development stage supports legacy-plus Mode1, Mode2 and Mode3.'
 }
 if ($LegacyStability -in @('camera','rotation') -and ((-not $LegacyPlusClipEdges -and $GraphicsMode -ne '2') -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal')) {
  throw 'The camera experiment requires Mode2, walkLite, normal viewport and high-basic-v2.'
@@ -38587,6 +38587,10 @@ if ($Mode7Experimental) {
  if ($LASTEXITCODE -ne 0) { throw 'Mode 7 code generation failed' }
 }
 
+if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2')) {
+ & python -B (Join-Path $Root 'legacy_plus_memory.py') $AsmPath --assembler $Tass
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus solid helper placement failed' }
+}
 $tassArgs = @("-a", "-B", "-o", $PrgPath)
 if ($StableRelocatedCodeFlag -ne 0) {
  Remove-Item -LiteralPath $Mode5StableSegmentLabelsPath -Force -ErrorAction SilentlyContinue
