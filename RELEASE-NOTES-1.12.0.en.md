@@ -1,6 +1,6 @@
 # Release notes — 1.12.0
 
-Source-only release available in the GitHub repository. No demos or examples
+Local source-only release; GitHub has not been updated. No demos or examples
 are included, including preexisting ones. No PRG, music, artwork or captures.
 
 ## Changes

@@ -1,11 +1,11 @@
-# Moduli sorgente gameplay — 1.12.0
+# Moduli sorgente gameplay — 1.13.0
 
-Release 1.12.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 ## Distribuzione di soli sorgenti
 
-Questa è la release sorgente disponibile nel repository GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.12.0.it.md).
+Questa release sorgente è disponibile nel repository GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.13.0.it.md).
 
 | ID | Modulo | Contratto |
 |---|---|---|
@@ -35,7 +35,7 @@ Il driver di compatibilità `work/build-gameplay.py` riceve una radice esterna:
 `extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` e
 `extensions/gameplay/billboards/<implementation>.py` per i collegamenti
 dell’utilizzatore. Questi percorsi appartengono al progetto esterno, non
-all’SDK. Il preset contiene `profile`, `engineVersion` (1.12.0), `extends`
+all’SDK. Il preset contiene `profile`, `engineVersion` (1.13.0), `extends`
 opzionale, `buildName`, `billboardImplementation`, `distributionPRG`,
 `textureQuality`, `textureLOD`, `viewportLogical`,
 `expectedCheckpointPRGSHA256` e `scope` opzionale. Il driver sovrappone i

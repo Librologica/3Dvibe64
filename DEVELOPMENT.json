@@ -1,6 +1,6 @@
 {
-  "version": "1.12.0",
-  "status": "qualified source release; explicit bounded extensions",
+  "version": "1.13.0",
+  "status": "stable",
   "newDemosIncluded": false,
   "Mode8Modified": false,
   "ordinaryEngineModified": true,
@@ -186,12 +186,37 @@
   "GitHubPublished": true,
   "renderOptimizationContracts": "RENDER-OPTIMIZATIONS.en.md",
   "release": {
-    "version": "1.12.0",
-    "publication": "GitHub source repository",
+    "version": "1.13.0",
+    "publication": "GitHub source repository and stable release",
+    "stable": true,
+    "prerelease": false,
     "GitHubPublished": true,
-    "allExamplesExcluded": true
+    "allExamplesExcluded": true,
+    "repositoryURL": "https://github.com/Librologica/3Dvibe64",
+    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0",
+    "releasePageCreated": true
   },
-  "publication": "GitHub source repository",
+  "baseVersion": "1.12.0",
+  "nativeQualifiedModes": [
+    2
+  ],
+  "officialRelease": true,
+  "nativeTestedModes": [
+    2
+  ],
+  "cameraMotionQualifiedModes": [
+    2
+  ],
+  "clippingQualified": true,
+  "publicSelector": "-Precision legacy-plus",
+  "aliasOfRotation": false,
+  "clippingPixelExact": false,
+  "nearThresholdObservationTicks": [],
+  "cameraCadenceQualified": true,
+  "promotedDevelopment": "1.12.1-dev7",
+  "qualification": "QUALIFICATION-1.13.0.json",
+  "publication": "GitHub source repository and stable release",
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-  "releasePageCreated": false
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0",
+  "releasePageCreated": true
 }

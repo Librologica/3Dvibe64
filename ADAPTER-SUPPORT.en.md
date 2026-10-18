@@ -1,4 +1,4 @@
-# Optional adapter support — 1.12.0
+# Optional adapter support — 1.13.0
 
 `extensions/gameplay/runtime_support.py` exports native assembly emitters and
 host tables. They are opt-in primitives for external adapters, not an automatic
@@ -61,6 +61,6 @@ Self-contained assembled tests execute the pool success/failure path,1024
 synthetic player calls with bank/ZP restoration, camera bounds and native span
 math. They do not measure FPS or establish arbitrary SID compatibility.
 Native performance and image tests use external projects and are listed in
-[qualification](QUALIFICATION-1.12.0.en.md). [Inputs](EXTERNAL-INPUTS.en.md).
+[qualification](QUALIFICATION-1.13.0.en.md). [Inputs](EXTERNAL-INPUTS.en.md).
 
 Pool callbacks must stage their writes or restore the old slot on failure: the manager does not roll back arbitrary geometry writes. Use unique assembly prefixes when emitting multiple helpers.

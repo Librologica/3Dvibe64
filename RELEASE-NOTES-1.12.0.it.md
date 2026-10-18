@@ -1,6 +1,6 @@
 # Note di rilascio — 1.12.0
 
-Release di soli sorgenti disponibile nel repository GitHub. Nessuna demo o esempio,
+Release locale di soli sorgenti; GitHub non aggiornato. Nessuna demo o esempio,
 neppure preesistente. Nessun PRG, brano, disegno o cattura.
 
 ## Modifiche

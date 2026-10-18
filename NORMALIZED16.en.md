@@ -1,6 +1,6 @@
-# Normalized16 — experimental geometry profile, 1.9.0
+# Normalized16 — experimental geometry profile, 1.13.0
 
-Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
 
 
 Current 1.12.0 source contract. This manual describes the ordinary exporter unless
@@ -16,7 +16,7 @@ or a higher-resolution display. Mode 8 is not affected.
 
 ```powershell
 $env:TASS64_EXE = 'C:\tools\64tass.exe'
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision normalized16 -GraphicsMode 4 -SceneFile examples/q8/two-objects-mode4.json -Q8Camera interactive -VideoStandard pal -OutputDirectory ../normalized-mode4-pal
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -Precision normalized16 -GraphicsMode 4 -SceneFile ../my-inputs/q8/two-objects-mode4.json -Q8Camera interactive -VideoStandard pal -OutputDirectory ../normalized-mode4-pal
 ```
 
 Output must be new and outside the SDK. ASM, PRG, labels, actual memory map and

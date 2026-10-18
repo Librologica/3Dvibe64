@@ -1,4 +1,14 @@
-# Input esterni — 1.12.0
+# Input esterni — 1.13.0
+
+## Copia di lavoro e output nella1.13.0
+
+Legacy e legacy-plus ordinari scrivono ASM/label/mappa/PRG nel `work/` della
+copia SDK usata, più `work/build/3Dvibe64.prg`. Copiare prima l'intero SDK in
+una cartella di lavoro esterna nuova ed eseguire lì i comandi ordinari.
+Rifiutano `-OutputDirectory`; Q8, Normalized16 e Mode8 accettano invece quel
+parametro per un output esterno nuovo. I file descritti sotto sono generati,
+non file precompilati distribuiti con questo SDK.
+
 
 Non sono distribuiti demo, esempi, scene sorgenti, disegni, musica, percorsi
 camera, launcher di demo, programmi compilati o catture native. Lo ZIP non
@@ -15,7 +25,8 @@ I comandi usano **file esterni dell'utilizzatore**, non modelli allegati.
 Eseguirli dalla radice SDK, scegliendo un output nuovo e fuori dai sorgenti.
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -SceneFile ../my-inputs/scene.json -GraphicsMode 6 -MemoryLayout high-basic-v2 -OutputDirectory ../my-build
+Copy-Item -LiteralPath . -Destination ../my-build-sdk -Recurse
+pwsh -NoProfile -File ../my-build-sdk/work/build-3Dvibe64.ps1 -SceneFile ../my-inputs/scene.json -GraphicsMode 6 -MemoryLayout high-basic-v2
 python -B work/q8/build.py --scene ../my-inputs/textured-scene.json --out ../my-q8-build --mode 7 --camera auto --texture-precision perspective --texture-quality standard --engine-experiments inside-planes,bounded-divide,packed-samples
 ```
 
@@ -30,7 +41,7 @@ fornire `examples/gameplay/<profile>.json`, `extensions/gameplay/common`,
 `extensions/gameplay/billboards` ed `extensions/gameplay/profiles/<profile>`
 per tutti i profili nella catena di ereditarietà. Fornisce scena/UI/asset,
 binding dei materiali, script di build, camera e logica applicativa. L'SDK
-non genera questi input. Aggiornare `engineVersion` del preset a1.12.0 e
+non genera questi input. Aggiornare `engineVersion` del preset a1.13.0 e
 riqualificare l'hash. [GAMEPLAY](GAMEPLAY.it.md) descrive l'ABI dei13 profili.
 
 ## Input di regressione
@@ -46,5 +57,5 @@ python -B scripts/run_release_tests.py --test-inputs ../my-regression-inputs tes
 
 Gli input entrano solo nelle copie QA temporanee, mai nel pacchetto sorgente.
 Non usare `-O`, `-OO` o PYTHONOPTIMIZE. Build e prove native sono separate in
-`reports/` e `qualification/` della cartella privata di qualificazione, fuori dal repository pubblico
+`reports/` e `qualification/` della release locale, fuori da `repository/`
 e dallo ZIP sorgenti. Non viene distribuito un archivio degli input esterni.

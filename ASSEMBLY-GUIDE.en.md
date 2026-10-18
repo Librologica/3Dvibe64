@@ -1,6 +1,28 @@
 # 3Dvibe64 — Assembly Programmer's Guide
 
-Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+## Working copy and output paths in1.13.0
+
+Ordinary legacy and legacy-plus write generated ASM/labels/map/PRG in their
+SDK working copy's `work/`, plus `work/build/3Dvibe64.prg`. Copy the complete
+source SDK to a new external working directory first and run ordinary commands
+there. They reject `-OutputDirectory`. Q8, Normalized16 and Mode8 instead accept
+`-OutputDirectory` for a new external output directory. The outputs described
+below are generated files, never precompiled files included in this SDK.
+
+
+## Precision selection in1.13.0
+
+`-Precision legacy` remains the default. `-Precision legacy-plus` is the
+bounded intermediate Mode2 profile: fractional camera rotation, Q4 near and
+screen clipping, integer final raster, no Q8 backend. It is a separate pipeline,
+not an alias of `-LegacyStability rotation`. Q8 stays explicit; Normalized16
+stays experimental. See [complete legacy-plus contract](LEGACY-PLUS.en.md),
+[precision profiles](PRECISION.en.md) and [current qualification](QUALIFICATION-1.13.0.en.md).
+The current IT/EN manuals describe1.13.0; versioned reports retain their original
+measurements. All commands assume caller-supplied external inputs; none are bundled.
+
+
+Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
 
 
 Current 1.12.0 source contract. This manual describes the ordinary exporter unless
@@ -9,11 +31,11 @@ are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
 ## Source-only release
 
-This is the source release available in the GitHub repository. No demos or examples are shipped, including
+This source release is available in the GitHub repository. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.12.0.en.md).
+and [qualification](QUALIFICATION-1.13.0.en.md).
 
 ## Mode 7 fast — 1.7.0
 
@@ -101,7 +123,7 @@ The files most relevant to an assembly programmer are:
 | Path | Role |
 |---|---|
 | `work/build-3Dvibe64.ps1` | Authoritative builder and engine generator. It contains PowerShell host logic, assembly templates, substitutions, and memory checks. |
-| `examples/*.json` | Public minimal or demonstrative scenes. They also serve as readable API tests. |
+| External scene JSON | Supplied by the caller; no `examples/` directory is distributed. |
 | `validation/**/*.json` | Scenes aimed at clipping, memory, depth, and outline regressions. |
 | `work/tools/c64_material_scales.generated.json` | VIC-II ramps for material families and reflectivity levels. |
 | `scripts/test_*.py` | Host-side and release/runtime contracts. |

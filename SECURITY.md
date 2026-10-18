@@ -1,5 +1,7 @@
 # Security policy
 
+Current source contract / Contratto sorgente corrente: 1.13.0.
+
 3Dvibe64 1.12.0: [EN optimization contract](RENDER-OPTIMIZATIONS.en.md) · [Contratto IT](RENDER-OPTIMIZATIONS.it.md).
 All examples require external inputs / Tutti gli esempi richiedono input esterni.
 

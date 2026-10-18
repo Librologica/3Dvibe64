@@ -1,6 +1,6 @@
-# Testing / Verifiche — 1.12.0
+# Testing / Verifiche — 1.13.0
 
-[Qualification EN](QUALIFICATION-1.12.0.en.md) · [Qualificazione IT](QUALIFICATION-1.12.0.it.md)
+[Qualification EN](QUALIFICATION-1.13.0.en.md) · [Qualificazione IT](QUALIFICATION-1.13.0.it.md)
 
 ## English
 
@@ -17,7 +17,7 @@ python -B scripts/run_release_tests.py --test-inputs ../my-regression-inputs tes
 ```
 
 The default suite uses self-contained package/math/configuration contracts.
-Historical scene regressions require explicit external examples/validation,
+Historical scene regressions require explicit external ../my-inputs/validation,
 installed only into temporary SDK copies. Full archived inputs and native
 projects are not distributed. Public renderer checks accept external builds:
 
@@ -47,7 +47,7 @@ possono richiedere VICE_X64SC / VICE_XSCPU64. Dipendenze installate separatament
 nessun eseguibile o ambiente incluso. Non usare -O,-OO,PYTHONOPTIMIZE.
 
 I comandi sopra eseguono test autonomi di pacchetto, matematica e configurazioni.
-Le regressioni storiche richiedono examples/validation esterni, copiati solo in
+Le regressioni storiche richiedono ../my-inputs/validation esterni, copiati solo in
 SDK temporanei. I test renderer accettano build esterne. Target delle misure:
 VICE Turbo6510 PAL312x63 moltiplicatore64; solo viste nuove complete su
 fps_frame_done, cicli base985248Hz. --sound-off vale soltanto per progetti
@@ -60,3 +60,25 @@ condizioni. Warp,tempo host e replay CPU non misurano FPS. --poses ferma la
 simulazione solo per confrontare immagini; non misura prestazioni. Il probe
 richiede le etichette IRQ/simulazione Q8 standard; altri adapter richiedono un
 probe specifico qualificato.
+
+## Legacy-plus release contract / Contratto release legacy-plus
+
+The default suite includes `test_legacy_plus.py`: it verifies93 promoted engine
+inputs, the native aggregate provenance, four positive compiler selections and
+six incompatible-option rejections. Its temporary synthetic triangle is a
+compiler unit fixture, not a packaged scene or demo. The test never infers FPS
+from CPU replay. Legacy-plus native FPS require a validated external project
+driver/counter; the generic Q8 probe does not automatically provide those labels.
+The1.13.0 QA rebuilds the exact dev7 native PRGs before reusing their measurements.
+
+La suite predefinita include `test_legacy_plus.py`: controlla93 input engine,
+provenienza degli aggregati nativi, quattro selezioni positive del compilatore
+e sei rifiuti per opzioni incompatibili. Il triangolo sintetico temporaneo è una
+fixture unitaria, non una scena/demo distribuita. Nessun FPS è dedotto da replay
+CPU. Gli FPS nativi plus richiedono driver/contatore esterni verificati: il probe
+Q8 generico non fornisce automaticamente tali label. La qualifica1.13.0 ricompila
+i PRG nativi dev7 esatti prima di riutilizzarne le misure.
+
+```powershell
+python -B scripts/run_release_tests.py test_legacy_plus.py
+```

@@ -1,4 +1,4 @@
-# Ottimizzazioni esatte del renderer — 1.12.0
+# Ottimizzazioni esatte del renderer — 1.13.0
 
 Tutte le nuove opzioni sono esplicite. Restano i default ordinari: precisione
 legacy, texture standard, linee precise, presentazione safe e LOD texture off.
@@ -103,7 +103,7 @@ oc_frames/oc_culled_total sono16bit; contano occorrenze, non pareti uniche.
 
 ## Qualificazione e migrazione
 
-Vedere [prove native](QUALIFICATION-1.12.0.it.md), [test](TESTING.md),
+Vedere [prove native](QUALIFICATION-1.13.0.it.md), [test](TESTING.md),
 [input esterni](EXTERNAL-INPUTS.it.md) e [supporti opzionali](ADAPTER-SUPPORT.it.md).
 Confrontare immagini agli stessi tick e FPS nativi prima di scegliere opzioni
 per un altro progetto. Senza nuove opzioni il comportamento del renderer resta;

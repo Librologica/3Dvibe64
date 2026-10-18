@@ -57,16 +57,16 @@ def links(files):
 
 
 def main():
-    version=read('VERSION').strip();assert version=='1.12.0'
+    version=read('VERSION').strip();assert version=='1.13.0'
     package=load('PACKAGE-MANIFEST.json');assert package['package']['version']==version
     assert not package['package']['prerelease'] and not package['package']['precompiledPrograms']
     docs=load('DOCUMENTATION.json');assert docs['version']==version and docs['locales']==['en','it']
-    assert docs['sourceOnly'] and docs['publication']=='GitHub source repository' and not docs['newDemosIncluded']
+    assert docs['sourceOnly'] and docs['publication']=='GitHub source repository and stable release' and not docs['newDemosIncluded']
     files=set(docs['currentBilingual'])
     for pair in docs['currentPairs']:
         for locale in ['en','it']:
             p=pair[locale];assert (ROOT/p).is_file(),p
-            assert '1.12.0' in read(p),p
+            assert version in read(p),p
             files.add(p)
     files.update(docs['historicalReports'])
     for lang in ['en','it']:

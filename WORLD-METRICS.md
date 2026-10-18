@@ -8,7 +8,7 @@ Current 1.12.0 ordinary metric/geometry contract; inherited sections retain thei
 Contratto metrico/geometrico ordinario 1.12.0; sezioni ereditate con profilo/versione dichiarati.
 Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
 [gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
-[qualification EN](QUALIFICATION-1.12.0.en.md), [qualificazione IT](QUALIFICATION-1.12.0.it.md).
+[qualification EN](QUALIFICATION-1.13.0.en.md), [qualificazione IT](QUALIFICATION-1.13.0.it.md).
 
 ## Precision profiles / Profili di precisione — 1.10.0
 

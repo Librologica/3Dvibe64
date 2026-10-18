@@ -1,13 +1,13 @@
 # GraphicsMode 8 — 2.5D
 
-Release 1.12.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All examples/demos and native evidence are external to the source distribution.
+Release 1.13.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All ../my-inputs/demos and native evidence are external to the source distribution.
 
 
 Current 1.12.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
-Inherited 1.10.2 backend in 1.12.0: only the qualified bitmap path remains. EngineExperiments omission/none is accepted; all and retired Mode 8 flags/combinations are rejected. See [release notes](RELEASE-NOTES-1.12.0.en.md).
+Inherited 1.10.2 backend in 1.12.0: only the qualified bitmap path remains. EngineExperiments omission/none is accepted; all and retired Mode 8 flags/combinations are rejected. See [release notes](RELEASE-NOTES-1.13.0.en.md).
 <!-- maintenance-1.10.1 -->
 Official 1.10.1 requires capture acquisition provenance for native reuse and retains mandatory input checks under optimized Python. Coincident heading is 64. The adaptive renderer can miss interior discontinuities: see [diagnostic, measured cost and known limit](QUALIFICATION-1.10.1-rc1.en.md). Runtime sampling is unchanged.
 
@@ -25,7 +25,7 @@ Minimum dependencies: PowerShell, Python 3.10+ standard library, and 64tass. Qua
 From the SDK root:
 
 ```powershell
-pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile examples/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../perimeter-reference-build
+pwsh -NoProfile -File work/build-3Dvibe64.ps1 -GraphicsMode 8 -SceneFile ../my-inputs/mode8/perimeter.json -Mode8Run interactive -OutputDirectory ../perimeter-reference-build
 ```
 
 The builder prints the selected backend and reason. It dispatches before any polygon parser. Outputs include `3Dvibe64.prg`, readable `3Dvibe64.asm`, labels, listing, assembler log, input scene and a build/memory summary. Use `-ValidateOnly` to validate without assembling or creating an output directory.
