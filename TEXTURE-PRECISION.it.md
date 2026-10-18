@@ -1,13 +1,13 @@
-# Precisione texture Mode 7 — 1.14.0-dev1
+# Precisione texture Mode 7 — 1.14.0
 
 ## Profilo prospettico legacy-plus
 
-Nella 1.14.0-dev1, Mode7 prospettica è disponibile anche con `-Precision legacy-plus`. Usare il [contratto build/configurazione plus](LEGACY-PLUS.it.md): geometria Q4, near8, profondità lungo camera8–256WU, qualità texture standard e LOD off. Sono supportati none/flat/Gouraud A/B/C. I carrier unsigned16 UW/VW/W riusano il campionatore texture senza collegare geometria Q8. I vincoli Q8 depth1–256 e compositor C delle sezioni seguenti valgono solo per Q8. [Confronto nativo](QUALIFICATION-1.14.0-dev1.it.md).
+Nella 1.14.0, Mode7 prospettica è disponibile anche con `-Precision legacy-plus`. Usare il [contratto build/configurazione plus](LEGACY-PLUS.it.md): geometria Q4, near8, profondità lungo camera8–256WU, qualità texture standard e LOD off. Sono supportati none/flat/Gouraud A/B/C. I carrier unsigned16 UW/VW/W riusano il campionatore texture senza collegare geometria Q8. I vincoli Q8 depth1–256 e compositor C delle sezioni seguenti valgono solo per Q8. [Confronto nativo](QUALIFICATION-1.14.0.it.md).
 
-Dev locale 1.14.0-dev1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Release stabile 1.14.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.14.0-dev1. Il manuale descrive l’exporter ordinario
+Contratto sorgente corrente 1.14.0. Il manuale descrive l’exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -132,3 +132,8 @@ esclusi stall VIC, IRQ, attesa e presentazione: non sono FPS nativi o guadagni
 universali. Il codice aggiunto riduce il margine memoria della singola scena;
 layout non sicuri restano rifiutati, non semplificati in silenzio.
 Vedere [note release](RELEASE-NOTES-1.6.1.md).
+
+
+## Confine applicativo 1.14.0
+
+Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).

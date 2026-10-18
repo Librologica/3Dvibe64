@@ -1,4 +1,4 @@
-# Precision / Precisione — 1.14.0-dev1
+# Precision / Precisione — 1.14.0
 
 | Geometria | Mode | Camera/clipping | Texture Mode7 |
 |---|---|---|---|
@@ -8,7 +8,7 @@
 |normalized16|1–7|Profilo sperimentale separato|Affini|
 |Mode8|8|Renderer dedicato|Contratto proprio|
 
-Dev locale non pubblicata; build di riferimento legacy/Q8 identiche nei byte. Attivare texture prospettiche non trasforma plus in Q8. Vincoli e ABI camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md), FPS/stabilità nella [qualifica](QUALIFICATION-1.14.0-dev1.it.md). Le sezioni seguenti conservano il contratto Q8 e non estendono plus a fixed/walkFull, viewport small, Ground o roll.
+Profilo stabile SDK pubblico; build di riferimento legacy/Q8 identiche nei byte. Attivare texture prospettiche non trasforma plus in Q8. Vincoli e ABI camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md), FPS/stabilità nella [qualifica](QUALIFICATION-1.14.0.it.md). Le sezioni seguenti conservano il contratto Q8 e non estendono plus a fixed/walkFull, viewport small, Ground o roll.
 
 ## Default e raccomandazione
 

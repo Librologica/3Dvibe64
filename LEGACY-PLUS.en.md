@@ -1,6 +1,6 @@
-# Legacy-plus — 1.14.0-dev1
+# Legacy-plus — 1.14.0
 
-`-Precision legacy-plus` is the explicit intermediate renderer for Mode1–7. It combines the legacy Q6 object matrix with Q4 camera geometry, Q10 camera coefficients and 4096 yaw/pitch phases. Legacy stays default. The compatibility `-LegacyStability rotation` remains Mode2 only. Mode8 and Normalized16 keep separate contracts. This local development is unpublished.
+`-Precision legacy-plus` is the explicit intermediate renderer for Mode1–7. It combines the legacy Q6 object matrix with Q4 camera geometry, Q10 camera coefficients and 4096 yaw/pitch phases. Legacy stays default. The compatibility `-LegacyStability rotation` remains Mode2 only. Mode8 and Normalized16 keep separate contracts. This stable distribution is prepared locally; publication status is recorded in PACKAGE-MANIFEST.json.
 
 ## Build and configuration
 
@@ -41,4 +41,4 @@ Camera-forward depth must stay **8–256WU inclusive** after near clipping. `ps_
 
 ## Qualification
 
-[Native comparison and limitations](QUALIFICATION-1.14.0-dev1.en.md) · [machine-readable evidence](QUALIFICATION-1.14.0-dev1.json) · [testing](TESTING.md). The final delivered builds must match the measured PRG hashes before reusing their FPS. PAL Turbo6510×64, safe, silent; complete routes after warm-up. No new NTSC or physical-hardware claim. The original1.13.0 Mode2 report remains [historical](QUALIFICATION-1.13.0.en.md), not a measurement of other scenes.
+[Native comparison and limitations](QUALIFICATION-1.14.0.en.md) · [machine-readable evidence](QUALIFICATION-1.14.0.json) · [testing](TESTING.md). The final delivered builds must match the measured PRG hashes before reusing their FPS. PAL Turbo6510×64, safe, silent; complete routes after warm-up. No new NTSC or physical-hardware claim. The original1.13.0 Mode2 report remains [historical](QUALIFICATION-1.13.0.en.md), not a measurement of other scenes.

@@ -1,4 +1,4 @@
-# LEGACY STABILITY — 1.14.0-dev1
+# LEGACY STABILITY — 1.14.0
 
 Il selettore di compatibilità è `-Precision legacy -LegacyStability corrected`.
 Omettere LegacyStability o scegliere `historical` conserva il legacy ordinario.

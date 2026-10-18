@@ -1,4 +1,4 @@
-# Quick start / Guida rapida — 1.14.0-dev1
+# Quick start / Guida rapida — 1.14.0
 
 ## English
 

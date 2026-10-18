@@ -1,6 +1,6 @@
-# Testing / Verifiche — 1.14.0-dev1
+# Testing / Verifiche — 1.14.0
 
-[Qualification EN](QUALIFICATION-1.14.0-dev1.en.md) · [Qualificazione IT](QUALIFICATION-1.14.0-dev1.it.md)
+[Qualification EN](QUALIFICATION-1.14.0.en.md) · [Qualificazione IT](QUALIFICATION-1.14.0.it.md)
 
 ## English
 

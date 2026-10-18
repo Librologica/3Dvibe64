@@ -1,6 +1,6 @@
-# Documentation / Documentazione — 1.14.0-dev1
+# Documentation / Documentazione — 1.14.0
 
-Source SDK only; no demos/examples. / Solo SDK sorgente, senza demo/esempi.
+Stable source SDK; no demos/examples. / SDK sorgente stabile, senza demo/esempi.
 
 [Quick start / Guida rapida](QUICKSTART.md) · [Testing / Verifiche](TESTING.md)
 
@@ -44,10 +44,31 @@ Source SDK only; no demos/examples. / Solo SDK sorgente, senza demo/esempi.
 | LEGACY-STABILITY | [EN](LEGACY-STABILITY.en.md) | [IT](LEGACY-STABILITY.it.md) |
 | CAMERA-ISOLATION | [EN](CAMERA-ISOLATION.en.md) | [IT](CAMERA-ISOLATION.it.md) |
 | CAMERA-ROTATION | [EN](CAMERA-ROTATION.en.md) | [IT](CAMERA-ROTATION.it.md) |
-| RELEASE-NOTES-1.13.0 | [EN](RELEASE-NOTES-1.13.0.en.md) | [IT](RELEASE-NOTES-1.13.0.it.md) |
-| QUALIFICATION-1.13.0 | [EN](QUALIFICATION-1.13.0.en.md) | [IT](QUALIFICATION-1.13.0.it.md) |
+| RELEASE-NOTES-1.14.0 | [EN](RELEASE-NOTES-1.14.0.en.md) | [IT](RELEASE-NOTES-1.14.0.it.md) |
+| QUALIFICATION-1.14.0 | [EN](QUALIFICATION-1.14.0.en.md) | [IT](QUALIFICATION-1.14.0.it.md) |
 
-| DEVELOPMENT-1.14.0-dev1 | [EN](DEVELOPMENT-1.14.0-dev1.en.md) | [IT](DEVELOPMENT-1.14.0-dev1.it.md) |
-| QUALIFICATION-1.14.0-dev1 | [EN](QUALIFICATION-1.14.0-dev1.en.md) | [IT](QUALIFICATION-1.14.0-dev1.it.md) |
+The current paired contracts are catalogued in DOCUMENTATION.json. Versioned development/release reports remain historical evidence. / I contratti correnti sono nel catalogo DOCUMENTATION.json. I rapporti versionati di sviluppo e release restano prove storiche.
 
-All current paired contracts are listed in DOCUMENTATION.json. Historical reports preserve original inputs and measurements; they do not create new FPS claims. / Tutti i contratti correnti sono nel catalogo DOCUMENTATION.json. I rapporti storici conservano input e misure originali e non dimostrano nuovi FPS.
+- [Historical / Storico: DEVELOPMENT-1.14.0-dev1.en.md](DEVELOPMENT-1.14.0-dev1.en.md)
+- [Historical / Storico: DEVELOPMENT-1.14.0-dev1.it.md](DEVELOPMENT-1.14.0-dev1.it.md)
+- [Historical / Storico: GOURAUD-MODE6-REPORT.md](GOURAUD-MODE6-REPORT.md)
+- [Historical / Storico: MODE8-MEMORY.md](MODE8-MEMORY.md)
+- [Historical / Storico: MODE8-QUALIFICATION.md](MODE8-QUALIFICATION.md)
+- [Historical / Storico: NORMALIZED16-QUALIFICATION.md](NORMALIZED16-QUALIFICATION.md)
+- [Historical / Storico: Q8-QUALIFICATION.md](Q8-QUALIFICATION.md)
+- [Historical / Storico: QUALIFICATION-1.11.0.en.md](QUALIFICATION-1.11.0.en.md)
+- [Historical / Storico: QUALIFICATION-1.11.0.it.md](QUALIFICATION-1.11.0.it.md)
+- [Historical / Storico: QUALIFICATION-1.12.0.en.md](QUALIFICATION-1.12.0.en.md)
+- [Historical / Storico: QUALIFICATION-1.12.0.it.md](QUALIFICATION-1.12.0.it.md)
+- [Historical / Storico: QUALIFICATION-1.13.0.en.md](QUALIFICATION-1.13.0.en.md)
+- [Historical / Storico: QUALIFICATION-1.13.0.it.md](QUALIFICATION-1.13.0.it.md)
+- [Historical / Storico: QUALIFICATION-1.14.0-dev1.en.md](QUALIFICATION-1.14.0-dev1.en.md)
+- [Historical / Storico: QUALIFICATION-1.14.0-dev1.it.md](QUALIFICATION-1.14.0-dev1.it.md)
+- [Historical / Storico: RELEASE-NOTES-1.11.0.en.md](RELEASE-NOTES-1.11.0.en.md)
+- [Historical / Storico: RELEASE-NOTES-1.11.0.it.md](RELEASE-NOTES-1.11.0.it.md)
+- [Historical / Storico: RELEASE-NOTES-1.12.0.en.md](RELEASE-NOTES-1.12.0.en.md)
+- [Historical / Storico: RELEASE-NOTES-1.12.0.it.md](RELEASE-NOTES-1.12.0.it.md)
+- [Historical / Storico: RELEASE-NOTES-1.12.0.md](RELEASE-NOTES-1.12.0.md)
+- [Historical / Storico: RELEASE-NOTES-1.13.0.en.md](RELEASE-NOTES-1.13.0.en.md)
+- [Historical / Storico: RELEASE-NOTES-1.13.0.it.md](RELEASE-NOTES-1.13.0.it.md)
+- [Historical / Storico: RELEASE-NOTES-1.13.0.md](RELEASE-NOTES-1.13.0.md)

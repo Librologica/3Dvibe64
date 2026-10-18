@@ -2,15 +2,15 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.14.0-dev1",
-    "version": "1.14.0-dev1",
+    "displayName": "3Dvibe64 1.14.0",
+    "version": "1.14.0",
     "distribution": "source-sdk",
-    "permanentFiles": 318,
+    "permanentFiles": 324,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
     "documentationLicense": "CC-BY-NC-4.0",
-    "prerelease": true
+    "prerelease": false
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
@@ -1150,7 +1150,7 @@
       "screenClip": "Q4 then native raster contract",
       "angularPhases": 4096,
       "q8Introduced": false,
-      "qualification": "QUALIFICATION-1.14.0-dev1.json",
+      "qualification": "QUALIFICATION-1.14.0.json",
       "texturePrecision": [
         "affine",
         "perspective"
@@ -1884,20 +1884,18 @@
     "platform": "Windows; Linux and physical hardware not tested"
   },
   "stablePromotion": {
-    "version": "1.10.2",
-    "baseOfficialVersion": "1.10.1",
-    "qualifiedDevCommit": "799be44544933aa759111748b9dc68accaab5da7",
+    "version": "1.14.0",
+    "baseOfficialVersion": "1.13.0",
+    "qualifiedDevCommit": "3d7a30b7e73d5b7960b51c906c6244b4f354ecaf",
     "runtimeAndDefaultsUnchanged": true,
     "optionsUnchanged": true,
-    "reportCorrection": "CC72EA225E21117CFC16BB792EB85EEF28AE9A62802BF0F594C94AE5B7D6D813",
+    "sourceDevelopment": "1.14.0-dev1",
+    "publication": "stable source distribution prepared locally; not published",
     "notes": [
-      "RELEASE-NOTES-1.10.2.en.md",
-      "RELEASE-NOTES-1.10.2.it.md"
+      "RELEASE-NOTES-1.14.0.en.md",
+      "RELEASE-NOTES-1.14.0.it.md"
     ],
-    "developmentCycle": "closed; no further experiment added",
-    "publication": "historical stable promotion; this development is unpublished",
-    "qualifications": "Windows/VICE named profiles; Linux and physical hardware untested",
-    "evidenceArchive": "3Dvibe64_1.10.2_evidence.zip"
+    "qualifications": "Named PAL Turbo6510 x64 profiles; no new Linux, NTSC or physical-hardware qualification"
   },
   "gameplayDevelopment": {
     "experimental": true,
@@ -2077,23 +2075,25 @@
     "budgetPolicy": "Historical per-profile byte budgets exclude new optional helpers; use actual assembled map and allocator guards"
   },
   "release": {
-    "status": "separate qualified local development",
+    "status": "stable source distribution",
     "sourceDevelopment": "1.14.0-dev1",
-    "publication": "local separate development; not published",
+    "publication": "stable source distribution prepared locally; not published",
     "demoArchives": false,
     "documentation": "DOCUMENTATION.json",
     "releaseNotes": {
-      "en": "DEVELOPMENT-1.14.0-dev1.en.md",
-      "it": "DEVELOPMENT-1.14.0-dev1.it.md"
+      "en": "RELEASE-NOTES-1.14.0.en.md",
+      "it": "RELEASE-NOTES-1.14.0.it.md"
     },
     "newDemosIncluded": false,
     "GitHubPublished": false,
-    "qualification": "QUALIFICATION-1.14.0-dev1.json",
-    "version": "1.14.0-dev1",
-    "prerelease": true,
+    "qualification": "QUALIFICATION-1.14.0.json",
+    "version": "1.14.0",
+    "prerelease": false,
     "repositoryURL": "https://github.com/Librologica/3Dvibe64",
     "releaseURL": null,
-    "releasePageCreated": false
+    "releasePageCreated": false,
+    "stable": true,
+    "privateUnderworldPortIncluded": false
   },
   "distributionPolicy": {
     "newDemosIncluded": false,
@@ -2281,8 +2281,8 @@
       "work/legacy_plus_modes.py": "5EC2342769692E3C2B6F48099E6B474C14B16A3F4B0E8973641968BC8DCF4400",
       "work/legacy_plus_projective.py": "B3ED84D78D5A37013B01BA78118BA25144BE76BD32670FB4D198F7B674B8A24A"
     },
-    "promotedFrom": "separate development based on 1.13.0",
-    "publication": "local separate development; not published",
+    "promotedFrom": "1.14.0-dev1",
+    "publication": "stable source distribution prepared locally; not published",
     "GitHubPublished": false,
     "repositoryURL": "https://github.com/Librologica/3Dvibe64",
     "releaseURL": null,
@@ -2442,8 +2442,8 @@
       "changesThisDev": "mode adapters, native Y precision, coherent near/screen attributes, guarded RAM, projective texture carriers",
       "baseDevelopment": "1.13.0",
       "cameraCadenceQualified": true,
-      "stableSince": "Mode2 only:1.13.0; extensions in separate dev",
-      "qualification": "QUALIFICATION-1.14.0-dev1.json",
+      "stableSince": "Mode2:1.13.0; Mode1-7 and Mode7 affine/perspective:1.14.0",
+      "qualification": "QUALIFICATION-1.14.0.json",
       "testedModes": [
         1,
         2,
@@ -2455,6 +2455,6 @@
       ]
     },
     "promotedDevelopment": "1.14.0-dev1",
-    "localStableRelease": false
+    "localStableRelease": true
   }
 }

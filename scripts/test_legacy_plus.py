@@ -7,8 +7,8 @@ from mode8.common import require_qualification_checks
 
 def main():
     require_qualification_checks()
-    q=json.loads((ROOT/'QUALIFICATION-1.14.0-dev1.json').read_text(encoding='utf-8'))
-    assert q['version']=='1.14.0-dev1' and not q['GitHubPublished']
+    q=json.loads((ROOT/'QUALIFICATION-1.14.0.json').read_text(encoding='utf-8'))
+    assert q['version']=='1.14.0' and not q['GitHubPublished']
     assert q['defaultPrecision']=='legacy' and q['publicSelector']=='-Precision legacy-plus'
     assert not q['aliasOfRotation'] and not q['q8GeometryBackendIntroduced']
     for name,digest in q['engineSourceSHA256'].items():

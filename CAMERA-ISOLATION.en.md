@@ -1,4 +1,4 @@
-# CAMERA ISOLATION — 1.14.0-dev1
+# CAMERA ISOLATION — 1.14.0
 
 The compatibility selector `-Precision legacy -LegacyStability camera` requires
 Mode2, walkLite, normal and high-basic-v2. It preserves four fractional position

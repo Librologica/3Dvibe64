@@ -1,4 +1,4 @@
-# Precision / Precisione — 1.14.0-dev1
+# Precision / Precisione — 1.14.0
 
 | Geometry | Modes | Camera/clipping | Mode7 textures |
 |---|---|---|---|
@@ -8,7 +8,7 @@
 |normalized16|1–7|Experimental separate profile|Affine|
 |Mode8|8|Dedicated renderer|Own contract|
 
-Local unpublished development; legacy/Q8 reference builds remain byte-identical. Plus does not become Q8 when projective textures are enabled. Its constraints and camera ABI are in [LEGACY-PLUS](LEGACY-PLUS.en.md), FPS/stability in [qualification](QUALIFICATION-1.14.0-dev1.en.md). The sections below retain the established Q8 contract; they do not widen plus to fixed/walkFull, small viewport, Ground or roll.
+Stable public SDK profile; legacy/Q8 reference builds remain byte-identical. Plus does not become Q8 when projective textures are enabled. Its constraints and camera ABI are in [LEGACY-PLUS](LEGACY-PLUS.en.md), FPS/stability in [qualification](QUALIFICATION-1.14.0.en.md). The sections below retain the established Q8 contract; they do not widen plus to fixed/walkFull, small viewport, Ground or roll.
 
 ## Default and recommendation
 
