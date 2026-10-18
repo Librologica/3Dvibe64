@@ -1,6 +1,6 @@
-# Testing / Verifiche — 1.13.0
+# Testing / Verifiche — 1.14.0
 
-[Qualification EN](QUALIFICATION-1.13.0.en.md) · [Qualificazione IT](QUALIFICATION-1.13.0.it.md)
+[Qualification EN](QUALIFICATION-1.14.0.en.md) · [Qualificazione IT](QUALIFICATION-1.14.0.it.md)
 
 ## English
 
@@ -61,23 +61,21 @@ simulazione solo per confrontare immagini; non misura prestazioni. Il probe
 richiede le etichette IRQ/simulazione Q8 standard; altri adapter richiedono un
 probe specifico qualificato.
 
-## Legacy-plus release contract / Contratto release legacy-plus
+## Legacy-plus development contract / Contratto dev legacy-plus
 
-The default suite includes `test_legacy_plus.py`: it verifies93 promoted engine
-inputs, the native aggregate provenance, four positive compiler selections and
-six incompatible-option rejections. Its temporary synthetic triangle is a
-compiler unit fixture, not a packaged scene or demo. The test never infers FPS
-from CPU replay. Legacy-plus native FPS require a validated external project
-driver/counter; the generic Q8 probe does not automatically provide those labels.
-The1.13.0 QA rebuilds the exact dev7 native PRGs before reusing their measurements.
+The default suite verifies current source hashes,57 exact native rebuild identities,
+32 full-orbit sets and native provenance. Four positive compiler selections and
+six incompatible-option rejections use temporary synthetic inputs. No fixture or
+compiled program is shipped. The external development tools capture the actual
+native complete-view counter, native intervals and frozen poses. The generic Q8
+probe is not automatically compatible with the ordinary plus ABI.
 
-La suite predefinita include `test_legacy_plus.py`: controlla93 input engine,
-provenienza degli aggregati nativi, quattro selezioni positive del compilatore
-e sei rifiuti per opzioni incompatibili. Il triangolo sintetico temporaneo è una
-fixture unitaria, non una scena/demo distribuita. Nessun FPS è dedotto da replay
-CPU. Gli FPS nativi plus richiedono driver/contatore esterni verificati: il probe
-Q8 generico non fornisce automaticamente tali label. La qualifica1.13.0 ricompila
-i PRG nativi dev7 esatti prima di riutilizzarne le misure.
+La suite verifica hash sorgenti correnti,57 identità di ricompilazione nativa,
+32 serie in orbita e provenienza nativa. Quattro selezioni del compilatore e sei
+rifiuti usano input sintetici temporanei, non demo distribuite. Gli strumenti
+esterni della dev misurano contatore viste complete/intervalli nativi e pose ferme;
+il probe Q8 generico non è automaticamente compatibile con l'ABI plus ordinaria.
+Le prove callback py65 controllano aritmetica e non producono FPS.
 
 ```powershell
 python -B scripts/run_release_tests.py test_legacy_plus.py

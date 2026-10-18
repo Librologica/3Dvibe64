@@ -1,50 +1,14 @@
-# Profili di precisione — 1.13.0
+# Precision / Precisione — 1.14.0
 
-## Scelta della precisione nella1.13.0
+| Geometria | Mode | Camera/clipping | Texture Mode7 |
+|---|---|---|---|
+|legacy (default)|1–7|Contratto storico intero/angoli byte|Affini|
+|legacy-plus (esplicito)|1–7|Q4, camera fine, near8; profilo delimitato walkLite/normal|Affini o prospettiche, none/flat/Gouraud A/B/C|
+|q8 (esplicito)|1–7|Geometria Q8, near1; profilo delimitato proprio|Affini o prospettiche; Gouraud solo C|
+|normalized16|1–7|Profilo sperimentale separato|Affini|
+|Mode8|8|Renderer dedicato|Contratto proprio|
 
-`-Precision legacy` resta il default. `-Precision legacy-plus` è il profilo
-intermedio delimitato Mode2: rotazioni camera frazionarie, clipping near e
-schermo Q4, raster finale intero, nessun backend Q8. È una pipeline distinta,
-non un alias di `-LegacyStability rotation`. Q8 resta esplicito; Normalized16
-resta sperimentale. Vedere [contratto completo legacy-plus](LEGACY-PLUS.it.md),
-[profili di precisione](PRECISION.it.md) e [qualificazione corrente](QUALIFICATION-1.13.0.it.md).
-I manuali IT/EN descrivono la1.13.0; i rapporti versionati conservano le proprie
-misure. I comandi presuppongono input esterni del chiamante, non distribuiti.
-
-
-Release 1.13.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
-
-
-Contratto sorgente corrente 1.13.0. Il manuale descrive l’exporter ordinario
-salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
-in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
-
-<!-- maintenance-1.10.1 -->
-La 1.10.1 ufficiale corregge casi numerici Mode 7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
-
-## Release 1.10.0: scene Q8 con più oggetti
-
-Q8 accetta oggetti disgiunti e vertici runtime fino al tetto di 255 elementi
-degli indici a byte. Rimossi i precedenti limiti di qualificazione di due
-oggetti e 96 vertici. Ogni scena deve comunque superare i controlli effettivi
-di buffer, segmenti e dominio geometrico: 255 non è una capienza garantita.
-Mesh sorgenti condivise, Ground, timeline e roll camera restano esclusi da
-questo exporter Q8. Normalized 16 resta sperimentale: due oggetti/16 vertici.
-Vedere [contratto della release](Q8-SCALABILITY.md). Legacy resta default.
-[Release notes / Note di versione](RELEASE-NOTES-1.10.0.md) · [Qualification / Qualificazione](Q8-QUALIFICATION.md).
-
-1.9.0: `-Precision normalized16` sperimentale esplicito, non Q8 con meno bit.
-Legacy resta default; Q8 perspective/fast/LOD restano invariati.
-Vedere [ambito e aritmetica](NORMALIZED16.it.md) e [qualificazione](NORMALIZED16-QUALIFICATION.md).
-
-1.8.0: [raster linee ibrido](LINE-RASTER.it.md) opzionale nelle Mode 1/2/5 Q8.
-Conserva la precisione geometrica e cambia soltanto la quantizzazione del raster.
-Restano default geometria legacy e linee Q8 precise. La presentazione sicura è
-ora default; i confronti PRG storici scelgono esplicitamente quella legacy.
-
-La 1.6.0 aggiunge una selezione texture indipendente: Q8 da solo usa ancora UV
-affini. `-TexturePrecision perspective` richiede Mode 7 Q8 e il contratto aggiuntivo
-di profondità limitata. Vedere [precisione texture](TEXTURE-PRECISION.it.md).
+Profilo stabile SDK pubblico; build di riferimento legacy/Q8 identiche nei byte. Attivare texture prospettiche non trasforma plus in Q8. Vincoli e ABI camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md), FPS/stabilità nella [qualifica](QUALIFICATION-1.14.0.it.md). Le sezioni seguenti conservano il contratto Q8 e non estendono plus a fixed/walkFull, viewport small, Ground o roll.
 
 ## Default e raccomandazione
 

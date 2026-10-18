@@ -1,13 +1,7 @@
-# Development notes — 1.13.0
+# Development notes — 1.14.0
 
-This stable release promotes the unchanged dev7 engine, not a new
-arithmetic experiment. Default legacy stays historical; legacy-plus is explicit
-and bounded. Prior developments isolated winding/origin errors, camera position
-rounding, angular steps, source-edge clipping, near fractional loss, signed screen
-span limits and the missed camera presentation slot. Their final integration is
-documented in the current legacy-plus contract and qualification. Compatibility
-profiles remain separate. Existing releases/frozen demos are preserved. Sources are published on GitHub
-without bundled examples. Normalized16/gameplay limitations remain.
+Stable source SDK promoted from the qualified1.14.0-dev1 development based on1.13.0. Adds legacy-plus Mode1–7 and Mode7 affine/perspective without Q8 geometry. The public selector remains opt-in; old legacy/Q8 controls and original Mode2 plus reference bytes remain unchanged. No official/frozen trees or demos are modified.
 
-[Release notes](RELEASE-NOTES-1.13.0.en.md) · [Legacy-plus](LEGACY-PLUS.en.md)
-[Qualification](QUALIFICATION-1.13.0.en.md) · [Tests](TESTING.md)
+Mode adapters retain native raster conventions; Q4 near/screen transport carries UV/shade attributes coherently. Projective UW/VW/W use bounded16-bit carriers and shared texture DDAs. Empty half-open spans are suppressed; solid/Gouraud helpers are allocated in actual free guarded RAM. Profile/depth/RAM refusals remain explicit.
+
+[Build, ABI and constraints](LEGACY-PLUS.en.md) · [native FPS/stability and regressions](QUALIFICATION-1.14.0.en.md) · [testing](TESTING.md). Mode4 camera performance regresses versus legacy; perspective cost is scene-dependent. This is a qualified stable profile, not a claim that all legacy options now support plus.

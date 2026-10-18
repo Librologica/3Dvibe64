@@ -1,4 +1,8 @@
-# Supporti opzionali per adapter — 1.13.0
+# Supporti opzionali per adapter — 1.14.0
+
+## Legacy-plus nella 1.14.0
+
+Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica nativa](QUALIFICATION-1.14.0.it.md).
 
 `extensions/gameplay/runtime_support.py` espone emitter assembly nativi e tabelle
 host. Sono primitive esplicite per adapter esterni, non un generatore Backrooms,
@@ -61,7 +65,12 @@ volume/mix e registrazione IRQ restano al chiamante. Nessun brano SID incluso.
 I test autonomi eseguono successo/errore del pool,1024chiamate a un player
 sintetico con ripristino banca/ZP, limiti camera e matematica degli span.
 Non misurano FPS e non qualificano player SID arbitrari. Le prove native usano
-progetti esterni: [qualificazione](QUALIFICATION-1.13.0.it.md),
+progetti esterni: [qualificazione](QUALIFICATION-1.14.0.it.md),
 [input](EXTERNAL-INPUTS.it.md).
 
 I callback del pool devono usare staging o ripristinare lo slot precedente in caso di errore: il manager non annulla scritture geometriche arbitrarie. Usare prefissi assembly unici quando si emettono più helper.
+
+
+## Confine applicativo 1.14.0
+
+Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).

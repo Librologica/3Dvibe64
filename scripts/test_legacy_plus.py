@@ -1,4 +1,4 @@
-"""Public stable plus API, source identity and native-evidence contract. Never FPS."""
+"""Separate Mode1-7 plus API, source identity and native evidence. Never FPS."""
 import hashlib,json,os,re,shutil,subprocess,sys,tempfile
 from pathlib import Path
 ROOT=Path(__file__).resolve().parents[1]
@@ -7,22 +7,25 @@ from mode8.common import require_qualification_checks
 
 def main():
     require_qualification_checks()
-    q=json.loads((ROOT/'QUALIFICATION-1.13.0.json').read_text(encoding='utf-8'))
-    assert q['version']=='1.13.0' and q['publication']=='GitHub source repository and stable release' and q['GitHubPublished']
+    q=json.loads((ROOT/'QUALIFICATION-1.14.0.json').read_text(encoding='utf-8'))
+    assert q['version']=='1.14.0' and q['GitHubPublished']
     assert q['defaultPrecision']=='legacy' and q['publicSelector']=='-Precision legacy-plus'
-    assert not q['aliasOfRotation'] and not q['q8Introduced']
+    assert not q['aliasOfRotation'] and not q['q8GeometryBackendIntroduced']
     for name,digest in q['engineSourceSHA256'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest().lower()==digest.lower(),name
-    assert len(q['engineSourceSHA256'])==93
-    assert sum(d['poses'] for d in q['geometry'].values())==658
-    for d in q['geometry'].values():
-        for key in ('changedNativeImages','boundsResetFailures','falseDisappearances','unexpectedVisibleWithoutSourceEdges','behindLeaks','sharedMismatches','frozenBufferFailures'):assert not d[key],(key,d)
-    for profiles in q['nativeFPS'].values():
-        assert len({d['sceneSHA256'] for d in profiles.values()})==len({d['motionSHA256'] for d in profiles.values()})==1
-        for d in profiles.values():
-            assert d['emulatedSeconds']>=20 and d['simulationTicks']==2048 and d['nativeCounterAgrees']
-            assert not d['hostTimeUsedForFPS'] and not any(d['faults'].values()) and d['SIDWritesDuringMeasuredLap']==0
-    for d in (q['nativeFPS']['camera']['legacy-plus'],q['phaseOffsetOneTick']['legacy-plus']):assert d['worstIntervalMs']<40
+    assert len(q['finalIdentity'])==len(q['nativeFPS'])==57
+    assert all(d['identicalPRG'] for d in q['finalIdentity'])
+    assert {int(d['case'][1]) for d in q['nativeFPS'] if d['profile']=='legacy-plus'}==set(range(1,8))
+    for case,data in q['stability'].items():
+        for profile,d in data['profiles'].items():
+            # Failed intermediate measurements are retained in the ledger, not promoted.
+            if 'legacy-plus' not in profile or 'before-' in profile or profile.endswith('-attributes'):continue
+            for key in ('falseDisappearances','unexpectedVisibleWithoutSourceEdges','behindLeaks','sharedMismatches','frozenBufferFailures'):assert not d[key],(case,profile,key,d)
+    for d in q['nativeFPS']:
+        assert d['emulatedSeconds']>=20 and d['simulationTicks']==2048 and d['nativeCounterAgrees']
+        assert not d['hostTimeUsedForFPS'] and not any(d['faults'].values()) and d['SIDWritesDuringMeasuredLap']==0
+    assert len(q['orbits'])==32
+    for d in q['orbits'].values():assert d['poses']==36 and not d['frozenBufferFailures']
     # A tiny synthetic triangle exercises the compiler API. No scene file,
     # camera route, native capture or compiled fixture is packaged.
     scene=dict(schema=1,name='public triangle contract',graphicsMode=2,axisConvention='world-z-up',world=dict(backgroundColor=0,grounds=[]),camera=dict(id='camera',position=[0,0,0],rotation=[0,0,0],mode='walkLite'),
@@ -50,16 +53,16 @@ def main():
                 assert ' bne lc_round_shift' not in block and ' ldx #0\n' in block
         assert outputs['default']==outputs['legacy']
         assert outputs['plus']!=outputs['rotation']
-        rejected=[(['-Precision','legacy-plus','-GraphicsMode','4'],'requires Mode2'),
+        rejected=[(['-Precision','legacy-plus','-GraphicsMode','8'],'only applicable'),
             (['-Precision','legacy-plus','-LegacyStability','historical'],'conflicting LegacyStability'),
-            (['-Precision','legacy-plus','-GraphicsMode','2','-CameraMode','walkLite','-MemoryLayout','stable','-NoFpsOverlay'],'requires Mode2'),
-            (['-Precision','legacy-plus','-GraphicsMode','2','-CameraMode','walkLite','-CameraViewport','small','-MemoryLayout','high-basic-v2','-NoFpsOverlay'],'requires Mode2'),
+            (['-Precision','legacy-plus','-GraphicsMode','2','-CameraMode','walkLite','-MemoryLayout','stable','-NoFpsOverlay'],'requires walkLite'),
+            (['-Precision','legacy-plus','-GraphicsMode','2','-CameraMode','walkLite','-CameraViewport','small','-MemoryLayout','high-basic-v2','-NoFpsOverlay'],'requires walkLite'),
             (['-Precision','legacy-plus','-GraphicsMode','2','-CameraMode','walkLite','-MemoryLayout','high-basic-v2'],'requires -NoFpsOverlay'),
             (['-Precision','q8','-LegacyStability','rotation'],'only applicable')]
         for args,error in rejected:
             result=subprocess.run([shutil.which('pwsh'),'-NoProfile','-File',str(ROOT/'work/build-3Dvibe64.ps1'),*args],capture_output=True,text=True,encoding='utf-8',errors='replace',env=env)
             assert result.returncode and error in result.stdout+result.stderr,(args,result.stdout,result.stderr)
     assert not (ROOT/'work/3Dvibe64.asm').exists() and not (ROOT/'work/3Dvibe64.prg').exists()
-    print('LEGACY_PLUS PASS:4 positive compiler paths,6 rejected combinations,93 engine inputs,658 image aggregates; native FPS provenance retained, not replayed')
+    print('LEGACY_PLUS PASS:4 positive compiler paths,6 rejected combinations,57 exact native builds,32 orbit sets; native FPS provenance retained, not replayed')
 
 if __name__=='__main__':main()

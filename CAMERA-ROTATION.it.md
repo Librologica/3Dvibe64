@@ -1,4 +1,4 @@
-# CAMERA ROTATION — 1.13.0
+# CAMERA ROTATION — 1.14.0
 
 `-Precision legacy -LegacyStability rotation` conserva il profilo originale
 di rotazione camera più fine. Richiede Mode2, walkLite, normal, high-basic-v2 e

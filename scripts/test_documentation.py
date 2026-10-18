@@ -57,7 +57,7 @@ def links(files):
 
 
 def main():
-    version=read('VERSION').strip();assert version=='1.13.0'
+    version=read('VERSION').strip();assert version=='1.14.0'
     package=load('PACKAGE-MANIFEST.json');assert package['package']['version']==version
     assert not package['package']['prerelease'] and not package['package']['precompiledPrograms']
     docs=load('DOCUMENTATION.json');assert docs['version']==version and docs['locales']==['en','it']
@@ -91,6 +91,13 @@ def main():
     assert set(entries)|{'MANIFEST.sha256'}==actual
     forbidden={'.prg','.d64','.d71','.d81','.tap','.t64','.mp3','.wav','.mp4','.webm','.zip','.vsf','.pyc'}
     assert not [n for n in entries if Path(n).suffix.lower() in forbidden]
+    development=load('DEVELOPMENT.json')
+    assert development['version']==version and development['status']=='stable'
+    assert development['nativeQualifiedModes']==list(range(1,8))
+    assert development['GitHubPublished'] and development['releaseURL']=='https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0'
+    assert package['release']['stable'] and not package['release']['privateUnderworldPortIncluded']
+    assert package['stablePromotion']['runtimeAndDefaultsUnchanged']
+    assert package['release']['GitHubPublished'] and package['release']['releaseURL']=='https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0'
     print('DOCUMENTATION PASS; pairs=',len(docs['currentPairs']),'local links=',count,'profiles=',len(profiles),'source files=',len(actual))
 
 
