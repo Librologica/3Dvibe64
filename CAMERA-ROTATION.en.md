@@ -1,6 +1,6 @@
-> Development edition 1.15.0-dev2; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+# CAMERA ROTATION — 1.15.0
 
-# CAMERA ROTATION — 1.14.0
+> Stable1.15.0 source SDK prepared locally; not published online. [Status and support](RELEASE-STATUS.en.md).
 
 `-Precision legacy -LegacyStability rotation` preserves the original finer
 camera-rotation profile. It requires Mode2, walkLite, normal, high-basic-v2 and
@@ -46,3 +46,9 @@ python -B scripts/test_camera_rotation.py --build ../rotation-build --out ../rot
 
 The external-build arithmetic check is not FPS.
 [Precision](PRECISION.en.md) · [Testing](TESTING.md)
+
+## 1.15.0 optimizations and APIs
+
+`-LegacyPlusOptimizations` is separate from EngineExperiments,the Q8 hybrid line raster and other backends. It requires the qualified Mode4 legacy-plus profile and defaults to none. `all` contains arithmetic,edges,spans,outcodes,convex,integer-edges. Wire/stream are explicit ASM caller APIs excluded from all,not automatic replacements; stream requires outcodes and owned resident slots. Frozen-lighting is separate and intentionally changes moving-light response. Compact keyframes are an optional data module. An8bit Bresenham error does not reduce Q4/Q10 geometric precision. The ordinary object matrix remains Q6; no new rigid object-rotation API is implied.
+
+[Options/profile](EXACT-RENDER.en.md) · [ABI,materials,memory,fallbacks](REUSABLE-RENDER.en.md) · [Status/support](RELEASE-STATUS.en.md). Some combinations exceed real64KB RAM and are refused.

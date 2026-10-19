@@ -1,9 +1,9 @@
 {
-  "version": "1.15.0-dev2",
-  "status": "development",
+  "version": "1.15.0",
+  "status": "stable-local",
   "newDemosIncluded": false,
   "Mode8Modified": false,
-  "ordinaryEngineModified": true,
+  "ordinaryEngineModified": false,
   "privateDevelopmentPreserved": true,
   "gameplay": {
     "experimental": true,
@@ -186,14 +186,16 @@
   "GitHubPublished": false,
   "renderOptimizationContracts": "RENDER-OPTIMIZATIONS.en.md",
   "release": {
-    "version": "1.15.0-dev2",
-    "status": "unpublished development",
-    "stable": false,
-    "prerelease": true,
+    "version": "1.15.0",
+    "status": "stable-local",
+    "stable": true,
+    "prerelease": false,
     "GitHubPublished": false,
     "releaseURL": null,
     "newDemosIncluded": false,
-    "privateUnderworldPortIncluded": false
+    "privateUnderworldPortIncluded": false,
+    "releasePageCreated": false,
+    "publication": "local-only"
   },
   "baseVersion": "1.14.0",
   "nativeQualifiedModes": [
@@ -205,7 +207,6 @@
     6,
     7
   ],
-  "officialRelease": false,
   "nativeTestedModes": [
     1,
     2,
@@ -230,13 +231,13 @@
   "clippingPixelExact": false,
   "nearThresholdObservationTicks": [],
   "cameraCadenceQualified": true,
-  "promotedDevelopment": "1.14.0-dev1",
-  "qualification": "QUALIFICATION-1.15.0-dev2.json",
-  "publication": "unpublished local development",
+  "promotedDevelopment": "1.15.0-dev2",
+  "qualification": "QUALIFICATION-1.15.0.json",
+  "publication": "local-only",
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
   "releaseURL": null,
   "releasePageCreated": false,
-  "localStableRelease": false,
+  "localStableRelease": true,
   "exactRender": {
     "selector": "-LegacyPlusOptimizations",
     "default": "none",
@@ -259,6 +260,9 @@
     ],
     "compactKeyframes": "work/compact_keyframes.py",
     "baseDevelopment": "1.15.0-dev1",
-    "qualification": "QUALIFICATION-1.15.0-dev2.json"
-  }
+    "qualification": "QUALIFICATION-1.15.0.json"
+  },
+  "metadataRole": "Compatibility filename; RELEASE.json is the canonical release/publication state",
+  "optionalEngineChangesSince1_14": true,
+  "comparisonBase": "qualified1.15.0-dev2"
 }

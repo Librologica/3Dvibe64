@@ -1,6 +1,6 @@
-> Development edition 1.15.0-dev2; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+# LEGACY STABILITY — 1.15.0
 
-# LEGACY STABILITY — 1.14.0
+> Stable1.15.0 source SDK prepared locally; not published online. [Status and support](RELEASE-STATUS.en.md).
 
 The compatibility selector is `-Precision legacy -LegacyStability corrected`.
 Omitting LegacyStability, or choosing `historical`, preserves ordinary legacy.

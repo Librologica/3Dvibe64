@@ -1,8 +1,8 @@
-> Development edition 1.15.0-dev2; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+# Hybrid lines: Q8 geometry, additive integer raster — 1.15.0
 
-# Hybrid lines: Q8 geometry, additive integer raster
+> Stable1.15.0 source SDK prepared locally; not published online. [Status and support](RELEASE-STATUS.en.md).
 
-Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 Current 1.14.0 source contract. This manual describes the ordinary exporter unless
@@ -20,3 +20,9 @@ The bounded clipped Q2 endpoints are rounded to integer pixels, nearest with pos
 Mode 1 applies it to visible edges; Mode 2 uses the same walker for edge display and face masks. Mode 5 keeps its Q8 polygon fill and applies the hybrid only to the actual clipped polygon perimeter, including screen/near caps. Existing bitmap writers, materials and palettes are unchanged.
 
 Pixel-phase differences from the previous subpixel-aware raster are intentional; bitmap identity is not claimed. Geometry/clipping identity and the integer line contract must be tested separately. The independent closed-form oracle in `test_line_hybrid.py` checks both endpoint orders, degenerates, all octants and fractional endpoints on the emitted 6510 code. Native performance is scene-specific, not a universal speedup promise. Existing Q8 profile and memory limits remain; Q8 is recommended above 20 MHz, not selected automatically.
+
+## 1.15.0 optimizations and APIs
+
+`-LegacyPlusOptimizations` is separate from EngineExperiments,the Q8 hybrid line raster and other backends. It requires the qualified Mode4 legacy-plus profile and defaults to none. `all` contains arithmetic,edges,spans,outcodes,convex,integer-edges. Wire/stream are explicit ASM caller APIs excluded from all,not automatic replacements; stream requires outcodes and owned resident slots. Frozen-lighting is separate and intentionally changes moving-light response. Compact keyframes are an optional data module. An8bit Bresenham error does not reduce Q4/Q10 geometric precision. The ordinary object matrix remains Q6; no new rigid object-rotation API is implied.
+
+[Options/profile](EXACT-RENDER.en.md) · [ABI,materials,memory,fallbacks](REUSABLE-RENDER.en.md) · [Status/support](RELEASE-STATUS.en.md). Some combinations exceed real64KB RAM and are refused.

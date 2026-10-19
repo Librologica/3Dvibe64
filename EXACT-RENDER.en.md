@@ -1,6 +1,8 @@
-# Exact rendering development — 1.15.0-dev2
+# Exact rendering optimizations — 1.15.0
 
-Unpublished development based on stable1.14.0, intended as the source for a future stable GitHub release. No stable tag, remote branch or release is changed. Legacy/Q8 defaults and ordinary plus builds with no selector retain their previous contracts. The source SDK contains no scenes, programs, audio/video or native raw captures.
+> Stable1.15.0 source SDK prepared locally; not published online. [Status and support](RELEASE-STATUS.en.md).
+
+Stable1.15.0 features promoted from qualified1.15.0-dev2 with unchanged runtime. Prepared locally for GitHub, not published. Legacy/Q8 and ordinary plus builds without this selector retain their previous contracts. No demos, scenes, programs, media or native captures are packaged.
 
 ## Selection and scope
 
@@ -13,6 +15,7 @@ Unpublished development based on stable1.14.0, intended as the source for a futu
 | spans | Existing material-cell span cache plus unrolled interior byte writes and paired physical-row addressing. The generator proves row adjacency/evenness and8byte X offsets. First/last masks, both buffers and the long-span fallback remain. No row is omitted. |
 | outcodes | Classify each freshly projected original vertex once using the original four clipper predicates; reuse those bits for source-face rejection/inside tests. Near/synthetic intersections still use the complete Q4 clipper. Never retain these codes across views. |
 | convex | Merge uniform solid clipped fans only after strict all-points/edge convexity, a Y-extreme fan anchor and fill-kernel checks. Keep every original triangle edge, including both diagonal directions. Patterns, uncertain geometry, degeneracy and unsupported cases retain the original fan. Also exports the explicit pair-bounds adapter below. |
+| integer-edges | Integer polygon edge tracing retains the ninth sum bit in carry; native coordinates and original shared-wire fallback remain. |
 | frozen-lighting | **Appearance option**, separate from exact optimizations. Prime all non-fixed-color faces of each nonshared object once at its first active pose, then retain those shades. Invisible objects initialize when first active. Dynamic lighting no longer follows object/light motion until invalidated. Fixed pigments remain unchanged. Requires scene objects and dynamic-light infrastructure. |
 
 Coordinates remain signed16 Q4, rotation coefficients remain Q10; no Q8 backend, resolution/LOD reduction, alternating scanlines or changed palette is installed. Vertex transformation/projection is already shared per view by the ordinary renderer and is reused, not duplicated as a new cache. Scene-specific motion, route generation, mesh simplification and camera tracking are outside this SDK change.
@@ -33,7 +36,7 @@ Use the ordinary argument spelling `-GraphicsMode 4` when composing scripts. Opt
 
 ## Verification and promotion
 
-[Qualification](QUALIFICATION-1.15.0-dev2.en.md) separates new native FPS from mathematical/callback checks and inherited defaults. Use identical inputs, target, warm-up and route for before/after comparisons. Test complete images and material cells, clipping/near, shared vertices, degenerate/self-crossing panels, signed rounding, wide divisors, byte carries and page crossings. Prefer arithmetic first on CPU-bound scenes; PAL can cap complete visible views near50.125/s. Stable promotion remains a later action after review; nothing is published by this development.
+[Qualification](QUALIFICATION-1.15.0.en.md) separates retained native FPS from mathematical/callback checks and inherited defaults. Use identical inputs, target, warm-up and route for before/after comparisons. Test complete images and material cells, clipping/near, shared vertices, degenerate/self-crossing panels, signed rounding, wide divisors, byte carries and page crossings. Prefer arithmetic first on CPU-bound scenes; PAL can cap complete visible views near50.125/s. Stable promotion is complete locally; nothing has been uploaded or published online.
 
 Automatic clipped-fan merging additionally requires a single active material/reflectivity palette, no fixed face-color table and no VIC cell-ownership policy. Mixed-palette faces keep the original fan; the explicit pair-bounds API remains available under its caller contract. The material interval cache forgets disconnected cell intervals instead of filling or caching their gaps.
 

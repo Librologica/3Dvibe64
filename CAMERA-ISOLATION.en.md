@@ -1,6 +1,6 @@
-> Development edition 1.15.0-dev2; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+# CAMERA ISOLATION — 1.15.0
 
-# CAMERA ISOLATION — 1.14.0
+> Stable1.15.0 source SDK prepared locally; not published online. [Status and support](RELEASE-STATUS.en.md).
 
 The compatibility selector `-Precision legacy -LegacyStability camera` requires
 Mode2, walkLite, normal and high-basic-v2. It preserves four fractional position

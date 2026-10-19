@@ -1,8 +1,8 @@
-> Development edition 1.15.0-dev2; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+# Legacy-plus — 1.15.0
 
-# Legacy-plus — 1.14.0
+> Stable1.15.0 source SDK prepared locally; not published online. [Status and support](RELEASE-STATUS.en.md).
 
-`-Precision legacy-plus` is the explicit intermediate renderer for Mode1–7. It combines the legacy Q6 object matrix with Q4 camera geometry, Q10 camera coefficients and 4096 yaw/pitch phases. Legacy stays default. The compatibility `-LegacyStability rotation` remains Mode2 only. Mode8 and Normalized16 keep separate contracts. This stable distribution is published on GitHub; publication metadata is recorded in PACKAGE-MANIFEST.json.
+`-Precision legacy-plus` is the explicit intermediate renderer for Mode1–7. It combines the legacy Q6 object matrix with Q4 camera geometry, Q10 camera coefficients and 4096 yaw/pitch phases. Legacy stays default. The compatibility `-LegacyStability rotation` remains Mode2 only. Mode8 and Normalized16 keep separate contracts. This stable1.15.0 distribution is prepared locally,not published; RELEASE.json records its publication state.
 
 ## Build and configuration
 

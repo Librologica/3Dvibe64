@@ -1,101 +1,23 @@
-[Rendering e dati riutilizzabili IT](REUSABLE-RENDER.it.md) · [Reusable rendering and data EN](REUSABLE-RENDER.en.md). Nuove API esplicite wire/stream e chiavi compatte; `all` aggiunge `integer-edges`.
+# Testing / Verifiche — 1.15.0
 
-# Development tests / Test dev — 1.15.0-dev2
+Stable source SDK prepared locally, not published. / SDK sorgente stabile preparato in locale, non pubblicato. [Status EN](RELEASE-STATUS.en.md) · [Stato IT](RELEASE-STATUS.it.md).
 
-Run the public suite from a clean source extraction. / Eseguire la suite pubblica da un'estrazione sorgente pulita.
-
-```powershell
-python -B scripts/run_release_tests.py
-python -B scripts/test_legacy_plus_exact.py --control ../control --exact ../qualified --out ../checks/kernels.json
-python -B scripts/test_exact_panels.py --control ../triangle-control --exact ../qualified --out ../checks/panels.json
-python -B scripts/test_exact_material_cache.py --control ../mixed-control --exact ../mixed-qualified --out ../checks/materials.json
-```
-
-The external build inputs for callbacks must retain their raw ASM/PRG/labels. Uniform-fan eligibility requires its documented compiled palette contract; an ordinary conservative profile tests its exact fallback. Native moving FPS and parked palette/pose captures are separate external runs, as recorded in QUALIFICATION-1.15.0-dev2.json. Callback counts never measure FPS. Full exact ZIP test results live in the external delivery receipt.
-
-Gli input esterni dei callback conservano ASM/PRG/label originali. La fusione dei fan richiede il contratto compilato di palette uniforme documentato; il profilo conservativo ordinario verifica il suo ripiego esatto. FPS nativi in movimento e catture ferme con scansione palette completata sono prove esterne separate, descritte in QUALIFICATION-1.15.0-dev2.json. I callback non misurano FPS. I risultati dei gate dello ZIP esatto sono nella ricevuta di consegna esterna.
-
-## Inherited1.14.0 testing contract / Contratto di test1.14.0 ereditato
-
-# Testing / Verifiche — 1.14.0
-
-[Qualification EN](QUALIFICATION-1.14.0.en.md) · [Qualificazione IT](QUALIFICATION-1.14.0.it.md)
-
-## English
-
-Use Python3.13, PowerShell7,64tass1.60.3243, Pillow and py65. Set TASS64_EXE to
-64tass; VICE_TURBO6510 selects the real native target for new FPS tests.
-Historical tests can also require VICE_X64SC / VICE_XSCPU64. Install tools
-separately; no executables or environments are bundled. Never use Python -O,
--OO or PYTHONOPTIMIZE: checks must stay enabled. Run from SDK root.
+Use Python3.13,PowerShell7,64tass1.60.3243,Pillow and py65; install tools separately. Set TASS64_EXE to the assembler. Never disable assertions with Python -O/-OO/PYTHONOPTIMIZE. / Installare separatamente gli strumenti e mantenere attive le asserzioni.
 
 ```powershell
 python -B scripts/run_release_tests.py
-python -B scripts/test_exact_release.py
-python -B scripts/run_release_tests.py --test-inputs ../my-regression-inputs test_mode7.py test_precision_q8.py
+python -B scripts/test_reusable_render.py --control ../control --exact ../optimized --api ../api-build --wire-reference ../wire-reference --out ../checks/reusable.json
+python -B scripts/test_legacy_plus_exact.py --control ../control --exact ../optimized --out ../checks/kernels.json
+python -B scripts/test_exact_panels.py --control ../control --exact ../optimized --out ../checks/panels.json
+python -B scripts/test_exact_material_cache.py --control ../mixed-control --exact ../mixed-optimized --out ../checks/materials.json
 ```
 
-The default suite uses self-contained package/math/configuration contracts.
-Historical scene regressions require explicit external ../my-inputs/validation,
-installed only into temporary SDK copies. Full archived inputs and native
-projects are not distributed. Public renderer checks accept external builds:
+Run the public suite from a clean source ZIP extraction; it makes independent temporary SDK copies. No bundled demo inputs are required by the default suite. Additional historical scene tests require explicit external --test-inputs. Callback builds retain native ASM,PRG,labels and maps. They check exact arithmetic,clipping,materials,wire/stream and codec behavior; **CPU callbacks do not measure FPS**. / Eseguire la suite dallo ZIP estratto; copie temporanee indipendenti. Le prove storiche aggiuntive richiedono input esterni. I callback verificano correttezza e non misurano FPS.
 
-```powershell
-python -B scripts/test_exact_release.py --control ../control --exact ../optimized --out ../exact-checks
-python -B scripts/test_render_optimizations.py --control ../control --exact ../dev14-optimized --mode4-scene ../my-inputs/mode4.json --out ../render-checks
-python -B scripts/benchmark_native_render.py --prg ../optimized/3Dvibe64.prg --labels ../optimized/3Dvibe64.labels --out ../native-result --sound-off --warmup 101 --refreshes 2048 --route "two automatic camera periods, no stationary phase"
-```
+Uniform convex-fan merging requires the documented compiled material/palette contract. Mixed palettes keep the complete fallback. Frozen lighting intentionally fixes appearance and requires a separate no-recalculation trace; it is not equivalence to moving illumination. / La fusione dei fan è condizionata al contratto di palette; illuminazione congelata e grafica equivalente sono prove distinte.
 
-Benchmark target: VICE Turbo6510 PAL312x63 multiplier64. New complete views are
-counted at fps_frame_done, not duplicate refreshes; cycles are985248Hz baseclock.
-Keep real project music/launcher options: --sound-off is only for a silent
-project. This generic probe's FPS path is qualified for silent projects; for
-music-active projects use an external SID-aware probe preserving native audio
-and per-refresh calls. Never relabel a silent measure as music-active.
-At least20emulated seconds after warm-up; prefer full routes. Preserve PRG/hash,
-command, raw timestamps, RAM, p95/worst and conditions. Warp/host time/CPU replay
-are not native FPS. --poses freezes simulation solely for image comparison;
-those runs never measure FPS. The generic probe expects the standard Q8 IRQ/
-simulation labels; an incompatible adapter requires a separate validated probe.
+Stable promotion changes docs,version,metadata and host checks only. All runtime sources match qualified1.15.0-dev2. Existing FPS evidence is retained only for identical PRGs and target conditions; fresh stable rebuild identities and final clean-ZIP gates are recorded in the external release receipt. / Promozione senza modifiche runtime: misure conservate solo per PRG/target identici; identità delle ricompilazioni e gate dello ZIP nella ricevuta esterna.
 
-## Italiano
+Native protocol: actual launcher VICE Turbo6510 PAL312×63,multiplier64,safe,Colodore/filter0;128simulation-event warm-up and at least20emulated seconds, preferably a complete automatic route. Count only new complete views after swaps, never duplicate refreshes. Preserve commands,PRG hashes,native timestamps,RAM,mean FPS,p95/worst and music state. No warp/host time/CPU replay FPS. Original fixtures are silent; do not relabel them as music-active. Native parked-palette poses are separate correctness captures, never timing runs. / Conservare target,stato musica,percorso,warm-up,durata e dati grezzi; nessuna stima o misura host.
 
-Usare Python3.13, PowerShell7,64tass1.60.3243, Pillow e py65. TASS64_EXE indica
-64tass; VICE_TURBO6510 seleziona il target delle nuove misure. Le prove storiche
-possono richiedere VICE_X64SC / VICE_XSCPU64. Dipendenze installate separatamente,
-nessun eseguibile o ambiente incluso. Non usare -O,-OO,PYTHONOPTIMIZE.
-
-I comandi sopra eseguono test autonomi di pacchetto, matematica e configurazioni.
-Le regressioni storiche richiedono ../my-inputs/validation esterni, copiati solo in
-SDK temporanei. I test renderer accettano build esterne. Target delle misure:
-VICE Turbo6510 PAL312x63 moltiplicatore64; solo viste nuove complete su
-fps_frame_done, cicli base985248Hz. --sound-off vale soltanto per progetti
-silenziosi: il probe generico FPS è qualificato per questi. Un progetto con SID
-richiede un probe esterno verificato con audio nativo e chiamate per refresh.
-Mai presentare una misura silenziosa come musicale. Conservare opzioni reali di
-launcher/progetto; almeno20secondi emulati dopo warm-up, preferibilmente percorsi
-completi. Conservare PRG/hash, comando, timestamp grezzi, RAM,p95/peggiore e
-condizioni. Warp,tempo host e replay CPU non misurano FPS. --poses ferma la
-simulazione solo per confrontare immagini; non misura prestazioni. Il probe
-richiede le etichette IRQ/simulazione Q8 standard; altri adapter richiedono un
-probe specifico qualificato.
-
-## Legacy-plus development contract / Contratto dev legacy-plus
-
-The default suite verifies current source hashes,57 exact native rebuild identities,
-32 full-orbit sets and native provenance. Four positive compiler selections and
-six incompatible-option rejections use temporary synthetic inputs. No fixture or
-compiled program is shipped. The external development tools capture the actual
-native complete-view counter, native intervals and frozen poses. The generic Q8
-probe is not automatically compatible with the ordinary plus ABI.
-
-La suite verifica hash sorgenti correnti,57 identità di ricompilazione nativa,
-32 serie in orbita e provenienza nativa. Quattro selezioni del compilatore e sei
-rifiuti usano input sintetici temporanei, non demo distribuite. Gli strumenti
-esterni della dev misurano contatore viste complete/intervalli nativi e pose ferme;
-il probe Q8 generico non è automaticamente compatibile con l'ABI plus ordinaria.
-Le prove callback py65 controllano aritmetica e non producono FPS.
-
-```powershell
-python -B scripts/run_release_tests.py test_legacy_plus.py
-```
+[Qualification EN](QUALIFICATION-1.15.0.en.md) · [Qualifica IT](QUALIFICATION-1.15.0.it.md) · [Historical dev2 EN](QUALIFICATION-1.15.0-dev2.en.md) · [Storico dev2 IT](QUALIFICATION-1.15.0-dev2.it.md).

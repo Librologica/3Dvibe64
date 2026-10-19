@@ -1,6 +1,6 @@
-> Edizione di sviluppo 1.15.0-dev2; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+# LEGACY STABILITY — 1.15.0
 
-# LEGACY STABILITY — 1.14.0
+> SDK sorgente stabile1.15.0 preparato in locale; non pubblicato online. [Stato e supporto](RELEASE-STATUS.it.md).
 
 Il selettore di compatibilità è `-Precision legacy -LegacyStability corrected`.
 Omettere LegacyStability o scegliere `historical` conserva il legacy ordinario.

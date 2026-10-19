@@ -1,25 +1,14 @@
-[Rendering e dati riutilizzabili IT](REUSABLE-RENDER.it.md) · [Reusable rendering and data EN](REUSABLE-RENDER.en.md). Nuove API esplicite wire/stream e chiavi compatte; `all` aggiunge `integer-edges`.
+# 3Dvibe64 1.15.0
 
-> Edizione di sviluppo 1.15.0-dev2; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+SDK sorgente stabile preparato in locale per GitHub, **non pubblicato online**. Non sono inclusi demo,esempi,PRG o media. [Stato e supporto](RELEASE-STATUS.it.md) · [Novità](RELEASE-NOTES-1.15.0.it.md) · [Qualifica](QUALIFICATION-1.15.0.it.md).
 
-# 3Dvibe64 1.14.0
-
-## Release stabile 1.14.0
-
-`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica nativa](QUALIFICATION-1.14.0.it.md). Distribuzione stabile pubblicata su GitHub; solo scene/asset esterni.
-
-
-Release stabile 1.14.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
-
+Le nuove ottimizzazioni/API sono limitate al Mode4 legacy-plus documentato; il supporto plus ordinario Mode1–7 e gli altri backend restano distinti. Default `legacy` e ottimizzazioni `none`. `all` esclude wire,stream,frozen-lighting. [Opzioni](EXACT-RENDER.it.md) · [API e memoria](REUSABLE-RENDER.it.md). Gameplay e Normalized16 conservano lo stato sperimentale.
 
 Legacy resta il default. Selezionare Q8 preciso esplicitamente con `-Precision q8`, consigliato sopra 20 MHz. Qualità texture standard, linee precise, LOD off e presentazione safe restano i default ordinari.
 
-
-[English](README.en.md) · [DOCS](DOCS.md) · [QUICKSTART](QUICKSTART.md)
-
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione stabile sorgente è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione sorgente stabile1.15.0 è preparata in locale e non è pubblicata online. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 | ID | Modulo | Contratto |
 |---|---|---|

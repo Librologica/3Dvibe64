@@ -1,4 +1,12 @@
-# 1.15.0-dev2 — unpublished development
+# Changelog — 1.15.0
+
+## 1.15.0 — stable source package, prepared locally
+
+Promoted qualified1.15.0-dev2 without runtime changes. Exact Mode4 plus kernels,explicit wire/stream APIs,lossless keyframes and separate frozen-lighting are documented with their bounded support. Defaults preserved. No demos/examples,compiled programs or media; no GitHub upload or online release. [Release notes](RELEASE-NOTES-1.15.0.en.md) · [Note italiane](RELEASE-NOTES-1.15.0.it.md).
+
+## Previous change history / Cronologia precedente
+
+# 1.15.0 — unpublished development
 
 Opt-in Mode4 legacy-plus exact arithmetic, byte remainder edges, block span writes, shared vertex outcodes and convex uniform fan/pair support. Separate frozen-lighting option. Stable1.14.0 and default legacy/plus/Q8 programs preserved. Native before/after qualification and external evidence required for promotion.
 

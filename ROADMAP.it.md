@@ -1,6 +1,6 @@
-> Edizione di sviluppo 1.15.0-dev2; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+# Roadmap — 1.15.0
 
-# Roadmap — 1.14.0
+> SDK sorgente stabile1.15.0 preparato in locale; non pubblicato online. [Stato e supporto](RELEASE-STATUS.it.md).
 
 Inclusi: opzioni renderer esatte, span compatti MAT-01, adapter pareti conservativo, helper retini/palette statici e primitive opzionali pool/camera/SID. Billboard, materiali, entità, visibilità, mesh condivise, animazioni controllate, WORLD-01 e LEVEL-01 mantengono contratti delimitati.
 
@@ -9,6 +9,6 @@ Restano futuri: integrazione in scene generali, intersezioni/trasparenze arbitra
 [Contratti](RENDER-OPTIMIZATIONS.it.md) · [Supporti](ADAPTER-SUPPORT.it.md) · [Qualificazione](QUALIFICATION-1.14.0.it.md)
 
 
-## Confine applicativo 1.14.0
+## Confine applicativo 1.15.0
 
 Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).

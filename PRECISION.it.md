@@ -1,6 +1,6 @@
-> Edizione di sviluppo 1.15.0-dev2; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+# Precision / Precisione — 1.15.0
 
-# Precision / Precisione — 1.14.0
+> SDK sorgente stabile1.15.0 preparato in locale; non pubblicato online. [Stato e supporto](RELEASE-STATUS.it.md).
 
 | Geometria | Mode | Camera/clipping | Texture Mode7 |
 |---|---|---|---|
@@ -105,3 +105,9 @@ Vedere [test](TESTING.md) e [note di release](RELEASE-NOTES-1.5.0.md).
 Il paragrafo sopra descrive la qualificazione Q8 storica. La release 1.10.0 aggiunge la
 [qualificazione di scalabilità](Q8-QUALIFICATION.md) e le [note di versione](RELEASE-NOTES-1.10.0.md).
 Gli hash PRG legacy restano invariati. Nessun test hardware o garanzia FPS universale dichiarata.
+
+## Ottimizzazioni e API della1.15.0
+
+Il selettore `-LegacyPlusOptimizations` è distinto da EngineExperiments,dal raster Q8 ibrido e dagli altri backend. Richiede Mode4 legacy-plus nel profilo qualificato; default none. `all` comprende arithmetic,edges,spans,outcodes,convex,integer-edges. Wire e stream sono API ASM esplicite escluse da all,non sostituzioni automatiche; stream richiede outcodes e possesso degli slot nativi. Frozen-lighting è separata e cambia intenzionalmente la risposta alle luci mobili. Il codec di chiavi è un modulo dati facoltativo. L'errore Bresenham a8bit non riduce la precisione geometrica Q4/Q10. La matrice oggetto ordinaria resta Q6; nessuna nuova API di rotazione rigida degli oggetti è implicita.
+
+[Opzioni e profilo](EXACT-RENDER.it.md) · [ABI,materiali,memoria e ripieghi](REUSABLE-RENDER.it.md) · [Stato e supporto](RELEASE-STATUS.it.md). Alcune combinazioni non entrano nei64KB e vengono rifiutate.

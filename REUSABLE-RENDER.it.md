@@ -1,6 +1,8 @@
-# Rendering e dati riutilizzabili — 1.15.0-dev2
+# Rendering e dati riutilizzabili — 1.15.0
 
-Questa dev estende la [dev precedente](QUALIFICATION-1.15.0-dev1.it.md), senza pubblicare GitHub o modificare release e demo congelate. [Opzioni di base](EXACT-RENDER.it.md). Il default resta `-LegacyPlusOptimizations none`. Le nuove opzioni conservano il profilo Mode4 legacy-plus, walkLite, viewport normale 160×100, high-basic-v2, NoFpsOverlay e clipping Q4 near8/poly. Coordinate Q4, coefficienti Q10, pixel e palette non vengono ridotti. Ogni combinazione occupa RAM reale nei 64 KB: una combinazione può essere rifiutata anche se ciascuna opzione entra da sola.
+> SDK sorgente stabile1.15.0 preparato in locale; non pubblicato online. [Stato e supporto](RELEASE-STATUS.it.md).
+
+La stabile1.15.0 include i moduli qualificati nelle dev precedenti, con runtime invariato. Il pacchetto è preparato in locale e non pubblicato; release e demo congelate precedenti sono preservate. [Opzioni di base](EXACT-RENDER.it.md). Il default resta `-LegacyPlusOptimizations none`. Le nuove opzioni conservano il profilo Mode4 legacy-plus, walkLite, viewport normale 160×100, high-basic-v2, NoFpsOverlay e clipping Q4 near8/poly. Coordinate Q4, coefficienti Q10, pixel e palette non vengono ridotti. Ogni combinazione occupa RAM reale nei 64 KB: una combinazione può essere rifiutata anche se ciascuna opzione entra da sola.
 
 ## Scelta delle opzioni
 
@@ -18,7 +20,7 @@ L'API usa lo scratch globale nativo, altera A/X/Y/flag e non è rientrante: chia
 
 ## Vertici generati durante il gioco
 
-`stream` richiede `outcodes` e rifiuta le istanze con sorgente condivisa. Non aggiunge slot ai buffer: il chiamante deve possedere un intervallo di slot esistenti durante il proprio passaggio di disegno, senza consumatori concorrenti.
+`stream` richiede `outcodes`, al massimo255vertici residenti e rifiuta le istanze con sorgente condivisa. Non aggiunge slot ai buffer: il chiamante deve possedere un intervallo di slot esistenti durante il proprio passaggio di disegno, senza consumatori concorrenti.
 
 1. Chiamare `er_stream_begin` con X=primo slot e Y=numero di slot, non nullo. Carry impostato indica un intervallo valido entro `VERT_COUNT`; gli slot sono invalidati (`projdone=0`, outcode near) prima della produzione. Un errore disattiva l'intero passaggio.
 2. Scrivere coordinate camera signed16 Q4 in `er_stream_x`, `er_stream_y`, `er_stream_z`, quindi chiamare `er_stream_project` con A=slot. Carry impostato indica completamento; `projdone=0` indica comunque la necessità del normale clipping vicino. Fuori dall'intervallo o senza un passaggio attivo, carry azzerato e nessuna scrittura agli array dei vertici.
@@ -43,4 +45,4 @@ Il file JSON adiacente riporta campioni, bit, fattore, minimo e byte dei dati. I
 
 L'ordine dei componenti della navetta, le facce nascoste rimosse dal suo modello, camera e dinamica specifiche, griglia più rada, FOV, generatore del percorso e linee alternate non sono trasferiti al nucleo. La riduzione di copie e i kernel sono riutilizzabili; questi altri interventi cambiano contenuto, comportamento o grafica e restano nel progetto della demo. Le rotazioni rigide del modello richiedono una qualifica distinta prima di diventare una nuova API di trasformazione degli oggetti.
 
-La [qualifica corrente](QUALIFICATION-1.15.0-dev2.it.md) distingue FPS nativi, equivalenza delle immagini e callback CPU. Nessun risultato del benchmark wire viene attribuito alla navetta o al solo modulo stream.
+La [qualifica corrente](QUALIFICATION-1.15.0.it.md) distingue FPS nativi, equivalenza delle immagini e callback CPU. Nessun risultato del benchmark wire viene attribuito alla navetta o al solo modulo stream.

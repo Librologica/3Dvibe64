@@ -1,6 +1,8 @@
-# Reusable rendering and data — 1.15.0-dev2
+# Reusable rendering and data — 1.15.0
 
-This development extends the [previous development](QUALIFICATION-1.15.0-dev1.en.md), without publishing GitHub or changing frozen releases and demos. [Base options](EXACT-RENDER.en.md). The default remains `-LegacyPlusOptimizations none`. New options retain the Mode4 legacy-plus, walkLite, normal160×100, high-basic-v2, NoFpsOverlay, Q4 near8/poly clipping profile. Geometry Q4, coefficients Q10, pixels and palette are not reduced. Every combination consumes real64KB RAM; a combination may fail even when its individual options fit.
+> Stable1.15.0 source SDK prepared locally; not published online. [Status and support](RELEASE-STATUS.en.md).
+
+Stable1.15.0 includes the qualified development modules with unchanged runtime. The package is prepared locally, not published; previous frozen releases and demos are preserved. [Base options](EXACT-RENDER.en.md). The default remains `-LegacyPlusOptimizations none`. New options retain the Mode4 legacy-plus, walkLite, normal160×100, high-basic-v2, NoFpsOverlay, Q4 near8/poly clipping profile. Geometry Q4, coefficients Q10, pixels and palette are not reduced. Every combination consumes real64KB RAM; a combination may fail even when its individual options fit.
 
 ## Option selection
 
@@ -18,7 +20,7 @@ The API clobbers native global scratch, A/X/Y/flags and is not reentrant: call f
 
 ## Runtime-generated vertices
 
-`stream` requires `outcodes` and rejects shared-source instances. No buffer capacity is added: callers own an existing slot interval during their drawing pass and must exclude concurrent consumers.
+`stream` requires `outcodes`, at most255 resident vertices and rejects shared-source instances. No buffer capacity is added: callers own an existing slot interval during their drawing pass and must exclude concurrent consumers.
 
 1. Call `er_stream_begin` with X=first slot and Y=nonzero count. Carry set means the interval fits `VERT_COUNT`; its slots are invalidated (`projdone=0`, near outcode) before production. Failure deactivates the whole pass.
 2. Set signed16 camera-space Q4 coordinates in `er_stream_x`, `er_stream_y`, `er_stream_z`; call `er_stream_project` with A=slot. Carry set means completion; `projdone=0` still requires native near clipping. Invalid ownership or an inactive pass returns carry clear without writing vertex arrays.
@@ -43,4 +45,4 @@ This optional data module does not promise higher FPS. Application interpolation
 
 Model-specific component order, hidden shuttle faces, camera and dynamics, sparser grid, FOV, procedural course and alternate scanlines are not moved into the renderer core. These change content, behavior or graphics and remain in the demo project. Rigid model rotation requires separate qualification before becoming a new object-transform API.
 
-[Current qualification](QUALIFICATION-1.15.0-dev2.en.md) separates native FPS, pixel identity and CPU callbacks. Wire benchmark results are not attributed to the shuttle or to the stream module alone.
+[Current qualification](QUALIFICATION-1.15.0.en.md) separates native FPS, pixel identity and CPU callbacks. Wire benchmark results are not attributed to the shuttle or to the stream module alone.

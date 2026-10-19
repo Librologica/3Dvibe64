@@ -1,8 +1,8 @@
-> Development edition 1.15.0-dev2; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+# External inputs — 1.15.0
 
-# External inputs — 1.14.0
+> Stable1.15.0 source SDK prepared locally; not published online. [Status and support](RELEASE-STATUS.en.md).
 
-## Working copy and output paths in1.13.0
+## Working copy and output paths
 
 Ordinary legacy and legacy-plus write generated ASM/labels/map/PRG in their
 SDK working copy's `work/`, plus `work/build/3Dvibe64.prg`. Copy the complete

@@ -1,8 +1,8 @@
-> Edizione di sviluppo 1.15.0-dev2; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+# Input esterni — 1.15.0
 
-# Input esterni — 1.14.0
+> SDK sorgente stabile1.15.0 preparato in locale; non pubblicato online. [Stato e supporto](RELEASE-STATUS.it.md).
 
-## Copia di lavoro e output nella1.13.0
+## Copia di lavoro e output
 
 Legacy e legacy-plus ordinari scrivono ASM/label/mappa/PRG nel `work/` della
 copia SDK usata, più `work/build/3Dvibe64.prg`. Copiare prima l'intero SDK in

@@ -1,8 +1,8 @@
-> Development edition 1.15.0-dev2; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+# Practical Manual for Creating Demos and PRGs with 3Dvibe64 Using Codex — 1.15.0
 
-# Practical Manual for Creating Demos and PRGs with 3Dvibe64 Using Codex
+> Stable1.15.0 source SDK prepared locally; not published online. [Status and support](RELEASE-STATUS.en.md).
 
-## Working copy and output paths in1.13.0
+## Working copy and output paths
 
 Ordinary legacy and legacy-plus write generated ASM/labels/map/PRG in their
 SDK working copy's `work/`, plus `work/build/3Dvibe64.prg`. Copy the complete
@@ -12,12 +12,12 @@ there. They reject `-OutputDirectory`. Q8, Normalized16 and Mode8 instead accept
 below are generated files, never precompiled files included in this SDK.
 
 
-## Stable release 1.14.0
+## Stable release 1.15.0
 
-`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [native qualification](QUALIFICATION-1.14.0.en.md). Stable source distribution published on GitHub; external scenes/assets only.
+`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [native qualification](QUALIFICATION-1.14.0.en.md). Stable1.15.0 source package prepared locally; no upload or online release. External scenes/assets only.
 
 
-Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 Current 1.14.0 source contract. This manual describes the ordinary exporter unless
@@ -26,7 +26,7 @@ are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
 ## Source-only release
 
-This stable source distribution is published on GitHub. No demos or examples are shipped, including
+This stable1.15.0 source distribution is prepared locally and has not been published. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)

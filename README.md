@@ -1,50 +1,32 @@
-# 3Dvibe64 1.15.0-dev2
+# 3Dvibe64 1.15.0
 
-[Rendering e dati riutilizzabili IT](REUSABLE-RENDER.it.md) · [Reusable rendering and data EN](REUSABLE-RENDER.en.md). Nuove API esplicite wire/stream e chiavi compatte; `all` aggiunge `integer-edges`.
+**Stable source SDK prepared locally for GitHub; not uploaded or published.** / **SDK sorgente stabile preparato in locale per GitHub; non caricato né pubblicato.** No1.15.0 online release page or download URL has been created. / Nessuna pagina release o URL di download1.15.0 online creato.
 
-Dev locale non pubblicata per la futura release stabile. / Unpublished local development for a future stable release.
+[English manual](README.en.md) · [Manuale italiano](README.it.md) · [Release status EN](RELEASE-STATUS.en.md) · [Stato release IT](RELEASE-STATUS.it.md)
+[Release notes EN](RELEASE-NOTES-1.15.0.en.md) · [Note release IT](RELEASE-NOTES-1.15.0.it.md) · [Docs](DOCS.md) · [Quick start](QUICKSTART.md) · [Tests](TESTING.md)
 
-[Italiano](EXACT-RENDER.it.md) · [English](EXACT-RENDER.en.md) · [Qualifica](QUALIFICATION-1.15.0-dev2.it.md)
+No demos/examples, no precompiled PRG, source scenes, models, audio/video or captures. Maintained renderer templates,tables and fonts are engine source inputs. Supply external scene/assets and install tools separately. / Nessuna demo,esempio,PRG,scena,modello,media o cattura. Template,tabelle e font mantenuti sono sorgenti del renderer; input esterni e strumenti installati separatamente.
 
-# 3Dvibe64 1.14.0
-
-Stable **source SDK**, no demos/examples, no precompiled PRG, music, scene
-projects or captures. / **SDK sorgente** stabile, senza demo/esempi,
-PRG, musica, progetti scena o catture. Source repository / Repository sorgente: [GitHub](https://github.com/Librologica/3Dvibe64). Stable release / Release stabile: [v1.14.0](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0). Upstream: [GitHub](https://github.com/Librologica/3Dvibe64). Previous releases and frozen projects remain untouched.
-
-| Precision | Contract / Contratto |
+|Feature / Funzione|Contract / Contratto|
 |---|---|
-| `legacy` | Default historical renderer, preserved / Renderer storico predefinito, preservato |
-| `legacy-plus` | Explicit intermediate Mode1–7, Q4 near/screen, Mode7 affine/perspective / Mode1–7 intermedie, near/schermo Q4, Mode7 affine/prospettica |
-| `q8` | Existing explicit Q8 renderer / Renderer Q8 esplicito esistente |
-| `normalized16` | Existing experimental profile / Profilo sperimentale esistente |
+|`legacy`|Unchanged default / Default invariato|
+|Ordinary `legacy-plus`|Mode1–7, camera Q4/Q10, near8 polygon/screen; Mode7 affine/perspective within documented profile|
+|`-LegacyPlusOptimizations all`|Mode4 plus only: arithmetic,edges,spans,outcodes,convex,integer-edges; default none|
+|`wire`,`stream`|Explicit main-pass APIs, excluded from all; stream requires outcodes and caller-owned slots|
+|`frozen-lighting`|Separate appearance option, excluded from all; first-active-pose colors with explicit invalidation|
+|Compact keyframes|Optional lossless signed16 codec; total code+data RAM must be evaluated|
+|`q8`|Existing explicit renderer / Renderer esplicito esistente|
+|Normalized16 / gameplay|Separate bounded experimental modules; not automatically promoted / Moduli sperimentali separati|
 
-[English manual](README.en.md) · [Manuale italiano](README.it.md)
-[Quick start / Guida rapida](QUICKSTART.md) · [All contracts / Tutti i contratti](DOCS.md)
-[Release notes EN](RELEASE-NOTES-1.14.0.en.md) · [Note release IT](RELEASE-NOTES-1.14.0.it.md)
-[Qualification EN](QUALIFICATION-1.14.0.en.md) · [Qualificazione IT](QUALIFICATION-1.14.0.it.md)
-[Testing / Test](TESTING.md) · [External inputs EN](EXTERNAL-INPUTS.en.md) · [Input esterni IT](EXTERNAL-INPUTS.it.md)
+GraphicsMode 1–8 remain available in their documented profiles. New1.15.0 kernels/APIs require **Mode4 legacy-plus,walkLite,normal160×100,high-basic-v2,NoFpsOverlay,near8/poly,no Ground**. This does not extend them to Q8 or every graphics mode. Real64KB allocation remains mandatory; oversized combinations fail. / I nuovi kernel/API richiedono il profilo indicato; nessuna estensione implicita a Q8 o ad altri modi. Allocazione reale64KB, combinazioni troppo grandi rifiutate.
 
-GraphicsMode 1–8 remain available within their documented profiles. Legacy-plus
-requires Mode1–7/walkLite/normal/high-basic-v2/-NoFpsOverlay; its native
-qualification is PAL Turbo6510 ×64, safe, silent, no Ground. It is not a rotation
-alias or a Q8 backend. Full ABI, memory, clipping and input limitations are in
-[LEGACY-PLUS.en.md](LEGACY-PLUS.en.md) / [LEGACY-PLUS.it.md](LEGACY-PLUS.it.md).
+`all` contains six automatic exact options and excludes wire,stream,frozen-lighting. Default legacy/Q8 behavior,resolution,palette,safe presentation and sampling remain unchanged. No alternate scanlines. / Default,precisione,risoluzione,palette e presentazione conservati; nessuna riga alternata.
 
-Inherited APIs include meshSourceSharing, FaceCullProfile, Mode4NearProfile and
-HeaderText; the text split is160×88 with TEXT_HEADER_SCREEN_BYTES. Gameplay,
-Normalized16 and Mode8 keep their separate scopes. The historical raster contract
-is in [GOURAUD-MODE6-REPORT.md](GOURAUD-MODE6-REPORT.md). Use external scenes/assets and a fresh complete SDK working copy for ordinary
-legacy/plus; Q8/Normalized16/Mode8 accept an external output directory; engine assembly templates/fonts are
-maintained source inputs, not demos. Build tools are installed separately.
+[Exact options EN](EXACT-RENDER.en.md) · [Opzioni IT](EXACT-RENDER.it.md) · [Reusable API EN](REUSABLE-RENDER.en.md) · [API IT](REUSABLE-RENDER.it.md)
+[Qualification EN](QUALIFICATION-1.15.0.en.md) · [Qualifica IT](QUALIFICATION-1.15.0.it.md) · [RELEASE.json](RELEASE.json)
 
-Le GraphicsMode 1–8 restano disponibili nei rispettivi profili. Legacy-plus
-richiede Mode1–7/walkLite/normal/high-basic-v2/-NoFpsOverlay; qualifica nativa
-PAL Turbo6510 ×64, safe, silenziosa, senza Ground. Non è un alias rotation né
-un backend Q8. Usare input esterni e una copia SDK nuova per legacy/plus; template/font
-dell'engine sono sorgenti mantenuti. Strumenti di build installati separatamente.
+Promotion retains qualified1.15.0-dev2 runtime bytes. Measurements are inherited from the exact same PRGs: VICE Turbo6510 PAL×64,safe,silent fixtures. They are not stock-C64,NTSC,physical-hardware or new timing claims. The wire fixture's +27.23% is not a shuttle-demo FPS claim. / Misure conservate della dev qualificata sugli stessi PRG; nessuna nuova misura o promessa universale.
 
-[Software license](LICENSE) · [Documentation license](LICENSE-DOCUMENTATION.md)
-[Contributing / Contribuire](CONTRIBUTING.md) · [Security / Sicurezza](SECURITY.md)
+Ordinary legacy/plus writes into a fresh complete SDK working copy's work/ and rejects -OutputDirectory; Q8/Normalized16/Mode8 support external output directories. Existing APIs include meshSourceSharing,FaceCullProfile,Mode4NearProfile and HeaderText. HeaderText uses the160×88 split with TEXT_HEADER_SCREEN_BYTES. Historical raster details: [GOURAUD-MODE6-REPORT.md](GOURAUD-MODE6-REPORT.md).
 
-Private Underworld optimizations remain application-specific and excluded. / Le ottimizzazioni private Underworld restano specifiche dell’applicazione ed escluse. See / Vedere [release notes](RELEASE-NOTES-1.14.0.md).
+[Software license](LICENSE) · [Documentation license](LICENSE-DOCUMENTATION.md) · [Contributing](CONTRIBUTING.md) · [Security](SECURITY.md)

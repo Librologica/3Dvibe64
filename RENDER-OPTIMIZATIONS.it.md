@@ -1,12 +1,8 @@
-# 1.15.0-dev2
+# Ottimizzazioni esatte del renderer — 1.15.0
 
-[Exact rendering / Rendering esatto](EXACT-RENDER.it.md).
+> SDK sorgente stabile1.15.0 preparato in locale; non pubblicato online. [Stato e supporto](RELEASE-STATUS.it.md).
 
-> Edizione di sviluppo 1.15.0-dev2; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
-
-# Ottimizzazioni esatte del renderer — 1.14.0
-
-## Legacy-plus nella 1.14.0
+## Supporto legacy-plus nella 1.15.0
 
 Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica nativa](QUALIFICATION-1.14.0.it.md).
 
@@ -155,6 +151,12 @@ L’occlusione pareti richiede anche una palette hardware VIC condivisa e immuta
 `static_patterns.native_cache(face_count,low=0,high=1,prefix='sf',row_cache='sp_current_row')` emette codice/dati di cache nativa alla generazione. Supporta1..255facce; dati6*face_count+68byte più codice/guardie. `sf_assign`: A=livello0..16,X=faccia, chiamare solo alla generazione/modifica. `sf_load`: X=faccia, copia quattro byte già pronti nella cache dello span; una faccia non assegnata restituisce carry zero senza cambiarla. `sf_invalidate`: X=faccia. Carry impostato indica successo; A/Y modificati,X conservato. Voci iniziali non assegnate; faccia/livello errati rifiutati. Aggiornare soltanto fra viste complete. L’adapter gestisce fallback e invalidazione per geometria/materiale/luce. Nessun calcolo di luce per frame viene installato.
 
 
-## Confine applicativo 1.14.0
+## Confine applicativo 1.15.0
 
 Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).
+
+## Ottimizzazioni e API della1.15.0
+
+Il selettore `-LegacyPlusOptimizations` è distinto da EngineExperiments,dal raster Q8 ibrido e dagli altri backend. Richiede Mode4 legacy-plus nel profilo qualificato; default none. `all` comprende arithmetic,edges,spans,outcodes,convex,integer-edges. Wire e stream sono API ASM esplicite escluse da all,non sostituzioni automatiche; stream richiede outcodes e possesso degli slot nativi. Frozen-lighting è separata e cambia intenzionalmente la risposta alle luci mobili. Il codec di chiavi è un modulo dati facoltativo. L'errore Bresenham a8bit non riduce la precisione geometrica Q4/Q10. La matrice oggetto ordinaria resta Q6; nessuna nuova API di rotazione rigida degli oggetti è implicita.
+
+[Opzioni e profilo](EXACT-RENDER.it.md) · [ABI,materiali,memoria e ripieghi](REUSABLE-RENDER.it.md) · [Stato e supporto](RELEASE-STATUS.it.md). Alcune combinazioni non entrano nei64KB e vengono rifiutate.

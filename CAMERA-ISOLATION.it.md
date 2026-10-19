@@ -1,6 +1,6 @@
-> Edizione di sviluppo 1.15.0-dev2; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+# CAMERA ISOLATION — 1.15.0
 
-# CAMERA ISOLATION — 1.14.0
+> SDK sorgente stabile1.15.0 preparato in locale; non pubblicato online. [Stato e supporto](RELEASE-STATUS.it.md).
 
 Il selettore di compatibilità `-Precision legacy -LegacyStability camera`
 richiede Mode2, walkLite, normal e high-basic-v2. Conserva quattro bit frazionari

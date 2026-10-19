@@ -1,6 +1,8 @@
-# Sviluppo rendering esatto — 1.15.0-dev2
+# Ottimizzazioni del rendering esatto — 1.15.0
 
-Dev non pubblicata basata sulla stabile1.14.0, destinata a fornire i sorgenti di una futura release stabile GitHub. Nessun tag stabile, branch remoto o release viene modificato. I default legacy/Q8 e le build plus ordinarie senza selettore mantengono i contratti precedenti. L'SDK sorgente non contiene scene, programmi, audio/video o catture native grezze.
+> SDK sorgente stabile1.15.0 preparato in locale; non pubblicato online. [Stato e supporto](RELEASE-STATUS.it.md).
+
+Funzioni della stabile1.15.0, promosse dalla dev qualificata1.15.0-dev2 senza modifiche al runtime. Pacchetto pronto in locale per GitHub; non pubblicato. Legacy/Q8 e le build plus senza selettore mantengono i contratti precedenti. Nessuna demo, scena, programma, media o cattura nativa nel pacchetto sorgente.
 
 ## Selezione e ambito
 
@@ -13,6 +15,7 @@ Dev non pubblicata basata sulla stabile1.14.0, destinata a fornire i sorgenti di
 | spans | Cache esistente dei materiali nelle celle, scritture srotolate dei byte interni e indirizzo della seconda riga fisica ricavato dalla prima. Il generatore dimostra adiacenza/parita delle righe e offset X multipli di8. Maschere iniziali/finali, entrambi i buffer e ripiego per span lunghi conservati. Nessuna riga omessa. |
 | outcodes | Classifica una sola volta ogni vertice originale appena proiettato con i quattro predicati originali del clipper; riusa i bit per esclusione/inclusione delle facce sorgenti. Intersezioni near/sintetiche mantengono il clipper Q4 completo. Nessun riuso tra viste diverse. |
 | convex | Unisce il riempimento dei fan ritagliati uniformi solo dopo verifica rigorosa di tutti i punti rispetto ai lati, ancora del fan estrema in Y e controllo del kernel di fill. Conserva tutti i bordi dei triangoli, incluse entrambe le direzioni delle diagonali. Pattern, geometrie dubbie, degeneri o incompatibili mantengono il fan originale. Esporta anche l'adapter esplicito per coppie di triangoli descritto sotto. |
+| integer-edges | Bordi interi dei poligoni con riporto del nono bit; coordinate native invariate e percorso originale per tracce wire condivise. |
 | frozen-lighting | **Opzione estetica**, separata dalle ottimizzazioni esatte. Calcola una volta le facce senza pigmento fisso di ogni oggetto non condiviso alla prima posa attiva e conserva i colori. Gli oggetti invisibili inizializzano quando diventano attivi. La luce non segue piu oggetti/luci mobili fino all'invalidazione. Pigmenti fissi conservati. Richiede oggetti e infrastruttura di luce dinamica. |
 
 Coordinate signed16 Q4 e coefficienti Q10 restano invariati: nessun backend Q8, riduzione di risoluzione/LOD, riga alternata o cambio palette. Trasformazione e proiezione dei vertici sono gia condivise per vista dal renderer ordinario: vengono riutilizzate, senza una seconda cache. Movimento, generazione del percorso, semplificazione mesh e inseguimento camera specifici della demo restano esterni all'SDK.
@@ -33,7 +36,7 @@ Usare la normale sintassi `-GraphicsMode 4` negli script. Opzioni e kernel nativ
 
 ## Verifica e promozione
 
-La [qualifica](QUALIFICATION-1.15.0-dev2.it.md) separa nuovi FPS nativi, verifiche matematiche/callback e default ereditati. Confrontare input, target, warm-up e percorso identici prima/dopo. Verificare immagini e celle materiali, clipping/near, vertici condivisi, pannelli degeneri/autointersecanti, arrotondamento signed, divisori larghi, riporti e passaggi di pagina. Sulle scene limitate dalla CPU partire dall'aritmetica; PAL puo limitare le nuove viste visibili a circa50,125/s. La promozione stabile resta un'azione successiva alla revisione: questa dev non pubblica nulla.
+La [qualifica](QUALIFICATION-1.15.0.it.md) separa FPS nativi conservati, verifiche matematiche/callback e default ereditati. Confrontare input, target, warm-up e percorso identici prima/dopo. Verificare immagini e celle materiali, clipping/near, vertici condivisi, pannelli degeneri/autointersecanti, arrotondamento signed, divisori larghi, riporti e passaggi di pagina. Sulle scene limitate dalla CPU partire dall'aritmetica; PAL puo limitare le nuove viste visibili a circa50,125/s. La promozione stabile è completata in locale; la pubblicazione GitHub non è stata eseguita.
 
 La fusione automatica dei fan richiede inoltre un unico materiale/riflettivita attivo, nessuna tabella di pigmenti fissi per faccia e nessuna politica di proprieta delle celle VIC. Le facce con palette miste mantengono il fan originale; l'API esplicita per bounds di coppie resta disponibile nel contratto del chiamante. La cache degli intervalli materiali dimentica gli intervalli disconnessi senza riempire o memorizzare le celle nel mezzo.
 

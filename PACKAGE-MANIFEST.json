@@ -2,15 +2,15 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.15.0-dev2",
-    "version": "1.15.0-dev2",
+    "displayName": "3Dvibe64 1.15.0",
+    "version": "1.15.0",
     "distribution": "source-sdk",
-    "permanentFiles": 346,
+    "permanentFiles": 356,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
     "documentationLicense": "CC-BY-NC-4.0",
-    "prerelease": true
+    "prerelease": false
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
@@ -1884,11 +1884,17 @@
     "platform": "Windows; Linux and physical hardware not tested"
   },
   "stablePromotion": {
-    "status": "pending",
+    "status": "complete-local",
     "baseVersion": "1.14.0",
-    "runtimeAndDefaultsUnchanged": false,
+    "runtimeAndDefaultsUnchanged": true,
     "defaultProgramBytesUnchanged": true,
-    "GitHubPublished": false
+    "GitHubPublished": false,
+    "version": "1.15.0",
+    "sourceDevelopment": "1.15.0-dev2",
+    "qualifiedDevCommit": "ccc7d62a03d250a606f3aab6e246ba11af6bc94f",
+    "publicationPending": true,
+    "comparisonBase": "qualified1.15.0-dev2",
+    "newOptionalRuntimeSinceStable1_14": true
   },
   "gameplayDevelopment": {
     "experimental": true,
@@ -2068,14 +2074,18 @@
     "budgetPolicy": "Historical per-profile byte budgets exclude new optional helpers; use actual assembled map and allocator guards"
   },
   "release": {
-    "version": "1.15.0-dev2",
-    "status": "unpublished development",
-    "stable": false,
-    "prerelease": true,
+    "version": "1.15.0",
+    "status": "stable-local",
+    "stable": true,
+    "prerelease": false,
     "GitHubPublished": false,
     "releaseURL": null,
     "newDemosIncluded": false,
-    "privateUnderworldPortIncluded": false
+    "privateUnderworldPortIncluded": false,
+    "releasePageCreated": false,
+    "localStableRelease": true,
+    "publication": "local-only",
+    "promotedDevelopment": "1.15.0-dev2"
   },
   "distributionPolicy": {
     "newDemosIncluded": false,
@@ -2263,12 +2273,12 @@
       "work/legacy_plus_modes.py": "5EC2342769692E3C2B6F48099E6B474C14B16A3F4B0E8973641968BC8DCF4400",
       "work/legacy_plus_projective.py": "B3ED84D78D5A37013B01BA78118BA25144BE76BD32670FB4D198F7B674B8A24A"
     },
-    "promotedFrom": "1.14.0-dev1",
-    "publication": "GitHub source repository and stable release",
-    "GitHubPublished": true,
+    "promotedFrom": "1.15.0-dev2",
+    "publication": "stable source package prepared locally; not published",
+    "GitHubPublished": false,
     "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0",
-    "releasePageCreated": true
+    "releaseURL": null,
+    "releasePageCreated": false
   },
   "renderOptimizations": {
     "default": false,
@@ -2482,6 +2492,6 @@
     ],
     "compactKeyframes": "work/compact_keyframes.py",
     "baseDevelopment": "1.15.0-dev1",
-    "qualification": "QUALIFICATION-1.15.0-dev2.json"
+    "qualification": "QUALIFICATION-1.15.0.json"
   }
 }
