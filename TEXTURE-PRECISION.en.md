@@ -1,10 +1,12 @@
-# Mode 7 texture precision — 1.14.0
+# Mode 7 texture precision — 1.15.0
+
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
 
 ## Legacy-plus projective profile
 
 In 1.14.0, Mode7 perspective is also available with `-Precision legacy-plus`. Use the [plus build/configuration contract](LEGACY-PLUS.en.md): Q4 geometry, near8, camera-forward depth8–256WU, standard texture quality and LOD off. Lighting none/flat/Gouraud A/B/C is supported. UW/VW/W unsigned16 carriers reuse a texture sampler without linking Q8 geometry. The Q8-specific depth1–256 and compositor-C restrictions below apply to Q8 only. [Native comparison](QUALIFICATION-1.14.0.en.md).
 
-Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 Current 1.14.0 source contract. This manual describes the ordinary exporter unless
@@ -134,6 +136,6 @@ Additional code reduces scene-specific memory headroom; unsafe layouts are
 still rejected, not silently simplified. See [release notes](RELEASE-NOTES-1.6.1.md).
 
 
-## 1.14.0 application boundary
+## 1.15.0 application boundary
 
 Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](RELEASE-NOTES-1.14.0.en.md#distribution-and-private-application-boundary).

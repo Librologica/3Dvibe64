@@ -1,5 +1,5 @@
 {
-  "version": "1.14.0",
+  "version": "1.15.0",
   "locales": [
     "en",
     "it"
@@ -196,28 +196,43 @@
       "it": "CAMERA-ROTATION.it.md"
     },
     {
-      "id": "RELEASE-NOTES-1.14.0",
-      "en": "RELEASE-NOTES-1.14.0.en.md",
-      "it": "RELEASE-NOTES-1.14.0.it.md"
+      "id": "EXACT-RENDER",
+      "en": "EXACT-RENDER.en.md",
+      "it": "EXACT-RENDER.it.md"
     },
     {
-      "id": "QUALIFICATION-1.14.0",
-      "en": "QUALIFICATION-1.14.0.en.md",
-      "it": "QUALIFICATION-1.14.0.it.md"
+      "id": "REUSABLE-RENDER",
+      "en": "REUSABLE-RENDER.en.md",
+      "it": "REUSABLE-RENDER.it.md"
+    },
+    {
+      "id": "RELEASE-NOTES-1.15.0",
+      "en": "RELEASE-NOTES-1.15.0.en.md",
+      "it": "RELEASE-NOTES-1.15.0.it.md"
+    },
+    {
+      "id": "QUALIFICATION-1.15.0",
+      "en": "QUALIFICATION-1.15.0.en.md",
+      "it": "QUALIFICATION-1.15.0.it.md"
+    },
+    {
+      "id": "RELEASE-STATUS",
+      "en": "RELEASE-STATUS.en.md",
+      "it": "RELEASE-STATUS.it.md"
     }
   ],
   "currentBilingual": [
-    "README.md",
-    "DOCS.md",
-    "QUICKSTART.md",
-    "TESTING.md",
-    "WORLD-METRICS.md",
-    "Q8-SCALABILITY.md",
     "CONTRIBUTING.md",
-    "SECURITY.md",
+    "DOCS.md",
     "LICENSE-DOCUMENTATION.md",
+    "Q8-SCALABILITY.md",
+    "QUICKSTART.md",
+    "README.md",
+    "RELEASE-NOTES-1.15.0.md",
     "ROADMAP.md",
-    "RELEASE-NOTES-1.14.0.md"
+    "SECURITY.md",
+    "TESTING.md",
+    "WORLD-METRICS.md"
   ],
   "historicalReports": [
     "DEVELOPMENT-1.14.0-dev1.en.md",
@@ -227,6 +242,8 @@
     "MODE8-QUALIFICATION.md",
     "NORMALIZED16-QUALIFICATION.md",
     "Q8-QUALIFICATION.md",
+    "QUALIFICATION-1.10.1-rc1.en.md",
+    "QUALIFICATION-1.10.1-rc1.it.md",
     "QUALIFICATION-1.11.0.en.md",
     "QUALIFICATION-1.11.0.it.md",
     "QUALIFICATION-1.12.0.en.md",
@@ -235,14 +252,39 @@
     "QUALIFICATION-1.13.0.it.md",
     "QUALIFICATION-1.14.0-dev1.en.md",
     "QUALIFICATION-1.14.0-dev1.it.md",
+    "QUALIFICATION-1.14.0.en.md",
+    "QUALIFICATION-1.14.0.it.md",
+    "QUALIFICATION-1.15.0-dev1.en.md",
+    "QUALIFICATION-1.15.0-dev1.it.md",
+    "QUALIFICATION-1.15.0-dev2.en.md",
+    "QUALIFICATION-1.15.0-dev2.it.md",
+    "RELEASE-NOTES-1.10.0-rc1.md",
+    "RELEASE-NOTES-1.10.0.md",
+    "RELEASE-NOTES-1.10.1-rc1.md",
+    "RELEASE-NOTES-1.10.1.md",
+    "RELEASE-NOTES-1.10.2.en.md",
+    "RELEASE-NOTES-1.10.2.it.md",
+    "RELEASE-NOTES-1.10.2.md",
     "RELEASE-NOTES-1.11.0.en.md",
     "RELEASE-NOTES-1.11.0.it.md",
+    "RELEASE-NOTES-1.11.0.md",
     "RELEASE-NOTES-1.12.0.en.md",
     "RELEASE-NOTES-1.12.0.it.md",
     "RELEASE-NOTES-1.12.0.md",
     "RELEASE-NOTES-1.13.0.en.md",
     "RELEASE-NOTES-1.13.0.it.md",
-    "RELEASE-NOTES-1.13.0.md"
+    "RELEASE-NOTES-1.13.0.md",
+    "RELEASE-NOTES-1.14.0.en.md",
+    "RELEASE-NOTES-1.14.0.it.md",
+    "RELEASE-NOTES-1.14.0.md",
+    "RELEASE-NOTES-1.4.0.md",
+    "RELEASE-NOTES-1.5.0.md",
+    "RELEASE-NOTES-1.5.5.md",
+    "RELEASE-NOTES-1.6.0.md",
+    "RELEASE-NOTES-1.6.1.md",
+    "RELEASE-NOTES-1.7.0.md",
+    "RELEASE-NOTES-1.8.0.md",
+    "RELEASE-NOTES-1.9.0.md"
   ],
   "historyPolicy": "Preserve versioned measurements and archived release notes; current paired contracts take precedence.",
   "gameplayProfiles": [
@@ -273,7 +315,7 @@
     "--flat-span-cache"
   ],
   "sourceOnly": true,
-  "publication": "GitHub source repository and stable release",
+  "publication": "GitHub stable source release",
   "newDemosIncluded": false,
   "gameplayRequiredOptions": [
     "--profile",
@@ -283,6 +325,6 @@
   "allExamplesExcluded": true,
   "GitHubPublished": true,
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0",
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0",
   "releasePageCreated": true
 }

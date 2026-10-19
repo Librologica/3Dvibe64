@@ -1,4 +1,6 @@
-# Roadmap — 1.14.0
+# Roadmap — 1.15.0
+
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
 
 Included: exact opt-in renderer flags, MAT-01 packed spans, conservative wall adapter, static pattern/palette helpers and optional pool/camera/SID primitives. Existing billboard, materials, entity, visibility, shared mesh, controlled motion, WORLD-01 and LEVEL-01 contracts remain bounded.
 
@@ -7,6 +9,6 @@ Future work: general scene integration, arbitrary intersections/transparency, ge
 [Contracts](RENDER-OPTIMIZATIONS.en.md) · [Support](ADAPTER-SUPPORT.en.md) · [Qualification](QUALIFICATION-1.14.0.en.md)
 
 
-## 1.14.0 application boundary
+## 1.15.0 application boundary
 
 Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](RELEASE-NOTES-1.14.0.en.md#distribution-and-private-application-boundary).

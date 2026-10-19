@@ -1,11 +1,13 @@
-# Moduli sorgente gameplay — 1.14.0
+# Moduli sorgente gameplay — 1.15.0
 
-Release stabile 1.14.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+
+Release stabile 1.15.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione stabile sorgente è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione sorgente stabile1.15.0 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 | ID | Modulo | Contratto |
 |---|---|---|
@@ -117,6 +119,6 @@ disco, ombre texturizzate dinamiche o API generali di integrazione completa.
 --flat-span-cache / -FlatSpanCache opzionale seleziona span flat MAT-01 esatti. Richiede un binding materiale esterno compatibile; qualità e LOD invariati. [Contract / Contratto](RENDER-OPTIMIZATIONS.it.md).
 
 
-## Confine applicativo 1.14.0
+## Confine applicativo 1.15.0
 
 Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).

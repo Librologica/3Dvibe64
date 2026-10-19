@@ -1,4 +1,6 @@
-# LEGACY STABILITY — 1.14.0
+# LEGACY STABILITY — 1.15.0
+
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
 
 The compatibility selector is `-Precision legacy -LegacyStability corrected`.
 Omitting LegacyStability, or choosing `historical`, preserves ordinary legacy.

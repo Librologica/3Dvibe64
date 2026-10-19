@@ -1,25 +1,18 @@
-# 3Dvibe64 1.14.0
+# 3Dvibe64 1.15.0
 
-## Stable release 1.14.0
+Stable source SDK published on GitHub. No demos,examples,PRGs or media. [Status/support](RELEASE-STATUS.en.md) · [Changes](RELEASE-NOTES-1.15.0.en.md) · [Qualification](QUALIFICATION-1.15.0.en.md).
 
-`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [native qualification](QUALIFICATION-1.14.0.en.md). Stable source distribution published on GitHub; external scenes/assets only.
-
-
-Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
-
+New optimizations/APIs are limited to the documented Mode4 legacy-plus profile; ordinary Mode1–7 plus and other backends remain separate. Defaults legacy and optimizations none. `all` excludes wire,stream,frozen-lighting. [Options](EXACT-RENDER.en.md) · [API/memory](REUSABLE-RENDER.en.md). Gameplay and Normalized16 retain experimental status.
 
 Legacy remains the default. Select precise Q8 explicitly with `-Precision q8`, recommended above 20 MHz. Standard texture quality, precise lines, LOD off and safe presentation remain the ordinary defaults.
 
-
-[Italiano](README.it.md) · [DOCS](DOCS.md) · [QUICKSTART](QUICKSTART.md)
-
 ## Stable source distribution
 
-This stable source distribution is published on GitHub. No demos or examples are shipped, including
+This stable1.15.0 source distribution is published on GitHub. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.14.0.en.md).
+and [qualification](QUALIFICATION-1.15.0.en.md).
 
 | ID | Module | Contract |
 |---|---|---|

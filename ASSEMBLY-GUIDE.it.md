@@ -1,6 +1,8 @@
-# 3Dvibe64 — Guida per il programmatore assembly
+# 3Dvibe64 — Guida per il programmatore assembly — 1.15.0
 
-## Copia di lavoro e output nella1.14.0
+> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+
+## Copia di lavoro e output
 
 Legacy e legacy-plus ordinari scrivono ASM/PRG nel `work/` della
 copia SDK usata, più `work/build/3Dvibe64.prg`. Copiare prima l'intero SDK in
@@ -10,12 +12,12 @@ parametro per un output esterno nuovo. I file descritti sotto sono generati,
 non file precompilati distribuiti con questo SDK.
 
 
-## Release stabile 1.14.0
+## Release stabile 1.15.0
 
-`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica nativa](QUALIFICATION-1.14.0.it.md). Distribuzione stabile pubblicata su GitHub; solo scene/asset esterni.
+`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica nativa](QUALIFICATION-1.14.0.it.md). Pacchetto sorgente stabile1.15.0 pubblicato su GitHub. Solo scene/asset esterni.
 
 
-Release stabile 1.14.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Release stabile 1.15.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 Contratto sorgente corrente 1.14.0. Il manuale descrive l’exporter ordinario
@@ -24,7 +26,7 @@ in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione stabile sorgente è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione sorgente stabile1.15.0 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 ## Mode 7 veloce — 1.7.0
 
@@ -791,3 +793,9 @@ Per un primo approccio professionale all'engine:
 10. soltanto dopo iniziare una modifica permanente al builder.
 
 Con questo metodo 3Dvibe64 diventa leggibile come un engine assembly specializzato: il PowerShell è il compilatore di configurazione, il JSON è la descrizione del programma e `3Dvibe64.asm` è l'unità assembly concreta da analizzare per quella build.
+
+## Ottimizzazioni e API della1.15.0
+
+Il selettore `-LegacyPlusOptimizations` è distinto da EngineExperiments,dal raster Q8 ibrido e dagli altri backend. Richiede Mode4 legacy-plus nel profilo qualificato; default none. `all` comprende arithmetic,edges,spans,outcodes,convex,integer-edges. Wire e stream sono API ASM esplicite escluse da all,non sostituzioni automatiche; stream richiede outcodes e possesso degli slot nativi. Frozen-lighting è separata e cambia intenzionalmente la risposta alle luci mobili. Il codec di chiavi è un modulo dati facoltativo. L'errore Bresenham a8bit non riduce la precisione geometrica Q4/Q10. La matrice oggetto ordinaria resta Q6; nessuna nuova API di rotazione rigida degli oggetti è implicita.
+
+[Opzioni e profilo](EXACT-RENDER.it.md) · [ABI,materiali,memoria e ripieghi](REUSABLE-RENDER.it.md) · [Stato e supporto](RELEASE-STATUS.it.md). Alcune combinazioni non entrano nei64KB e vengono rifiutate.

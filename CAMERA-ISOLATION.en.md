@@ -1,4 +1,6 @@
-# CAMERA ISOLATION — 1.14.0
+# CAMERA ISOLATION — 1.15.0
+
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
 
 The compatibility selector `-Precision legacy -LegacyStability camera` requires
 Mode2, walkLite, normal and high-basic-v2. It preserves four fractional position

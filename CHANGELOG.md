@@ -1,3 +1,15 @@
+# Changelog — 1.15.0
+
+## 1.15.0 — stable source release, published on GitHub
+
+Promoted qualified1.15.0-dev2 without runtime changes. Exact Mode4 plus kernels,explicit wire/stream APIs,lossless keyframes and separate frozen-lighting are documented with their bounded support. Defaults preserved. No demos/examples,compiled programs or media; published on GitHub as v1.15.0. [Release notes](RELEASE-NOTES-1.15.0.en.md) · [Note italiane](RELEASE-NOTES-1.15.0.it.md).
+
+## Previous change history / Cronologia precedente
+
+# 1.15.0 — unpublished development
+
+Opt-in Mode4 legacy-plus exact arithmetic, byte remainder edges, block span writes, shared vertex outcodes and convex uniform fan/pair support. Separate frozen-lighting option. Stable1.14.0 and default legacy/plus/Q8 programs preserved. Native before/after qualification and external evidence required for promotion.
+
 # 1.14.0 — stable source SDK / SDK sorgente stabile
 
 Promote the qualified1.14.0-dev1 legacy-plus Mode1–7 extension, with affine/perspective Mode7 and none/flat/Gouraud A/B/C. Q4 geometry/fine camera, coherent clipping attributes, empty-span handling and guarded RAM retain their qualified runtime bytes. Legacy stays default. No demos/examples or private Underworld application changes are included. Current version/publication metadata and the complete IT/EN contracts are aligned. [English notes](RELEASE-NOTES-1.14.0.en.md) · [native qualification](QUALIFICATION-1.14.0.en.md).

@@ -1,6 +1,8 @@
-# Building Mode 8 maps
+# Building Mode 8 maps — 1.15.0
 
-Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+
+Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 Current 1.14.0 source contract. This manual describes the ordinary exporter unless

@@ -1,6 +1,8 @@
-# Input esterni — 1.14.0
+# Input esterni — 1.15.0
 
-## Copia di lavoro e output nella1.13.0
+> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+
+## Copia di lavoro e output
 
 Legacy e legacy-plus ordinari scrivono ASM/label/mappa/PRG nel `work/` della
 copia SDK usata, più `work/build/3Dvibe64.prg`. Copiare prima l'intero SDK in
