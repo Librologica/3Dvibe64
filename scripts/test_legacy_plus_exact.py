@@ -33,7 +33,7 @@ class Machine:
 def main():
     p=argparse.ArgumentParser();p.add_argument('--control',type=Path);p.add_argument('--exact',type=Path);p.add_argument('--out',type=Path);a=p.parse_args()
     assert __debug__,'Checks must not be optimized away'
-    assert parse('all')==['arithmetic','edges','spans','outcodes','convex']
+    assert parse('all')==['arithmetic','edges','spans','outcodes','convex','integer-edges']
     assert parse('frozen-lighting')==['frozen-lighting'] and parse('none')==[]
     for bad in ['','all,frozen-lighting','arithmetic,arithmetic','none,edges','random']:
         try:parse(bad)

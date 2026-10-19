@@ -6,7 +6,9 @@ Every shortcut retains native Q4/Q10 rounding and the original full fallback.
 import argparse,json,re
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
-OPTIONS=('arithmetic','edges','spans','outcodes','convex','frozen-lighting')
+OPTIONS=('arithmetic','edges','spans','outcodes','convex','integer-edges','wire','stream','frozen-lighting')
+# Keep 'all' within the already qualified automatic renderer contract.
+AUTOMATIC=('arithmetic','edges','spans','outcodes','convex','integer-edges')
 
 def once(s,old,new):
     if s.count(old)!=1:raise ValueError('EXACT_RENDER_HOOK: '+repr(old[:90]))
@@ -18,7 +20,7 @@ def block(name,code):
 def parse(value):
     names=value.split(',')
     if names==['none']:return []
-    if names==['all']:return list(OPTIONS[:-1])
+    if names==['all']:return list(AUTOMATIC)
     if not names or len(names)!=len(set(names)) or any(x not in OPTIONS for x in names):
         raise ValueError('EXACT_RENDER_OPTIONS: use none, all, or unique comma-separated '+','.join(OPTIONS))
     return [x for x in OPTIONS if x in names]
@@ -323,8 +325,14 @@ def patch(s,selection):
     for name,value in [('GRAPHICS_MODE',4),('CAMERA_WALK_LITE',1),('MEMORY_LAYOUT_HIGH_BASIC_V2',1),('FPS_OVERLAY_ENABLE',0)]:
         if constant(s,name)!=value:raise ValueError('EXACT_RENDER_PROFILE: requires Mode4 legacy-plus walkLite normal/high-basic-v2/NoFpsOverlay')
     if 'LEGACY_PLUS_NEAR_SCREEN_Q4=1' not in s:raise ValueError('EXACT_RENDER_PROFILE: Q4 near/screen clipping required')
+    if 'stream' in opts and 'outcodes' not in opts:raise ValueError('EXACT_RENDER_STREAM: requires outcodes')
     for name in opts:
-        if name=='convex':
+        if name in ('integer-edges','stream'):
+            from reusable_render import integer_edges,stream
+            apply=integer_edges if name=='integer-edges' else stream
+        elif name=='wire':
+            from exact_render_wire import install as apply
+        elif name=='convex':
             from exact_render_convex import patch as apply
         else:apply=globals()[name.replace('-','_')]
         s=apply(s)

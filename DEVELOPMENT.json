@@ -1,5 +1,5 @@
 {
-  "version": "1.15.0-dev1",
+  "version": "1.15.0-dev2",
   "status": "development",
   "newDemosIncluded": false,
   "Mode8Modified": false,
@@ -186,7 +186,7 @@
   "GitHubPublished": false,
   "renderOptimizationContracts": "RENDER-OPTIMIZATIONS.en.md",
   "release": {
-    "version": "1.15.0-dev1",
+    "version": "1.15.0-dev2",
     "status": "unpublished development",
     "stable": false,
     "prerelease": true,
@@ -231,7 +231,7 @@
   "nearThresholdObservationTicks": [],
   "cameraCadenceQualified": true,
   "promotedDevelopment": "1.14.0-dev1",
-  "qualification": "QUALIFICATION-1.15.0-dev1.json",
+  "qualification": "QUALIFICATION-1.15.0-dev2.json",
   "publication": "unpublished local development",
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
   "releaseURL": null,
@@ -244,6 +244,21 @@
       4
     ],
     "precision": "legacy-plus",
-    "frozenLightingSeparate": true
+    "frozenLightingSeparate": true,
+    "automaticOptions": [
+      "arithmetic",
+      "edges",
+      "spans",
+      "outcodes",
+      "convex",
+      "integer-edges"
+    ],
+    "explicitAPIs": [
+      "wire",
+      "stream"
+    ],
+    "compactKeyframes": "work/compact_keyframes.py",
+    "baseDevelopment": "1.15.0-dev1",
+    "qualification": "QUALIFICATION-1.15.0-dev2.json"
   }
 }

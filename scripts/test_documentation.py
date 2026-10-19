@@ -57,7 +57,7 @@ def links(files):
 
 
 def main():
-    version=read('VERSION').strip();assert version=='1.15.0-dev1'
+    version=read('VERSION').strip();assert version=='1.15.0-dev2'
     package=load('PACKAGE-MANIFEST.json');assert package['package']['version']==version
     assert package['package']['prerelease'] and not package['package']['precompiledPrograms']
     docs=load('DOCUMENTATION.json');assert docs['version']==version and docs['locales']==['en','it']

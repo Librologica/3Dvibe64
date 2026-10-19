@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.15.0-dev1",
-    "version": "1.15.0-dev1",
+    "displayName": "3Dvibe64 1.15.0-dev2",
+    "version": "1.15.0-dev2",
     "distribution": "source-sdk",
-    "permanentFiles": 337,
+    "permanentFiles": 346,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -2068,7 +2068,7 @@
     "budgetPolicy": "Historical per-profile byte budgets exclude new optional helpers; use actual assembled map and allocator guards"
   },
   "release": {
-    "version": "1.15.0-dev1",
+    "version": "1.15.0-dev2",
     "status": "unpublished development",
     "stable": false,
     "prerelease": true,
@@ -2462,8 +2462,26 @@
     "precision": "legacy-plus",
     "frozenLightingSeparate": true,
     "sourceSHA256": {
+      "work/compact_keyframes.py": "62d188613d6eba83ec9efdc9dad7323ba13ea2b96d18d6bca5dbafb2f599f2de",
       "work/exact_render_convex.py": "f7d1db8b2cfcd33f275a7aec8b229f77d847ef06993bb64759690c954b976e49",
-      "work/legacy_plus_exact.py": "782bf5b53f0d6ad6074c80dedcdea0887dd1a9b74106596ed8044a247e54736d"
-    }
+      "work/exact_render_wire.py": "90e9f47e8cea8eb0680aea23363352c1d3000bbaea2565b28c4dc06d9b9f23ad",
+      "work/legacy_plus_exact.py": "edf38a1bba33159a94cc04076c2db75413630136e396284d98b8c050d9057085",
+      "work/reusable_render.py": "ddb88db4e663bc51efa91fa2983fb69beec40790c0f8e28e48d89bc185cd0517"
+    },
+    "automaticOptions": [
+      "arithmetic",
+      "edges",
+      "spans",
+      "outcodes",
+      "convex",
+      "integer-edges"
+    ],
+    "explicitAPIs": [
+      "wire",
+      "stream"
+    ],
+    "compactKeyframes": "work/compact_keyframes.py",
+    "baseDevelopment": "1.15.0-dev1",
+    "qualification": "QUALIFICATION-1.15.0-dev2.json"
   }
 }

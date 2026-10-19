@@ -1,4 +1,4 @@
-# 1.15.0-dev1
+# 1.15.0-dev2
 
 [Exact rendering EN](EXACT-RENDER.en.md) · [Rendering esatto IT](EXACT-RENDER.it.md)
 

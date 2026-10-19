@@ -1,4 +1,6 @@
-> Development edition 1.15.0-dev1; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+[Rendering e dati riutilizzabili IT](REUSABLE-RENDER.it.md) · [Reusable rendering and data EN](REUSABLE-RENDER.en.md). Nuove API esplicite wire/stream e chiavi compatte; `all` aggiunge `integer-edges`.
+
+> Development edition 1.15.0-dev2; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
 
 # 3Dvibe64 1.14.0
 

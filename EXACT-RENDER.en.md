@@ -1,10 +1,10 @@
-# Exact rendering development — 1.15.0-dev1
+# Exact rendering development — 1.15.0-dev2
 
 Unpublished development based on stable1.14.0, intended as the source for a future stable GitHub release. No stable tag, remote branch or release is changed. Legacy/Q8 defaults and ordinary plus builds with no selector retain their previous contracts. The source SDK contains no scenes, programs, audio/video or native raw captures.
 
 ## Selection and scope
 
-`-LegacyPlusOptimizations none` is the default. The new kernels currently require `-Precision legacy-plus -GraphicsMode 4`, walkLite, normal160×100, high-basic-v2, NoFpsOverlay and the existing Q4 near8/poly clipping profile. Other modes and Q8 are not silently substituted. Options are unique comma-separated names; `all` expands to the five exact options below and **does not include frozen lighting**. Unsupported combinations, malformed names and insufficient RAM fail the build. Every build needs a fresh complete SDK copy.
+`-LegacyPlusOptimizations none` is the default. The new kernels currently require `-Precision legacy-plus -GraphicsMode 4`, walkLite, normal160×100, high-basic-v2, NoFpsOverlay and the existing Q4 near8/poly clipping profile. Other modes and Q8 are not silently substituted. Options are unique comma-separated names; `all` expands to the six exact options, including the extension below and **does not include frozen lighting**. Unsupported combinations, malformed names and insufficient RAM fail the build. Every build needs a fresh complete SDK copy.
 
 | Option | Native behavior |
 |---|---|
@@ -33,6 +33,10 @@ Use the ordinary argument spelling `-GraphicsMode 4` when composing scripts. Opt
 
 ## Verification and promotion
 
-[Qualification](QUALIFICATION-1.15.0-dev1.en.md) separates new native FPS from mathematical/callback checks and inherited defaults. Use identical inputs, target, warm-up and route for before/after comparisons. Test complete images and material cells, clipping/near, shared vertices, degenerate/self-crossing panels, signed rounding, wide divisors, byte carries and page crossings. Prefer arithmetic first on CPU-bound scenes; PAL can cap complete visible views near50.125/s. Stable promotion remains a later action after review; nothing is published by this development.
+[Qualification](QUALIFICATION-1.15.0-dev2.en.md) separates new native FPS from mathematical/callback checks and inherited defaults. Use identical inputs, target, warm-up and route for before/after comparisons. Test complete images and material cells, clipping/near, shared vertices, degenerate/self-crossing panels, signed rounding, wide divisors, byte carries and page crossings. Prefer arithmetic first on CPU-bound scenes; PAL can cap complete visible views near50.125/s. Stable promotion remains a later action after review; nothing is published by this development.
 
 Automatic clipped-fan merging additionally requires a single active material/reflectivity palette, no fixed face-color table and no VIC cell-ownership policy. Mixed-palette faces keep the original fan; the explicit pair-bounds API remains available under its caller contract. The material interval cache forgets disconnected cell intervals instead of filling or caching their gaps.
+
+## Reusable extensions
+
+`all` also includes `integer-edges`. The `wire` and `stream` APIs are excluded from `all` and require explicit caller integration; `stream` requires `outcodes`. Compact motion data is a separate module. See [reusable rendering and data](REUSABLE-RENDER.en.md) for ABI, limits and usage.

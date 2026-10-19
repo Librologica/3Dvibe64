@@ -1,10 +1,10 @@
-# Sviluppo rendering esatto — 1.15.0-dev1
+# Sviluppo rendering esatto — 1.15.0-dev2
 
 Dev non pubblicata basata sulla stabile1.14.0, destinata a fornire i sorgenti di una futura release stabile GitHub. Nessun tag stabile, branch remoto o release viene modificato. I default legacy/Q8 e le build plus ordinarie senza selettore mantengono i contratti precedenti. L'SDK sorgente non contiene scene, programmi, audio/video o catture native grezze.
 
 ## Selezione e ambito
 
-`-LegacyPlusOptimizations none` e il default. I nuovi kernel richiedono attualmente `-Precision legacy-plus -GraphicsMode 4`, walkLite, normal160×100, high-basic-v2, NoFpsOverlay e il profilo Q4 near8/poly esistente. Nessuna sostituzione implicita con altri modi o Q8. Le opzioni sono nomi unici separati da virgole; `all` comprende le cinque opzioni esatte seguenti e **non include l'illuminazione congelata**. Combinazioni incompatibili, nomi errati e RAM insufficiente bloccano la build. Ogni build richiede una copia SDK completa nuova.
+`-LegacyPlusOptimizations none` e il default. I nuovi kernel richiedono attualmente `-Precision legacy-plus -GraphicsMode 4`, walkLite, normal160×100, high-basic-v2, NoFpsOverlay e il profilo Q4 near8/poly esistente. Nessuna sostituzione implicita con altri modi o Q8. Le opzioni sono nomi unici separati da virgole; `all` comprende le sei opzioni esatte (incluse le estensioni documentate sotto) e **non include l'illuminazione congelata**. Combinazioni incompatibili, nomi errati e RAM insufficiente bloccano la build. Ogni build richiede una copia SDK completa nuova.
 
 | Opzione | Comportamento nativo |
 |---|---|
@@ -33,6 +33,10 @@ Usare la normale sintassi `-GraphicsMode 4` negli script. Opzioni e kernel nativ
 
 ## Verifica e promozione
 
-La [qualifica](QUALIFICATION-1.15.0-dev1.it.md) separa nuovi FPS nativi, verifiche matematiche/callback e default ereditati. Confrontare input, target, warm-up e percorso identici prima/dopo. Verificare immagini e celle materiali, clipping/near, vertici condivisi, pannelli degeneri/autointersecanti, arrotondamento signed, divisori larghi, riporti e passaggi di pagina. Sulle scene limitate dalla CPU partire dall'aritmetica; PAL puo limitare le nuove viste visibili a circa50,125/s. La promozione stabile resta un'azione successiva alla revisione: questa dev non pubblica nulla.
+La [qualifica](QUALIFICATION-1.15.0-dev2.it.md) separa nuovi FPS nativi, verifiche matematiche/callback e default ereditati. Confrontare input, target, warm-up e percorso identici prima/dopo. Verificare immagini e celle materiali, clipping/near, vertici condivisi, pannelli degeneri/autointersecanti, arrotondamento signed, divisori larghi, riporti e passaggi di pagina. Sulle scene limitate dalla CPU partire dall'aritmetica; PAL puo limitare le nuove viste visibili a circa50,125/s. La promozione stabile resta un'azione successiva alla revisione: questa dev non pubblica nulla.
 
 La fusione automatica dei fan richiede inoltre un unico materiale/riflettivita attivo, nessuna tabella di pigmenti fissi per faccia e nessuna politica di proprieta delle celle VIC. Le facce con palette miste mantengono il fan originale; l'API esplicita per bounds di coppie resta disponibile nel contratto del chiamante. La cache degli intervalli materiali dimentica gli intervalli disconnessi senza riempire o memorizzare le celle nel mezzo.
+
+## Estensioni riutilizzabili
+
+`all` comprende anche `integer-edges`. Le API `wire` e `stream` sono escluse da `all` e richiedono chiamate esplicite; `stream` richiede `outcodes`. Il modulo dei dati di movimento è separato. Contratti, limiti e uso: [rendering e dati riutilizzabili](REUSABLE-RENDER.it.md).

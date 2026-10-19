@@ -1,8 +1,8 @@
-# 1.15.0-dev1
+# 1.15.0-dev2
 
 [Exact rendering / Rendering esatto](EXACT-RENDER.it.md).
 
-> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+> Edizione di sviluppo 1.15.0-dev2; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
 
 # Ottimizzazioni esatte del renderer — 1.14.0
 

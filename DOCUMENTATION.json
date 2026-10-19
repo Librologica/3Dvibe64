@@ -1,5 +1,5 @@
 {
-  "version": "1.15.0-dev1",
+  "version": "1.15.0-dev2",
   "locales": [
     "en",
     "it"
@@ -211,9 +211,14 @@
       "it": "EXACT-RENDER.it.md"
     },
     {
-      "id": "QUALIFICATION-1.15.0-dev1",
-      "en": "QUALIFICATION-1.15.0-dev1.en.md",
-      "it": "QUALIFICATION-1.15.0-dev1.it.md"
+      "id": "QUALIFICATION-1.15.0-dev2",
+      "en": "QUALIFICATION-1.15.0-dev2.en.md",
+      "it": "QUALIFICATION-1.15.0-dev2.it.md"
+    },
+    {
+      "id": "REUSABLE-RENDER",
+      "en": "REUSABLE-RENDER.en.md",
+      "it": "REUSABLE-RENDER.it.md"
     }
   ],
   "currentBilingual": [
@@ -227,7 +232,9 @@
     "SECURITY.md",
     "LICENSE-DOCUMENTATION.md",
     "ROADMAP.md",
-    "RELEASE-NOTES-1.14.0.md"
+    "RELEASE-NOTES-1.14.0.md",
+    "REUSABLE-RENDER.en.md",
+    "REUSABLE-RENDER.it.md"
   ],
   "historicalReports": [
     "DEVELOPMENT-1.14.0-dev1.en.md",
@@ -252,7 +259,9 @@
     "RELEASE-NOTES-1.12.0.md",
     "RELEASE-NOTES-1.13.0.en.md",
     "RELEASE-NOTES-1.13.0.it.md",
-    "RELEASE-NOTES-1.13.0.md"
+    "RELEASE-NOTES-1.13.0.md",
+    "QUALIFICATION-1.15.0-dev1.en.md",
+    "QUALIFICATION-1.15.0-dev1.it.md"
   ],
   "historyPolicy": "Preserve versioned measurements and archived release notes; current paired contracts take precedence.",
   "gameplayProfiles": [

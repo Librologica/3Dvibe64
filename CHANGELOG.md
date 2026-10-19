@@ -1,4 +1,4 @@
-# 1.15.0-dev1 — unpublished development
+# 1.15.0-dev2 — unpublished development
 
 Opt-in Mode4 legacy-plus exact arithmetic, byte remainder edges, block span writes, shared vertex outcodes and convex uniform fan/pair support. Separate frozen-lighting option. Stable1.14.0 and default legacy/plus/Q8 programs preserved. Native before/after qualification and external evidence required for promotion.
 
