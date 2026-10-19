@@ -1,3 +1,5 @@
+> Development edition 1.15.0-dev1; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+
 # Development notes — 1.14.0
 
 Stable source SDK promoted from the qualified1.14.0-dev1 development based on1.13.0. Adds legacy-plus Mode1–7 and Mode7 affine/perspective without Q8 geometry. The public selector remains opt-in; old legacy/Q8 controls and original Mode2 plus reference bytes remain unchanged. No official/frozen trees or demos are modified.

@@ -1,7 +1,7 @@
 {
   "version": "1.14.0",
-  "publication": "stable source distribution prepared locally; not published",
-  "GitHubPublished": false,
+  "publication": "GitHub source repository and stable release",
+  "GitHubPublished": true,
   "defaultPrecision": "legacy",
   "publicSelector": "-Precision legacy-plus",
   "aliasOfRotation": false,
@@ -21553,5 +21553,8 @@
     "allRebuiltPRGsMatchNativeAcquisitions": true,
     "rawReleaseEvidenceDirectory": "C:\\Users\\rapso\\Desktop\\TEST 3Dvibe64\\3Dvibe64_Qualification_1.14.0",
     "runtimeImplementationFileCount": 119
-  }
+  },
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0",
+  "releasePageCreated": true,
+  "repositoryURL": "https://github.com/Librologica/3Dvibe64"
 }

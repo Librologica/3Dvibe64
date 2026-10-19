@@ -1,6 +1,8 @@
+> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+
 # Note di rilascio — 1.14.0
 
-SDK sorgente stabile dell'engine promosso dalla dev qualificata `1.14.0-dev1`. Legacy-plus supporta ora **Mode1–7**, comprese texture Mode7 affini e prospettiche con luce none, flat e Gouraud A/B/C. Legacy resta il default; `-Precision legacy-plus` richiede una scelta esplicita. Distribuzione preparata in locale per GitHub; non si dichiara una pubblicazione remota già avvenuta.
+SDK sorgente stabile dell'engine promosso dalla dev qualificata `1.14.0-dev1`. Legacy-plus supporta ora **Mode1–7**, comprese texture Mode7 affini e prospettiche con luce none, flat e Gouraud A/B/C. Legacy resta il default; `-Precision legacy-plus` richiede una scelta esplicita. Pubblicata come distribuzione sorgente GitHub stabile1.14.0.
 
 ## Novità rispetto alla 1.13.0
 
@@ -52,6 +54,6 @@ Lo ZIP sorgenti contiene engine/build, moduli gameplay riutilizzabili delimitati
 
 L'ultimo lavoro Underworld resta un port applicativo. Viewport96×60, loader/layout RAM bancato, correzione del culling, specializzazioni materiali/LOD e ottimizzazioni UV accoppiate/divisore **non sono promossi nell'SDK generico**. I5,247413FPS privati e il recupero del22,5% non descrivono l'engine pubblico. Gli adapter gameplay restano delimitati e orientati Q8; supportare plus ordinaria non li rende direttamente compatibili. Generalizzarli richiede qualifica specifica di tutte le modalità, shader e RAM. Nessun generatore o asset Underworld incluso.
 
-Eseguire `python -B scripts/run_release_tests.py` da un'estrazione pulita, con dipendenze installate. I controlli usano copie temporanee e verificano link IT/EN, versioni e contratti del pacchetto corrente. Vedere [test](TESTING.md) e [qualifica strutturata](QUALIFICATION-1.14.0.json). Cartelle release/dev precedenti, tag/asset e demo congelate restano intatti; questa preparazione locale non crea tag o release remoti.
+Eseguire `python -B scripts/run_release_tests.py` da un'estrazione pulita, con dipendenze installate. I controlli usano copie temporanee e verificano link IT/EN, versioni e contratti del pacchetto corrente. Vedere [test](TESTING.md) e [qualifica strutturata](QUALIFICATION-1.14.0.json). Cartelle release/dev precedenti, tag/asset e demo congelate restano intatti; questa pubblicazione crea soltanto il nuovo tag/release v1.14.0.
 
 Software: PolyForm Noncommercial1.0.0. Documentazione: CC BY-NC4.0. Attribuzione: librologica.digital.

@@ -1,6 +1,8 @@
+> Development edition 1.15.0-dev1; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+
 # Native qualification — 1.14.0
 
-This stable source SDK promotes the qualified development that extends legacy-plus to Mode1–7 and Mode7 affine/perspective, including none/flat/Gouraud A/B/C. No Q8 geometry backend is linked. Official releases and frozen demos are preserved; the distribution is prepared locally for GitHub. [Profile and build](LEGACY-PLUS.en.md) · [structured results](QUALIFICATION-1.14.0.json).
+This stable source SDK promotes the qualified development that extends legacy-plus to Mode1–7 and Mode7 affine/perspective, including none/flat/Gouraud A/B/C. No Q8 geometry backend is linked. Official releases and frozen demos are preserved; the stable distribution is published on GitHub. [Profile and build](LEGACY-PLUS.en.md) · [structured results](QUALIFICATION-1.14.0.json).
 
 ## Stable promotion and application scope
 
@@ -111,4 +113,4 @@ The eight public default-clipping builds (Modes1–7 plus Mode7 perspective) als
 
 ## Stable delivery verification
 
-All57 measured programs were freshly rebuilt from the stable SDK:16 legacy,25 legacy-plus and16 Q8. Every PRG is byte-identical to its native measured reference. All runtime implementation/configuration source bytes are unchanged. The separate release evidence directory is `3Dvibe64_Qualification_1.14.0`; its `reports/stable-identity-*.json`, build/assembly logs and programs are private QA, not ZIP assets. Therefore the native before/after FPS and stability evidence remains applicable without a new timing run for this documentation/package-only promotion. The clean-extraction public suite and final manifest/link checks are recorded in the outer delivery receipt.
+All57 measured programs were freshly rebuilt from the stable SDK:16 legacy,25 legacy-plus and16 Q8. Every PRG is byte-identical to its native measured reference. All runtime implementation/configuration source bytes are unchanged. The separate release evidence directory is `3Dvibe64_Qualification_1.14.0`; its `reports/stable-identity-*.json`, build/assembly logs and programs are private QA, not ZIP assets. Therefore the native before/after FPS and stability evidence remains applicable without a new timing run for this documentation/package-only promotion. The clean-extraction public suite and final manifest/link checks are recorded in the retained delivery receipt; publication-only metadata checks passed separately.

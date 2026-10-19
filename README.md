@@ -1,8 +1,14 @@
+# 3Dvibe64 1.15.0-dev1
+
+Dev locale non pubblicata per la futura release stabile. / Unpublished local development for a future stable release.
+
+[Italiano](EXACT-RENDER.it.md) · [English](EXACT-RENDER.en.md) · [Qualifica](QUALIFICATION-1.15.0-dev1.it.md)
+
 # 3Dvibe64 1.14.0
 
 Stable **source SDK**, no demos/examples, no precompiled PRG, music, scene
 projects or captures. / **SDK sorgente** stabile, senza demo/esempi,
-PRG, musica, progetti scena o catture. Distribution prepared locally for GitHub. / Distribuzione preparata in locale per GitHub. Upstream: [GitHub](https://github.com/Librologica/3Dvibe64). Previous releases and frozen projects remain untouched.
+PRG, musica, progetti scena o catture. Source repository / Repository sorgente: [GitHub](https://github.com/Librologica/3Dvibe64). Stable release / Release stabile: [v1.14.0](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0). Upstream: [GitHub](https://github.com/Librologica/3Dvibe64). Previous releases and frozen projects remain untouched.
 
 | Precision | Contract / Contratto |
 |---|---|

@@ -1,6 +1,8 @@
+> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+
 # Legacy-plus — 1.14.0
 
-`-Precision legacy-plus` è il renderer intermedio esplicito per Mode1–7: matrici oggetto legacy Q6, geometria camera Q4, coefficienti camera Q10 e4096 fasi yaw/pitch. Legacy resta il default. Il selettore compatibile `-LegacyStability rotation` rimane solo Mode2. Mode8 e Normalized16 mantengono contratti separati. La distribuzione stabile è preparata in locale; lo stato di pubblicazione è in PACKAGE-MANIFEST.json.
+`-Precision legacy-plus` è il renderer intermedio esplicito per Mode1–7: matrici oggetto legacy Q6, geometria camera Q4, coefficienti camera Q10 e4096 fasi yaw/pitch. Legacy resta il default. Il selettore compatibile `-LegacyStability rotation` rimane solo Mode2. Mode8 e Normalized16 mantengono contratti separati. La distribuzione stabile è pubblicata su GitHub; i metadati sono in PACKAGE-MANIFEST.json.
 
 ## Build e configurazione
 

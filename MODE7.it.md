@@ -1,3 +1,5 @@
+> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+
 # GraphicsMode 7 — Texture mapping
 
 ## Legacy-plus nella 1.14.0

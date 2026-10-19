@@ -1,6 +1,6 @@
 {
-  "version": "1.14.0",
-  "status": "stable",
+  "version": "1.15.0-dev1",
+  "status": "development",
   "newDemosIncluded": false,
   "Mode8Modified": false,
   "ordinaryEngineModified": true,
@@ -186,27 +186,16 @@
   "GitHubPublished": false,
   "renderOptimizationContracts": "RENDER-OPTIMIZATIONS.en.md",
   "release": {
-    "status": "stable source distribution",
-    "sourceDevelopment": "1.14.0-dev1",
-    "publication": "stable source distribution prepared locally; not published",
-    "demoArchives": false,
-    "documentation": "DOCUMENTATION.json",
-    "releaseNotes": {
-      "en": "RELEASE-NOTES-1.14.0.en.md",
-      "it": "RELEASE-NOTES-1.14.0.it.md"
-    },
-    "newDemosIncluded": false,
+    "version": "1.15.0-dev1",
+    "status": "unpublished development",
+    "stable": false,
+    "prerelease": true,
     "GitHubPublished": false,
-    "qualification": "QUALIFICATION-1.14.0.json",
-    "version": "1.14.0",
-    "prerelease": false,
-    "repositoryURL": "https://github.com/Librologica/3Dvibe64",
     "releaseURL": null,
-    "releasePageCreated": false,
-    "stable": true,
+    "newDemosIncluded": false,
     "privateUnderworldPortIncluded": false
   },
-  "baseVersion": "1.13.0",
+  "baseVersion": "1.14.0",
   "nativeQualifiedModes": [
     1,
     2,
@@ -242,10 +231,19 @@
   "nearThresholdObservationTicks": [],
   "cameraCadenceQualified": true,
   "promotedDevelopment": "1.14.0-dev1",
-  "qualification": "QUALIFICATION-1.14.0.json",
-  "publication": "stable source distribution prepared locally; not published",
+  "qualification": "QUALIFICATION-1.15.0-dev1.json",
+  "publication": "unpublished local development",
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
   "releaseURL": null,
   "releasePageCreated": false,
-  "localStableRelease": true
+  "localStableRelease": false,
+  "exactRender": {
+    "selector": "-LegacyPlusOptimizations",
+    "default": "none",
+    "modes": [
+      4
+    ],
+    "precision": "legacy-plus",
+    "frozenLightingSeparate": true
+  }
 }

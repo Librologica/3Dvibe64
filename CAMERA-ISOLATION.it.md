@@ -1,3 +1,5 @@
+> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+
 # CAMERA ISOLATION — 1.14.0
 
 Il selettore di compatibilità `-Precision legacy -LegacyStability camera`

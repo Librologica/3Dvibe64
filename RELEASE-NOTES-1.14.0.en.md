@@ -1,6 +1,8 @@
+> Development edition 1.15.0-dev1; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+
 # Release notes — 1.14.0
 
-Stable engine source SDK promoted from the qualified `1.14.0-dev1` development. Legacy-plus now supports **Mode1–7**, including affine and perspective Mode7 textures with none, flat and Gouraud A/B/C lighting. Legacy remains the default; selecting `-Precision legacy-plus` is explicit. This distribution is prepared locally for GitHub. No remote publication is asserted.
+Stable engine source SDK promoted from the qualified `1.14.0-dev1` development. Legacy-plus now supports **Mode1–7**, including affine and perspective Mode7 textures with none, flat and Gouraud A/B/C lighting. Legacy remains the default; selecting `-Precision legacy-plus` is explicit. Published as the stable1.14.0 GitHub source distribution.
 
 ## Changes from 1.13.0
 
@@ -52,6 +54,6 @@ The source ZIP contains engine/build sources, reusable bounded gameplay modules,
 
 The latest Underworld work remains an application port. Its96×60 viewport, banked loader/RAM layout, culling correction, material/LOD specialization and paired-UV/divider optimizations are **not promoted into this generic SDK**. The private5.247413FPS result and22.5% recovery do not describe the public engine. Existing gameplay adapters remain bounded Q8-oriented adapters; ordinary plus support does not make them directly compatible. A public generalization needs its own all-mode/shader/RAM qualification. No Underworld generator or asset is packaged.
 
-Run `python -B scripts/run_release_tests.py` from a clean extraction, with dependencies installed. Checks run in temporary copies and verify all current IT/EN links and version/package contracts. See [testing](TESTING.md) and [structured qualification](QUALIFICATION-1.14.0.json). Previous release/dev directories, tags/assets and frozen demos remain intact; this local preparation creates no remote tag or release.
+Run `python -B scripts/run_release_tests.py` from a clean extraction, with dependencies installed. Checks run in temporary copies and verify all current IT/EN links and version/package contracts. See [testing](TESTING.md) and [structured qualification](QUALIFICATION-1.14.0.json). Previous release/dev directories, tags/assets and frozen demos remain intact; this publication creates only the new v1.14.0 tag/release.
 
 Software: PolyForm Noncommercial1.0.0. Documentation: CC BY-NC4.0. Attribution: librologica.digital.

@@ -1,8 +1,10 @@
+> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+
 # 3Dvibe64 1.14.0
 
 ## Release stabile 1.14.0
 
-`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica nativa](QUALIFICATION-1.14.0.it.md). Distribuzione stabile preparata in locale; solo scene/asset esterni.
+`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica nativa](QUALIFICATION-1.14.0.it.md). Distribuzione stabile pubblicata su GitHub; solo scene/asset esterni.
 
 
 Release stabile 1.14.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
@@ -15,7 +17,7 @@ Legacy resta il default. Selezionare Q8 preciso esplicitamente con `-Precision q
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione stabile sorgente è preparata in locale per GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione stabile sorgente è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 | ID | Modulo | Contratto |
 |---|---|---|

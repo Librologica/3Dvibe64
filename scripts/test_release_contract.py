@@ -15,8 +15,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.14.0"
-BUILDER_SHA256 = "F76F154D7A4A2E7D4DEF1ED568566F852C93F301506446EF89F85BD6B8C7E2F5"
+VERSION = "1.15.0-dev1"
+BUILDER_SHA256 = "AE7A56A565DFE60AA010C6A08541165C1FC0DC71DC167E962447C0178191229F"
 PERMANENT_FILE_COUNT = json.loads((ROOT/"PACKAGE-MANIFEST.json").read_text())["package"]["permanentFiles"]
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
@@ -171,6 +171,7 @@ def check_manifest() -> None:
 
 def check_clean_tree() -> None:
     allowed_inputs = {
+        "work/exact_render/product.asm", "work/exact_render/edges.asm", "work/exact_render/convex.asm",
         "work/mode7-kernel.asm", "work/mode7-lighting.asm", "work/mode7-gouraud.asm",
         "work/mode7-compositor-b.asm", "work/mode7-compositor-c.asm",
         "examples/textures/bricks.png",
@@ -214,7 +215,7 @@ def check_builder_and_package() -> None:
     manifest = read_json(ROOT, "PACKAGE-MANIFEST.json")
     assert manifest["package"] == {
         "name": "3Dvibe64", "displayName": "3Dvibe64 " + VERSION, "version": VERSION,
-        "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT, "prerelease": False,
+        "distribution": "source-sdk", "permanentFiles": PERMANENT_FILE_COUNT, "prerelease": True,
         "precompiledPrograms": False,
         "author": "librologica.digital",
         "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -783,6 +784,6 @@ def main() -> None:
         assert (ROOT/f'RELEASE-NOTES-1.13.0.{language}.md').is_file()
         assert (ROOT/f'RENDER-OPTIMIZATIONS.{language}.md').is_file()
     assert not (ROOT/'examples').exists() and not (ROOT/'validation').exists()
-    print('STABLE SOURCE 1.14.0: no demos/examples; manifest and package policy PASS')
+    print('DEVELOPMENT SOURCE 1.15.0-dev1: no demos/examples; manifest and package policy PASS')
 
 if __name__=='__main__':main()

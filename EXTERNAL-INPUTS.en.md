@@ -1,3 +1,5 @@
+> Development edition 1.15.0-dev1; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+
 # External inputs — 1.14.0
 
 ## Working copy and output paths in1.13.0

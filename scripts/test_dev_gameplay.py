@@ -7,8 +7,8 @@ def main():
     package=json.loads((ROOT/'PACKAGE-MANIFEST.json').read_text())
     policy=package['distributionPolicy']
     assert not policy['newDemosIncluded'] and policy['baseline']=='v1.10.2'
-    assert (ROOT/'VERSION').read_text().strip()=='1.14.0'
-    assert not package['package']['prerelease']
+    assert (ROOT/'VERSION').read_text().strip()=='1.15.0-dev1'
+    assert package['package']['prerelease']
     for name,digest in policy['ordinaryEngineSHA256'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest().upper()==digest,name
     expected=set(policy['preexistingExampleFiles'])
@@ -29,5 +29,5 @@ def main():
         try:b.build('shared-meshes',out)
         except ValueError:pass
         else:raise AssertionError('In-source output accepted')
-    print('DISTRIBUTION PASS; no new demos; ordinary engine files unchanged:',len(policy['ordinaryEngineSHA256']))
+    print('DISTRIBUTION PASS; no new demos; current ordinary engine hashes:',len(policy['ordinaryEngineSHA256']))
 if __name__=='__main__':main()

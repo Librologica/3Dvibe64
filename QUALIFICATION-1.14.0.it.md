@@ -1,6 +1,8 @@
+> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+
 # Qualifica nativa — 1.14.0
 
-La distribuzione stabile promuove la dev qualificata che estende legacy-plus a Mode1–7 e Mode7 affine/prospettica, con none/flat/Gouraud A/B/C. Nessun backend geometrico Q8 collegato. Release ufficiali e demo congelate preservate; distribuzione preparata in locale per GitHub. [Profilo e build](LEGACY-PLUS.it.md) · [risultati strutturati](QUALIFICATION-1.14.0.json).
+La distribuzione stabile promuove la dev qualificata che estende legacy-plus a Mode1–7 e Mode7 affine/prospettica, con none/flat/Gouraud A/B/C. Nessun backend geometrico Q8 collegato. Release ufficiali e demo congelate preservate; distribuzione stabile pubblicata su GitHub. [Profilo e build](LEGACY-PLUS.it.md) · [risultati strutturati](QUALIFICATION-1.14.0.json).
 
 ## Promozione stabile e ambito applicativo
 
@@ -111,4 +113,4 @@ Anche le otto build con clipping predefinito (Mode1–7 più Mode7 prospettica) 
 
 ## Verifica della consegna stabile
 
-Ricompilati dall'SDK stabile tutti i57 programmi misurati:16 legacy,25 legacy-plus e16 Q8. Ogni PRG è identico nei byte al riferimento misurato nativamente. Tutti i sorgenti implementativi/configurativi runtime sono invariati. Le prove release sono nella cartella separata `3Dvibe64_Qualification_1.14.0`: `reports/stable-identity-*.json`, log build/assembly e programmi restano QA privata, fuori dallo ZIP. Le misure native prima/dopo di FPS e stabilità restano quindi applicabili senza nuova acquisizione temporale per questa promozione soltanto documentale/di pacchetto. Suite pubblica da estrazione pulita e controlli finali manifest/link sono registrati nella ricevuta esterna.
+Ricompilati dall'SDK stabile tutti i57 programmi misurati:16 legacy,25 legacy-plus e16 Q8. Ogni PRG è identico nei byte al riferimento misurato nativamente. Tutti i sorgenti implementativi/configurativi runtime sono invariati. Le prove release sono nella cartella separata `3Dvibe64_Qualification_1.14.0`: `reports/stable-identity-*.json`, log build/assembly e programmi restano QA privata, fuori dallo ZIP. Le misure native prima/dopo di FPS e stabilità restano quindi applicabili senza nuova acquisizione temporale per questa promozione soltanto documentale/di pacchetto. Suite pubblica da estrazione pulita e controlli finali manifest/link sono registrati nella ricevuta conservata; i controlli dei soli metadati di pubblicazione sono superati separatamente.

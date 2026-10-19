@@ -1,5 +1,5 @@
 {
-  "version": "1.14.0",
+  "version": "1.15.0-dev1",
   "locales": [
     "en",
     "it"
@@ -204,6 +204,16 @@
       "id": "QUALIFICATION-1.14.0",
       "en": "QUALIFICATION-1.14.0.en.md",
       "it": "QUALIFICATION-1.14.0.it.md"
+    },
+    {
+      "id": "EXACT-RENDER",
+      "en": "EXACT-RENDER.en.md",
+      "it": "EXACT-RENDER.it.md"
+    },
+    {
+      "id": "QUALIFICATION-1.15.0-dev1",
+      "en": "QUALIFICATION-1.15.0-dev1.en.md",
+      "it": "QUALIFICATION-1.15.0-dev1.it.md"
     }
   ],
   "currentBilingual": [
@@ -273,7 +283,7 @@
     "--flat-span-cache"
   ],
   "sourceOnly": true,
-  "publication": "stable source distribution prepared locally; not published",
+  "publication": "unpublished local development",
   "newDemosIncluded": false,
   "gameplayRequiredOptions": [
     "--profile",
@@ -281,8 +291,8 @@
     "--project-source"
   ],
   "allExamplesExcluded": true,
-  "GitHubPublished": false,
+  "GitHubPublished": true,
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-  "releaseURL": null,
-  "releasePageCreated": false
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0",
+  "releasePageCreated": true
 }

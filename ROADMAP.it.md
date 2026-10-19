@@ -1,3 +1,5 @@
+> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+
 # Roadmap — 1.14.0
 
 Inclusi: opzioni renderer esatte, span compatti MAT-01, adapter pareti conservativo, helper retini/palette statici e primitive opzionali pool/camera/SID. Billboard, materiali, entità, visibilità, mesh condivise, animazioni controllate, WORLD-01 e LEVEL-01 mantengono contratti delimitati.

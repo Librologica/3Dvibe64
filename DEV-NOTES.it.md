@@ -1,3 +1,5 @@
+> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+
 # Note di sviluppo — 1.14.0
 
 SDK sorgente stabile promosso dalla dev qualificata1.14.0-dev1, basata sulla1.13.0. Aggiunge legacy-plus Mode1–7 e Mode7 affine/prospettica senza geometria Q8. Selezione sempre esplicita; controlli legacy/Q8 e riferimento Mode2 plus originario invariati nei byte. Nessuna modifica a cartelle ufficiali/congelate o demo.

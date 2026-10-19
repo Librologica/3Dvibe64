@@ -1,3 +1,5 @@
+> Development edition 1.15.0-dev1; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+
 # Gameplay source modules — 1.14.0
 
 Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
@@ -5,7 +7,7 @@ Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [ext
 
 ## Source-only release
 
-This stable source distribution is prepared locally for GitHub. No demos or examples are shipped, including
+This stable source distribution is published on GitHub. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)

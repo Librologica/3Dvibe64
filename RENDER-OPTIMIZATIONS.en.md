@@ -1,3 +1,9 @@
+# 1.15.0-dev1
+
+[Exact rendering / Rendering esatto](EXACT-RENDER.en.md).
+
+> Development edition 1.15.0-dev1; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+
 # Exact renderer optimizations — 1.14.0
 
 ## Legacy-plus in 1.14.0

@@ -57,11 +57,11 @@ def links(files):
 
 
 def main():
-    version=read('VERSION').strip();assert version=='1.14.0'
+    version=read('VERSION').strip();assert version=='1.15.0-dev1'
     package=load('PACKAGE-MANIFEST.json');assert package['package']['version']==version
-    assert not package['package']['prerelease'] and not package['package']['precompiledPrograms']
+    assert package['package']['prerelease'] and not package['package']['precompiledPrograms']
     docs=load('DOCUMENTATION.json');assert docs['version']==version and docs['locales']==['en','it']
-    assert docs['sourceOnly'] and docs['publication']=='stable source distribution prepared locally; not published' and not docs['newDemosIncluded']
+    assert docs['sourceOnly'] and docs['publication']=='unpublished local development' and not docs['newDemosIncluded']
     files=set(docs['currentBilingual'])
     for pair in docs['currentPairs']:
         for locale in ['en','it']:
@@ -92,11 +92,11 @@ def main():
     forbidden={'.prg','.d64','.d71','.d81','.tap','.t64','.mp3','.wav','.mp4','.webm','.zip','.vsf','.pyc'}
     assert not [n for n in entries if Path(n).suffix.lower() in forbidden]
     development=load('DEVELOPMENT.json')
-    assert development['version']==version and development['status']=='stable'
+    assert development['version']==version and development['status']=='development'
     assert development['nativeQualifiedModes']==list(range(1,8))
     assert not development['GitHubPublished'] and development['releaseURL'] is None
-    assert package['release']['stable'] and not package['release']['privateUnderworldPortIncluded']
-    assert package['stablePromotion']['runtimeAndDefaultsUnchanged']
+    assert not package['release']['stable'] and not package['release']['privateUnderworldPortIncluded']
+    assert package['stablePromotion']['status']=='pending' and package['stablePromotion']['defaultProgramBytesUnchanged']
     assert not package['release']['GitHubPublished'] and package['release']['releaseURL'] is None
     print('DOCUMENTATION PASS; pairs=',len(docs['currentPairs']),'local links=',count,'profiles=',len(profiles),'source files=',len(actual))
 

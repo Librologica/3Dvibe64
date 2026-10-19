@@ -1,3 +1,20 @@
+# Development tests / Test dev — 1.15.0-dev1
+
+Run the public suite from a clean source extraction. / Eseguire la suite pubblica da un'estrazione sorgente pulita.
+
+```powershell
+python -B scripts/run_release_tests.py
+python -B scripts/test_legacy_plus_exact.py --control ../control --exact ../qualified --out ../checks/kernels.json
+python -B scripts/test_exact_panels.py --control ../triangle-control --exact ../qualified --out ../checks/panels.json
+python -B scripts/test_exact_material_cache.py --control ../mixed-control --exact ../mixed-qualified --out ../checks/materials.json
+```
+
+The external build inputs for callbacks must retain their raw ASM/PRG/labels. Uniform-fan eligibility requires its documented compiled palette contract; an ordinary conservative profile tests its exact fallback. Native moving FPS and parked palette/pose captures are separate external runs, as recorded in QUALIFICATION-1.15.0-dev1.json. Callback counts never measure FPS. Full exact ZIP test results live in the external delivery receipt.
+
+Gli input esterni dei callback conservano ASM/PRG/label originali. La fusione dei fan richiede il contratto compilato di palette uniforme documentato; il profilo conservativo ordinario verifica il suo ripiego esatto. FPS nativi in movimento e catture ferme con scansione palette completata sono prove esterne separate, descritte in QUALIFICATION-1.15.0-dev1.json. I callback non misurano FPS. I risultati dei gate dello ZIP esatto sono nella ricevuta di consegna esterna.
+
+## Inherited1.14.0 testing contract / Contratto di test1.14.0 ereditato
+
 # Testing / Verifiche — 1.14.0
 
 [Qualification EN](QUALIFICATION-1.14.0.en.md) · [Qualificazione IT](QUALIFICATION-1.14.0.it.md)

@@ -1,3 +1,5 @@
+> Development edition 1.15.0-dev1; inherited1.14.0 contracts remain unless explicitly extended in [exact rendering](EXACT-RENDER.en.md).
+
 # Roadmap — 1.14.0
 
 Included: exact opt-in renderer flags, MAT-01 packed spans, conservative wall adapter, static pattern/palette helpers and optional pool/camera/SID primitives. Existing billboard, materials, entity, visibility, shared mesh, controlled motion, WORLD-01 and LEVEL-01 contracts remain bounded.

@@ -1,3 +1,5 @@
+> Edizione di sviluppo 1.15.0-dev1; contratti1.14.0 ereditati salvo estensioni esplicite nel [rendering esatto](EXACT-RENDER.it.md).
+
 # Precision / Precisione — 1.14.0
 
 | Geometria | Mode | Camera/clipping | Texture Mode7 |

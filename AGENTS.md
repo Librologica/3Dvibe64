@@ -1,13 +1,2 @@
-# Stable source SDK 1.14.0
-Use a fresh complete working copy for ordinary legacy/legacy-plus builds.
-Preserve previous official releases, qualified development and frozen demos.
-Do not add demonstration projects, scene/route files, actors, UI, artwork,
-compiled programs, media, emulator binaries or raw captures to this SDK.
-Keep qualification inputs, logs and native captures outside the source package.
-Legacy-plus uses Q4 geometry, never a substituted Q8 geometry backend.
-After rendering changes measure native complete-view FPS before/after with the
-real launcher/target, warm-up and at least20 emulated seconds; preserve raw data
-and commands. Identical PRG bytes/conditions may retain existing native evidence
-for documentation/package-only updates. Never substitute host/replay speed.
-No sub-agents. This directory is a local prepared distribution; GitHub publication
-status must remain truthful and requires the user's publication instruction.
+# Separate exact-render development 1.15.0-dev1
+The user authorizes integrating reusable exact KESTREL optimizations in a separate development for a future stable GitHub release. Do not publish or change stable releases or frozen demos. No sub-agents. Only repository/ contains SDK source changes; keep qualification scenes, programs, launchers, media, logs and raw measurements external. Preserve baseline/. Keep legacy/Q8 defaults unchanged. Q4 geometry remains Q4. Validate fast paths against complete fallback, including rounding, clipping, overflow and native pixels. Benchmark actual PRGs on VICE Turbo6510 PALx64, warm-up128ticks, at least20emulated seconds, complete views only; preserve native commands/raw data. No alternate scanlines or resolution reduction. Frozen lighting is explicit opt-in.
