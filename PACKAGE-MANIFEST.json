@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.14.0",
-    "version": "1.14.0",
+    "displayName": "3Dvibe64 1.15.0",
+    "version": "1.15.0",
     "distribution": "source-sdk",
-    "permanentFiles": 324,
+    "permanentFiles": 356,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -14,7 +14,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "F76F154D7A4A2E7D4DEF1ED568566F852C93F301506446EF89F85BD6B8C7E2F5"
+    "sha256": "AE7A56A565DFE60AA010C6A08541165C1FC0DC71DC167E962447C0178191229F"
   },
   "examples": [],
   "releaseEngine": {
@@ -1884,18 +1884,17 @@
     "platform": "Windows; Linux and physical hardware not tested"
   },
   "stablePromotion": {
-    "version": "1.14.0",
-    "baseOfficialVersion": "1.13.0",
-    "qualifiedDevCommit": "3d7a30b7e73d5b7960b51c906c6244b4f354ecaf",
+    "status": "complete",
+    "baseVersion": "1.14.0",
     "runtimeAndDefaultsUnchanged": true,
-    "optionsUnchanged": true,
-    "sourceDevelopment": "1.14.0-dev1",
-    "publication": "GitHub source repository and stable release",
-    "notes": [
-      "RELEASE-NOTES-1.14.0.en.md",
-      "RELEASE-NOTES-1.14.0.it.md"
-    ],
-    "qualifications": "Named PAL Turbo6510 x64 profiles; no new Linux, NTSC or physical-hardware qualification"
+    "defaultProgramBytesUnchanged": true,
+    "GitHubPublished": true,
+    "version": "1.15.0",
+    "sourceDevelopment": "1.15.0-dev2",
+    "qualifiedDevCommit": "ccc7d62a03d250a606f3aab6e246ba11af6bc94f",
+    "publicationPending": false,
+    "comparisonBase": "qualified1.15.0-dev2",
+    "newOptionalRuntimeSinceStable1_14": true
   },
   "gameplayDevelopment": {
     "experimental": true,
@@ -2075,25 +2074,18 @@
     "budgetPolicy": "Historical per-profile byte budgets exclude new optional helpers; use actual assembled map and allocator guards"
   },
   "release": {
-    "status": "published stable source distribution",
-    "sourceDevelopment": "1.14.0-dev1",
-    "publication": "GitHub source repository and stable release",
-    "demoArchives": false,
-    "documentation": "DOCUMENTATION.json",
-    "releaseNotes": {
-      "en": "RELEASE-NOTES-1.14.0.en.md",
-      "it": "RELEASE-NOTES-1.14.0.it.md"
-    },
-    "newDemosIncluded": false,
-    "GitHubPublished": true,
-    "qualification": "QUALIFICATION-1.14.0.json",
-    "version": "1.14.0",
-    "prerelease": false,
-    "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0",
-    "releasePageCreated": true,
+    "version": "1.15.0",
+    "status": "published stable",
     "stable": true,
-    "privateUnderworldPortIncluded": false
+    "prerelease": false,
+    "GitHubPublished": true,
+    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0",
+    "newDemosIncluded": false,
+    "privateUnderworldPortIncluded": false,
+    "releasePageCreated": true,
+    "localStableRelease": false,
+    "publication": "GitHub stable source release",
+    "promotedDevelopment": "1.15.0-dev2"
   },
   "distributionPolicy": {
     "newDemosIncluded": false,
@@ -2281,11 +2273,11 @@
       "work/legacy_plus_modes.py": "5EC2342769692E3C2B6F48099E6B474C14B16A3F4B0E8973641968BC8DCF4400",
       "work/legacy_plus_projective.py": "B3ED84D78D5A37013B01BA78118BA25144BE76BD32670FB4D198F7B674B8A24A"
     },
-    "promotedFrom": "1.14.0-dev1",
-    "publication": "GitHub source repository and stable release",
+    "promotedFrom": "1.15.0-dev2",
+    "publication": "GitHub stable source release",
     "GitHubPublished": true,
     "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0",
+    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0",
     "releasePageCreated": true
   },
   "renderOptimizations": {
@@ -2456,5 +2448,50 @@
     },
     "promotedDevelopment": "1.14.0-dev1",
     "localStableRelease": false
+  },
+  "inheritedStablePromotion": {
+    "version": "1.14.0",
+    "baseOfficialVersion": "1.13.0",
+    "qualifiedDevCommit": "3d7a30b7e73d5b7960b51c906c6244b4f354ecaf",
+    "runtimeAndDefaultsUnchanged": true,
+    "optionsUnchanged": true,
+    "sourceDevelopment": "1.14.0-dev1",
+    "publication": "GitHub source repository and stable release",
+    "notes": [
+      "RELEASE-NOTES-1.14.0.en.md",
+      "RELEASE-NOTES-1.14.0.it.md"
+    ],
+    "qualifications": "Named PAL Turbo6510 x64 profiles; no new Linux, NTSC or physical-hardware qualification"
+  },
+  "exactRender": {
+    "selector": "-LegacyPlusOptimizations",
+    "default": "none",
+    "modes": [
+      4
+    ],
+    "precision": "legacy-plus",
+    "frozenLightingSeparate": true,
+    "sourceSHA256": {
+      "work/compact_keyframes.py": "62d188613d6eba83ec9efdc9dad7323ba13ea2b96d18d6bca5dbafb2f599f2de",
+      "work/exact_render_convex.py": "f7d1db8b2cfcd33f275a7aec8b229f77d847ef06993bb64759690c954b976e49",
+      "work/exact_render_wire.py": "90e9f47e8cea8eb0680aea23363352c1d3000bbaea2565b28c4dc06d9b9f23ad",
+      "work/legacy_plus_exact.py": "edf38a1bba33159a94cc04076c2db75413630136e396284d98b8c050d9057085",
+      "work/reusable_render.py": "ddb88db4e663bc51efa91fa2983fb69beec40790c0f8e28e48d89bc185cd0517"
+    },
+    "automaticOptions": [
+      "arithmetic",
+      "edges",
+      "spans",
+      "outcodes",
+      "convex",
+      "integer-edges"
+    ],
+    "explicitAPIs": [
+      "wire",
+      "stream"
+    ],
+    "compactKeyframes": "work/compact_keyframes.py",
+    "baseDevelopment": "1.15.0-dev1",
+    "qualification": "QUALIFICATION-1.15.0.json"
   }
 }

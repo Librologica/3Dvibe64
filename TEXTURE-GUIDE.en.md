@@ -1,10 +1,12 @@
-# Mode 7 Texture Format Guide
+# Mode 7 Texture Format Guide — 1.15.0
 
-## Legacy-plus in 1.14.0
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
 
-Mode1–7 plus and Mode7 affine/perspective are promoted from the qualified development into this stable SDK. The near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [native qualification](QUALIFICATION-1.14.0.en.md).
+## Legacy-plus support in 1.15.0
 
-Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Mode1–7 plus and Mode7 affine/perspective remain supported in this stable SDK. The near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [native qualification](QUALIFICATION-1.14.0.en.md).
+
+Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 Current 1.14.0 source contract. This manual describes the ordinary exporter unless

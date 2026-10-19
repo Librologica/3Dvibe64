@@ -57,11 +57,11 @@ def links(files):
 
 
 def main():
-    version=read('VERSION').strip();assert version=='1.14.0'
+    version=read('VERSION').strip();assert version=='1.15.0'
     package=load('PACKAGE-MANIFEST.json');assert package['package']['version']==version
-    assert not package['package']['prerelease'] and not package['package']['precompiledPrograms']
+    assert package['package']['prerelease'] is False and not package['package']['precompiledPrograms']
     docs=load('DOCUMENTATION.json');assert docs['version']==version and docs['locales']==['en','it']
-    assert docs['sourceOnly'] and docs['publication']=='GitHub source repository and stable release' and not docs['newDemosIncluded']
+    assert docs['sourceOnly'] and docs['publication']=='GitHub stable source release' and not docs['newDemosIncluded']
     files=set(docs['currentBilingual'])
     for pair in docs['currentPairs']:
         for locale in ['en','it']:
@@ -94,10 +94,10 @@ def main():
     development=load('DEVELOPMENT.json')
     assert development['version']==version and development['status']=='stable'
     assert development['nativeQualifiedModes']==list(range(1,8))
-    assert development['GitHubPublished'] and development['releaseURL']=='https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0'
+    assert development['GitHubPublished'] and development['releaseURL']=='https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0'
     assert package['release']['stable'] and not package['release']['privateUnderworldPortIncluded']
-    assert package['stablePromotion']['runtimeAndDefaultsUnchanged']
-    assert package['release']['GitHubPublished'] and package['release']['releaseURL']=='https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0'
+    assert package['stablePromotion']['status']=='complete' and package['stablePromotion']['defaultProgramBytesUnchanged']
+    assert package['release']['GitHubPublished'] and package['release']['releaseURL']=='https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0'
     print('DOCUMENTATION PASS; pairs=',len(docs['currentPairs']),'local links=',count,'profiles=',len(profiles),'source files=',len(actual))
 
 

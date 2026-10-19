@@ -1,4 +1,6 @@
-# Contributing / Contribuire — 1.13.0
+# Contributing / Contribuire — 1.15.0
+
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
 
 ## English
 

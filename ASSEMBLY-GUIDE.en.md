@@ -1,6 +1,8 @@
-# 3Dvibe64 — Assembly Programmer's Guide
+# 3Dvibe64 — Assembly Programmer's Guide — 1.15.0
 
-## Working copy and output paths in1.14.0
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+
+## Working copy and output paths
 
 Ordinary legacy and legacy-plus write generated ASM/PRG in their
 SDK working copy's `work/`, plus `work/build/3Dvibe64.prg`. Copy the complete
@@ -10,12 +12,12 @@ there. They reject `-OutputDirectory`. Q8, Normalized16 and Mode8 instead accept
 below are generated files, never precompiled files included in this SDK.
 
 
-## Stable release 1.14.0
+## Stable release 1.15.0
 
-`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [native qualification](QUALIFICATION-1.14.0.en.md). Stable source distribution published on GitHub; external scenes/assets only.
+`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [native qualification](QUALIFICATION-1.14.0.en.md). Stable1.15.0 source package published on GitHub. External scenes/assets only.
 
 
-Stable release 1.14.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 Current 1.14.0 source contract. This manual describes the ordinary exporter unless
@@ -24,7 +26,7 @@ are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
 ## Source-only release
 
-This stable source distribution is published on GitHub. No demos or examples are shipped, including
+This stable1.15.0 source distribution is published on GitHub. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
@@ -793,3 +795,9 @@ For a professional first approach to the engine:
 10. only then begin a permanent builder change.
 
 With this workflow, 3Dvibe64 becomes readable as a specialized assembly engine: PowerShell is the configuration compiler, JSON is the program description, and `3Dvibe64.asm` is the concrete assembly unit to analyze for that build.
+
+## 1.15.0 optimizations and APIs
+
+`-LegacyPlusOptimizations` is separate from EngineExperiments,the Q8 hybrid line raster and other backends. It requires the qualified Mode4 legacy-plus profile and defaults to none. `all` contains arithmetic,edges,spans,outcodes,convex,integer-edges. Wire/stream are explicit ASM caller APIs excluded from all,not automatic replacements; stream requires outcodes and owned resident slots. Frozen-lighting is separate and intentionally changes moving-light response. Compact keyframes are an optional data module. An8bit Bresenham error does not reduce Q4/Q10 geometric precision. The ordinary object matrix remains Q6; no new rigid object-rotation API is implied.
+
+[Options/profile](EXACT-RENDER.en.md) · [ABI,materials,memory,fallbacks](REUSABLE-RENDER.en.md) · [Status/support](RELEASE-STATUS.en.md). Some combinations exceed real64KB RAM and are refused.

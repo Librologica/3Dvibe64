@@ -1,4 +1,6 @@
-# Quick start / Guida rapida — 1.14.0
+# Quick start / Guida rapida — 1.15.0
+
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
 
 ## English
 
@@ -37,3 +39,15 @@ Non usare -O/-OO/PYTHONOPTIMIZE per la qualifica.
 [Manual EN](README.en.md) · [Manuale IT](README.it.md) · [All docs / Indice](DOCS.md)
 [External inputs EN](EXTERNAL-INPUTS.en.md) · [Input esterni IT](EXTERNAL-INPUTS.it.md)
 [Tests / Test](TESTING.md)
+
+## Exact Mode4 options / Opzioni Mode4 esatte — 1.15.0
+
+Use a fresh complete SDK working copy and a compatible external Mode4 scene. / Usare una copia SDK completa nuova e una scena Mode4 esterna compatibile.
+
+```powershell
+pwsh -NoProfile -File ../my-build-sdk/work/build-3Dvibe64.ps1 -SceneFile ../my-inputs/scene.json -Precision legacy-plus -GraphicsMode 4 -CameraMode walkLite -CameraViewport normal -MemoryLayout high-basic-v2 -NoFpsOverlay -NoCameraRuntimeControls -Quality fast -Projection extended-table -VideoStandard pal -ExplorerNearCrossMode poly -ExplorerClipMode near -LegacyPlusOptimizations all
+```
+
+Default is none. `all` excludes wire,stream,frozen-lighting. For explicit APIs use individual names,for example outcodes,wire,stream; application ASM calls are required. Compact keyframes are a separate generator. / Default none; le API richiedono chiamate ASM esplicite e il codec è separato.
+
+[Exact options EN](EXACT-RENDER.en.md) · [Opzioni IT](EXACT-RENDER.it.md) · [API EN](REUSABLE-RENDER.en.md) · [API IT](REUSABLE-RENDER.it.md).

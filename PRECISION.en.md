@@ -1,4 +1,6 @@
-# Precision / Precisione — 1.14.0
+# Precision / Precisione — 1.15.0
+
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
 
 | Geometry | Modes | Camera/clipping | Mode7 textures |
 |---|---|---|---|
@@ -103,3 +105,9 @@ See [testing](TESTING.md) and [release notes](RELEASE-NOTES-1.5.0.md).
 The paragraph above describes historical Q8 qualification. Release 1.10.0 adds the
 [scalability qualification](Q8-QUALIFICATION.md) and [release notes](RELEASE-NOTES-1.10.0.md).
 Legacy reference hashes are retained. No hardware test or universal FPS guarantee is claimed.
+
+## 1.15.0 optimizations and APIs
+
+`-LegacyPlusOptimizations` is separate from EngineExperiments,the Q8 hybrid line raster and other backends. It requires the qualified Mode4 legacy-plus profile and defaults to none. `all` contains arithmetic,edges,spans,outcodes,convex,integer-edges. Wire/stream are explicit ASM caller APIs excluded from all,not automatic replacements; stream requires outcodes and owned resident slots. Frozen-lighting is separate and intentionally changes moving-light response. Compact keyframes are an optional data module. An8bit Bresenham error does not reduce Q4/Q10 geometric precision. The ordinary object matrix remains Q6; no new rigid object-rotation API is implied.
+
+[Options/profile](EXACT-RENDER.en.md) · [ABI,materials,memory,fallbacks](REUSABLE-RENDER.en.md) · [Status/support](RELEASE-STATUS.en.md). Some combinations exceed real64KB RAM and are refused.

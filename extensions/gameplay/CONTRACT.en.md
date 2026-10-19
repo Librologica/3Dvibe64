@@ -1,6 +1,8 @@
-# Bounded billboard source contract — 1.14.0
+# Bounded billboard source contract — 1.15.0
 
-Stable release 1.14.0: [current optimizations](../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Published stable1.15.0 source SDK. [Status and support](../../RELEASE-STATUS.en.md).
+
+Stable release 1.15.0: [current optimizations](../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 The distribution retains `billboards/masked.py`, `outlined.py`, `scene.py`

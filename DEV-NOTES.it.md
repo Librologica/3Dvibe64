@@ -1,7 +1,7 @@
-# Note di sviluppo — 1.14.0
+# Note tecniche — 1.15.0
 
-SDK sorgente stabile promosso dalla dev qualificata1.14.0-dev1, basata sulla1.13.0. Aggiunge legacy-plus Mode1–7 e Mode7 affine/prospettica senza geometria Q8. Selezione sempre esplicita; controlli legacy/Q8 e riferimento Mode2 plus originario invariati nei byte. Nessuna modifica a cartelle ufficiali/congelate o demo.
+Stabile sorgente pubblicata su GitHub. La promozione da1.15.0-dev2 cambia documentazione, versione, metadati e controlli di distribuzione; mantiene tutti i byte dell'implementazione sotto work/ e tutti i moduli eseguibili/configurazioni sotto extensions/.
 
-Gli adapter conservano le convenzioni raster native; il near/schermo Q4 trasporta UV/luce coerenti. UW/VW/W prospettici usano carrier16 bit delimitati e DDA texture comuni. Span half-open vuoti esclusi; helper solidi/Gouraud nella RAM realmente libera con guardie. Rifiuti di profilo/profondità/RAM espliciti.
+Inclusi aritmetica esatta, ricorrenze dei bordi, span per blocchi, outcode, adapter conservativi per pannelli, API wire/stream e codec di chiavi senza perdita. Default `legacy` e `-LegacyPlusOptimizations none` invariati. I nuovi kernel/API sono qualificati soltanto nel profilo Mode4 legacy-plus documentato; il supporto legacy-plus ordinario Mode1–7 resta distinto. Gameplay e Normalized16 conservano il proprio stato sperimentale: la versione stabile del pacchetto non amplia la loro qualifica.
 
-[Build, ABI e vincoli](LEGACY-PLUS.it.md) · [FPS/stabilità nativi e regressioni](QUALIFICATION-1.14.0.it.md) · [test](TESTING.md). Le prestazioni camera Mode4 regrediscono rispetto a legacy; il costo prospettico dipende dalla scena. È un profilo stabile qualificato, non l'estensione di ogni opzione legacy a plus.
+[Contratto](EXACT-RENDER.it.md) · [API e limiti](REUSABLE-RENDER.it.md) · [Qualifica e provenienza](QUALIFICATION-1.15.0.it.md) · [Stato](RELEASE-STATUS.it.md).

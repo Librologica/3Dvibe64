@@ -1,8 +1,9 @@
-﻿param(
+param(
  [ValidateSet('historical','corrected','camera','rotation')]
  [string]$LegacyStability = 'historical',
 
  [string]$EngineExperiments = 'none',
+ [string]$LegacyPlusOptimizations = 'none',
  [ValidateSet('safe','legacy')]
  [string]$FramePresentation = 'safe',
  [ValidateSet('precise','hybrid')]
@@ -268,6 +269,7 @@
 $ErrorActionPreference = "Stop"
 # Public dev5 opt-in; old rotation remains byte-compatible.
 $LegacyPlusClipEdges = $Precision -eq 'legacy-plus'
+if ($LegacyPlusOptimizations -ne 'none' -and (-not $LegacyPlusClipEdges -or $GraphicsMode -ne '4')) { throw '-LegacyPlusOptimizations requires legacy-plus GraphicsMode4.' }
 if ($Precision -eq 'legacy-plus') {
  if ($PSBoundParameters.ContainsKey('LegacyStability') -and $LegacyStability -ne 'rotation') {
   throw '-Precision legacy-plus maps to LegacyStability rotation; conflicting LegacyStability is not allowed.'
@@ -38606,6 +38608,10 @@ if ($LegacyPlusClipEdges -and ($GraphicsMode -eq '6' -or $Mode7Experimental)) {
 if ($LegacyPlusClipEdges -and $Mode7Experimental -and $TexturePrecision -eq 'perspective') {
  & python -B (Join-Path $Root 'legacy_plus_projective.py') $AsmPath
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus projective texture integration failed' }
+}
+if ($LegacyPlusOptimizations -ne 'none') {
+ & python -B (Join-Path $Root 'legacy_plus_exact.py') $AsmPath --options $LegacyPlusOptimizations
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus exact optimization generation failed' }
 }
 if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2')) {
  & python -B (Join-Path $Root 'legacy_plus_memory.py') $AsmPath --assembler $Tass

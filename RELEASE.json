@@ -1,0 +1,17 @@
+{
+  "version": "1.15.0",
+  "classification": "stable",
+  "publicationStatus": "published",
+  "GitHubPublished": true,
+  "releasePageCreated": true,
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0",
+  "repositoryURL": "https://github.com/Librologica/3Dvibe64",
+  "qualifiedDevelopment": "1.15.0-dev2",
+  "qualifiedDevelopmentCommit": "ccc7d62a03d250a606f3aab6e246ba11af6bc94f",
+  "newDemosIncluded": false,
+  "precompiledPrograms": false,
+  "mediaIncluded": false,
+  "runtimeChangedDuringPromotion": false,
+  "tag": "v1.15.0",
+  "tagLocation": "GitHub"
+}

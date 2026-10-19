@@ -1,6 +1,8 @@
-# WORLD-01 — external resident room groups, 1.13.0
+# WORLD-01 — external resident room groups, 1.15.0
 
-Stable release 1.14.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Published stable1.15.0 source SDK. [Status and support](../../../RELEASE-STATUS.en.md).
+
+Stable release 1.15.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).

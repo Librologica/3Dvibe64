@@ -11,7 +11,10 @@ def main():
     assert q['version']=='1.14.0' and q['GitHubPublished']
     assert q['defaultPrecision']=='legacy' and q['publicSelector']=='-Precision legacy-plus'
     assert not q['aliasOfRotation'] and not q['q8GeometryBackendIntroduced']
-    for name,digest in q['engineSourceSHA256'].items():
+    current=json.loads((ROOT/'QUALIFICATION-1.15.0-dev2.json').read_text())
+    assert current['version']=='1.15.0-dev2' and not current['GitHubPublished']
+    assert len(current['inheritedDefaultIdentity'])==57 and all(x['identicalPRG'] for x in current['inheritedDefaultIdentity'])
+    for name,digest in current['engineSourceSHA256'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest().lower()==digest.lower(),name
     assert len(q['finalIdentity'])==len(q['nativeFPS'])==57
     assert all(d['identicalPRG'] for d in q['finalIdentity'])

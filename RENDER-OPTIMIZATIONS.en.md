@@ -1,8 +1,10 @@
-# Exact renderer optimizations — 1.14.0
+# Exact renderer optimizations — 1.15.0
 
-## Legacy-plus in 1.14.0
+> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
 
-Mode1–7 plus and Mode7 affine/perspective are promoted from the qualified development into this stable SDK. The near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [native qualification](QUALIFICATION-1.14.0.en.md).
+## Legacy-plus support in 1.15.0
+
+Mode1–7 plus and Mode7 affine/perspective remain supported in this stable SDK. The near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [native qualification](QUALIFICATION-1.14.0.en.md).
 
 All new options are explicit. Legacy precision, standard texture quality,
 precise lines, safe presentation and texture LOD off remain ordinary defaults.
@@ -151,6 +153,12 @@ Wall occlusion additionally requires a shared immutable VIC hardware palette. Bo
 `static_patterns.native_cache(face_count,low=0,high=1,prefix='sf',row_cache='sp_current_row')` emits native generation-time cache code/data. Supports1..255 faces; data6*face_count+68bytes plus code/guards. `sf_assign`: A=level0..16,X=face, call only when generated/changed. `sf_load`: X=face, copies four cached bytes to the active span row cache; an unassigned face returns carry clear without changing it. `sf_invalidate`: X=face. Carry set means success; A/Y clobbered,X preserved. Initial entries are unassigned. Invalid face/level is rejected. Update only between completed views; the adapter handles fallback and geometry/material/light invalidation. No per-frame light calculation is installed.
 
 
-## 1.14.0 application boundary
+## 1.15.0 application boundary
 
 Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](RELEASE-NOTES-1.14.0.en.md#distribution-and-private-application-boundary).
+
+## 1.15.0 optimizations and APIs
+
+`-LegacyPlusOptimizations` is separate from EngineExperiments,the Q8 hybrid line raster and other backends. It requires the qualified Mode4 legacy-plus profile and defaults to none. `all` contains arithmetic,edges,spans,outcodes,convex,integer-edges. Wire/stream are explicit ASM caller APIs excluded from all,not automatic replacements; stream requires outcodes and owned resident slots. Frozen-lighting is separate and intentionally changes moving-light response. Compact keyframes are an optional data module. An8bit Bresenham error does not reduce Q4/Q10 geometric precision. The ordinary object matrix remains Q6; no new rigid object-rotation API is implied.
+
+[Options/profile](EXACT-RENDER.en.md) · [ABI,materials,memory,fallbacks](REUSABLE-RENDER.en.md) · [Status/support](RELEASE-STATUS.en.md). Some combinations exceed real64KB RAM and are refused.
