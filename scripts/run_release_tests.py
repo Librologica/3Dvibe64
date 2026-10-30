@@ -15,6 +15,7 @@ from mode8.common import require_qualification_checks
 TESTS = (
     "test_stable_package.py",
     "test_reusable_render.py", "test_documentation.py", "test_exact_release.py", "test_legacy_plus.py", "test_legacy_plus_exact.py", "test_exact_panels.py", "test_exact_material_cache.py",
+    "test_sphere_impostors.py",
     "test_billboard_emitter.py",
     "test_mixed_surfaces.py",
     "test_billboard_scene.py",
@@ -78,6 +79,8 @@ def main():
     env["PYTHONDONTWRITEBYTECODE"] = "1"
     failures = []
     selected=args.tests or (TESTS if args.test_inputs else ('test_stable_package.py','test_reusable_render.py','test_legacy_plus_exact.py','test_exact_panels.py','test_exact_material_cache.py','test_documentation.py','test_legacy_plus.py','test_dev_gameplay.py','test_release_contract.py','test_exact_release.py','test_billboard_emitter.py','test_mixed_surfaces.py','test_billboard_scene.py','test_door_entity.py','test_multiple_billboards.py','test_texture_animation.py','test_light_bake.py','test_sector_visibility.py','test_shared_meshes.py','test_controlled_motion.py','test_world_groups.py','test_common_level.py'))
+    if not args.tests and not args.test_inputs:
+        selected=(*selected,'test_sphere_impostors.py')
     for name in selected:
         started = time.monotonic()
         print(f"START {name}", flush=True)

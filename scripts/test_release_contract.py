@@ -15,8 +15,8 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
 BUILDER_RELATIVE = Path("work/build-3Dvibe64.ps1")
-VERSION = "1.15.0"
-BUILDER_SHA256 = "AE7A56A565DFE60AA010C6A08541165C1FC0DC71DC167E962447C0178191229F"
+VERSION = "1.15.1"
+BUILDER_SHA256 = "B03D5D7CE6E9E5AF85D47C04950841DA96F1F3E6DC7B50F5C26A1F97C5BB7E70"
 PERMANENT_FILE_COUNT = json.loads((ROOT/"PACKAGE-MANIFEST.json").read_text())["package"]["permanentFiles"]
 POINT_FIXED_MESSAGE = "Camera-plane culling requires three non-collinear vertices in face 0"
 
@@ -174,7 +174,7 @@ def check_clean_tree() -> None:
         "work/exact_render/product.asm", "work/exact_render/edges.asm", "work/exact_render/convex.asm",
         "work/mode7-kernel.asm", "work/mode7-lighting.asm", "work/mode7-gouraud.asm",
         "work/mode7-compositor-b.asm", "work/mode7-compositor-c.asm",
-        "examples/textures/bricks.png",
+        "work/sphere_impostors.asm",
     }
     allowed_inputs.update(f"work/mode8/asm/{family}-{run}.asm"
                          for family in ("perimeter", "apertures", "two-levels")
@@ -784,6 +784,6 @@ def main() -> None:
         assert (ROOT/f'RELEASE-NOTES-1.13.0.{language}.md').is_file()
         assert (ROOT/f'RENDER-OPTIMIZATIONS.{language}.md').is_file()
     assert not (ROOT/'examples').exists() and not (ROOT/'validation').exists()
-    print('STABLE PUBLISHED SOURCE 1.15.0: no demos/examples; manifest and package policy PASS')
+    print('STABLE LOCAL SOURCE 1.15.1: no demos/examples; manifest and package policy PASS')
 
 if __name__=='__main__':main()
