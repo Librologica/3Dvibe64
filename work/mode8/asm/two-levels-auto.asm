@@ -959,6 +959,8 @@ saved_path=$327d
 fine_path=$32a0
 
 compose_screen:
+ ; GR17: invalidate the pose cache using high-memory helper code.
+ jsr gr17_clear_units
  lda #0
  sta group
  sta frame_steps
@@ -2416,6 +2418,12 @@ plane_nonzero:
  cmp unit_plane
  beq plane_cached_unit
  sta unit_plane
+ tax
+ cpx #97
+ bcs gr17_uncached_plane
+ jsr gr17_cached_unit
+ jmp plane_cached_unit
+gr17_uncached_plane:
  jsr p_div32x16
  ldx #3
 save_unit:
@@ -5533,6 +5541,61 @@ save_ratio:
  rts
 fixed_height_end:
 .cerror fixed_height_end>$5800,"fixed height helper overlaps font"
+; GR17: 97 physical planes (x0..32/y0..32), with bounds fallback.
+.cerror fixed_height_end>$55c0,"unit ratio cache overlaps fixed-height code"
+*=$55c0
+gr17_unit_valid:
+ .fill 97,0
+gr17_unit_0:
+ .fill 97,0
+gr17_unit_1:
+ .fill 97,0
+gr17_unit_2:
+ .fill 97,0
+gr17_unit_3:
+ .fill 97,0
+gr17_unit_cache_end:
+.cerror gr17_unit_cache_end>$5800,"unit ratio cache overlaps font"
+gr17_cached_unit:
+ lda gr17_unit_valid,x
+ bne gr17_load_plane
+ jsr p_div32x16
+ ldx unit_plane
+ lda p_num+0
+ sta gr17_unit_0,x
+ sta unit_value+0
+ lda p_num+1
+ sta gr17_unit_1,x
+ sta unit_value+1
+ lda p_num+2
+ sta gr17_unit_2,x
+ sta unit_value+2
+ lda p_num+3
+ sta gr17_unit_3,x
+ sta unit_value+3
+ lda #1
+ sta gr17_unit_valid,x
+ rts
+gr17_load_plane:
+ lda gr17_unit_0,x
+ sta unit_value+0
+ lda gr17_unit_1,x
+ sta unit_value+1
+ lda gr17_unit_2,x
+ sta unit_value+2
+ lda gr17_unit_3,x
+ sta unit_value+3
+ rts
+gr17_clear_units:
+ ldx #96
+ lda #0
+gr17_clear_unit_loop:
+ sta gr17_unit_valid,x
+ dex
+ bpl gr17_clear_unit_loop
+ rts
+gr17_unit_code_end:
+.cerror gr17_unit_code_end>$5800,"unit cache helpers overlap font"
 *=$5800
  .binary "font.bin"
 *=$8000
