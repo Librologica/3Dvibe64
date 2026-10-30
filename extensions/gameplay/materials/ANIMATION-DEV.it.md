@@ -1,8 +1,10 @@
-# TEX-01 — texture animate e scorrimento UV — 1.15.0
+# TEX-01 — texture animate e scorrimento UV — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](../../../RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](../../../RELEASE-STATUS.it.md) · [Qualifica corrente](../../../QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
 
-Release stabile 1.15.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](../../../RELEASE-STATUS.it.md).
+
+Release stabile GitHub 1.15.1: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
@@ -86,4 +88,4 @@ stato/collisione/sicurezza della porta. Le fixture controllano dati e
 simulazione tramite monitor senza modificare il file PRG o gli shader.
 I benchmark usano il programma automatico integro e contano soltanto nuove
 viste complete, con riscontro del contatore nativo. Comandi e raw sono
-nell'evidence esterna; Documentazione corrente nella release 1.12.0.
+nell'evidence esterna; Il checkpoint sopra è storico della1.12.0; la documentazione corrente è in [DOCS](../../../DOCS.md).

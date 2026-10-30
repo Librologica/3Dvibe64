@@ -104,7 +104,7 @@ def build(scene,out,run='interactive',validate_only=False,engine_experiments=Non
             s=s.replace(' cmp #142\n',f' cmp #{len(nav["nodes"])}\n')
             for name,axis,shift in (('nav_xlo',0,0),('nav_xhi',0,8),('nav_ylo',1,0),('nav_yhi',1,8)):
                 s=replace(s,name,[v[axis]>>shift for v in nav['nodes']])
-        stats.update(keys=len(p['keys']),events=len(p['events']),profileCacheBytes=4096,profileStateBytes=448)
+        stats.update(keys=len(p['keys']),events=len(p['events']),profileCacheBytes=4096,profileStateBytes=448,planeUnitCacheBytes=485,planeUnitCacheRange=[0x55c0,0x57a5])
     else:
         ids,segs=walls(bytes(geom['solid']));planes=[0]+[x['plane']+(64 if x['bank']>=2 else 0) for x in segs]
         require(len(planes)<=97,'OWNER_CAPACITY',str(len(planes)-1))

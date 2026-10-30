@@ -1,6 +1,6 @@
-# Security policy / Sicurezza — 1.15.0
+# Security policy / Sicurezza — 1.15.1
 
-This1.15.0 source release is published on GitHub. Existing repository and historical releases have independent publication status. / Questa release sorgente1.15.0 è pubblicata su GitHub; repository e release storiche hanno uno stato separato.
+Stable1.15.1 is published on GitHub. Previous releases have independent publication status. / La stabile1.15.1 è pubblicata su GitHub. Le release precedenti mantengono uno stato separato.
 
 Treat scene files,images,external project sources and test inputs as untrusted data. Review executable adapters before running them; install tools separately and keep generated outputs outside the pristine source package. / Trattare gli input esterni come dati non attendibili e rivedere gli adapter eseguibili.
 

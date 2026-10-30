@@ -1,6 +1,8 @@
-# Practical Manual for Creating Demos and PRGs with 3Dvibe64 Using Codex — 1.15.0
+# Practical Manual for Creating Demos and PRGs with 3Dvibe64 Using Codex — 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+
+> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
 
 ## Working copy and output paths
 
@@ -12,21 +14,21 @@ there. They reject `-OutputDirectory`. Q8, Normalized16 and Mode8 instead accept
 below are generated files, never precompiled files included in this SDK.
 
 
-## Stable release 1.15.0
+## Stable release 1.15.1
 
-`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [native qualification](QUALIFICATION-1.14.0.en.md). Stable1.15.0 source package published on GitHub. External scenes/assets only.
-
-
-Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [current qualification](QUALIFICATION-1.15.1.en.md). Stable1.15.1 source package published on GitHub. External scenes/assets only.
 
 
-Current 1.14.0 source contract. This manual describes the ordinary exporter unless
+Stable release 1.15.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.15.1 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
 ## Source-only release
 
-This stable1.15.0 source distribution is published on GitHub. No demos or examples are shipped, including
+This stable1.15.1 source distribution is published on GitHub. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
@@ -118,7 +120,7 @@ The most important principle of the entire method is simple: **the scene must be
 
 ## How to Read and Use This Manual
 
-The first sections explain how to prepare the computer and organize the directories. The middle sections describe the engine’s main features: graphics modes, camera, viewport, memory, units of measurement, clipping, culling, Ground, materials, lights, instances, and timelines. The final sections explain how to work with Codex in an orderly way, how to compile, how to request changes, how to diagnose errors, and how to freeze an approved version.
+The first sections explain how to prepare the computer and organize the directories. The middle sections describe the engine's main features: graphics modes, camera, viewport, memory, units of measurement, clipping, culling, Ground, materials, lights, instances, and timelines. The final sections explain how to work with Codex in an orderly way, how to compile, how to request changes, how to diagnose errors, and how to freeze an approved version.
 
 You do not need to memorize every option. It is enough to understand the general meaning of each choice and formulate precise requests. Codex must still inspect the builder and the examples included in the release before using a parameter, because some interface details may change over time.
 
@@ -220,7 +222,7 @@ When only the repository link is available, it can be given directly to Codex wi
 ```text
 This is the official GitHub repository of the engine:
 
-[paste the address copied from GitHub’s Code button here]
+[paste the address copied from GitHub's Code button here]
 
 Find the latest stable release, download the official ZIP,
 verify its contents, and extract it to:
@@ -233,7 +235,7 @@ Do not modify the official copy directly.
 The final sentence is important. The `official-engine` directory must be treated as the baseline, meaning a reference copy that must remain untouched. Demos and experiments will be created in separate copies.
 
 The manual does not embed a specific URL because the address depends on the
-repository’s final location. Copy it from the official GitHub page’s **Code**
+repository's final location. Copy it from the official GitHub page's **Code**
 button and paste it into the request before running it.
 
 When the Codex environment does not allow network access, one of two things may happen:
@@ -290,7 +292,7 @@ The script should be run from the root of the working copy or invoked with a ful
 -ExecutionPolicy Bypass
 ```
 
-This option applies only to the process launched by the command and allows the script to run without necessarily changing the system’s permanent configuration.
+This option applies only to the process launched by the command and allows the script to run without necessarily changing the system's permanent configuration.
 
 ### 64tass
 
@@ -320,7 +322,7 @@ The builder may also locate 64tass through other configurations, such as a `TASS
 VICE is the emulator used to run and verify PRGs. The VICE package includes several executables; the following are especially important for this manual:
 
 - `x64sc.exe`: accurate C64 emulation, to be used for the main tests and for authoritative rendering verification;
-- `xscpu64.exe`: SuperCPU emulation with an accelerable CPU, usable as a supplementary, non-contractual test for finding sequences accidentally tied to CPU speed. It does not replace `x64sc` and is not part of the distribution’s official regression signatures.
+- `xscpu64.exe`: SuperCPU emulation with an accelerable CPU, usable as a supplementary, non-contractual test for finding sequences accidentally tied to CPU speed. It does not replace `x64sc` and is not part of the distribution's official regression signatures.
 
 A recommended portable path is:
 
@@ -337,7 +339,7 @@ $env:VICE_EXE = "C:\Tools\VICE\bin\x64sc.exe"
 
 The `VICE_EXE` variable is not necessarily read by the builder: it is used in this manual as a convenient reference for starting the emulator. Codex can also record the path to `xscpu64.exe` separately when the optional accelerated test is selected. The absence of `xscpu64` does not prevent a build and does not invalidate the public contract based on `x64sc`.
 
-VICE is not used merely to “see whether it starts.” It must be used to check for the absence of returns to BASIC, bitmap corruption, clipping errors, depth problems, and abnormal timing differences between configurations.
+VICE is not used merely to "see whether it starts." It must be used to check for the absence of returns to BASIC, bitmap corruption, clipping errors, depth problems, and abnormal timing differences between configurations.
 
 ### Python 3
 
@@ -396,7 +398,7 @@ Codex can:
 - launch the PRG in VICE;
 - report paths, versions, and test results.
 
-Depending on the computer’s security settings and the Codex environment, some operations may require explicit permission. Codex may be able to proceed directly, or it may ask for permission to:
+Depending on the computer's security settings and the Codex environment, some operations may require explicit permission. Codex may be able to proceed directly, or it may ask for permission to:
 
 - access the Internet;
 - download files;
@@ -457,7 +459,7 @@ At the end of the setup, it is preferable to ask Codex for a report that include
 - VICE test result;
 - any permissions or configurations that are still required.
 
-A simple message such as “everything is installed” is not enough: the paths and versions make the result verifiable and allow the build to be repeated later.
+A simple message such as "everything is installed" is not enough: the paths and versions make the result verifiable and allow the build to be repeated later.
 
 ## 5. Directory Organization
 
@@ -584,7 +586,7 @@ It is suitable for:
 
 Surfaces are not filled in this mode. For that reason, it may be difficult to understand which lines belong to the front or rear of a complex object. The advantage is the lower processing cost.
 
-When the multimaterial profile supported by the engine is used, the wire modes can distinguish two color families. That configuration must, however, comply with the builder’s actual contract and should be derived from the official examples rather than improvised.
+When the multimaterial profile supported by the engine is used, the wire modes can distinguish two color families. That configuration must, however, comply with the builder's actual contract and should be derived from the official examples rather than improvised.
 
 ### GraphicsMode 2
 
@@ -770,7 +772,7 @@ It provides:
 
 It is one of the first options to try when rendering is too heavy, provided that the reduced visual area is acceptable.
 
-The area outside the viewport and the VIC-II border must remain black, in accordance with the engine’s intended behavior.
+The area outside the viewport and the VIC-II border must remain black, in accordance with the engine's intended behavior.
 
 ### Memory Layout
 
@@ -876,7 +878,7 @@ Timelines operate at 50 logical ticks per second:
 
 The normalized tick keeps event duration consistent on PAL and NTSC systems. On PAL, one ST is normally produced per VBlank. On NTSC, the engine uses five ticks for every six VBlanks, yielding a nominal 50 ST per second despite the different video refresh rate.
 
-This means that a 150 ST sequence should last about three seconds on both PAL and NTSC. The number of frames actually rendered may change when the scene is heavy, but the simulation’s logical time should not change.
+This means that a 150 ST sequence should last about three seconds on both PAL and NTSC. The number of frames actually rendered may change when the scene is heavy, but the simulation's logical time should not change.
 
 ## 11. Near Plane and Approaching Surfaces
 
@@ -951,7 +953,7 @@ Inside a closed mesh, the following still apply:
 
 A camera that enters a closed object may therefore correctly see many faces disappear. This does not necessarily indicate a near-plane error.
 
-Legacy diagnostic options relating to exploratory clipping must not be combined at random with the `late` and `clip` profiles. Codex must follow the builder’s public contract and the examples included in the release.
+Legacy diagnostic options relating to exploratory clipping must not be combined at random with the `late` and `clip` profiles. Codex must follow the builder's public contract and the examples included in the release.
 
 ## 12. Backface Culling
 
@@ -966,7 +968,7 @@ For Mode 4 and Mode 5, the following are available:
 
 ### default
 
-`default` uses the traditional culling path. It is suitable for most scenes and preserves the engine’s standard behavior.
+`default` uses the traditional culling path. It is suitable for most scenes and preserves the engine's standard behavior.
 
 The traditional test is based on the projected result. In nearly edge-on poses, coordinates that are very close together and quantized may sometimes cause the sign of the area to change from one frame to the next.
 
@@ -983,7 +985,7 @@ The traditional test is based on the projected result. In nearly edge-on poses, 
 
 The profile uses camera-space data within the most delicate range in order to reduce variations caused by rounding of projected coordinates. Outside the nearly edge-on region, it may continue to use the screen-space test provided by the optimized path.
 
-Faces that are exactly edge-on are retained according to the engine’s contract. No state is carried from one frame to the next, and no temporal hysteresis is applied.
+Faces that are exactly edge-on are retained according to the engine's contract. No state is carried from one frame to the next, and no temporal hysteresis is applied.
 
 `stable` does not enable two-sided rendering. A face that genuinely points away from the camera continues to be discarded.
 
@@ -1503,7 +1505,7 @@ In the shared path:
 
 Use the `...Override` names literally for shared instances. Plain `material` or `materialFamily` is not an instance override in this path. `materialOverride` can be used by itself; no matching `reflectivityOverride` is required.
 
-Sharing reduces duplication of source geometry, but it does not eliminate the cost of each instance’s runtime buffers. A scene containing many copies can therefore still exhaust memory. One-byte indices impose theoretical limits of 255 in several categories, but practical limits are generally lower.
+Sharing reduces duplication of source geometry, but it does not eliminate the cost of each instance's runtime buffers. A scene containing many copies can therefore still exhaust memory. One-byte indices impose theoretical limits of 255 in several categories, but practical limits are generally lower.
 
 ## 19. Declarative Timeline
 
@@ -1704,7 +1706,7 @@ work\3Dvibe64.prg
 
 The generated Assembly is also normally found under `work`. Before considering the build successful, Codex must check:
 
-- the builder’s exit code;
+- the builder's exit code;
 - warning messages;
 - 64tass messages;
 - existence of the PRG;
@@ -1722,7 +1724,7 @@ Simply launching it does not complete the test. VICE must remain running long en
 
 ### Options Can Change
 
-The available options and valid combinations can change between releases. Codex must therefore verify the builder’s actual parameters before compiling.
+The available options and valid combinations can change between releases. Codex must therefore verify the builder's actual parameters before compiling.
 
 In particular, it must check:
 
@@ -1848,17 +1850,17 @@ The precise request defines:
 
 ### Requests About Position
 
-Instead of “move it a little lower,” use:
+Instead of "move it a little lower," use:
 
 ```text
 Move the object 8 WU downward.
 ```
 
-With `world-z-up`, “downward” means reducing the Z component. It is still useful to specify both the direction and the numeric value to avoid ambiguity.
+With `world-z-up`, "downward" means reducing the Z component. It is still useful to specify both the direction and the numeric value to avoid ambiguity.
 
 ### Requests About Timing
 
-Instead of “make it enter later,” use:
+Instead of "make it enter later," use:
 
 ```text
 Delay the entry by 50 ST, equivalent to one second.
@@ -1868,7 +1870,7 @@ This wording links the technical value to the perceived duration.
 
 ### Requests About Rotation
 
-Instead of “make it rotate more slowly,” use:
+Instead of "make it rotate more slowly," use:
 
 ```text
 Halve the angular velocity and keep the total number of
@@ -1925,7 +1927,7 @@ Do not use hardcoded face indices or conditions specific to this
 mesh.
 ```
 
-The phrase “first exact point” is fundamental. An error visible in the raster may have been caused much earlier, for example by an incorrect camera-space coordinate or an improperly clipped polygon.
+The phrase "first exact point" is fundamental. An error visible in the raster may have been caused much earlier, for example by an incorrect camera-space coordinate or an improperly clipped polygon.
 
 ### Recommended Strategy
 
@@ -1967,9 +1969,9 @@ A useful trace must identify the frame, object, instance, and local face index. 
 
 The following are not acceptable as general solutions:
 
-- reversing only one face because it “seems to work” without verifying its winding;
+- reversing only one face because it "seems to work" without verifying its winding;
 - disabling culling for the entire scene to hide a local error;
-- forcing an object’s depth with a hardcoded value;
+- forcing an object's depth with a hardcoded value;
 - skipping a specific index in the renderer;
 - introducing a condition tied to the mesh name;
 - manually editing the generated ASM without carrying the change back into the builder.
@@ -2208,7 +2210,7 @@ The folder name alone must not be trusted. The hashes provide proof that the fil
 
 ## 27. When a Demo Is Canonical
 
-A demo can be considered canonical when its result is reproducible, documented, and obtained through the engine’s normal path.
+A demo can be considered canonical when its result is reproducible, documented, and obtained through the engine's normal path.
 
 The main criteria are:
 
@@ -2225,7 +2227,7 @@ The main criteria are:
 - the engine release has remained untouched;
 - all essential assets have been preserved.
 
-The word “canonical” does not mean that the demo must use only a trivial scene or exclusively the features already shown in the examples. It means that every extension must be verifiable and that the result must not depend on forgotten manual steps.
+The word "canonical" does not mean that the demo must use only a trivial scene or exclusively the features already shown in the examples. It means that every extension must be verifiable and that the result must not depend on forgotten manual steps.
 
 ### Permitted External Effects
 
@@ -2272,7 +2274,7 @@ The Assembly under `work` is regenerated by the builder. A manual change:
 - will be lost at the next build;
 - will not be represented in the JSON;
 - will make the PRG difficult to rebuild;
-- can conceal the builder’s actual limitation.
+- can conceal the builder's actual limitation.
 
 An ASM patch may be used only as a temporary diagnostic experiment. If it confirms the solution, the general change must be carried into the builder or into a declared include.
 
@@ -2428,7 +2430,7 @@ Starting from the closest example reduces schema errors. A Mode 5 demo with shar
 7. note what must remain unchanged;
 8. update the hashes of important variants.
 
-A good iteration must be able to answer the question: “Which single change produced this difference?”
+A good iteration must be able to answer the question: "Which single change produced this difference?"
 
 ### Phase 4: Diagnosis
 
@@ -2441,7 +2443,7 @@ A good iteration must be able to answer the question: “Which single change pro
 7. rebuild without manual patches;
 8. test regression scenes unrelated to the original case.
 
-Diagnosis must precede modification. A patch that “seems to work” is not sufficient when it is not clear why it works.
+Diagnosis must precede modification. A patch that "seems to work" is not sufficient when it is not clear why it works.
 
 ### Phase 5: Completion
 
@@ -2467,7 +2469,7 @@ modifying Assembly code.
 
 Official repository:
 
-[paste the address copied from GitHub’s Code button here]
+[paste the address copied from GitHub's Code button here]
 
 Prepare the development environment.
 
@@ -2551,3 +2553,5 @@ You do not need to know Assembly to create a demo with this method. What matters
 Assembly naturally remains at the heart of execution on the Commodore 64, but it should not become the point at which the user is forced to intervene manually. The builder must turn the scene description into code, while Codex must make technical decisions transparent, record the steps, and prevent a working version from being lost.
 
 A well-organized demo is not merely a PRG that starts. It is a project whose JSON source, assets, builder, command, hashes, tests, and exact rebuilding procedure are all known.
+
+External gameplay adapters require explicit `--project-source` and a preset with `engineVersion: "1.15.1"`; these inputs are not bundled. See [external inputs](EXTERNAL-INPUTS.en.md).

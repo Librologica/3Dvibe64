@@ -1,8 +1,10 @@
-# Legacy-plus — 1.15.0
+# Legacy-plus — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
 
-`-Precision legacy-plus` è il renderer intermedio esplicito per Mode1–7: matrici oggetto legacy Q6, geometria camera Q4, coefficienti camera Q10 e4096 fasi yaw/pitch. Legacy resta il default. Il selettore compatibile `-LegacyStability rotation` rimane solo Mode2. Mode8 e Normalized16 mantengono contratti separati. La distribuzione stabile1.15.0 è pubblicata su GitHub; i metadati sono in PACKAGE-MANIFEST.json.
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+
+`-Precision legacy-plus` è il renderer intermedio esplicito per Mode1–7: matrici oggetto legacy Q6, geometria camera Q4, coefficienti camera Q10 e4096 fasi yaw/pitch. Legacy resta il default. Il selettore compatibile `-LegacyStability rotation` rimane solo Mode2. Mode8 e Normalized16 mantengono contratti separati. La distribuzione stabile1.15.1 è disponibile in locale; i metadati sono in PACKAGE-MANIFEST.json.
 
 ## Build e configurazione
 

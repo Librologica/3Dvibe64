@@ -1,8 +1,10 @@
-# Exact rendering optimizations — 1.15.0
+# Exact rendering optimizations — 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
 
-Stable1.15.0 features promoted from qualified1.15.0-dev2 with unchanged runtime. Published on GitHub. Legacy/Q8 and ordinary plus builds without this selector retain their previous contracts. No demos, scenes, programs, media or native captures are packaged.
+> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+
+The optional Mode4 features introduced in1.15.0 retain their API contract. Current1.15.1 source is promoted from agentic17 and is available locally. Legacy/Q8 and ordinary plus builds without this selector retain their previous contracts. No demos, scenes, programs, media or native captures are packaged.
 
 ## Selection and scope
 
@@ -36,7 +38,7 @@ Use the ordinary argument spelling `-GraphicsMode 4` when composing scripts. Opt
 
 ## Verification and promotion
 
-[Qualification](QUALIFICATION-1.15.0.en.md) separates retained native FPS from mathematical/callback checks and inherited defaults. Use identical inputs, target, warm-up and route for before/after comparisons. Test complete images and material cells, clipping/near, shared vertices, degenerate/self-crossing panels, signed rounding, wide divisors, byte carries and page crossings. Prefer arithmetic first on CPU-bound scenes; PAL can cap complete visible views near50.125/s. Stable promotion and GitHub publication are complete.
+[Qualification](QUALIFICATION-1.15.1.en.md) separates retained native FPS from mathematical/callback checks and inherited defaults. Use identical inputs, target, warm-up and route for before/after comparisons. Test complete images and material cells, clipping/near, shared vertices, degenerate/self-crossing panels, signed rounding, wide divisors, byte carries and page crossings. Prefer arithmetic first on CPU-bound scenes; PAL can cap complete visible views near50.125/s. Stable promotion and GitHub publication are complete.
 
 Automatic clipped-fan merging additionally requires a single active material/reflectivity palette, no fixed face-color table and no VIC cell-ownership policy. Mixed-palette faces keep the original fan; the explicit pair-bounds API remains available under its caller contract. The material interval cache forgets disconnected cell intervals instead of filling or caching their gaps.
 

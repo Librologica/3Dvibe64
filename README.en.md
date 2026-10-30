@@ -1,6 +1,16 @@
-# 3Dvibe64 1.15.0
+# 3Dvibe64 1.15.1
 
-Stable source SDK published on GitHub. No demos,examples,PRGs or media. [Status/support](RELEASE-STATUS.en.md) · [Changes](RELEASE-NOTES-1.15.0.en.md) · [Qualification](QUALIFICATION-1.15.0.en.md).
+## Current1.15.1 additions
+
+This stable GitHub release promotes delivered agentic17 without changing renderer
+or public API bytes. [Current release notes](RELEASE-NOTES-1.15.1.en.md),
+[optimization contracts](AGENTIC-OPTIMIZATIONS.en.md), [circle API](CIRCLE-SPHERES.en.md)
+and [native qualification](QUALIFICATION-1.15.1.en.md) take precedence over archived
+release claims. No demo/scene/media is bundled; build inputs are caller-owned.
+Existing optional Mode4 exact selectors remain distinct from automatic passes.
+
+
+Stable1.15.1 source SDK published on GitHub. No demos,examples,PRGs or media. [Status/support](RELEASE-STATUS.en.md) · [Changes](RELEASE-NOTES-1.15.1.en.md) · [Qualification](QUALIFICATION-1.15.1.en.md).
 
 New optimizations/APIs are limited to the documented Mode4 legacy-plus profile; ordinary Mode1–7 plus and other backends remain separate. Defaults legacy and optimizations none. `all` excludes wire,stream,frozen-lighting. [Options](EXACT-RENDER.en.md) · [API/memory](REUSABLE-RENDER.en.md). Gameplay and Normalized16 retain experimental status.
 
@@ -8,11 +18,11 @@ Legacy remains the default. Select precise Q8 explicitly with `-Precision q8`, r
 
 ## Stable source distribution
 
-This stable1.15.0 source distribution is published on GitHub. No demos or examples are shipped, including
+This stable1.15.1 source distribution is published on GitHub. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.15.0.en.md).
+and [qualification](QUALIFICATION-1.15.1.en.md).
 
 | ID | Module | Contract |
 |---|---|---|
@@ -290,3 +300,11 @@ Textured Gouraud uses `gouraud.creaseAngle` (default 60°, range 0–180°) for 
 The default affine path has no perspective correction. Optional projective interpolation requires the bounded Q8 or legacy-plus profile; see [texture precision](TEXTURE-PRECISION.en.md). No bilinear filtering, mipmapping, packed runtime textures or native quad mapper. Sampling aliasing remains.
 
 Read the [complete Mode 7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](EXTERNAL-INPUTS.en.md). The paired Italian guides cover the same contract.
+
+
+1.15.1-dev-agentic8: exact affine Mode7-C legacy-plus span optimization. Mode7/1x timing tradeoff explicitly accepted; prioritize20x/64x. See AGENTIC-DEV.md and external evidence.
+
+
+1.15.1-dev-agentic8: exact full-byte UV expansion and cached immediate stable spans. See AGENTIC-DEV.md and external evidence.
+
+External gameplay adapters require explicit `--project-source` and a preset with `engineVersion: "1.15.1"`; these inputs are not bundled. See [external inputs](EXTERNAL-INPUTS.en.md).

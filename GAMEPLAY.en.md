@@ -1,13 +1,15 @@
-# Gameplay source modules — 1.15.0
+# Gameplay source modules — 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
 
-Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+
+Stable release 1.15.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 ## Source-only release
 
-This stable1.15.0 source distribution is published on GitHub. No demos or examples are shipped, including
+This stable1.15.1 source distribution is published on GitHub. No demos or examples are shipped, including
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
@@ -41,12 +43,12 @@ root. Its layout is `examples/gameplay/<profile>.json` for the preset and
 `extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` and
 `extensions/gameplay/billboards/<implementation>.py` for caller-owned glue.
 These paths belong to the external project, not this SDK. Presets contain
-`profile`, `engineVersion` (1.13.0), optional `extends`, `buildName`,
+`profile`, `engineVersion` (1.15.1), optional `extends`, `buildName`,
 `billboardImplementation`, `distributionPRG`, `textureQuality`, `textureLOD`,
 `viewportLogical`, `expectedCheckpointPRGSHA256` and optional `scope`.
 The driver overlays the inherited project profiles, copies the current SDK
 as the engine dependency, applies supplied configuration and invokes the
-project’s `build_demo.py`. This is an explicit project build, not an installed
+project's `build_demo.py`. This is an explicit project build, not an installed
 demo. Qualification also needs the project's own checks/oracles/launcher.
 
 ```powershell
@@ -103,7 +105,7 @@ portable data, not a PRG or measured native budget. All assets use
 are excluded. Native builds additionally require `--project-source` and
 an actually supported WORLD-01 template. `reserveBytes` and
 `minimumContiguousBytes` are checked against assembled maps, never an estimate.
-WORLD-01’s proposed 3759-byte startup UI recovery is not applied.
+WORLD-01's proposed 3759-byte startup UI recovery is not applied.
 
 ## Evidence and limitations
 

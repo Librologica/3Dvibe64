@@ -1,5 +1,5 @@
 {
-  "version": "1.15.0",
+  "version": "1.15.1",
   "locales": [
     "en",
     "it"
@@ -206,19 +206,44 @@
       "it": "REUSABLE-RENDER.it.md"
     },
     {
-      "id": "RELEASE-NOTES-1.15.0",
-      "en": "RELEASE-NOTES-1.15.0.en.md",
-      "it": "RELEASE-NOTES-1.15.0.it.md"
-    },
-    {
-      "id": "QUALIFICATION-1.15.0",
-      "en": "QUALIFICATION-1.15.0.en.md",
-      "it": "QUALIFICATION-1.15.0.it.md"
-    },
-    {
       "id": "RELEASE-STATUS",
       "en": "RELEASE-STATUS.en.md",
       "it": "RELEASE-STATUS.it.md"
+    },
+    {
+      "id": "CIRCLE-SPHERES",
+      "en": "CIRCLE-SPHERES.en.md",
+      "it": "CIRCLE-SPHERES.it.md"
+    },
+    {
+      "id": "RELEASE-NOTES-1.15.1",
+      "en": "RELEASE-NOTES-1.15.1.en.md",
+      "it": "RELEASE-NOTES-1.15.1.it.md"
+    },
+    {
+      "id": "QUALIFICATION-1.15.1",
+      "en": "QUALIFICATION-1.15.1.en.md",
+      "it": "QUALIFICATION-1.15.1.it.md"
+    },
+    {
+      "id": "AGENTIC-OPTIMIZATIONS",
+      "en": "AGENTIC-OPTIMIZATIONS.en.md",
+      "it": "AGENTIC-OPTIMIZATIONS.it.md"
+    },
+    {
+      "id": "QUICKSTART",
+      "en": "QUICKSTART.en.md",
+      "it": "QUICKSTART.it.md"
+    },
+    {
+      "id": "TESTING",
+      "en": "TESTING.en.md",
+      "it": "TESTING.it.md"
+    },
+    {
+      "id": "MODE8-MEMORY",
+      "en": "MODE8-MEMORY.en.md",
+      "it": "MODE8-MEMORY.it.md"
     }
   ],
   "currentBilingual": [
@@ -228,11 +253,12 @@
     "Q8-SCALABILITY.md",
     "QUICKSTART.md",
     "README.md",
-    "RELEASE-NOTES-1.15.0.md",
     "ROADMAP.md",
     "SECURITY.md",
     "TESTING.md",
-    "WORLD-METRICS.md"
+    "WORLD-METRICS.md",
+    "RELEASE-NOTES-1.15.1.md",
+    "AGENTIC-DEV.md"
   ],
   "historicalReports": [
     "DEVELOPMENT-1.14.0-dev1.en.md",
@@ -258,6 +284,8 @@
     "QUALIFICATION-1.15.0-dev1.it.md",
     "QUALIFICATION-1.15.0-dev2.en.md",
     "QUALIFICATION-1.15.0-dev2.it.md",
+    "QUALIFICATION-1.15.0.en.md",
+    "QUALIFICATION-1.15.0.it.md",
     "RELEASE-NOTES-1.10.0-rc1.md",
     "RELEASE-NOTES-1.10.0.md",
     "RELEASE-NOTES-1.10.1-rc1.md",
@@ -277,6 +305,9 @@
     "RELEASE-NOTES-1.14.0.en.md",
     "RELEASE-NOTES-1.14.0.it.md",
     "RELEASE-NOTES-1.14.0.md",
+    "RELEASE-NOTES-1.15.0.en.md",
+    "RELEASE-NOTES-1.15.0.it.md",
+    "RELEASE-NOTES-1.15.0.md",
     "RELEASE-NOTES-1.4.0.md",
     "RELEASE-NOTES-1.5.0.md",
     "RELEASE-NOTES-1.5.5.md",
@@ -315,7 +346,7 @@
     "--flat-span-cache"
   ],
   "sourceOnly": true,
-  "publication": "GitHub stable source release",
+  "publication": "stable source release published on GitHub",
   "newDemosIncluded": false,
   "gameplayRequiredOptions": [
     "--profile",
@@ -325,6 +356,18 @@
   "allExamplesExcluded": true,
   "GitHubPublished": true,
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0",
-  "releasePageCreated": true
+  "releasePageCreated": true,
+  "developmentPairs": [],
+  "baseContractVersion": "1.15.1",
+  "inheritedStablePublication": {
+    "publication": "GitHub stable source release",
+    "GitHubPublished": true,
+    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1",
+    "releasePageCreated": true
+  },
+  "updated": "2026-10-30",
+  "developmentIndex": "DOCS.md",
+  "quickStart": "QUICKSTART.md",
+  "testing": "TESTING.md",
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1"
 }

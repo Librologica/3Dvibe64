@@ -1,15 +1,17 @@
-# Precisione texture Mode 7 — 1.15.0
+# Precisione texture Mode 7 — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
 
 ## Profilo prospettico legacy-plus
 
 Nella 1.14.0, Mode7 prospettica è disponibile anche con `-Precision legacy-plus`. Usare il [contratto build/configurazione plus](LEGACY-PLUS.it.md): geometria Q4, near8, profondità lungo camera8–256WU, qualità texture standard e LOD off. Sono supportati none/flat/Gouraud A/B/C. I carrier unsigned16 UW/VW/W riusano il campionatore texture senza collegare geometria Q8. I vincoli Q8 depth1–256 e compositor C delle sezioni seguenti valgono solo per Q8. [Confronto nativo](QUALIFICATION-1.14.0.it.md).
 
-Release stabile 1.15.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.14.0. Il manuale descrive l’exporter ordinario
+Contratto sorgente corrente 1.15.1. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 

@@ -1,23 +1,29 @@
-# Stato della release e supporto — 1.15.0
+# Stato release e supporto — 1.15.1
 
-**La1.15.0 è la release stabile pubblicata su GitHub.** [Pagina release e download](https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0). Il repository e i metadati identificano la stessa versione. Stato canonico: [RELEASE.json](RELEASE.json). Il tag pubblico è `v1.15.0`.
+**Release stabile1.15.1 di soli sorgenti, promossa dalla dev consegnata agentic17 e pubblicata su GitHub.**
+Release/download: [v1.15.1](https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1). [RELEASE.json](RELEASE.json)
+è lo stato canonico. Release ufficiali precedenti e demo congelate sono preservate.
 
-Stabile descrive la versione dell'SDK e i contratti qualificati, non rende universali i profili limitati o maturi i moduli ancora sperimentali. Le qualifiche storiche sono archiviate con la loro versione e non documentano una pubblicazione di questa release.
+Lo ZIP contiene renderer, moduli riutilizzabili, strumenti host e documentazione;
+nessun progetto demo, scena, asset, musica, PRG, cattura o dipendenza. I generatori
+API possono creare progetti solo su invocazione esplicita dell'utente; nessun
+progetto generato è allegato.
 
-|Funzione|Stato nella1.15.0|
-|---|---|
-|Renderer predefinito|`legacy`, invariato; nessuna selezione automatica di plus o Q8|
-|Legacy-plus ordinario|Mode1–7, incluse texture Mode7 affini/prospettiche, nei profili documentati|
-|Nuove ottimizzazioni esatte|Opt-in, solo Mode4 legacy-plus/walkLite/normal160×100/high-basic-v2/NoFpsOverlay, near8/poly, senza Ground|
-|`all`|`arithmetic,edges,spans,outcodes,convex,integer-edges`|
-|API `wire` e `stream`|Escluse da `all`; chiamate esplicite nel passaggio principale; `stream` richiede `outcodes` e slot posseduti dal chiamante|
-|`frozen-lighting`|Esclusa da `all`; opzione estetica esplicita, non equivalenza con luci in movimento; oggetti non condivisi|
-|Chiavi compatte|Codec opzionale signed16 senza perdita; valutare decoder+scratch+dati, nessun aumento FPS garantito|
-|Q8, Mode8 e gameplay|Contratti separati; nessun trasferimento implicito delle nuove API agli altri backend|
-|Normalized16 e gameplay sperimentale|Restano sperimentali nei rispettivi limiti; non promossi automaticamente dalla versione stabile|
+Renderer e API coincidono byte per byte con agentic17. La qualifica stabile
+ricompila il catalogo completo:54 programmi a1/20/64× e27 casi già bloccati.
+Si riusano soltanto osservazioni di PRG ed etichette numeriche identici; valori
+FPS/p95/peggiore e segnalazioni originali restano conservati.
+[Qualifica](QUALIFICATION-1.15.1.it.md).
 
-Non sono inclusi demo, esempi, scene, modelli, musica, video, catture o programmi compilati. Le tabelle/font/template mantenute dell'engine sono sorgenti del renderer. Fornire input esterni; gli strumenti di compilazione vanno installati separatamente. Le nuove opzioni consumano RAM reale nei64KB: il compilatore può rifiutare combinazioni troppo grandi. Memoria64KB non equivale a una qualifica FPS su C64 stock.
+Sono qualificati i profili benchmark PAL Turbo6510 misurati e le API4/6, non
+qualsiasi combinazione di renderer e opzioni. Nessuna nuova qualifica su NTSC
+stock, hardware C64 fisico o altri host. I rapporti versionati valgono per i
+programmi originari. Normalized16 e gli adattatori gameplay opzionali restano
+moduli sperimentali separati; il pacchetto stabile non ne amplia i contratti.
 
-Il runtime è identico alla dev qualificata1.15.0-dev2 (`ccc7d62a03d250a606f3aab6e246ba11af6bc94f`). La promozione cambia solo documentazione, versione, metadati e controlli host della distribuzione. Le misure conservate provengono da VICE Turbo6510 PAL×64, safe, fixture silenziose; non sono nuove acquisizioni, prove NTSC, misure sul C64 stock o sull'hardware fisico. Gli hash dei PRG ricompilati e i controlli dello ZIP esatto sono nella ricevuta di rilascio esterna.
+Le guardie64KB restano attive: combinazioni sovradimensionate o non supportate
+sono rifiutate. Mode7 a1× conserva il compromesso temporale già documentato,
+senza eliminare celle dall'indice. Il caso validation4/1× conserva la segnalazione
+della finestra breve e la diagnosi su finestre lunghe.
 
-[Note release](RELEASE-NOTES-1.15.0.it.md) · [Qualifica](QUALIFICATION-1.15.0.it.md) · [Opzioni](EXACT-RENDER.it.md) · [ABI e limiti](REUSABLE-RENDER.it.md) · [Test](TESTING.md).
+[Input esterni](EXTERNAL-INPUTS.it.md) · [Test](TESTING.it.md) · [Documenti](DOCS.md)

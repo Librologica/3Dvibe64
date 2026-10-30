@@ -1,8 +1,10 @@
-# Ottimizzazioni del rendering esatto — 1.15.0
+# Ottimizzazioni del rendering esatto — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
 
-Funzioni della stabile1.15.0, promosse dalla dev qualificata1.15.0-dev2 senza modifiche al runtime. Pacchetto pubblicato su GitHub. Legacy/Q8 e le build plus senza selettore mantengono i contratti precedenti. Nessuna demo, scena, programma, media o cattura nativa nel pacchetto sorgente.
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+
+Le funzioni Mode4 opzionali introdotte nella1.15.0 conservano il contratto API. Il sorgente1.15.1 deriva da agentic17 ed è disponibile in locale. Legacy/Q8 e le build plus senza selettore mantengono i contratti precedenti. Nessuna demo, scena, programma, media o cattura nativa nel pacchetto sorgente.
 
 ## Selezione e ambito
 
@@ -36,7 +38,7 @@ Usare la normale sintassi `-GraphicsMode 4` negli script. Opzioni e kernel nativ
 
 ## Verifica e promozione
 
-La [qualifica](QUALIFICATION-1.15.0.it.md) separa FPS nativi conservati, verifiche matematiche/callback e default ereditati. Confrontare input, target, warm-up e percorso identici prima/dopo. Verificare immagini e celle materiali, clipping/near, vertici condivisi, pannelli degeneri/autointersecanti, arrotondamento signed, divisori larghi, riporti e passaggi di pagina. Sulle scene limitate dalla CPU partire dall'aritmetica; PAL puo limitare le nuove viste visibili a circa50,125/s. La promozione stabile e la pubblicazione GitHub sono completate.
+La [qualifica](QUALIFICATION-1.15.1.it.md) separa FPS nativi conservati, verifiche matematiche/callback e default ereditati. Confrontare input, target, warm-up e percorso identici prima/dopo. Verificare immagini e celle materiali, clipping/near, vertici condivisi, pannelli degeneri/autointersecanti, arrotondamento signed, divisori larghi, riporti e passaggi di pagina. Sulle scene limitate dalla CPU partire dall'aritmetica; PAL puo limitare le nuove viste visibili a circa50,125/s. La promozione stabile e la pubblicazione GitHub sono completate.
 
 La fusione automatica dei fan richiede inoltre un unico materiale/riflettivita attivo, nessuna tabella di pigmenti fissi per faccia e nessuna politica di proprieta delle celle VIC. Le facce con palette miste mantengono il fan originale; l'API esplicita per bounds di coppie resta disponibile nel contratto del chiamante. La cache degli intervalli materiali dimentica gli intervalli disconnessi senza riempire o memorizzare le celle nel mezzo.
 

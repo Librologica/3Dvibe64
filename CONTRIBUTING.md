@@ -1,6 +1,6 @@
-# Contributing / Contribuire — 1.15.0
+# Contributing / Contribuire — 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
 
 ## English
 

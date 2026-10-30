@@ -1,203 +1,17 @@
 {
-  "version": "1.15.0",
+  "version": "1.15.1",
   "status": "stable",
-  "newDemosIncluded": false,
-  "Mode8Modified": false,
-  "ordinaryEngineModified": false,
-  "privateDevelopmentPreserved": true,
-  "gameplay": {
-    "experimental": true,
-    "builder": "work/build-gameplay.py",
-    "presets": [],
-    "publicSceneAPI": false,
-    "foundation": "current work/ engine; no duplicated SDK",
-    "mixedSurfaces": {
-      "status": "experimental bounded profile",
-      "modes": [
-        "texture",
-        "flat",
-        "gouraud"
-      ],
-      "automaticLightBake": false,
-      "hostBakeProfile": "static-light"
-    },
-    "billboardSceneAPI": "experimental one/two instances in bounded multiple-billboards profile; shared asset/palette, exact Q8 ordering",
-    "door": "experimental bounded divider/door, state/collision/occlusion proof",
-    "textureAnimation": {
-      "status": "experimental bounded profile",
-      "runtimeTexelCopies": false,
-      "maxGroups": 2,
-      "maxFrames": 4
-    },
-    "staticLightBake": {
-      "status": "experimental bounded Gouraud receivers",
-      "runtimeCodeAdded": false,
-      "residentBytesAdded": 0
-    },
-    "sectorVisibility": {
-      "profile": "sector-visibility",
-      "status": "experimental conservative connectivity compiler and bounded native proof",
-      "compilerLimits": {
-        "sectors": 8,
-        "doors": 4,
-        "portals": 16
-      },
-      "nativeSectors": 2,
-      "nativePortals": 1,
-      "compactFormat": "PV01 counts, face ownership masks, state-major sector PVS",
-      "selection": "closed door only; any opening connects; near/outside/oblique views accept all",
-      "nativeAngleScope": "exact yaw0/180 and pitch0; historical raster edge pixels preserved",
-      "angularPortalClipping": false,
-      "nativeCodeBytes": 180,
-      "nativeDataBytes": 41,
-      "remainingGapBytes": 1183
-    },
-    "sharedMeshes": {
-      "profile": "shared-meshes",
-      "status": "experimental bounded native geometry sharing",
-      "maxInstances": 4,
-      "minInstances": 2,
-      "sourceVertices": 6,
-      "sourceTriangles": 8,
-      "sourceGeometryBytes": 50,
-      "duplicatedFourInstanceBytes": 200,
-      "sourceGeometrySavedBytes": 150,
-      "positionStepWU": 0.00390625,
-      "scaleStep": 0.015625,
-      "yawBits": 16,
-      "mutableStateAndCachesPerInstance": true,
-      "vertexCacheBytesPerVertex": 36,
-      "descriptorAndIndexBytesPerInstance": 16,
-      "sharedScratchBytes": 35,
-      "remainingGapBytes": 5281,
-      "replicatedRemainingGapBytes": 5131,
-      "publicMeshSourceSharingAPI": false,
-      "scope": "disjoint convex six-vertex/eight-triangle solids in original bounded room; dedicated profile"
-    },
-    "controlledMotion": {
-      "profiles": [
-        "controlled-animation",
-        "camera-roll"
-      ],
-      "status": "experimental bounded Q8 clip controls and signed24 camera roll",
-      "instances": [
-        2,
-        4
-      ],
-      "keysPerClip": [
-        1,
-        8
-      ],
-      "ticksPerKey": 64,
-      "speeds": [
-        1,
-        2,
-        4
-      ],
-      "commandABI": "an_control A opcode,X instance,Y argument; carry success",
-      "cameraABI": "cr_set_roll A low,Y high phase;cr_resume",
-      "positionStepWU": 0.00390625,
-      "yawAndRollBits": 16,
-      "scaleBitsFraction": 6,
-      "scaleAccumulatorBitsFraction": 14,
-      "cameraModes": [
-        "dungeon locks roll0",
-        "flight full16-bit roll after yaw/pitch before clipping"
-      ],
-      "clipSourceBytes": 344,
-      "clipStateBytes": 80,
-      "bankSourceBytes": 192,
-      "bankStateBytes": 9,
-      "playerCodeBytes": 650,
-      "keyboardCodeBytes": 285,
-      "rollCodeBytes": 361,
-      "additionalAllocatedBytes": 1979,
-      "remainingGapBytes": 3302,
-      "ordinaryEngineAPIChanged": false
-    },
-    "worldGroups": {
-      "profile": "room-groups",
-      "status": "experimental bounded external group loading",
-      "groups": [
-        2,
-        8
-      ],
-      "roomsPerGroup": 2,
-      "residentGroups": 1,
-      "vertices": 21,
-      "faces": 32,
-      "stagingBytes": 1024,
-      "groupFileBytes": 762,
-      "payloadBytes": 748,
-      "persistentBytesPerGroup": 17,
-      "ioBlockBytes": 620,
-      "managerBlockBytes": 1237,
-      "remainingGapBytes": 1006,
-      "eightGroupRemainingGapBytes": 460,
-      "additionalAllocatedBytes": 2496,
-      "equal48KeyControlAdditionalBytes": 2904,
-      "storage": "KERNAL sequential input on VICE filesystem device8; not physical1541 timing",
-      "integrity": "fixed channels, exact length, CRC16-CCITT matched against resident expected CRC",
-      "state": "per-group guardian/events, door lift/state and animation; RAM session only; inactive groups freeze",
-      "generalTopology": false,
-      "ordinaryEngineAPIChanged": false
-    },
-    "commonLevel": {
-      "status": "experimental common authoring format and exact assembled budget",
-      "format": "3Dvibe64.level/1",
-      "compiler": "work/build-level.py",
-      "schema": "extensions/gameplay/level/level.schema.json",
-      "backend": "WORLD-01 bounded adapter",
-      "authoring": [
-        "groups",
-        "rooms",
-        "objects",
-        "connections",
-        "spawns",
-        "assets",
-        "events"
-      ],
-      "nativeDescriptorBytesAdded": 0,
-      "measuredHelperPoolBytes": 26018,
-      "allocatedBytes": 25012,
-      "freeBytes": 1006,
-      "largestRawFreeBytes": 965,
-      "largestAligned2FreeBytes": 964,
-      "defaultReserveBytes": 512,
-      "bytesBeyondReserve": 494,
-      "proposedUIStartupRecovery": {
-        "status": "not applied",
-        "candidateAllocatedBytes": 3759,
-        "hypotheticalFreeBytes": 4765,
-        "hypotheticalLargestAligned2Bytes": 2904,
-        "bootExtensionArenaBytes": 2048,
-        "additionalEventStateBytes": 512,
-        "safetyMarginBytes": 512,
-        "unassignedBeyondSafetyBytes": 1693
-      },
-      "combinedFeaturesImplemented": false,
-      "ordinaryEngineAPIChanged": false
-    },
-    "profiles": [],
-    "externalProjectOption": "--project-source",
-    "budgetPolicy": "Historical per-profile budgets exclude new optional helpers; recompute actual assembled map"
-  },
-  "allExamplesExcluded": true,
+  "baseEngine": "1.15.1-dev-agentic17",
+  "baseEngineTreeSHA256": "a3a5301dc21b9eb800e25ac5e6f2079ec48f59f0447b554cabc5dc59492b513f",
+  "officialStable": "1.15.1",
+  "sourceLineEndings": "LF",
+  "workloadsModified": false,
+  "qualityModified": false,
+  "sourceOnly": true,
+  "localStableRelease": false,
   "GitHubPublished": true,
-  "renderOptimizationContracts": "RENDER-OPTIMIZATIONS.en.md",
-  "release": {
-    "version": "1.15.0",
-    "status": "published stable",
-    "stable": true,
-    "prerelease": false,
-    "GitHubPublished": true,
-    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0",
-    "newDemosIncluded": false,
-    "privateUnderworldPortIncluded": false,
-    "releasePageCreated": true,
-    "publication": "GitHub stable source release"
-  },
-  "baseVersion": "1.14.0",
+  "releasePageCreated": true,
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1",
   "nativeQualifiedModes": [
     1,
     2,
@@ -205,64 +19,32 @@
     4,
     5,
     6,
-    7
+    7,
+    8
   ],
-  "nativeTestedModes": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7
-  ],
-  "cameraMotionQualifiedModes": [
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7
-  ],
-  "clippingQualified": true,
-  "publicSelector": "-Precision legacy-plus",
-  "aliasOfRotation": false,
-  "clippingPixelExact": false,
-  "nearThresholdObservationTicks": [],
-  "cameraCadenceQualified": true,
-  "promotedDevelopment": "1.15.0-dev2",
-  "qualification": "QUALIFICATION-1.15.0.json",
-  "publication": "GitHub stable source release",
-  "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.0",
-  "releasePageCreated": true,
-  "localStableRelease": false,
-  "exactRender": {
-    "selector": "-LegacyPlusOptimizations",
-    "default": "none",
-    "modes": [
-      4
-    ],
-    "precision": "legacy-plus",
-    "frozenLightingSeparate": true,
-    "automaticOptions": [
-      "arithmetic",
-      "edges",
-      "spans",
-      "outcodes",
-      "convex",
-      "integer-edges"
-    ],
-    "explicitAPIs": [
-      "wire",
-      "stream"
-    ],
-    "compactKeyframes": "work/compact_keyframes.py",
-    "baseDevelopment": "1.15.0-dev1",
-    "qualification": "QUALIFICATION-1.15.0.json"
-  },
-  "metadataRole": "Compatibility filename; RELEASE.json is the canonical release/publication state",
-  "optionalEngineChangesSince1_14": true,
-  "comparisonBase": "qualified1.15.0-dev2"
+  "nativeQualifiedProfiles": "Fixed benchmark legacy-plus1..7 and native Mode8; public circle API4/6. No blanket qualification of every backend/profile.",
+  "acceptedTimingTradeoff": "Inherited explicit Mode7/1x policy; original records and fixed index retained",
+  "qualifiedAsStable": true,
+  "release": {
+    "version": "1.15.1",
+    "classification": "stable",
+    "publicationStatus": "published",
+    "GitHubPublished": true,
+    "releasePageCreated": true,
+    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1",
+    "tag": "v1.15.1",
+    "tagCreated": true,
+    "tagLocation": "https://github.com/Librologica/3Dvibe64/tree/v1.15.1",
+    "sourceDevelopment": "1.15.1-dev-agentic17",
+    "baseOfficialVersion": "1.15.0",
+    "runtimeChangedDuringPromotion": false,
+    "qualifiedAsStable": true,
+    "localStableRelease": false,
+    "qualification": "QUALIFICATION-1.15.1.json",
+    "sourceOnly": true,
+    "demosIncluded": false,
+    "stable": true,
+    "prerelease": false,
+    "status": "published stable"
+  }
 }

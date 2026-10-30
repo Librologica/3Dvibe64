@@ -1,5 +1,8 @@
-# Roadmap — 1.15.0
+# Roadmap — 1.15.1
 
-[English](ROADMAP.en.md) · [Italiano](ROADMAP.it.md) · [Release status](RELEASE-STATUS.en.md)
+[English](ROADMAP.en.md) · [Italiano](ROADMAP.it.md)
 
-Stable1.15.0 is published on GitHub. Bounded APIs remain bounded; stock-C64,NTSC,physical hardware,broader modes and generic object rotations require their own evidence. / Stabile pubblicata su GitHub. Estensioni di profilo e nuovi target richiedono qualifica distinta.
+Stable1.15.1 is published on GitHub.
+Profile/target extensions require their own evidence. / La stabile1.15.1 è
+pubblicata su GitHub. Nuovi profili/target
+richiedono prove proprie. [Status EN](RELEASE-STATUS.en.md) · [Stato IT](RELEASE-STATUS.it.md).

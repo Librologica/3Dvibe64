@@ -1,6 +1,8 @@
-# CAMERA ISOLATION — 1.15.0
+# CAMERA ISOLATION — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
 
 Il selettore di compatibilità `-Precision legacy -LegacyStability camera`
 richiede Mode2, walkLite, normal e high-basic-v2. Conserva quattro bit frazionari

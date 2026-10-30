@@ -1,8 +1,8 @@
-# Rendering e dati riutilizzabili — 1.15.0
+# Rendering e dati riutilizzabili — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
 
-La stabile1.15.0 include i moduli qualificati nelle dev precedenti, con runtime invariato. Il pacchetto è pubblicato su GitHub; release e demo congelate precedenti sono preservate. [Opzioni di base](EXACT-RENDER.it.md). Il default resta `-LegacyPlusOptimizations none`. Le nuove opzioni conservano il profilo Mode4 legacy-plus, walkLite, viewport normale 160×100, high-basic-v2, NoFpsOverlay e clipping Q4 near8/poly. Coordinate Q4, coefficienti Q10, pixel e palette non vengono ridotti. Ogni combinazione occupa RAM reale nei 64 KB: una combinazione può essere rifiutata anche se ciascuna opzione entra da sola.
+La stabile1.15.1 conserva i contratti API opzionali; il renderer coincide con agentic17. Il pacchetto corrente è locale; release e demo congelate precedenti sono preservate. [Opzioni di base](EXACT-RENDER.it.md). Il default resta `-LegacyPlusOptimizations none`. Le nuove opzioni conservano il profilo Mode4 legacy-plus, walkLite, viewport normale 160×100, high-basic-v2, NoFpsOverlay e clipping Q4 near8/poly. Coordinate Q4, coefficienti Q10, pixel e palette non vengono ridotti. Ogni combinazione occupa RAM reale nei 64 KB: una combinazione può essere rifiutata anche se ciascuna opzione entra da sola.
 
 ## Scelta delle opzioni
 
@@ -45,4 +45,4 @@ Il file JSON adiacente riporta campioni, bit, fattore, minimo e byte dei dati. I
 
 L'ordine dei componenti della navetta, le facce nascoste rimosse dal suo modello, camera e dinamica specifiche, griglia più rada, FOV, generatore del percorso e linee alternate non sono trasferiti al nucleo. La riduzione di copie e i kernel sono riutilizzabili; questi altri interventi cambiano contenuto, comportamento o grafica e restano nel progetto della demo. Le rotazioni rigide del modello richiedono una qualifica distinta prima di diventare una nuova API di trasformazione degli oggetti.
 
-La [qualifica corrente](QUALIFICATION-1.15.0.it.md) distingue FPS nativi, equivalenza delle immagini e callback CPU. Nessun risultato del benchmark wire viene attribuito alla navetta o al solo modulo stream.
+La [qualifica corrente](QUALIFICATION-1.15.1.it.md) distingue FPS nativi, equivalenza delle immagini e callback CPU. Nessun risultato del benchmark wire viene attribuito alla navetta o al solo modulo stream.

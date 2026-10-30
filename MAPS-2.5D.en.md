@@ -1,11 +1,13 @@
-# Building Mode 8 maps — 1.15.0
+# Building Mode 8 maps — 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
 
-Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+
+Stable release 1.15.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
-Current 1.14.0 source contract. This manual describes the ordinary exporter unless
+Current 1.15.1 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -120,7 +122,7 @@ Global budgets: **≤255 profile keys and ≤255 event records** (including any 
 
 ## 4. Camera, collision and navigation
 
-W/S move forward/backward, A/D turn. The interactive runtime uses a radius of 48/256 cell, tests the footprint, and slides along walls. It does not impose a “70% screen occupancy” rule. The automatic route uses the original continuous pursuit, not cardinal rotations. Automatic collision radius is 224/256 cell in the aperture template and 48/256 in the other two.
+W/S move forward/backward, A/D turn. The interactive runtime uses a radius of 48/256 cell, tests the footprint, and slides along walls. It does not impose a "70% screen occupancy" rule. The automatic route uses the original continuous pursuit, not cardinal rotations. Automatic collision radius is 224/256 cell in the aperture template and 48/256 in the other two.
 
 Initial camera is fixed for all families. Both mono routes are fixed verbatim, including waypoint order. Multi waypoints may change within the 160-entry limit but must preserve the template start, remain navigable, and complete a full cyclic lap without a blocked tick in the 30,000-tick host validation. Small headroom, unreachable stops or obstacles on the itinerary are errors, not triggers for automatic replanning. There is no waypoint pathfinding during public build.
 

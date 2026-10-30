@@ -4,6 +4,8 @@ param(
 
  [string]$EngineExperiments = 'none',
  [string]$LegacyPlusOptimizations = 'none',
+ [ValidateSet('none','circles')]
+ [string]$SphereRenderer = 'none',
  [ValidateSet('safe','legacy')]
  [string]$FramePresentation = 'safe',
  [ValidateSet('precise','hybrid')]
@@ -269,6 +271,9 @@ param(
 $ErrorActionPreference = "Stop"
 # Public dev5 opt-in; old rotation remains byte-compatible.
 $LegacyPlusClipEdges = $Precision -eq 'legacy-plus'
+if ($SphereRenderer -eq 'circles' -and (-not $LegacyPlusClipEdges -or $GraphicsMode -notin @('4','6') -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal' -or -not $NoFpsOverlay)) {
+ throw '-SphereRenderer circles requires legacy-plus, GraphicsMode4/6, walkLite, normal/high-basic-v2 and -NoFpsOverlay.'
+}
 if ($LegacyPlusOptimizations -ne 'none' -and (-not $LegacyPlusClipEdges -or $GraphicsMode -ne '4')) { throw '-LegacyPlusOptimizations requires legacy-plus GraphicsMode4.' }
 if ($Precision -eq 'legacy-plus') {
  if ($PSBoundParameters.ContainsKey('LegacyStability') -and $LegacyStability -ne 'rotation') {
@@ -8551,7 +8556,7 @@ $EngineMode3FastBoundsTraceFlag = if ($EngineMode3DirectConvexClipFallbackFlag -
 $EngineMode3FastBounds8BitFlag = $EngineMode3FastBoundsTraceFlag
 $EngineMode3FastBoundsDirectLeftRightFlag = $EngineMode3FastBoundsTraceFlag
 $EngineMode3FastBoundsOverflowFallbackFlag = $EngineMode3FastBoundsTraceFlag
-$EngineMode4FastBoundsTraceFlag = if ($RendererActiveFlag -ne 0 -and $GraphicsModeNumber -eq 4 -and $HighBasicV2LayoutFlag -ne 0 -and $PolyFillFlag -ne 0 -and $WireRenderFlag -eq 0 -and $HiddenWireFlag -eq 0 -and $LazyConvexBoundsFlag -eq 0 -and -not $NoMode4FastBoundsTrace.IsPresent) { 1 } else { 0 }
+$EngineMode4FastBoundsTraceFlag = if ($RendererActiveFlag -ne 0 -and ($GraphicsModeNumber -eq 4 -or $GraphicsModeNumber -eq 5) -and $HighBasicV2LayoutFlag -ne 0 -and $PolyFillFlag -ne 0 -and $WireRenderFlag -eq 0 -and $HiddenWireFlag -eq 0 -and $LazyConvexBoundsFlag -eq 0 -and -not $NoMode4FastBoundsTrace.IsPresent) { 1 } else { 0 }
 $EngineMode4FastBounds8BitFlag = $EngineMode4FastBoundsTraceFlag
 $EngineMode4FastBoundsDirectLeftRightFlag = $EngineMode4FastBoundsTraceFlag
 $EngineMode4FastBoundsOverflowFallbackFlag = $EngineMode4FastBoundsTraceFlag
@@ -8563,6 +8568,10 @@ $FastFillBoundsTraceFlag = if ($EngineMode3FastBoundsTraceFlag -ne 0 -or $Engine
 $EngineMode3SpanHotloopFlag = if ($EngineMode3DirectConvexFillFlag -ne 0 -and $SpanKernelFillFlag -ne 0 -and -not $NoSpanHotloop.IsPresent) { 1 } else { 0 }
 $EngineMode3DirectIndexedSpanFlag = $EngineMode3SpanHotloopFlag
 $EngineMode3BoundsIndexedLongSpanFlag = $EngineMode3SpanHotloopFlag
+# General long bounds spans retain the unrolled 2..6-byte kernels and the
+# original pointer fallback at >=32 byte differences. No scene-size dispatch.
+$BoundsIndexedLongSpanFlag = if ($EngineMode3BoundsIndexedLongSpanFlag -ne 0 -or (($GraphicsModeNumber -eq 4) -and $HighBasicV2LayoutFlag -ne 0 -and $PolyFillFlag -ne 0 -and $WireRenderFlag -eq 0 -and $HiddenWireFlag -eq 0 -and $SpanKernelFillFlag -ne 0 -and -not $NoSpanHotloop.IsPresent)) { 1 } else { 0 }
+if ($BoundsIndexedLongSpanFlag -ne 0) { $IndexedOffsetSpanFillFlag = 1 }
 $EngineMode3DirectByteAlignedEdgeWriteFlag = $EngineMode3SpanHotloopFlag
 $EngineMode3MaterialCellTransitionFlag = if ($EngineMode3SpanHotloopFlag -ne 0 -and $MaterialCellSpanCacheFlag -ne 0) { 1 } else { 0 }
 if ($EngineMode3SpanHotloopFlag -ne 0) {
@@ -9378,6 +9387,7 @@ ENGINE_MODE4_FAST_BOUNDS_OVERFLOW_FALLBACK = $00
 ENGINE_MODE3_SPAN_HOTLOOP = $00
 ENGINE_MODE3_DIRECT_INDEXED_SPANS = $00
 ENGINE_MODE3_BOUNDS_INDEXED_LONG_SPANS = $00
+BOUNDS_LONG_SPAN_INDEXED = $00
 ENGINE_MODE3_DIRECT_BYTE_ALIGNED_EDGE_WRITE = $00
 ENGINE_MODE3_MATERIAL_CELL_TRANSITION = $00
 ENGINE_MODE3_FRAME_PREFILL_COMPATIBLE = $00
@@ -12953,44 +12963,26 @@ cd_a_clear1:
  sta (ptr1lo),y
  jmp cd_a_next
 cd_a_long:
- lda fullcount
- and #$01
- sta p1hi
- lda fullcount
- lsr
- sta p1lo
- beq cd_a_odd_check
-cd_a_pair_loop:
+ ; Y advances across byte columns; repair its 256-byte wrap in both bases.
+ ; Pointer low bytes stay fixed, including when indirect-Y crosses a page.
+ ldx fullcount
  ldy #$00
  lda #$00
- sta (ptr0lo),y
- sta (ptr1lo),y
- ldy #$08
- sta (ptr0lo),y
- sta (ptr1lo),y
  clc
- lda ptr0lo
- adc #$10
- sta ptr0lo
- bcc cd_a_p0_ok
+cd_a_indexed_loop:
+ sta (ptr0lo),y
+ sta (ptr1lo),y
+ tya
+ adc #$08
+ tay
+ bcc cd_a_indexed_no_wrap
  inc ptr0hi
-cd_a_p0_ok:
- clc
- lda ptr1lo
- adc #$10
- sta ptr1lo
- bcc cd_a_p1_ok
  inc ptr1hi
-cd_a_p1_ok:
- dec p1lo
- bne cd_a_pair_loop
-cd_a_odd_check:
- lda p1hi
- beq cd_a_next
- ldy #$00
+ clc
+cd_a_indexed_no_wrap:
  lda #$00
- sta (ptr0lo),y
- sta (ptr1lo),y
+ dex
+ bne cd_a_indexed_loop
 cd_a_next:
  lda yrow
  cmp maxrow
@@ -13093,44 +13085,26 @@ cd_b_clear1:
  sta (ptr1lo),y
  jmp cd_b_next
 cd_b_long:
- lda fullcount
- and #$01
- sta p1hi
- lda fullcount
- lsr
- sta p1lo
- beq cd_b_odd_check
-cd_b_pair_loop:
+ ; Y advances across byte columns; repair its 256-byte wrap in both bases.
+ ; Pointer low bytes stay fixed, including when indirect-Y crosses a page.
+ ldx fullcount
  ldy #$00
  lda #$00
- sta (ptr0lo),y
- sta (ptr1lo),y
- ldy #$08
- sta (ptr0lo),y
- sta (ptr1lo),y
  clc
- lda ptr0lo
- adc #$10
- sta ptr0lo
- bcc cd_b_p0_ok
+cd_b_indexed_loop:
+ sta (ptr0lo),y
+ sta (ptr1lo),y
+ tya
+ adc #$08
+ tay
+ bcc cd_b_indexed_no_wrap
  inc ptr0hi
-cd_b_p0_ok:
- clc
- lda ptr1lo
- adc #$10
- sta ptr1lo
- bcc cd_b_p1_ok
  inc ptr1hi
-cd_b_p1_ok:
- dec p1lo
- bne cd_b_pair_loop
-cd_b_odd_check:
- lda p1hi
- beq cd_b_next
- ldy #$00
+ clc
+cd_b_indexed_no_wrap:
  lda #$00
- sta (ptr0lo),y
- sta (ptr1lo),y
+ dex
+ bne cd_b_indexed_loop
 cd_b_next:
  lda yrow
  cmp maxrow
@@ -27037,8 +27011,24 @@ gfb_dirty_span_done:
  tax
  lda gouraud_bayer_code_lut_row_lo,x
  sta gpsp_lut_load+$01
+.if GOURAUD_BYTE_SPAN_KERNEL != 0
+ sta gdsb_lut_phase0+$01
+ sta gdsb_lut_phase1+$01
+ sta gdsb_lut_phase2+$01
+ sta gdsb_lut_phase3+$01
+ sta gdsb_uniform_first+$01
+ sta gdsb_uniform_last+$01
+.endif
  lda gouraud_bayer_code_lut_row_hi,x
  sta gpsp_lut_load+$02
+.if GOURAUD_BYTE_SPAN_KERNEL != 0
+ sta gdsb_lut_phase0+$02
+ sta gdsb_lut_phase1+$02
+ sta gdsb_lut_phase2+$02
+ sta gdsb_lut_phase3+$02
+ sta gdsb_uniform_first+$02
+ sta gdsb_uniform_last+$02
+.endif
  ldx yrow
  lda leftshade,x
  sta gouraud_scan_shade
@@ -28346,13 +28336,12 @@ direct_fill_span_pixels:
  rts
 dfsp_single_partial:
 .endif
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -28382,13 +28371,12 @@ dfsp_multi:
  jmp dfsp_indexed_left_done
 dfsp_indexed_left_partial:
 .endif
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -28405,19 +28393,21 @@ dfsp_indexed_left_done:
  beq dfsp_indexed_end_at_08
  sec
  sbc #$01
- sta p1hi
+ tax
  lda fillbyte
  ldy #$08
+ ; endbyte-startbyte <32: Y never wraps, so ADC leaves carry clear.
+ clc
 dfsp_indexed_mid_loop:
  sta (ptr0lo),y
  sta (ptr1lo),y
  tya
- clc
  adc #$08
  tay
  lda fillbyte
- dec p1hi
+ dex
  bne dfsp_indexed_mid_loop
+ stx p1hi
  jmp dfsp_indexed_draw_end_y
 dfsp_indexed_end_at_08:
  ldy #$08
@@ -28433,13 +28423,12 @@ dfsp_indexed_draw_end_y:
  rts
 dfsp_indexed_end_partial:
 .endif
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -28463,13 +28452,12 @@ dfsp_multi_pointer:
  jmp dfsp_pointer_left_done
 dfsp_pointer_left_partial:
 .endif
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -28518,13 +28506,12 @@ dfsp_draw_end:
  rts
 dfsp_pointer_end_partial:
 .endif
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -29370,13 +29357,12 @@ pwh_rows_ready:
  lda startmask,x
  ldx face_ymax
  and endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -29389,13 +29375,12 @@ pwh_rows_ready:
 pwh_multi:
  ldx leftval
  lda startmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -29432,13 +29417,12 @@ pwh_next1_ok:
 pwh_draw_end:
  ldx face_ymax
  lda endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -29641,6 +29625,11 @@ tec_ldx_done:
  sta errlo
  sta errhi
 .if ENGINE_MODE3_FAST_BOUNDS_TRACE != 0 || ENGINE_MODE4_FAST_BOUNDS_TRACE != 0
+.if MODE5_POLYGON_OUTLINE != 0
+ ; Outline tracing must retain every connected Bresenham point.
+ lda mode5_outline_trace_active
+ bne sm3_fbt_l_fallback16
+.endif
  ; err is always below dy. dx+dy<=256 therefore guarantees err+dx<=255.
  ; The only larger viewport combinations retain the validated 16-bit walker.
  clc
@@ -29798,14 +29787,14 @@ tec_lxstep_pos:
  sbc #$00
  sta errhi
  inc xcur
-.if FAST_FILL_BOUNDS_TRACE = 0 || WIRE_RENDER_ENABLE != 0
+.if FAST_FILL_BOUNDS_TRACE = 0 || WIRE_RENDER_ENABLE != 0 || MODE5_POLYGON_OUTLINE != 0
  ldx ycur
  lda xcur
  jsr update_convex_bounds
 .endif
  jmp tec_lstep_check_pos
 tec_lystep_pos:
-.if FAST_FILL_BOUNDS_TRACE != 0 && WIRE_RENDER_ENABLE = 0
+.if FAST_FILL_BOUNDS_TRACE != 0 && WIRE_RENDER_ENABLE = 0 && MODE5_POLYGON_OUTLINE = 0
  ldx ycur
  lda xcur
  jsr update_convex_bounds
@@ -29841,14 +29830,14 @@ tec_lxstep_neg:
  sbc #$00
  sta errhi
  dec xcur
-.if FAST_FILL_BOUNDS_TRACE = 0 || WIRE_RENDER_ENABLE != 0
+.if FAST_FILL_BOUNDS_TRACE = 0 || WIRE_RENDER_ENABLE != 0 || MODE5_POLYGON_OUTLINE != 0
  ldx ycur
  lda xcur
  jsr update_convex_bounds
 .endif
  jmp tec_lstep_check_neg
 tec_lystep_neg:
-.if FAST_FILL_BOUNDS_TRACE != 0 && WIRE_RENDER_ENABLE = 0
+.if FAST_FILL_BOUNDS_TRACE != 0 && WIRE_RENDER_ENABLE = 0 && MODE5_POLYGON_OUTLINE = 0
  ldx ycur
  lda xcur
  jsr update_convex_bounds
@@ -29943,6 +29932,11 @@ tec_rdx_done:
  sta errlo
  sta errhi
 .if ENGINE_MODE3_FAST_BOUNDS_TRACE != 0 || ENGINE_MODE4_FAST_BOUNDS_TRACE != 0
+.if MODE5_POLYGON_OUTLINE != 0
+ ; Outline tracing must retain every connected Bresenham point.
+ lda mode5_outline_trace_active
+ bne sm3_fbt_r_fallback16
+.endif
  ; Same byte-safety contract as the descending branch.
  clc
  lda dxabs
@@ -30094,14 +30088,14 @@ tec_rxstep_pos:
  sbc #$00
  sta errhi
  inc xcur
-.if FAST_FILL_BOUNDS_TRACE = 0 || WIRE_RENDER_ENABLE != 0
+.if FAST_FILL_BOUNDS_TRACE = 0 || WIRE_RENDER_ENABLE != 0 || MODE5_POLYGON_OUTLINE != 0
  ldx ycur
  lda xcur
  jsr update_convex_bounds
 .endif
  jmp tec_rstep_check_pos
 tec_rystep_pos:
-.if FAST_FILL_BOUNDS_TRACE != 0 && WIRE_RENDER_ENABLE = 0
+.if FAST_FILL_BOUNDS_TRACE != 0 && WIRE_RENDER_ENABLE = 0 && MODE5_POLYGON_OUTLINE = 0
  ldx ycur
  lda xcur
  jsr update_convex_bounds
@@ -30137,14 +30131,14 @@ tec_rxstep_neg:
  sbc #$00
  sta errhi
  dec xcur
-.if FAST_FILL_BOUNDS_TRACE = 0 || WIRE_RENDER_ENABLE != 0
+.if FAST_FILL_BOUNDS_TRACE = 0 || WIRE_RENDER_ENABLE != 0 || MODE5_POLYGON_OUTLINE != 0
  ldx ycur
  lda xcur
  jsr update_convex_bounds
 .endif
  jmp tec_rstep_check_neg
 tec_rystep_neg:
-.if FAST_FILL_BOUNDS_TRACE != 0 && WIRE_RENDER_ENABLE = 0
+.if FAST_FILL_BOUNDS_TRACE != 0 && WIRE_RENDER_ENABLE = 0 && MODE5_POLYGON_OUTLINE = 0
  ldx ycur
  lda xcur
  jsr update_convex_bounds
@@ -30821,13 +30815,12 @@ fbs_a_dirty_done:
  lda startmask,x
  ldx rightval
  and endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -30842,7 +30835,7 @@ fbs_a_multi:
  lda endbyte
  sec
  sbc startbyte
-.if ENGINE_MODE3_BOUNDS_INDEXED_LONG_SPANS != 0 && SPAN_KERNEL_FILL != 0
+.if (ENGINE_MODE3_BOUNDS_INDEXED_LONG_SPANS != 0 || BOUNDS_LONG_SPAN_INDEXED != 0) && SPAN_KERNEL_FILL != 0
  cmp #$06
  bcc fbs_a_indexed_fallback
 .endif
@@ -30852,13 +30845,12 @@ fbs_a_multi:
  ldy #$00
  ldx leftval
  lda startmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -30872,32 +30864,33 @@ fbs_a_multi:
  beq fbs_a_indexed_end_at_08
  sec
  sbc #$01
- sta p1hi
+ tax
  lda fillbyte
  ldy #$08
+ ; endbyte-startbyte <32: Y never wraps, so ADC leaves carry clear.
+ clc
 fbs_a_indexed_mid_loop:
  sta (ptr0lo),y
  sta (ptr1lo),y
  tya
- clc
  adc #$08
  tay
  lda fillbyte
- dec p1hi
+ dex
  bne fbs_a_indexed_mid_loop
+ stx p1hi
  jmp fbs_a_indexed_draw_end_y
 fbs_a_indexed_end_at_08:
  ldy #$08
 fbs_a_indexed_draw_end_y:
  ldx rightval
  lda endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -30912,13 +30905,12 @@ fbs_a_indexed_fallback:
 .endif
  ldx leftval
  lda startmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -31219,13 +31211,12 @@ fbs_a_draw_end:
 fbs_a_draw_end_y:
  ldx rightval
  lda endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -31261,20 +31252,35 @@ mode3_high_basic_high_code_start = *
 ; the shade DDA are unchanged. Each partial byte is read/modified once per
 ; physical row; bitmap pointers persist until crossing a byte boundary.
 gouraud_draw_scan_span_bytes:
- ; Copy the scanline-selected LUT address into the four absolute,Y loads.
- ; Patching once per span is IRQ-safe and preserves Gate 1's RAM layout.
- lda gpsp_lut_load+$01
- sta gdsb_lut_phase0+$01
- sta gdsb_lut_phase1+$01
- sta gdsb_lut_phase2+$01
- sta gdsb_lut_phase3+$01
- lda gpsp_lut_load+$02
- sta gdsb_lut_phase0+$02
- sta gdsb_lut_phase1+$02
- sta gdsb_lut_phase2+$02
- sta gdsb_lut_phase3+$02
-
- ; Initialize the two physical-row pointers once per span.
+ ; Avoid the fixed classifier cost for spans shorter than eight pixels.
+ lda gouraud_scan_span
+ cmp #$07
+ bcc gdsb_pointer_init
+ ldy gouraud_scan_shade
+gdsb_uniform_first:
+ lda gouraud_bayer_code_lut_y0,y
+ sta gouraud_uniform_pattern
+ lda gouraud_scan_dir
+ bmi gdsb_uniform_negative
+ clc
+ lda gouraud_scan_shade
+ adc gouraud_scan_delta
+ jmp gdsb_uniform_shade_ready
+gdsb_uniform_negative:
+ sec
+ lda gouraud_scan_shade
+ sbc gouraud_scan_delta
+gdsb_uniform_shade_ready:
+ sta gouraud_uniform_endshade
+ tay
+gdsb_uniform_last:
+ lda gouraud_bayer_code_lut_y0,y
+ cmp gouraud_uniform_pattern
+ bne gdsb_pointer_init
+ jmp gouraud_draw_uniform_span
+ ; All Bayer operands are selected directly in gouraud_fill_bounds.
+ ; The original initializer also supplies ptr1 for Mode7's host contract;
+ ; this Mode6 kernel addresses the adjacent physical row with Y=1.
 gdsb_pointer_init:
  jsr gouraud_init_span_pointers
 
@@ -31282,60 +31288,103 @@ gdsb_dispatch:
  lda gouraud_scan_x
  and #$03
  bne gdsb_partial
+gdsb_aligned:
  sec
  lda gouraud_scan_end
  sbc gouraud_scan_x
  cmp #$03
  bcc gdsb_partial
 
+ ldx gouraud_scan_err
+ ldy gouraud_scan_shade
  ; Phase 0.
- lda gouraud_scan_shade
- asl
- asl
- tay
 gdsb_lut_phase0:
  lda gouraud_bayer_code_lut_y0,y
+ and #$c0
  sta p1lo
- jsr gouraud_advance_scan_pixel
+ ; Register-carried exact DDA after phase 0.
+ txa
+ clc
+ adc gouraud_scan_delta
+gdsb_reg_check0:
+ cmp gouraud_scan_span
+ bcc gdsb_reg_done0
+ sbc gouraud_scan_span
+ tax
+ tya
+ clc
+ adc gouraud_scan_dir
+ tay
+ txa
+ jmp gdsb_reg_check0
+gdsb_reg_done0:
+ tax
 
  ; Phase 1.
- lda gouraud_scan_shade
- asl
- asl
- ora #$01
- tay
 gdsb_lut_phase1:
  lda gouraud_bayer_code_lut_y0,y
+ and #$30
  ora p1lo
  sta p1lo
- jsr gouraud_advance_scan_pixel
+ ; Register-carried exact DDA after phase 1.
+ txa
+ clc
+ adc gouraud_scan_delta
+gdsb_reg_check1:
+ cmp gouraud_scan_span
+ bcc gdsb_reg_done1
+ sbc gouraud_scan_span
+ tax
+ tya
+ clc
+ adc gouraud_scan_dir
+ tay
+ txa
+ jmp gdsb_reg_check1
+gdsb_reg_done1:
+ tax
 
  ; Phase 2.
- lda gouraud_scan_shade
- asl
- asl
- ora #$02
- tay
 gdsb_lut_phase2:
  lda gouraud_bayer_code_lut_y0,y
+ and #$0c
  ora p1lo
  sta p1lo
- jsr gouraud_advance_scan_pixel
+ ; Register-carried exact DDA after phase 2.
+ txa
+ clc
+ adc gouraud_scan_delta
+gdsb_reg_check2:
+ cmp gouraud_scan_span
+ bcc gdsb_reg_done2
+ sbc gouraud_scan_span
+ tax
+ tya
+ clc
+ adc gouraud_scan_dir
+ tay
+ txa
+ jmp gdsb_reg_check2
+gdsb_reg_done2:
+ tax
 
  ; Phase 3 completes the byte. All four pixel pairs are covered, so no
  ; bitmap read/mask is required.
- lda gouraud_scan_shade
- asl
- asl
- ora #$03
- tay
 gdsb_lut_phase3:
  lda gouraud_bayer_code_lut_y0,y
+ and #$03
  ora p1lo
+ sty gouraud_scan_shade
+ stx gouraud_scan_err
  ldy #$00
  sta (ptr0lo),y
- sta (ptr1lo),y
+ iny
+ sta (ptr0lo),y
+ ; Three exact sample steps were carried in registers without updating x RAM.
+ clc
  lda gouraud_scan_x
+ adc #$03
+ sta gouraud_scan_x
  cmp gouraud_scan_end
  beq gdsb_done
  jsr gouraud_advance_scan_pixel
@@ -31350,19 +31399,16 @@ gdsb_partial_sample:
  lda gouraud_scan_x
  and #$03
  sta shadeidx
- lda gouraud_scan_shade
- asl
- asl
- ora shadeidx
- tay
+ ldy gouraud_scan_shade
 gdsb_partial_lut:
  ; Reuse the original scanline-selected LUT operand directly. There is no
  ; scalar pixel caller in this kernel; its dead implementation is omitted.
 gpsp_lut_load:
  lda gouraud_bayer_code_lut_y0,y
+ ldx shadeidx
+ and gouraud_pair_11,x
  ora p1lo
  sta p1lo
- ldx shadeidx
  lda gouraud_pair_clear,x
  and maskv
  sta maskv
@@ -31379,10 +31425,11 @@ gdsb_partial_store:
  and maskv
  ora p1lo
  sta (ptr0lo),y
- lda (ptr1lo),y
+ iny
+ lda (ptr0lo),y
  and maskv
  ora p1lo
- sta (ptr1lo),y
+ sta (ptr0lo),y
  lda gouraud_scan_x
  cmp gouraud_scan_end
  beq gdsb_done
@@ -31396,36 +31443,121 @@ gdsb_next_byte:
  bcc gdsb_ptr0_ready
  inc ptr0hi
 gdsb_ptr0_ready:
- clc
- lda ptr1lo
- adc #$08
- sta ptr1lo
- bcc gdsb_ptr1_ready
- inc ptr1hi
-gdsb_ptr1_ready:
- jmp gdsb_dispatch
+ ; Full and partial bytes reach this edge only after completing phase3.
+ ; The next x is aligned; keep the remaining-length check at gdsb_aligned.
+ jmp gdsb_aligned
 gdsb_done:
  rts
 
+; Exact bulk fill for an entire Bayer-constant shade interval.
+gouraud_draw_uniform_span:
+ jsr gouraud_init_span_pointers
+ ldx gouraud_scan_x
+ lda startmask,x
+ sta maskv
+ lda xbyte,x
+ sta startbyte
+ ldx gouraud_scan_end
+ lda xbyte,x
+ sec
+ sbc startbyte
+ sta fullcount
+ bne gdus_multiple
+ lda endmask,x
+ and maskv
+ sta maskv
+ jsr gdus_masked_store
+ jmp gdus_done
+gdus_multiple:
+ jsr gdus_masked_store
+ ldx fullcount
+ dex
+ ldy #$08
+ cpx #$00
+ beq gdus_right
+gdus_full:
+ lda gouraud_uniform_pattern
+ sta (ptr0lo),y
+ iny
+ sta (ptr0lo),y
+ tya
+ clc
+ adc #$07
+ tay
+ bcc gdus_index_ready
+ inc ptr0hi
+gdus_index_ready:
+ dex
+ bne gdus_full
+gdus_right:
+ ; Fold the residual byte offset into the cursor for the final masked byte.
+ tya
+ clc
+ adc ptr0lo
+ sta ptr0lo
+ bcc gdus_right_ready
+ inc ptr0hi
+gdus_right_ready:
+ ldx gouraud_scan_end
+ lda endmask,x
+ sta maskv
+ jsr gdus_masked_store
+gdus_done:
+ lda gouraud_scan_end
+ sta gouraud_scan_x
+ lda gouraud_uniform_endshade
+ sta gouraud_scan_shade
+ rts
+gdus_masked_store:
+ lda maskv
+ eor #$ff
+ sta maskv
+ eor #$ff
+ and gouraud_uniform_pattern
+ sta p1lo
+ ldy #$00
+ lda (ptr0lo),y
+ and maskv
+ ora p1lo
+ sta (ptr0lo),y
+ iny
+ lda (ptr0lo),y
+ and maskv
+ ora p1lo
+ sta (ptr0lo),y
+ rts
+gdus_advance:
+ clc
+ lda ptr0lo
+ adc #$08
+ sta ptr0lo
+ bcc gdus_advanced
+ inc ptr0hi
+gdus_advanced:
+ rts
+gouraud_uniform_pattern: .byte 0
+gouraud_uniform_endshade: .byte 0
+
 ; Bit-exact extraction of the original per-pixel shade DDA step.
 gouraud_advance_scan_pixel:
+ ; Keep the accumulated error in A until a shade update needs A.
+ ; CMP already supplies carry for SBC; store the final remainder once.
  clc
  lda gouraud_scan_err
  adc gouraud_scan_delta
- sta gouraud_scan_err
 gasp_step_check:
- lda gouraud_scan_err
  cmp gouraud_scan_span
  bcc gasp_step_done
- sec
  sbc gouraud_scan_span
  sta gouraud_scan_err
  clc
  lda gouraud_scan_shade
  adc gouraud_scan_dir
  sta gouraud_scan_shade
+ lda gouraud_scan_err
  jmp gasp_step_check
 gasp_step_done:
+ sta gouraud_scan_err
  inc gouraud_scan_x
  rts
 .endif
@@ -31545,13 +31677,12 @@ fbp_a_dirty_done:
  lda startmask,x
  ldx rightval
  and endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -31566,7 +31697,7 @@ fbp_a_multi:
  lda endbyte
  sec
  sbc startbyte
-.if ENGINE_MODE3_BOUNDS_INDEXED_LONG_SPANS != 0 && SPAN_KERNEL_FILL != 0
+.if (ENGINE_MODE3_BOUNDS_INDEXED_LONG_SPANS != 0 || BOUNDS_LONG_SPAN_INDEXED != 0) && SPAN_KERNEL_FILL != 0
  cmp #$06
  bcc fbp_a_indexed_fallback
 .endif
@@ -31576,13 +31707,12 @@ fbp_a_multi:
  ldy #$00
  ldx leftval
  lda startmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -31596,32 +31726,33 @@ fbp_a_multi:
  beq fbp_a_indexed_end_at_08
  sec
  sbc #$01
- sta p1hi
+ tax
  lda fillbyte
  ldy #$08
+ ; endbyte-startbyte <32: Y never wraps, so ADC leaves carry clear.
+ clc
 fbp_a_indexed_mid_loop:
  sta (ptr0lo),y
  sta (ptr1lo),y
  tya
- clc
  adc #$08
  tay
  lda fillbyte
- dec p1hi
+ dex
  bne fbp_a_indexed_mid_loop
+ stx p1hi
  jmp fbp_a_indexed_draw_end_y
 fbp_a_indexed_end_at_08:
  ldy #$08
 fbp_a_indexed_draw_end_y:
  ldx rightval
  lda endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -31636,13 +31767,12 @@ fbp_a_indexed_fallback:
 .endif
  ldx leftval
  lda startmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -31943,13 +32073,12 @@ fbp_a_draw_end:
 fbp_a_draw_end_y:
  ldx rightval
  lda endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -32071,13 +32200,12 @@ fbs_b_dirty_done:
  lda startmask,x
  ldx rightval
  and endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -32092,7 +32220,7 @@ fbs_b_multi:
  lda endbyte
  sec
  sbc startbyte
-.if ENGINE_MODE3_BOUNDS_INDEXED_LONG_SPANS != 0 && SPAN_KERNEL_FILL != 0
+.if (ENGINE_MODE3_BOUNDS_INDEXED_LONG_SPANS != 0 || BOUNDS_LONG_SPAN_INDEXED != 0) && SPAN_KERNEL_FILL != 0
  cmp #$06
  bcc fbs_b_indexed_fallback
 .endif
@@ -32102,13 +32230,12 @@ fbs_b_multi:
  ldy #$00
  ldx leftval
  lda startmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -32122,32 +32249,33 @@ fbs_b_multi:
  beq fbs_b_indexed_end_at_08
  sec
  sbc #$01
- sta p1hi
+ tax
  lda fillbyte
  ldy #$08
+ ; endbyte-startbyte <32: Y never wraps, so ADC leaves carry clear.
+ clc
 fbs_b_indexed_mid_loop:
  sta (ptr0lo),y
  sta (ptr1lo),y
  tya
- clc
  adc #$08
  tay
  lda fillbyte
- dec p1hi
+ dex
  bne fbs_b_indexed_mid_loop
+ stx p1hi
  jmp fbs_b_indexed_draw_end_y
 fbs_b_indexed_end_at_08:
  ldy #$08
 fbs_b_indexed_draw_end_y:
  ldx rightval
  lda endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -32162,13 +32290,12 @@ fbs_b_indexed_fallback:
 .endif
  ldx leftval
  lda startmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -32469,13 +32596,12 @@ fbs_b_draw_end:
 fbs_b_draw_end_y:
  ldx rightval
  lda endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -32611,13 +32737,12 @@ fbp_b_dirty_done:
  lda startmask,x
  ldx rightval
  and endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -32632,7 +32757,7 @@ fbp_b_multi:
  lda endbyte
  sec
  sbc startbyte
-.if ENGINE_MODE3_BOUNDS_INDEXED_LONG_SPANS != 0 && SPAN_KERNEL_FILL != 0
+.if (ENGINE_MODE3_BOUNDS_INDEXED_LONG_SPANS != 0 || BOUNDS_LONG_SPAN_INDEXED != 0) && SPAN_KERNEL_FILL != 0
  cmp #$06
  bcc fbp_b_indexed_fallback
 .endif
@@ -32642,13 +32767,12 @@ fbp_b_multi:
  ldy #$00
  ldx leftval
  lda startmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -32662,32 +32786,33 @@ fbp_b_multi:
  beq fbp_b_indexed_end_at_08
  sec
  sbc #$01
- sta p1hi
+ tax
  lda fillbyte
  ldy #$08
+ ; endbyte-startbyte <32: Y never wraps, so ADC leaves carry clear.
+ clc
 fbp_b_indexed_mid_loop:
  sta (ptr0lo),y
  sta (ptr1lo),y
  tya
- clc
  adc #$08
  tay
  lda fillbyte
- dec p1hi
+ dex
  bne fbp_b_indexed_mid_loop
+ stx p1hi
  jmp fbp_b_indexed_draw_end_y
 fbp_b_indexed_end_at_08:
  ldy #$08
 fbp_b_indexed_draw_end_y:
  ldx rightval
  lda endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -32702,13 +32827,12 @@ fbp_b_indexed_fallback:
 .endif
  ldx leftval
  lda startmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -33009,13 +33133,12 @@ fbp_b_draw_end:
 fbp_b_draw_end_y:
  ldx rightval
  lda endmask,x
- sta maskv
- lda fillbyte
- and maskv
- sta p1lo
- lda maskv
+ ; Exact partial-byte mask preparation; preserve p1lo/maskv poststate.
  eor #$ff
  sta maskv
+ eor #$ff
+ and fillbyte
+ sta p1lo
  lda (ptr0lo),y
  and maskv
  ora p1lo
@@ -36563,6 +36686,58 @@ RUNTIME_AFTER_RAW = RUNTIME_AFTER_SXQ2
  $asm = $asm.Replace('; Mesh data is generated below by the build script.', ($solidSubpixelStoreAsm + "`r`n" + $solidSubpixelYStoreAsm + "`r`n" + $solidSubpixelRoutinesAsm + "`r`n; Mesh data is generated below by the build script."))
 }
 
+# Mode7's host emitter consumes the original edge template and upgrades its
+# error to nine bits for UV deltas up to255. Optimize only the actual Mode6
+# eight-bit shade edge; keep Mode7's source contract and generated UV code exact.
+if ($Mode6GouraudFlag -ne 0 -and -not $Mode7Experimental) {
+ $gouraudEdgeDdaOriginal = @'
+ clc
+ lda gouraud_edge_serr
+ adc gouraud_edge_sdelta
+ sta gouraud_edge_serr
+gtse_sstep_check:
+ lda gouraud_edge_serr
+ cmp gouraud_edge_dy
+ bcc gtse_sstep_done
+ sec
+ sbc gouraud_edge_dy
+ sta gouraud_edge_serr
+ clc
+ lda gouraud_edge_scur
+ adc gouraud_edge_sdir
+ sta gouraud_edge_scur
+ jmp gtse_sstep_check
+gtse_sstep_done:
+ inc gouraud_edge_row
+'@
+ $gouraudEdgeDdaOptimized = @'
+ ; Same exact DDA remainder flow as the per-pixel shade step.
+ clc
+ lda gouraud_edge_serr
+ adc gouraud_edge_sdelta
+gtse_sstep_check:
+ cmp gouraud_edge_dy
+ bcc gtse_sstep_done
+ sbc gouraud_edge_dy
+ sta gouraud_edge_serr
+ clc
+ lda gouraud_edge_scur
+ adc gouraud_edge_sdir
+ sta gouraud_edge_scur
+ lda gouraud_edge_serr
+ jmp gtse_sstep_check
+gtse_sstep_done:
+ sta gouraud_edge_serr
+ inc gouraud_edge_row
+'@
+ $gouraudEdgeDdaOriginal = $gouraudEdgeDdaOriginal.TrimEnd()
+ $gouraudEdgeDdaOptimized = $gouraudEdgeDdaOptimized.TrimEnd()
+ if (-not $asm.Contains($gouraudEdgeDdaOriginal) -or $asm.IndexOf($gouraudEdgeDdaOriginal) -ne $asm.LastIndexOf($gouraudEdgeDdaOriginal)) {
+  throw 'Mode6 edge DDA template must have exactly one match'
+ }
+ $asm = $asm.Replace($gouraudEdgeDdaOriginal, $gouraudEdgeDdaOptimized)
+}
+
 $asm = $asm.Replace('; PROJECTION_CONTRACT_FOCAL=170', ('; PROJECTION_CONTRACT_FOCAL=' + $ProjectionContract.Focal))
 $asm = $asm.Replace('; PROJECTION_CONTRACT_CENTER_X=80', ('; PROJECTION_CONTRACT_CENTER_X=' + $ProjectionContract.ScreenCenterX))
 $asm = $asm.Replace('; PROJECTION_CONTRACT_CENTER_Y=50', ('; PROJECTION_CONTRACT_CENTER_Y=' + $ProjectionContract.ScreenCenterY))
@@ -36710,6 +36885,7 @@ $asm = $asm.Replace('LAZY_CONVEX_BOUNDS = $00', ('LAZY_CONVEX_BOUNDS = ' + (Byte
 $asm = $asm.Replace('DIRECT_CONVEX_EDGE_SPANS = $00', ('DIRECT_CONVEX_EDGE_SPANS = ' + (ByteHex $DirectConvexEdgeSpansFlag)))
 $asm = $asm.Replace('SPAN_KERNEL_FILL = $00', ('SPAN_KERNEL_FILL = ' + (ByteHex $SpanKernelFillFlag)))
 $asm = $asm.Replace('INDEXED_OFFSET_SPAN_FILL = $00', ('INDEXED_OFFSET_SPAN_FILL = ' + (ByteHex $IndexedOffsetSpanFillFlag)))
+$asm = $asm.Replace('BOUNDS_LONG_SPAN_INDEXED = $00', ('BOUNDS_LONG_SPAN_INDEXED = ' + (ByteHex $BoundsIndexedLongSpanFlag)))
 $asm = $asm.Replace('DIRECT_CONVEX_FAN_FILL = $00', ('DIRECT_CONVEX_FAN_FILL = ' + (ByteHex $DirectConvexFanFillFlag)))
 $asm = $asm.Replace('RENDERER_PLAN_ACTIVE = $00', ('RENDERER_PLAN_ACTIVE = ' + (ByteHex $RendererPlan.PlannerActive)))
 $asm = $asm.Replace('RENDERER_PLAN_APPLIED = $00', ('RENDERER_PLAN_APPLIED = ' + (ByteHex $RendererPlan.PlanApplied)))
@@ -37528,7 +37704,24 @@ if ($Mode6GouraudFlag -ne 0) {
   if ($gouraudLutRows[$bayerY].Count -ne 132) {
    throw "Mode 6 Bayer LUT row must contain exactly 132 entries"
   }
-  $asm += Add-Bytes ("gouraud_bayer_code_lut_y" + $bayerY) ([int[]]$gouraudLutRows[$bayerY])
+  if ($Mode6ByteSpanKernelFlag -ne 0 -and -not $Mode7Experimental) {
+   $gouraudPackedRow = @()
+   for ($packedShade = 0; $packedShade -le 32; $packedShade++) {
+    $packedByte = 0
+    for ($packedPhase = 0; $packedPhase -lt 4; $packedPhase++) {
+     $packedByte = $packedByte -bor [int]$gouraudLutRows[$bayerY][($packedShade * 4) + $packedPhase]
+    }
+    $gouraudPackedRow += [int]$packedByte
+   }
+   # Every pixel code is monotone1->2->3; equality of endpoint packed bytes
+   # proves equality throughout the entire integer shade interval.
+   for ($packedShade = 1; $packedShade -le 32; $packedShade++) {
+    if ($gouraudPackedRow[$packedShade] -lt $gouraudPackedRow[$packedShade - 1]) { throw 'Non-monotone packed Bayer row' }
+   }
+   $asm += Add-Bytes ("gouraud_bayer_code_lut_y" + $bayerY) ([int[]]$gouraudPackedRow)
+  } else {
+   $asm += Add-Bytes ("gouraud_bayer_code_lut_y" + $bayerY) ([int[]]$gouraudLutRows[$bayerY])
+  }
  }
 }
 if ($PolyFillFlag -ne 0) {
@@ -38613,9 +38806,24 @@ if ($LegacyPlusOptimizations -ne 'none') {
  & python -B (Join-Path $Root 'legacy_plus_exact.py') $AsmPath --options $LegacyPlusOptimizations
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus exact optimization generation failed' }
 }
+if ($SphereRenderer -eq 'circles') {
+ & python -B (Join-Path $Root 'sphere_impostors.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Circle sphere API generation failed' }
+}
+if ($LegacyPlusClipEdges -and $Mode7Experimental -and $TexturePrecision -eq 'affine') {
+ & python -B (Join-Path $Root 'legacy_plus_mode7_exact.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus exact Mode7 generation failed' }
+}
 if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2')) {
  & python -B (Join-Path $Root 'legacy_plus_memory.py') $AsmPath --assembler $Tass
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus solid helper placement failed' }
+}
+# Exact adjacent physical bitmap rows for wire profiles without the solid allocator.
+if ($LegacyPlusClipEdges -and $GraphicsMode -in @('1','2')) {
+ & python -B (Join-Path $Root 'legacy_wire_cursor.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus exact wire cursor generation failed' }
+ & python -B (Join-Path $Root 'legacy_render_tuning.py') $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus exact raster tuning generation failed' }
 }
 $tassArgs = @("-a", "-B", "-o", $PrgPath)
 if ($StableRelocatedCodeFlag -ne 0) {

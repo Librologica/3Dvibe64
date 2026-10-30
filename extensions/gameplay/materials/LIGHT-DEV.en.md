@@ -1,8 +1,10 @@
-# LIGHT-01 — static vertex lighting bake, 1.15.0
+# LIGHT-01 — static vertex lighting bake, 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](../../../RELEASE-STATUS.en.md).
+Stable1.15.1, source-only GitHub release. [Release status](../../../RELEASE-STATUS.en.md) · [Current qualification](../../../QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
 
-Stable release 1.15.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable1.15.1 source SDK published on GitHub. [Status and support](../../../RELEASE-STATUS.en.md).
+
+Stable GitHub release 1.15.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
@@ -52,3 +54,20 @@ confine changes to the floor with UI/palette/sampler intact; earlier texture,
 billboard and door cases are repeated. Matched FPS differs only in light data.
 
 [Italiano](LIGHT-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)
+
+## External adapter build and qualification
+
+Provide the complete caller-owned project via `--project-source`, with preset
+engineVersion1.15.1 and its required source/checkpoint contracts. These optional
+commands invoke that external adapter's build/check/benchmark/launcher hooks;
+they do not supply a demo and are not a new qualification of the core release.
+
+```powershell
+python -B work/build-gameplay.py --profile static-light --out ../builds/light-dev7 --project-source ../my-project
+python -B work/qualify-gameplay.py --out ../builds/light-dev7 --checks --benchmark --launcher
+```
+
+Run only with compatible external inputs, toolchain and VICE. Current core
+qualification is in [1.15.1](../../../QUALIFICATION-1.15.1.en.md); checkpoint
+measurements in this module document remain historical and profile-limited.
+

@@ -1,6 +1,6 @@
-# 3Dvibe64 world metrics / Metrica del mondo 3Dvibe64 — 1.15.0
+# 3Dvibe64 world metrics / Metrica del mondo 3Dvibe64 — 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
 
 3Dvibe64 1.12.0: [EN optimization contract](RENDER-OPTIMIZATIONS.en.md) · [Contratto IT](RENDER-OPTIMIZATIONS.it.md).
 All examples require external inputs / Tutti gli esempi richiedono input esterni.

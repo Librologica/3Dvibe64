@@ -1,11 +1,24 @@
-# GraphicsMode 8 — 2.5D — 1.15.0
+# GraphicsMode 8 — 2.5D — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+## Cache e qualifica correnti1.15.1
 
-Release stabile 1.15.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+Multi aggiunge485 byte cache dati e85 byte helper prima del font5800, con
+guardie esplicite; mono è invariato. Il codice basso auto two-levels conserva
+62 byte, interactive1266. L'helper altezza fissa occupa ancora192 byte a5500.
+[Memoria corrente](MODE8-MEMORY.it.md). La qualifica nativa corrente usa PAL
+Turbo6510 a1/20/64× e i programmi esatti agentic17. I vecchi rapporti stock
+x64sc PAL/NTSC descrivono i PRG storici: non sono una nuova qualifica NTSC o
+hardware di questa implementazione della cache.
 
 
-Contratto sorgente corrente 1.14.0. Il manuale descrive l’exporter ordinario
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+
+Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.15.1. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -42,11 +55,11 @@ Il builder indica backend scelto e motivo, prima di applicare parser poligonali.
 | `-VideoStandard auto` | Rilevamento runtime PAL/NTSC; pal/ntsc espliciti rifiutati |
 | Altre opzioni poligonali | Rifiutate se richieste esplicitamente; i loro default storici non influiscono |
 
-Sono comprese `CameraMode`, `CameraViewport`, `Quality`, `MemoryLayout`, `HeaderText`, opzioni luce/materiali e `SkipCmdUpdate`: non sono controlli Mode 8. Le tre nuove opzioni sono rifiutate nelle Mode 1–7. Comandi/default legacy e hash PRG di riferimento restano invariati.
+Sono comprese `CameraMode`, `CameraViewport`, `Quality`, `MemoryLayout`, `HeaderText`, opzioni luce/materiali e `SkipCmdUpdate`: non sono controlli Mode 8. Le tre nuove opzioni sono rifiutate nelle Mode 1–7. Comandi e default legacy sono conservati. Gli hash correnti dei template pubblici sono in PACKAGE-MANIFEST.json; i rapporti precedenti mantengono gli hash dei PRG originari.
 
 ## Renderer e organizzazione dei sorgenti
 
-`work/mode8/build.py` valida la geometria esplicita e istanzia i template qualificati in `work/mode8/asm`. Sono **sorgenti intenzionali**, non dipendenze da vecchie directory di output. Layout automatico e interattivo restano separati per non rilocare istruzioni runtime qualificate. Sulle mappe originali il confronto dei byte circoscrive la rimozione richiesta e la UI; codice geometrico/raster e indirizzi restano invariati.
+`work/mode8/build.py` valida la geometria esplicita e istanzia i template qualificati in `work/mode8/asm`. Sono **sorgenti intenzionali**, non dipendenze da vecchie directory di output. Layout automatico e interattivo restano separati. I template multi-level includono la cache di proiezione corrente descritta sopra; intervalli di codice, dati e spazio libero sono in MODE8-MEMORY.it.md. I confronti storici dei byte valgono soltanto per le build originarie.
 
 La scelta dipende dai dati: rampe o più quote pavimento nelle celle libere selezionano l'heightfield multi; altrimenti si verifica l'intero contratto mono, comprese le restrizioni sui volumi superiori. Nessun fallback silenzioso. Le due implementazioni non vengono unificate.
 
@@ -75,9 +88,9 @@ Non vengono eseguiti fill di triangoli, trasformazioni di mesh, normali, Gouraud
 - Inizializzazione e confronti includono i margini pertinenti; il confronto del corpo completo comprende 7.040 byte, non la dimensione del clear attivo per frame.
 - I template conservano guardie layout/puntatori sprite e SMC privato del foreground. L'IRQ non deve riutilizzarne lo scratch; runtime non rientrante.
 - Cache multi 4.096 byte, coefficienti/stato 448 byte, buffer fine 144 byte attivi/256 riservati.
-- Margine low delle mappe originali automatiche 157/140/76 byte: perimetro/aperture/due-livelli. Helper multi 192 byte a `$5500`. La dimensione PRG comprende intervalli riservati, non coincide con RAM utilizzata.
+- Margine low delle mappe originali automatiche 157/120/62 byte: perimetro/aperture/due-livelli. Helper multi 192 byte a `$5500`. La dimensione PRG comprende intervalli riservati, non coincide con RAM utilizzata.
 
-Vedere [mappa memoria](MODE8-MEMORY.md) e `build.json`. Dati aggiuntivi devono rispettare le capacità esistenti. Non si riloca, riduce la risoluzione o abbassa la precisione per accettare una scena. C64 stock 64 KB, istruzioni 6510 documentate, senza REU o accelerazione.
+Vedere [mappa memoria](MODE8-MEMORY.it.md) e `build.json`. Dati aggiuntivi devono rispettare le capacità esistenti. Non si riloca, riduce la risoluzione o abbassa la precisione per accettare una scena. C64 stock 64 KB, istruzioni 6510 documentate, senza REU o accelerazione.
 
 ## Controlli, limiti e qualificazione
 
@@ -85,7 +98,7 @@ Interattiva: W/S movimento, A/D rotazione. Automatica: itinerario ciclico comple
 
 Solo aperture statiche e formule di rampa previste; niente room-over-room, gradini arbitrari, PVS, traversal avanzato a portali, texture UV delle pareti, texture pavimento, luce dinamica o sprite 3D. Le Mode 1–7 conservano build poligonali distinte.
 
-[TESTING.md](TESTING.md) distingue 13 script legacy, nuovi test pubblici delle mappe, confronti istruzioni/oracolo e prove native. Le [note release](RELEASE-NOTES-1.4.0.md) contengono FPS finali, p 95 e worst misurati. Il campionamento CPU non viene convertito in FPS. Hardware reale **non testato**: qualificazione stock x64sc PAL/NTSC, non sostituibile con risultati accelerati o di altre macchine.
+[TESTING.it.md](TESTING.it.md) distingue gate host, build pubbliche delle mappe, confronti istruzioni/oracolo e misure native. La [qualifica corrente](QUALIFICATION-1.15.1.it.md) conserva i programmi agentic17 PAL Turbo6510 identici e i relativi FPS/p95/peggiori nativi a 1×, 20× e 64×. Il [rapporto 1.4.0](RELEASE-NOTES-1.4.0.md) descrive soltanto le build storiche stock PAL/NTSC. Il campionamento CPU non viene convertito in FPS. Hardware reale **non testato**: i risultati accelerati correnti non qualificano NTSC stock o hardware fisico.
 
 Per la prova hardware: trasferire il PRG interattivo su C64 stockPAL/NTSC, caricarlo/avviarlo, attraversare la scena e i raccordi delle due rampe, verificare split e presentazione, poi eseguire un giro automatico completo. Registrare modello, standard video, loader ed eventuali difetti. Non dichiarare PASS hardware senza esecuzione e registrazione effettive.
 

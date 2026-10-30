@@ -1,11 +1,24 @@
-# GraphicsMode 8 — 2.5D — 1.15.0
+# GraphicsMode 8 — 2.5D — 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+## Current1.15.1 cache and qualification
 
-Stable release 1.15.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Multi adds485 cache-data bytes and85 helper-code bytes before font5800,
+with explicit overlap guards; mono is unchanged. Public auto low-code free
+space is62 bytes for two-levels; interactive1266. The fixed-height helper
+still occupies192 bytes at5500. [Current memory](MODE8-MEMORY.en.md).
+Current native qualification uses PAL Turbo6510 at1/20/64× and exact agentic17
+programs. Prior stock x64sc PAL/NTSC reports describe their historical PRGs;
+they are not fresh NTSC or hardware qualification of this cache implementation.
 
 
-Current 1.14.0 source contract. This manual describes the ordinary exporter unless
+Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+
+> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+
+Stable release 1.15.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.15.1 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -42,11 +55,11 @@ The builder prints the selected backend and reason. It dispatches before any pol
 | `-VideoStandard auto` | Runtime PAL/NTSC detection; explicit pal/ntsc rejected |
 | All other polygon options | Rejected when explicitly requested; their legacy defaults do not affect Mode 8 |
 
-This includes `CameraMode`, `CameraViewport`, `Quality`, `MemoryLayout`, `HeaderText`, lighting/material switches and `SkipCmdUpdate`: they are not Mode 8 controls. The three new options are rejected on Modes 1–7. Existing legacy commands/defaults and reference PRG hashes remain unchanged.
+This includes `CameraMode`, `CameraViewport`, `Quality`, `MemoryLayout`, `HeaderText`, lighting/material switches and `SkipCmdUpdate`: they are not Mode 8 controls. The three new options are rejected on Modes 1–7. Existing legacy commands/defaults are retained. Current public-template build hashes are recorded in PACKAGE-MANIFEST.json; older reports retain their original PRG hashes.
 
 ## Renderer and source organization
 
-`work/mode8/build.py` validates explicit geometry and instantiates qualified source templates in `work/mode8/asm`. These ASM files are **intentional sources**, not a dependency on an old output directory. Automatic and interactive layouts remain separate to avoid relocating qualified runtime instructions. Original-map byte comparison isolates only the requested removal and UI changes; geometry/raster code and addresses remain unchanged.
+`work/mode8/build.py` validates explicit geometry and instantiates qualified source templates in `work/mode8/asm`. These ASM files are **intentional sources**, not a dependency on an old output directory. Automatic and interactive layouts remain separate. The multi-level templates include the current projection cache described above; current code, data and free-space ranges are documented in MODE8-MEMORY.en.md. Historical byte comparisons apply only to their original builds.
 
 Selection is by content, not name: ramps or multiple free-cell floor values choose the multi-level heightfield; otherwise the full monolevel contract is validated, including its upper-volume restrictions. There is no silent fallback. The two different runtime implementations are not unified.
 
@@ -75,9 +88,9 @@ There are no triangle fills, mesh transforms, vertex normals, Gouraud, active wa
 - Clear/initialization and comparisons include the appropriate margins; full body comparison is 7,040 bytes, not the per-frame active clear size.
 - Source templates retain layout guards, sprite-pointer guards and private foreground SMC. IRQ must not reuse foreground scratch. The runtime is not reentrant.
 - Multi profile cache: 4,096 bytes; coefficient/state: 448 bytes; fine buffer: 144 active bytes, 256 reserved.
-- Original automatic low-code free space: 157/140/76 bytes for perimeter/apertures/two-levels. Multi helper code is 192 bytes at `$5500`. PRG file size includes reserved gaps; it is not a RAM-used metric.
+- Current automatic low-code free space: 157/120/62 bytes for perimeter/apertures/two-levels. Multi helper code is 192 bytes at `$5500`. PRG file size includes reserved gaps; it is not a RAM-used metric.
 
-See [memory map](MODE8-MEMORY.md) and each build's `build.json`. Additional scene data must fit existing capacities. There is no relocation, automatic resolution reduction or precision downgrade to force acceptance. Stock 64 KB C64, documented 6510 instructions, no REU or acceleration required.
+See [memory map](MODE8-MEMORY.en.md) and each build's `build.json`. Additional scene data must fit existing capacities. There is no relocation, automatic resolution reduction or precision downgrade to force acceptance. Stock 64 KB C64, documented 6510 instructions, no REU or acceleration required.
 
 ## Controls, limits and qualification
 
@@ -85,7 +98,7 @@ Interactive: W/S movement, A/D rotation. Automatic: the complete validated cycli
 
 Static apertures only; fixed supported ramp formulas; no room-over-room, arbitrary steps, PVS, advanced portal traversal, wall UV texture mapping, floor textures, dynamic lighting or 3D sprites. Modes 1–7 remain distinct polygon-renderer builds.
 
-[TESTING.md](TESTING.md) separates 13 legacy test scripts, the new public map tests, instruction/oracle comparisons and native runs. [Release notes](RELEASE-NOTES-1.4.0.md) contain final measured FPS, p 95 and worst intervals. CPU-only sampling is not converted to FPS. Hardware execution is **not tested**; qualification is stock x64sc PAL/NTSC. Accelerated or other machine results are not substitutes.
+[TESTING.en.md](TESTING.en.md) separates host gates, public map builds, instruction/oracle comparisons and native timing. [Current qualification](QUALIFICATION-1.15.1.en.md) retains the identical agentic17 PAL Turbo6510 programs and their native FPS/p95/worst values at 1×, 20× and 64×. [The 1.4.0 report](RELEASE-NOTES-1.4.0.md) describes historical stock PAL/NTSC builds only. CPU-only sampling is not converted to FPS. Hardware execution is **not tested**; current accelerated results do not qualify stock NTSC or physical hardware.
 
 For a hardware check: transfer the appropriate interactive PRG to a stock PAL/NTSC C64, load/run it, traverse the scene including both ramp joins, inspect split stability and buffer presentation, then run its automatic counterpart for a full loop. Record machine model, video standard, loader and observed faults. Do not claim a hardware PASS without performing and recording this test.
 

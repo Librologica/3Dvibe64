@@ -1,6 +1,8 @@
-# CAMERA ROTATION — 1.15.0
+# CAMERA ROTATION — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
 
 `-Precision legacy -LegacyStability rotation` conserva il profilo originale
 di rotazione camera più fine. Richiede Mode2, walkLite, normal, high-basic-v2 e

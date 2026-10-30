@@ -1,13 +1,15 @@
-# Moduli sorgente gameplay — 1.15.0
+# Moduli sorgente gameplay — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
 
-Release stabile 1.15.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+
+Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione sorgente stabile1.15.0 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione sorgente stabile1.15.1 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 | ID | Modulo | Contratto |
 |---|---|---|
@@ -26,22 +28,22 @@ Questa distribuzione sorgente stabile1.15.0 è pubblicata su GitHub. Non contien
 
 ## Input del progetto
 
-L’SDK contiene algoritmi e adattatori delimitati, non un nuovo gioco o demo
+L'SDK contiene algoritmi e adattatori delimitati, non un nuovo gioco o demo
 completo. Scena, texture, frame billboard, mesh/animazioni, UI, percorso camera
-e collegamenti del progetto sono forniti dall’utilizzatore. Nessun personaggio
-o scena a tre stanze è allegato. L’exporter ordinario resta separato: sharing
+e collegamenti del progetto sono forniti dall'utilizzatore. Nessun personaggio
+o scena a tre stanze è allegato. L'exporter ordinario resta separato: sharing
 Q8-01 e roll Q8-02 non diventano campi accettati nelle scene Q8 ordinarie.
 
 Il driver di compatibilità `work/build-gameplay.py` riceve una radice esterna:
 `examples/gameplay/<profile>.json` per il preset e
 `extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` e
 `extensions/gameplay/billboards/<implementation>.py` per i collegamenti
-dell’utilizzatore. Questi percorsi appartengono al progetto esterno, non
-all’SDK. Il preset contiene `profile`, `engineVersion` (1.13.0), `extends`
+dell'utilizzatore. Questi percorsi appartengono al progetto esterno, non
+all'SDK. Il preset contiene `profile`, `engineVersion` (1.15.1), `extends`
 opzionale, `buildName`, `billboardImplementation`, `distributionPRG`,
 `textureQuality`, `textureLOD`, `viewportLogical`,
 `expectedCheckpointPRGSHA256` e `scope` opzionale. Il driver sovrappone i
-profili del progetto, copia l’SDK corrente come dipendenza dell’engine,
+profili del progetto, copia l'SDK corrente come dipendenza dell'engine,
 applica la configurazione e avvia il `build_demo.py` del progetto.
 Verifiche, oracoli e launcher devono essere forniti dal progetto stesso.
 
@@ -93,7 +95,7 @@ e le regole di memoria dichiarate; non viene promessa una ABI generale stabile.
 ## Livello comune e memoria
 
 `work/build-level.py --level ../my-level/level.json --validate-only` controlla
-grafo e asset dell’utilizzatore senza scrivere. `--plan-only --out ../plan`
+grafo e asset dell'utilizzatore senza scrivere. `--plan-only --out ../plan`
 produce dati portabili, non un PRG o un budget nativo misurato. Tutti gli asset
 usano `file:assets/name.json` dentro la cartella del livello; esclusi gli asset
 demo builtin. La build nativa richiede anche `--project-source` e un template
