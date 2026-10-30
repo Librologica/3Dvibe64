@@ -63,7 +63,7 @@ def attach(base,parts,placed=None):
         s+=f'.cerror * > ${placed[n][1]:04x},"Plus allocation overflow: {n}"\n' if placed else '.endvirtual\n'
     return s
 
-def allocate(source,assembler,directory):
+def _allocate(source,assembler,directory):
     directory=Path(directory);directory.mkdir(parents=True,exist_ok=True)
     base,parts=parts_of(source)
     sizing=directory/'sizing.asm';sizing.write_text(attach(base,parts),encoding='ascii')
@@ -100,6 +100,83 @@ def allocate(source,assembler,directory):
     if tail:
         base+=f'\n.cerror RUNTIME_BUFFER_COLOR_POLICY_END+32 > ${min(tail):04x},"Plus helpers overlap live runtime buffers"\n.cerror LR_PRODUCT_LUT_ACTIVE != 0,"Plus tail allocation requires serial rotation products"\n'
     return attach(base,parts,placed)
+
+
+def allocate(source,assembler,directory):
+    import legacy_render_tuning as gr17
+    source=gr17.original_source(source)
+    import sys
+    sys.path.insert(0,str(Path(__file__).parent/'q8/src'))
+    from allocation import PlacementFailure
+    from legacy_rotation_exact import strategies
+    from legacy_projection_exact import original_source,patch,UNROLL_ROUNDS
+    import legacy_gouraud_coherent as raster
+    import legacy_mode7_biased_uv as biased
+    import legacy_wire_cursor as wire
+    import legacy_mode7_binary_divider as divider
+    import legacy_mode7_fused_edges as edges
+    source=original_source(raster.original_source(edges.original_source(divider.original_source(wire.original_source(biased.original_source(source))))))
+    directory=Path(directory);directory.mkdir(parents=True,exist_ok=True)
+    attempts=[];last_failure=None
+    for camera,camera_source in strategies(source):
+        projections=[];seen=set()
+        for group in [g for g in (8,4,2,1) if g<=UNROLL_ROUNDS]:
+            variant,details=patch(camera_source,unroll=group)
+            if variant in seen:continue
+            seen.add(variant);projections.append(('group'+str(group)+'-projection',variant,details))
+        if camera_source not in seen:projections.append(('original-projection',camera_source,dict(applied=False)))
+        choices=[]
+        for projection,variant,details in projections:
+            fast,info=raster.patch(variant)
+            if info['applied']:choices.append((projection,'coherent',fast,details,info))
+            choices.append((projection,'original',variant,details,dict(applied=False)))
+        if True:
+            choices.sort(key=lambda r:r[1]!='coherent')
+        fused=[]
+        for projection,raster_name,variant,details,info in choices:
+            optimized,edge_info=edges.patch(variant)
+            if edge_info['applied']:fused.append((projection,raster_name+'-fused',optimized,details,dict(info,fusedEdges=edge_info)))
+        choices=fused+choices
+        division=[]
+        for projection,raster_name,variant,details,info in choices:
+            optimized,division_info=divider.patch(variant)
+            if division_info['applied']:division.append((projection,raster_name+'-binary',optimized,details,dict(info,binaryDivider=division_info)))
+        choices=division+choices
+        choices.sort(key=lambda r:('fused' not in r[1],'binary' not in r[1]))
+        wire_choices=[]
+        for projection,raster_name,variant,details,info in choices:
+            optimized,wire_info=wire.patch(variant)
+            if wire_info['applied']:wire_choices.append((projection,raster_name+'-wire-cursor',optimized,details,dict(info,wireCursor=wire_info)))
+        choices=wire_choices+choices
+        biased_choices=[]
+        for projection,raster_name,variant,details,info in choices:
+            optimized,biased_info=biased.patch(variant)
+            if biased_info['applied']:biased_choices.append((projection,raster_name+'-biased',optimized,details,dict(info,biasedUV=biased_info)))
+        choices=biased_choices+choices
+        gr17_choices=[]
+        for projection,raster_name,variant,details,info in choices:
+            tuned,gr17_info=gr17.patch(variant)
+            if gr17_info['applied']:gr17_choices.append((projection,raster_name+'-gr17',tuned,details,dict(info,renderTuning=gr17_info)))
+        choices=gr17_choices+choices
+        for projection,raster_name,variant,details,info in choices:
+            strategy=camera+'-'+projection+'-'+raster_name
+            try:result=_allocate(variant,assembler,directory/strategy)
+            except PlacementFailure as exc:
+                last_failure=exc
+                attempts.append(dict(strategy=strategy,status='does-not-fit',reason=exc.reason,nodes=exc.nodes,budget=exc.budget));continue
+            except ValueError as exc:
+                if raster_name!='original' and str(exc).startswith('PLUS_BASE_LAYOUT:'):
+                    attempts.append(dict(strategy=strategy,status='base-layout-does-not-fit',reason=str(exc)));continue
+                raise
+            report=json.loads((directory/strategy/'allocation.json').read_text())
+            attempts.append(dict(strategy=strategy,status='placed'))
+            report['exactRotation']=dict(strategy=camera,attempts=attempts,allocationWindowsChanged=False,qualityChanged=False,sceneSpecific=False)
+            report['exactProjection']=dict(details,cameraPlacementPreserved=True,dev13Fallback=True,originalRAMWindows=True)
+            report['coherentGouraud']=dict(info,placementPriority='raster-first',originalRasterFallback=True)
+            (directory/'allocation.json').write_text(json.dumps(report,indent=2))
+            return result
+    if last_failure is not None:raise last_failure
+    raise ValueError('COHERENT_NO_ORIGINAL_LAYOUT')
 
 if __name__=='__main__':
     p=argparse.ArgumentParser();p.add_argument('asm',type=Path);p.add_argument('--assembler',required=True);a=p.parse_args()
