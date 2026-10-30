@@ -1,6 +1,6 @@
-# 3Dvibe64 — Guida per il programmatore assembly — 1.15.0
+# 3Dvibe64 — Guida per il programmatore assembly — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
 
 ## Copia di lavoro e output
 
@@ -12,21 +12,21 @@ parametro per un output esterno nuovo. I file descritti sotto sono generati,
 non file precompilati distribuiti con questo SDK.
 
 
-## Release stabile 1.15.0
+## Release stabile 1.15.1
 
-`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica nativa](QUALIFICATION-1.14.0.it.md). Pacchetto sorgente stabile1.15.0 pubblicato su GitHub. Solo scene/asset esterni.
-
-
-Release stabile 1.15.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica corrente](QUALIFICATION-1.15.1.it.md). Pacchetto sorgente stabile1.15.1 pubblicato su GitHub. Solo scene/asset esterni.
 
 
-Contratto sorgente corrente 1.14.0. Il manuale descrive l’exporter ordinario
+Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.15.1. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione sorgente stabile1.15.0 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione sorgente stabile1.15.1 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 ## Mode 7 veloce — 1.7.0
 
@@ -292,11 +292,11 @@ Per misurazioni o breakpoint stabili, `render_frame_begin` e `render_frame_end` 
 
 ### 7.4 Split testuale same-bank DEV7
 
-Quando l’overlay visivo è compilato, ogni bank VIC-II possiede la propria Screen RAM e il proprio charset compatto. L’IRQ mostra tre righe di caratteri, passa al fast path bitmap a `TEXT_BITMAP_IRQ_RASTER=$4A` e avvia il body a `TEXT_BODY_FIRST_RASTER=$4B`. `TEXT_HEADER_CELL_ROWS=3` e `TEXT_HEADER_SCREEN_BYTES=120` sono un contratto pubblico di memoria: `apply_active_material` deve iniziare dopo il byte 119 in entrambi gli screen buffer.
+Quando l'overlay visivo è compilato, ogni bank VIC-II possiede la propria Screen RAM e il proprio charset compatto. L'IRQ mostra tre righe di caratteri, passa al fast path bitmap a `TEXT_BITMAP_IRQ_RASTER=$4A` e avvia il body a `TEXT_BODY_FIRST_RASTER=$4B`. `TEXT_HEADER_CELL_ROWS=3` e `TEXT_HEADER_SCREEN_BYTES=120` sono un contratto pubblico di memoria: `apply_active_material` deve iniziare dopo il byte 119 in entrambi gli screen buffer.
 
-Il body 3D normal misura quindi 160 × 88 a Y=12; small misura 128 × 80 a Y=12. `-NoFpsOverlay` compila il percorso solo bitmap 1.1.0 invariato. Generic Text usa una stringa compatta terminata da `$FF`; zero è un glifo spazio valido. Le cifre FPS e Generic Text vengono scritti in entrambe le Screen RAM, senza copiare dalla bank visualizzata all’altra.
+Il body 3D normal misura quindi 160 × 88 a Y=12; small misura 128 × 80 a Y=12. `-NoFpsOverlay` compila il percorso solo bitmap 1.1.0 invariato. Generic Text usa una stringa compatta terminata da `$FF`; zero è un glifo spazio valido. Le cifre FPS e Generic Text vengono scritti in entrambe le Screen RAM, senza copiare dalla bank visualizzata all'altra.
 
-A runtime, `F` commuta l’intero split, non le sole celle numeriche FPS. Il percorso OFF continua a scegliere bank VIC, Screen RAM e bitmap da `drawbuf`. `TEXT_CHARSET_BYTES` deriva da `TEXT_CHARSET_GLYPH_COUNT`: vale 96 per il charset dei soli FPS e 184 quando è emesso Generic Text. Il toggle sicuro pulisce esattamente quel prefisso bitmap quando lo split è nascosto e lo ripristina prima di riattivare l’IRQ testuale; il timing `$4A`/`$4B` resta invariato.
+A runtime, `F` commuta l'intero split, non le sole celle numeriche FPS. Il percorso OFF continua a scegliere bank VIC, Screen RAM e bitmap da `drawbuf`. `TEXT_CHARSET_BYTES` deriva da `TEXT_CHARSET_GLYPH_COUNT`: vale 96 per il charset dei soli FPS e 184 quando è emesso Generic Text. Il toggle sicuro pulisce esattamente quel prefisso bitmap quando lo split è nascosto e lo ripristina prima di riattivare l'IRQ testuale; il timing `$4A`/`$4B` resta invariato.
 
 ## 8. Pipeline 3D
 
@@ -711,7 +711,7 @@ Un diff dell'intero ASM può essere rumoroso perché una variazione di scena spo
 
 Label, indirizzi e persino presenza delle routine dipendono dalla build. Generare sempre label e mappe insieme al PRG.
 
-### Usare zero page “libera”
+### Usare zero page "libera"
 
 Gli alias cambiano per feature e lifetime. Aggiungere un'allocazione controllata, non un indirizzo magico.
 

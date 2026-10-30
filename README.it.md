@@ -1,6 +1,16 @@
-# 3Dvibe64 1.15.0
+# 3Dvibe64 1.15.1
 
-SDK sorgente stabile pubblicato su GitHub. Non sono inclusi demo,esempi,PRG o media. [Stato e supporto](RELEASE-STATUS.it.md) · [Novità](RELEASE-NOTES-1.15.0.it.md) · [Qualifica](QUALIFICATION-1.15.0.it.md).
+## Novità correnti1.15.1
+
+La release stabile GitHub promuove agentic17 senza modificare renderer o API.
+[Note correnti](RELEASE-NOTES-1.15.1.it.md), [contratti delle ottimizzazioni](AGENTIC-OPTIMIZATIONS.it.md),
+[API cerchi](CIRCLE-SPHERES.it.md) e [qualifica nativa](QUALIFICATION-1.15.1.it.md)
+prevalgono sulle vecchie dichiarazioni di release. Nessuna demo, scena o media
+è allegata: gli input appartengono al progetto esterno. I selettori Mode4 esatti
+opzionali restano distinti dai passaggi automatici.
+
+
+SDK sorgente stabile1.15.1 pubblicato su GitHub. Non sono inclusi demo,esempi,PRG o media. [Stato e supporto](RELEASE-STATUS.it.md) · [Novità](RELEASE-NOTES-1.15.1.it.md) · [Qualifica](QUALIFICATION-1.15.1.it.md).
 
 Le nuove ottimizzazioni/API sono limitate al Mode4 legacy-plus documentato; il supporto plus ordinario Mode1–7 e gli altri backend restano distinti. Default `legacy` e ottimizzazioni `none`. `all` esclude wire,stream,frozen-lighting. [Opzioni](EXACT-RENDER.it.md) · [API e memoria](REUSABLE-RENDER.it.md). Gameplay e Normalized16 conservano lo stato sperimentale.
 
@@ -8,7 +18,7 @@ Legacy resta il default. Selezionare Q8 preciso esplicitamente con `-Precision q
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione sorgente stabile1.15.0 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione sorgente stabile1.15.1 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 | ID | Modulo | Contratto |
 |---|---|---|
@@ -27,7 +37,7 @@ Questa distribuzione sorgente stabile1.15.0 è pubblicata su GitHub. Non contien
 
 ## Contratto del builder ordinario
 
-Le opzioni seguenti configurano l’exporter ordinario. I moduli gameplay
+Le opzioni seguenti configurano l'exporter ordinario. I moduli gameplay
 usano configurazioni ed entry point separati. `meshSourceSharing` in una
 scena Q8 ordinaria resta non supportato; Q8-01 usa il proprio adattatore.
 
@@ -134,9 +144,9 @@ geometria, il numero di poligoni o la silhouette. Sono inclusi esempi cubo hard 
 
 Le modalità grafiche 1 e 2 offrono i percorsi wire e hidden-wire. La modalità 3 usa facce riempite con shading statico. GraphicsMode 4 offre facce riempite e luce dinamica e attiva automaticamente il profilo XY-Q2 validato: non servono flag subpixel sperimentali.
 
-GraphicsMode 5 eredita l’intera pipeline Mode 4 e aggiunge un contorno di un pixel lowres dopo il riempimento di ogni faccia. Il contorno segue il poligono finale dopo il clipping, compresi gli spigoli generati dal near-plane e dai limiti schermo, e usa `world.backgroundColor`. Viene applicato faccia per faccia nel painter order far-to-near esistente, quindi il riempimento più vicino copre naturalmente i contorni della geometria retrostante.
+GraphicsMode 5 eredita l'intera pipeline Mode 4 e aggiunge un contorno di un pixel lowres dopo il riempimento di ogni faccia. Il contorno segue il poligono finale dopo il clipping, compresi gli spigoli generati dal near-plane e dai limiti schermo, e usa `world.backgroundColor`. Viene applicato faccia per faccia nel painter order far-to-near esistente, quindi il riempimento più vicino copre naturalmente i contorni della geometria retrostante.
 
-Il costo dell’outline è misurabile. L’audit prestazionale pre-1.0 non ha promosso ottimizzazioni rischiose o con impatto insufficiente: Mode 5 conserva il renderer dinamico, lo shading e i materiali della Mode 4, aggiungendo esclusivamente il contorno post-fill sul poligono post-clipping.
+Il costo dell'outline è misurabile. L'audit prestazionale pre-1.0 non ha promosso ottimizzazioni rischiose o con impatto insufficiente: Mode 5 conserva il renderer dinamico, lo shading e i materiali della Mode 4, aggiungendo esclusivamente il contorno post-fill sul poligono post-clipping.
 
 La GraphicsMode 6 calcola 33 livelli di shade per shade vertex runtime e li interpola
 sul poligono finale post-clipping. Una matrice Bayer 4 x 4 ancorata allo schermo
@@ -155,11 +165,11 @@ Mode 4 usa X LegacyDirect, builder XY-Q2, trace Y integrale e frazionario, divis
 
 Lo split same-bank DEV7 riserva tre righe di caratteri (`TEXT_HEADER_SCREEN_BYTES=120`) sopra il body 3D. `-HeaderText "..."` scrive fino a 40 caratteri nella riga centrale di Screen A e Screen B. Il charset compatto supporta spazio, cifre, punto e `S C R I T A D E M P O`; i caratteri non supportati diventano spazi. Il terminatore `$FF` DEV7.1 permette spazi interni alla stringa e corregge il mapping alfabetico compatto.
 
-Il contatore FPS usa le celle 0–3 della stessa riga e ha precedenza. `F` commuta l’intero header, Generic Text compreso; `-FpsOverlayOnStart` lo mostra dall’avvio. `-FpsCounterOnly` conserva il campionamento senza split visivo, mentre `-NoFpsOverlay` rimuove split e tasto FPS. Ogni bank video mantiene la propria Screen RAM e il proprio charset; i cambi materiale proteggono i 120 byte riservati. L’aggiunta di Generic Text emette il font compatto completo da 184 byte e può richiedere `high-basic-v2` in una build `stable` molto densa.
+Il contatore FPS usa le celle 0–3 della stessa riga e ha precedenza. `F` commuta l'intero header, Generic Text compreso; `-FpsOverlayOnStart` lo mostra dall'avvio. `-FpsCounterOnly` conserva il campionamento senza split visivo, mentre `-NoFpsOverlay` rimuove split e tasto FPS. Ogni bank video mantiene la propria Screen RAM e il proprio charset; i cambi materiale proteggono i 120 byte riservati. L'aggiunta di Generic Text emette il font compatto completo da 184 byte e può richiedere `high-basic-v2` in una build `stable` molto densa.
 
-`F` non nasconde separatamente le sole quattro celle FPS: commuta tutto lo split Generic Text/FPS. Quando è nascosto, il renderer continua il double buffering e seleziona `$DD00`/`$D018` in base al buffer realmente mostrato. Il builder deriva la dimensione del charset compatto dal numero di glifi generati (96 byte per i soli FPS, 184 byte con Generic Text), pulisce esattamente quell’intervallo allo spegnimento e lo ricostruisce prima della riattivazione.
+`F` non nasconde separatamente le sole quattro celle FPS: commuta tutto lo split Generic Text/FPS. Quando è nascosto, il renderer continua il double buffering e seleziona `$DD00`/`$D018` in base al buffer realmente mostrato. Il builder deriva la dimensione del charset compatto dal numero di glifi generati (96 byte per i soli FPS, 184 byte con Generic Text), pulisce esattamente quell'intervallo allo spegnimento e lo ricostruisce prima della riattivazione.
 
-Con `meshSourceSharing`, il materiale per istanza si indica con `materialOverride` (analogamente `reflectivityOverride`/`colorOverride`). `material` o `materialFamily` senza suffisso non è un override dell’istanza shared. Un override del materiale non richiede anche un override della riflettività; la 1.1.2 corregge inoltre questa configurazione shared con solo materiale.
+Con `meshSourceSharing`, il materiale per istanza si indica con `materialOverride` (analogamente `reflectivityOverride`/`colorOverride`). `material` o `materialFamily` senza suffisso non è un override dell'istanza shared. Un override del materiale non richiede anche un override della riflettività; la 1.1.2 corregge inoltre questa configurazione shared con solo materiale.
 
 Limitazione nota: con timing stock può restare un singolo pixel fisico sul margine destro, in corrispondenza della transizione raster fra header e body. La regressione 1.1.1 ha osservato un pixel stabile, senza corruzione della scena, crash, propagazione o divergenza A/B. Il timing validato `$4A`/`$4B` viene mantenuto intenzionalmente; usare `-NoFpsOverlay` quando serve un frame privo dello split.
 
@@ -177,13 +187,13 @@ La camera `fixed` è il percorso specializzato leggero. Consuma meno codice, mem
 
 `walkFull` aggiunge il roll alla stessa pipeline precisa di `walkLite`. Richiede più codice e dati runtime e, con mesh complesse come complex reference mesh, può richiedere `MemoryLayout high-basic-v2`.
 
-Le camere walk partono nella posa definita dalla scena e restano ferme finché l’utente non invia un comando camera. Rotazione degli oggetti e animazione della luce continuano anche quando la camera è ferma. I tre profili condividono culling, depth bucket a 16 bit, painter order far-to-near, builder facce XY-Q2, fill, pattern e shading.
+Le camere walk partono nella posa definita dalla scena e restano ferme finché l'utente non invia un comando camera. Rotazione degli oggetti e animazione della luce continuano anche quando la camera è ferma. I tre profili condividono culling, depth bucket a 16 bit, painter order far-to-near, builder facce XY-Q2, fill, pattern e shading.
 
 I default pre-1.0 development di `walkLite` e `walkFull` applicano un solo sotto-step lineare da `127/256 = 0,49609375 WU/ST`, pari nominalmente a `24,8046875 WU/s` o circa `0,44294` lati del cubo standard al secondo. Il movimento diagonale resta additivo e non normalizzato. Yaw e pitch rispondono subito con 1 TU, poi ripetono ogni 4 ST (`0,25 TU/ST`, `17,578125°/s` continui); il roll risponde subito e ripete ogni 2 ST (`0,5 TU/ST`, `35,15625°/s`). Il rilascio e il reset camera azzerano separatamente le tre fasi. La camera `fixed` e le animazioni degli oggetti restano invariate.
 
-La profondità pre-1.0 è geometrica: `camera_depth_geometric` resta la distanza reale, `projection_table_index = max(1, camera_depth_geometric + 190)` è soltanto l’indirizzo fisico e `projection_divisor = max(8, camera_depth_geometric)` determina la scala. Le scene distribuite sono migrate lungo il loro asse forward world Y; non esiste un fallback runtime per il vecchio bias geometrico.
+La profondità pre-1.0 è geometrica: `camera_depth_geometric` resta la distanza reale, `projection_table_index = max(1, camera_depth_geometric + 190)` è soltanto l'indirizzo fisico e `projection_divisor = max(8, camera_depth_geometric)` determina la scala. Le scene distribuite sono migrate lungo il loro asse forward world Y; non esiste un fallback runtime per il vecchio bias geometrico.
 
-La geometria clippata conserva il fallback legacy compatibile. I profili `normal` e `small` mantengono nere l’area esterna e la cornice VIC-II.
+La geometria clippata conserva il fallback legacy compatibile. I profili `normal` e `small` mantengono nere l'area esterna e la cornice VIC-II.
 
 ## Layout di memoria
 
@@ -231,7 +241,7 @@ Se `-ControlRotation` e `-ControlReflectivity` vengono forzati insieme, entrambi
 | `-ReflectivityCycleLevels` | `1`-`4` | `4`; numero di livelli attraversati ciclicamente da `R`, usare `3` per il ciclo `0 → 1 → 2 → 0` |
 | `-FpsOverlay` | switch | il sistema overlay è incluso per default e commutato con `F`; selettore esplicito di compatibilità |
 | `-FpsOverlayOnStart` | switch | off; mostra dall'avvio l'overlay incluso |
-| `-HeaderText` | stringa | vuota; fino a 40 caratteri del charset compatto nella riga centrale dell’header |
+| `-HeaderText` | stringa | vuota; fino a 40 caratteri del charset compatto nella riga centrale dell'header |
 | `-FpsCounterOnly` | switch | off; mantiene il campionamento FPS senza split visivo né tasto `F` |
 | `-NoFpsOverlay` | switch | off; rimuove overlay e tasto FPS, in conflitto con i due switch overlay |
 | `-NoCameraRuntimeControls` | switch | off; compila una camera mobile senza input camera runtime |
@@ -284,6 +294,12 @@ L'import PNG è host-side tramite Pillow: `source` e `sourceColors` obbligatorio
 
 Il Gouraud textured usa `gouraud.creaseAngle` (default 60°, intervallo 0–180°) per spigoli duri o normali smussate, con il limite di 255 shade vertices dove applicabile. Mode 7 ha vincoli propri di memoria/geometria e non eredita tutte le API override/source-sharing della Mode 6.
 
-Il default affine non corregge la prospettiva. L’interpolazione prospettica opzionale richiede il profilo Q8 o legacy-plus limitato: vedere [precisione texture](TEXTURE-PRECISION.it.md). Niente bilinear, mipmapping, texture runtime packed o quad mapper nativo. Resta l’aliasing di campionamento.
+Il default affine non corregge la prospettiva. L'interpolazione prospettica opzionale richiede il profilo Q8 o legacy-plus limitato: vedere [precisione texture](TEXTURE-PRECISION.it.md). Niente bilinear, mipmapping, texture runtime packed o quad mapper nativo. Resta l'aliasing di campionamento.
 
 Leggere il [contratto Mode 7 completo](MODE7.it.md), la [guida texture](TEXTURE-GUIDE.it.md), la [guida PNG](PNG-TEXTURES.it.md) e gli [otto esempi pubblici](EXTERNAL-INPUTS.it.md). Le guide inglesi equivalenti coprono lo stesso contratto.
+
+
+1.15.1-dev-agentic8: exact affine Mode7-C legacy-plus span optimization. Mode7/1x timing tradeoff explicitly accepted; prioritize20x/64x. See AGENTIC-DEV.md and external evidence.
+
+
+1.15.1-dev-agentic8: exact full-byte UV expansion and cached immediate stable spans. See AGENTIC-DEV.md and external evidence.

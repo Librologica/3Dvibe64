@@ -1,3 +1,78 @@
+# Changelog — 1.15.1
+
+## 1.15.1 — 2026-10-30
+
+Promote delivered agentic17 renderer and optional circle API unchanged.
+Local stable source-only release; no demos, PRGs or GitHub publication.
+Consolidated IT/EN docs, current qualification and host release gates.
+
+Historical development/release entries below retain their original scope.
+
+# 1.15.1-dev-agentic17 (development, unpublished)
+
+Exact material spans, bulk interiors, outline dispatch, quotient shade edges,
+stable-band texture sampling and per-plane unit-ratio cache.
+
+# 1.15.1-dev-agentic16 (development, unpublished)
+
+Exact adjacent-row wire primitives and carry-only UV stepping.
+
+# 1.15.1-dev-agentic15 (development, unpublished)
+
+Exact fused Mode7 UVQ edges and bounded binary setup division.
+
+# 1.15.1-dev-agentic14 (development, unpublished)
+
+Exact Mode6/7 material-cell cache and Mode6 coherent byte interpolation.
+
+# 1.15.1-dev-agentic13 (development, unpublished)
+
+Exact grouped wide/byte division, bounded tiers and Dev12/original fallbacks.
+
+# 1.15.1-dev-agentic12 (development, unpublished)
+
+Exact shared projection division and focal specialization; original RAM/ABI/fallbacks.
+
+# 1.15.1-dev-agentic11 (development, unpublished)
+
+Exact small-denominator DDA setup and private-ZP UV/error span working set.
+Scratch saved/restored, balanced stack, original final-Q and pointers.
+
+# 1.15.1-dev-agentic10 (development, unpublished)
+
+Exact cached UV correction steps and direct neutral C-band sampler returns.
+Original general/partial helpers and all state/quality contracts retained.
+
+# 1.15.1-dev-agentic9 (development, unpublished)
+
+Exact shared camera multiplication: low-byte rotating accumulator, high-bit
+completion and zero/unit paths, selected within existing bounded RAM windows.
+Original product/sign/rounding, APIs, pixels, precision and workload retained.
+The current circle/sphere API and source documentation remain included.
+
+# 1.15.1-dev-agentic8 (development, unpublished)
+
+## 2026-10-25 — Generic circle spheres / Sfere generiche tramite cerchi
+
+Optional `-SphereRenderer circles`, Mode 4/6 legacy-plus. World/camera centers,
+variable world radius, quarter-pixel projection, clipped circles and native
+materials; application-owned ordering/lighting. Default `none` preserves the
+existing builds. No pool-specific engine state. Targeted 6502 and native VICE
+checks; no stable promotion. Documentation now covers build/integration,
+limits, examples and evidence in both languages.
+
+Opzione generale per cerchi/sfere, indipendente dal biliardo. Guide, indice,
+comandi ed esempi ASM aggiornati; qualifiche storiche conservate separatamente.
+[EN](CIRCLE-SPHERES.en.md) · [IT](CIRCLE-SPHERES.it.md).
+
+Exact affine Mode7-C UV expansion, one-store arithmetic and cached immediate
+parameters on proven long stable spans. Parent quality/API/workload retained.
+
+# 1.15.1-dev-agentic7 (development, unpublished)
+
+Exact affine Mode7-C legacy-plus: Horner texel packing, adjacent-row cursor, stable light-band compositor and deferred exact Q DDA.
+Exact output; accepted Mode7/1x timing tradeoff. Evidence remains outside SDK.
+
 # Changelog — 1.15.0
 
 ## 1.15.0 — stable source release, published on GitHub

@@ -1,6 +1,8 @@
-# Manuale pratico per creare demo e PRG con 3Dvibe64 usando Codex — 1.15.0
+# Manuale pratico per creare demo e PRG con 3Dvibe64 usando Codex — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
 
 ## Copia di lavoro e output
 
@@ -12,21 +14,21 @@ parametro per un output esterno nuovo. I file descritti sotto sono generati,
 non file precompilati distribuiti con questo SDK.
 
 
-## Release stabile 1.15.0
+## Release stabile 1.15.1
 
-`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica nativa](QUALIFICATION-1.14.0.it.md). Pacchetto sorgente stabile1.15.0 pubblicato su GitHub. Solo scene/asset esterni.
-
-
-Release stabile 1.15.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica corrente](QUALIFICATION-1.15.1.it.md). Pacchetto sorgente stabile1.15.1 pubblicato su GitHub. Solo scene/asset esterni.
 
 
-Contratto sorgente corrente 1.14.0. Il manuale descrive l’exporter ordinario
+Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.15.1. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione sorgente stabile1.15.0 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione sorgente stabile1.15.1 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 ## Precision profiles / Profili di precisione — 1.10.0
 
@@ -57,12 +59,12 @@ Mode 1–7 invariato: non definisce un secondo schema mappe.
 
 ## Introduzione
 
-3Dvibe64 è un engine grafico 3D progettato per il Commodore 64. Il suo scopo è permettere di descrivere una scena tridimensionale in un file JSON e di trasformare quella descrizione in un programma `.prg`, pronto per essere eseguito su un C64 compatibile oppure nell’emulatore VICE.
+3Dvibe64 è un engine grafico 3D progettato per il Commodore 64. Il suo scopo è permettere di descrivere una scena tridimensionale in un file JSON e di trasformare quella descrizione in un programma `.prg`, pronto per essere eseguito su un C64 compatibile oppure nell'emulatore VICE.
 
-Questo manuale è rivolto anche a chi non conosce l’Assembly e non ha mai compilato un programma per Commodore 64. Non è necessario scrivere a mano il renderer, conoscere i registri del VIC-II o intervenire direttamente sulle routine 6510. Il lavoro viene suddiviso in due parti ben distinte:
+Questo manuale è rivolto anche a chi non conosce l'Assembly e non ha mai compilato un programma per Commodore 64. Non è necessario scrivere a mano il renderer, conoscere i registri del VIC-II o intervenire direttamente sulle routine 6510. Il lavoro viene suddiviso in due parti ben distinte:
 
-- l’utente decide che cosa deve apparire nella demo e come deve comportarsi;
-- Codex traduce quelle richieste in file, parametri e operazioni di compilazione compatibili con l’engine.
+- l'utente decide che cosa deve apparire nella demo e come deve comportarsi;
+- Codex traduce quelle richieste in file, parametri e operazioni di compilazione compatibili con l'engine.
 
 Il flusso generale è il seguente:
 
@@ -80,9 +82,9 @@ Viene prodotto il PRG
 VICE esegue e verifica la demo
 ```
 
-Ogni passaggio ha una funzione precisa. Il JSON contiene la descrizione della scena; il builder interpreta quella descrizione e genera il codice Assembly necessario; 64tass converte l’Assembly in un programma eseguibile; VICE permette infine di osservare il risultato e di controllare che la demo funzioni correttamente.
+Ogni passaggio ha una funzione precisa. Il JSON contiene la descrizione della scena; il builder interpreta quella descrizione e genera il codice Assembly necessario; 64tass converte l'Assembly in un programma eseguibile; VICE permette infine di osservare il risultato e di controllare che la demo funzioni correttamente.
 
-L’utente può quindi concentrarsi soprattutto sugli aspetti creativi e visivi:
+L'utente può quindi concentrarsi soprattutto sugli aspetti creativi e visivi:
 
 - gli oggetti presenti nella scena;
 - i colori;
@@ -97,7 +99,7 @@ L’utente può quindi concentrarsi soprattutto sugli aspetti creativi e visivi:
 
 Codex può occuparsi delle attività più tecniche:
 
-- analizzare la struttura dell’engine;
+- analizzare la struttura dell'engine;
 - leggere la documentazione e gli esempi ufficiali;
 - scrivere o modificare il JSON;
 - importare e controllare le mesh;
@@ -110,13 +112,13 @@ Codex può occuparsi delle attività più tecniche:
 - salvare log, screenshot e hash;
 - conservare le versioni già approvate senza sovrascriverle.
 
-Il principio più importante dell’intero metodo è semplice: **la scena deve poter essere ricostruita in modo ripetibile a partire dal JSON e dal comando di compilazione**. Un PRG ottenuto con modifiche manuali non documentate può anche funzionare, ma diventa difficile da correggere, aggiornare o riprodurre. Per questo il JSON deve rimanere la sorgente autorevole della demo, mentre l’Assembly generato deve essere considerato un prodotto intermedio.
+Il principio più importante dell'intero metodo è semplice: **la scena deve poter essere ricostruita in modo ripetibile a partire dal JSON e dal comando di compilazione**. Un PRG ottenuto con modifiche manuali non documentate può anche funzionare, ma diventa difficile da correggere, aggiornare o riprodurre. Per questo il JSON deve rimanere la sorgente autorevole della demo, mentre l'Assembly generato deve essere considerato un prodotto intermedio.
 
 ## Come leggere e usare questo manuale
 
-Le prime sezioni spiegano come preparare il computer e organizzare le directory. Le sezioni centrali descrivono le principali funzioni dell’engine: modalità grafiche, camera, viewport, memoria, unità di misura, clipping, culling, Ground, materiali, luci, istanze e timeline. Le sezioni finali mostrano invece come lavorare con Codex in modo ordinato, come compilare, come chiedere modifiche, come diagnosticare gli errori e come congelare una versione approvata.
+Le prime sezioni spiegano come preparare il computer e organizzare le directory. Le sezioni centrali descrivono le principali funzioni dell'engine: modalità grafiche, camera, viewport, memoria, unità di misura, clipping, culling, Ground, materiali, luci, istanze e timeline. Le sezioni finali mostrano invece come lavorare con Codex in modo ordinato, come compilare, come chiedere modifiche, come diagnosticare gli errori e come congelare una versione approvata.
 
-Non è necessario memorizzare tutte le opzioni. È sufficiente comprendere il significato generale di ogni scelta e formulare richieste precise. Codex dovrà comunque controllare il builder e gli esempi inclusi nella release prima di usare un parametro, perché alcuni dettagli dell’interfaccia possono cambiare nel tempo.
+Non è necessario memorizzare tutte le opzioni. È sufficiente comprendere il significato generale di ogni scelta e formulare richieste precise. Codex dovrà comunque controllare il builder e gli esempi inclusi nella release prima di usare un parametro, perché alcuni dettagli dell'interfaccia possono cambiare nel tempo.
 
 Questo manuale va letto insieme a [README.it.md](README.it.md),
 [QUICKSTART.md](QUICKSTART.md) e [WORLD-METRICS.md](WORLD-METRICS.md). Chi
@@ -128,13 +130,13 @@ consultare [ASSEMBLY-GUIDE.it.md](ASSEMBLY-GUIDE.it.md).
 1. [Cosa occorre](#1-cosa-occorre)
 2. [Come ottenere 3Dvibe64](#2-come-ottenere-3dvibe64)
 3. [Installazione degli strumenti](#3-installazione-degli-strumenti)
-4. [Lasciare che Codex prepari l’ambiente](#4-lasciare-che-codex-prepari-lambiente)
+4. [Lasciare che Codex prepari l'ambiente](#4-lasciare-che-codex-prepari-lambiente)
 5. [Organizzazione delle directory](#5-organizzazione-delle-directory)
 6. [Come funziona la compilazione](#6-come-funziona-la-compilazione)
 7. [Le modalità grafiche](#7-le-modalità-grafiche)
 8. [Camera](#8-camera)
 9. [Viewport e memoria](#9-viewport-e-memoria)
-10. [Unità dell’engine](#10-unità-dellengine)
+10. [Unità dell'engine](#10-unità-dellengine)
 11. [Near plane e avvicinamento alle superfici](#11-near-plane-e-avvicinamento-alle-superfici)
 12. [Backface culling](#12-backface-culling)
 13. [Ground](#13-ground)
@@ -159,7 +161,7 @@ consultare [ASSEMBLY-GUIDE.it.md](ASSEMBLY-GUIDE.it.md).
 
 ## 1. Cosa occorre
 
-L’ambiente consigliato è Windows 10 o Windows 11. Il builder principale è scritto per PowerShell e il flusso di lavoro descritto in questo manuale utilizza percorsi e comandi tipici di Windows.
+L'ambiente consigliato è Windows 10 o Windows 11. Il builder principale è scritto per PowerShell e il flusso di lavoro descritto in questo manuale utilizza percorsi e comandi tipici di Windows.
 
 Servono i seguenti elementi:
 
@@ -173,9 +175,9 @@ Servono i seguenti elementi:
 
 Questi elementi non hanno tutti lo stesso ruolo.
 
-La release di 3Dvibe64 contiene il builder, gli esempi, la documentazione e gli eventuali test. PowerShell esegue il builder. 64tass compila l’Assembly generato. VICE avvia il PRG e permette di verificarlo. Python è utile per controlli, conversioni e automazioni. Git rende più sicuro il lavoro sulle versioni, anche se non è indispensabile per ottenere un PRG. Codex coordina le operazioni e modifica i file richiesti.
+La release di 3Dvibe64 contiene il builder, gli esempi, la documentazione e gli eventuali test. PowerShell esegue il builder. 64tass compila l'Assembly generato. VICE avvia il PRG e permette di verificarlo. Python è utile per controlli, conversioni e automazioni. Git rende più sicuro il lavoro sulle versioni, anche se non è indispensabile per ottenere un PRG. Codex coordina le operazioni e modifica i file richiesti.
 
-Non è necessario installare o configurare ogni strumento manualmente. Si può chiedere a Codex di controllare il computer, individuare ciò che manca, preparare versioni portabili e verificare che l’intera catena funzioni. È comunque importante lasciare a Codex una directory di lavoro nella quale possa leggere, creare e modificare file senza intervenire sulla copia ufficiale dell’engine.
+Non è necessario installare o configurare ogni strumento manualmente. Si può chiedere a Codex di controllare il computer, individuare ciò che manca, preparare versioni portabili e verificare che l'intera catena funzioni. È comunque importante lasciare a Codex una directory di lavoro nella quale possa leggere, creare e modificare file senza intervenire sulla copia ufficiale dell'engine.
 
 ## 2. Come ottenere 3Dvibe64
 
@@ -185,7 +187,7 @@ Per un principiante, il metodo più semplice e sicuro consiste nello scaricare l
 
 La procedura è questa:
 
-1. aprire il collegamento GitHub fornito dall’autore;
+1. aprire il collegamento GitHub fornito dall'autore;
 2. entrare nella sezione **Releases**;
 3. selezionare la versione che si desidera usare;
 4. scaricare lo ZIP ufficiale allegato alla release;
@@ -205,7 +207,7 @@ Code → Download ZIP
 
 I due download non sono necessariamente equivalenti. Il pulsante **Code → Download ZIP** crea normalmente un archivio del contenuto corrente del repository o del ramo selezionato. Lo ZIP allegato a una release, invece, identifica in genere un pacchetto preciso, già preparato, verificato e destinato alla distribuzione. Per un primo utilizzo è quindi più facile partire dal pacchetto ufficiale della release.
 
-Dopo l’estrazione è opportuno controllare che nella directory siano presenti almeno la documentazione, gli esempi e lo script di build. Il percorso tipico del builder è:
+Dopo l'estrazione è opportuno controllare che nella directory siano presenti almeno la documentazione, gli esempi e lo script di build. Il percorso tipico del builder è:
 
 ```text
 work\build-3Dvibe64.ps1
@@ -214,11 +216,11 @@ work\build-3Dvibe64.ps1
 Se si dispone soltanto del collegamento al repository, lo si può fornire direttamente a Codex con una richiesta come questa:
 
 ```text
-Questo è il repository GitHub ufficiale dell’engine:
+Questo è il repository GitHub ufficiale dell'engine:
 
-[incolla qui l’indirizzo copiato dal pulsante Code di GitHub]
+[incolla qui l'indirizzo copiato dal pulsante Code di GitHub]
 
-Individua l’ultima release stabile, scarica lo ZIP ufficiale,
+Individua l'ultima release stabile, scarica lo ZIP ufficiale,
 verificane il contenuto ed estrailo in:
 
 C:\3Dvibe64\engine-ufficiale
@@ -228,14 +230,14 @@ Non modificare direttamente la copia ufficiale.
 
 La frase finale è importante. La directory `engine-ufficiale` deve essere trattata come baseline, cioè come copia di riferimento da conservare intatta. Le demo e gli esperimenti verranno realizzati su copie separate.
 
-Il manuale non incorpora un URL specifico, perché l’indirizzo dipende dalla
+Il manuale non incorpora un URL specifico, perché l'indirizzo dipende dalla
 collocazione definitiva del repository. Copiarlo dal pulsante **Code** della
 pagina GitHub ufficiale e incollarlo nella richiesta prima di eseguirla.
 
-Se l’ambiente di Codex non permette l’accesso alla rete, possono verificarsi due situazioni:
+Se l'ambiente di Codex non permette l'accesso alla rete, possono verificarsi due situazioni:
 
-- Codex chiede l’autorizzazione per accedere a Internet e scaricare il pacchetto;
-- Codex invita l’utente a scaricare manualmente lo ZIP e a indicargli poi il percorso locale.
+- Codex chiede l'autorizzazione per accedere a Internet e scaricare il pacchetto;
+- Codex invita l'utente a scaricare manualmente lo ZIP e a indicargli poi il percorso locale.
 
 In entrambi i casi, una volta che lo ZIP è disponibile sul computer, Codex può verificarne il contenuto, estrarlo e predisporre una copia di lavoro.
 
@@ -256,9 +258,9 @@ Git è più potente di un semplice archivio ZIP perché permette di:
 - tornare a una versione precedente;
 - aggiornare il progetto dal repository;
 - verificare che la baseline non sia stata alterata;
-- registrare in modo ordinato l’evoluzione di una demo.
+- registrare in modo ordinato l'evoluzione di una demo.
 
-L’uso di Git richiede però un minimo di familiarità con commit, branch e working tree. Per creare la prima demo non è necessario affrontare subito questi concetti. Lo ZIP ufficiale rimane quindi il metodo più diretto, mentre Git diventa particolarmente utile quando il lavoro inizia a produrre molte varianti o modifiche al builder.
+L'uso di Git richiede però un minimo di familiarità con commit, branch e working tree. Per creare la prima demo non è necessario affrontare subito questi concetti. Lo ZIP ufficiale rimane quindi il metodo più diretto, mentre Git diventa particolarmente utile quando il lavoro inizia a produrre molte varianti o modifiche al builder.
 
 ## 3. Installazione degli strumenti
 
@@ -272,15 +274,15 @@ Per controllare che sia disponibile, aprire PowerShell e digitare:
 powershell.exe -NoProfile -Command "$PSVersionTable.PSVersion"
 ```
 
-L’opzione `-NoProfile` evita che eventuali personalizzazioni del profilo dell’utente interferiscano con l’esecuzione. Se il comando restituisce un numero di versione senza errori, PowerShell è disponibile.
+L'opzione `-NoProfile` evita che eventuali personalizzazioni del profilo dell'utente interferiscano con l'esecuzione. Se il comando restituisce un numero di versione senza errori, PowerShell è disponibile.
 
-Il builder dell’engine si trova normalmente qui:
+Il builder dell'engine si trova normalmente qui:
 
 ```text
 work\build-3Dvibe64.ps1
 ```
 
-Lo script deve essere eseguito dalla radice della copia di lavoro oppure richiamato con un percorso completo. In alcuni sistemi Windows l’esecuzione degli script può essere limitata dalla Execution Policy; per questo i comandi di esempio usano:
+Lo script deve essere eseguito dalla radice della copia di lavoro oppure richiamato con un percorso completo. In alcuni sistemi Windows l'esecuzione degli script può essere limitata dalla Execution Policy; per questo i comandi di esempio usano:
 
 ```text
 -ExecutionPolicy Bypass
@@ -290,17 +292,17 @@ Questa opzione viene applicata soltanto al processo lanciato dal comando e conse
 
 ### 64tass
 
-64tass è l’assembler che trasforma il codice generato dal builder nel PRG destinato al Commodore 64. Il builder pubblico risolve il percorso di 64tass all’inizio della propria esecuzione e, se non lo trova, si interrompe prima di scrivere `work\3Dvibe64.asm` e prima di creare il PRG. Per ottenere anche il solo ASM tramite il builder ufficiale è quindi necessario rendere disponibile 64tass con uno dei metodi supportati.
+64tass è l'assembler che trasforma il codice generato dal builder nel PRG destinato al Commodore 64. Il builder pubblico risolve il percorso di 64tass all'inizio della propria esecuzione e, se non lo trova, si interrompe prima di scrivere `work\3Dvibe64.asm` e prima di creare il PRG. Per ottenere anche il solo ASM tramite il builder ufficiale è quindi necessario rendere disponibile 64tass con uno dei metodi supportati.
 
-È richiesta una versione compatibile dell’assembler; la documentazione dell’engine indica 64tass 1.60 o successivo. Una sistemazione portabile consigliata è:
+È richiesta una versione compatibile dell'assembler; la documentazione dell'engine indica 64tass 1.60 o successivo. Una sistemazione portabile consigliata è:
 
 ```text
 C:\Tools\64tass\64tass.exe
 ```
 
-Una versione portabile non richiede un’installazione tradizionale: è sufficiente estrarre i file in una directory stabile e indicare al builder dove si trova l’eseguibile.
+Una versione portabile non richiede un'installazione tradizionale: è sufficiente estrarre i file in una directory stabile e indicare al builder dove si trova l'eseguibile.
 
-Configurazione temporanea della variabile d’ambiente:
+Configurazione temporanea della variabile d'ambiente:
 
 ```powershell
 $env:TASS64_EXE = "C:\Tools\64tass\64tass.exe"
@@ -313,7 +315,7 @@ Il builder può anche individuare 64tass attraverso altre configurazioni, per es
 
 ### VICE
 
-VICE è l’emulatore utilizzato per eseguire e verificare i PRG. Nel pacchetto di VICE sono presenti diversi eseguibili; per questo manuale sono particolarmente importanti:
+VICE è l'emulatore utilizzato per eseguire e verificare i PRG. Nel pacchetto di VICE sono presenti diversi eseguibili; per questo manuale sono particolarmente importanti:
 
 - `x64sc.exe`: emulazione accurata del C64, da usare per i test principali e per la verifica autorevole del rendering;
 - `xscpu64.exe`: emulazione SuperCPU con CPU accelerabile, utilizzabile come prova supplementare e non contrattuale per individuare sequenze accidentalmente legate alla velocità della CPU. Non sostituisce `x64sc` e non fa parte delle firme ufficiali di regressione della distribuzione.
@@ -324,16 +326,16 @@ Un percorso portabile consigliato è:
 C:\Tools\VICE\bin
 ```
 
-Per indicare a PowerShell l’eseguibile principale:
+Per indicare a PowerShell l'eseguibile principale:
 
 ```powershell
 $env:VICE_EXE = "C:\Tools\VICE\bin\x64sc.exe"
 & $env:VICE_EXE -version
 ```
 
-La variabile `VICE_EXE` non è necessariamente letta dal builder: viene usata in questo manuale come riferimento comodo per avviare l’emulatore. Codex può inoltre registrare separatamente il percorso di `xscpu64.exe` quando si sceglie di eseguire il test accelerato facoltativo. L’assenza di `xscpu64` non impedisce la build e non invalida il contratto pubblico basato su `x64sc`.
+La variabile `VICE_EXE` non è necessariamente letta dal builder: viene usata in questo manuale come riferimento comodo per avviare l'emulatore. Codex può inoltre registrare separatamente il percorso di `xscpu64.exe` quando si sceglie di eseguire il test accelerato facoltativo. L'assenza di `xscpu64` non impedisce la build e non invalida il contratto pubblico basato su `x64sc`.
 
-VICE serve non soltanto a “vedere se parte”. Deve essere usato per controllare l’assenza di ritorni al BASIC, corruzione della bitmap, errori di clipping, problemi di profondità e differenze temporali anomale tra configurazioni.
+VICE serve non soltanto a "vedere se parte". Deve essere usato per controllare l'assenza di ritorni al BASIC, corruzione della bitmap, errori di clipping, problemi di profondità e differenze temporali anomale tra configurazioni.
 
 ### Python 3
 
@@ -358,7 +360,7 @@ python --version
 
 È consigliata una versione moderna di Python 3. Se il comando `python` non viene riconosciuto, in alcuni sistemi può essere disponibile il launcher `py`. Codex può verificare entrambi e scegliere quello funzionante.
 
-Python non sostituisce PowerShell o 64tass: è uno strumento complementare. Il builder rimane lo script ufficiale per generare l’Assembly e il PRG.
+Python non sostituisce PowerShell o 64tass: è uno strumento complementare. Il builder rimane lo script ufficiale per generare l'Assembly e il PRG.
 
 ### Git
 
@@ -372,7 +374,7 @@ git --version
 
 Se Git non è installato, si può comunque procedere usando copie di directory e hash SHA-256. Git rende però più semplice capire esattamente quali file sono stati modificati e impedisce che un cambiamento accidentale passi inosservato.
 
-## 4. Lasciare che Codex prepari l’ambiente
+## 4. Lasciare che Codex prepari l'ambiente
 
 È possibile affidare a Codex quasi tutta la preparazione tecnica, evitando di cercare manualmente ogni programma e ogni percorso.
 
@@ -384,7 +386,7 @@ Codex può:
 - scaricare i programmi dalle fonti ufficiali;
 - installarli tramite `winget` o un altro package manager;
 - predisporre versioni portabili;
-- configurare variabili d’ambiente temporanee o permanenti;
+- configurare variabili d'ambiente temporanee o permanenti;
 - controllare il `PATH`;
 - verificare che gli eseguibili partano;
 - leggere il builder per capire come individua 64tass;
@@ -392,7 +394,7 @@ Codex può:
 - avviare il PRG in VICE;
 - riportare percorsi, versioni ed esito dei test.
 
-A seconda delle impostazioni di sicurezza del computer e dell’ambiente di Codex, alcune operazioni possono richiedere un’autorizzazione esplicita. Codex potrà procedere direttamente oppure chiedere il permesso per:
+A seconda delle impostazioni di sicurezza del computer e dell'ambiente di Codex, alcune operazioni possono richiedere un'autorizzazione esplicita. Codex potrà procedere direttamente oppure chiedere il permesso per:
 
 - accedere a Internet;
 - scaricare file;
@@ -405,7 +407,7 @@ A seconda delle impostazioni di sicurezza del computer e dell’ambiente di Code
 
 Le capacità concrete dipendono dalla superficie Codex utilizzata, dal workspace
 attivo, dal sandbox e dalla policy di approvazione. Nelle configurazioni locali
-predefinite l’accesso in scrittura è normalmente limitato al workspace e la rete è
+predefinite l'accesso in scrittura è normalmente limitato al workspace e la rete è
 disabilitata finché non viene concessa o configurata. Il riferimento aggiornato è la
 [documentazione ufficiale su sandbox e autorizzazioni](https://learn.chatgpt.com/docs/agent-approvals-security.md).
 
@@ -414,7 +416,7 @@ Una richiesta completa può essere formulata così:
 ```text
 Prepara questo computer per sviluppare demo con 3Dvibe64.
 
-La release dell’engine è disponibile qui:
+La release dell'engine è disponibile qui:
 
 C:\3Dvibe64\engine-ufficiale
 
@@ -429,15 +431,15 @@ Controlla se sono disponibili:
 Se manca qualcosa, scaricalo esclusivamente dalle fonti ufficiali
 e installalo oppure predisponi una versione portabile.
 
-Chiedimi l’autorizzazione quando il sistema la richiede per
-download, installazioni, modifiche delle variabili d’ambiente
+Chiedimi l'autorizzazione quando il sistema la richiede per
+download, installazioni, modifiche delle variabili d'ambiente
 o avvio di programmi esterni.
 
 Non modificare la release ufficiale. Crea una copia di lavoro
-separata e compila un esempio ufficiale per verificare l’ambiente.
+separata e compila un esempio ufficiale per verificare l'ambiente.
 ```
 
-Questo prompt stabilisce quattro vincoli utili: l’uso di fonti ufficiali, la richiesta di autorizzazione quando necessaria, la protezione della baseline e l’obbligo di eseguire una prova reale.
+Questo prompt stabilisce quattro vincoli utili: l'uso di fonti ufficiali, la richiesta di autorizzazione quando necessaria, la protezione della baseline e l'obbligo di eseguire una prova reale.
 
 Al termine della preparazione è preferibile chiedere a Codex un rapporto che includa:
 
@@ -454,7 +456,7 @@ Al termine della preparazione è preferibile chiedere a Codex un rapporto che in
 - esito della prova in VICE;
 - eventuali autorizzazioni o configurazioni ancora necessarie.
 
-Un semplice messaggio come “tutto installato” non è sufficiente: i percorsi e le versioni rendono il risultato verificabile e permettono di ripetere la build in seguito.
+Un semplice messaggio come "tutto installato" non è sufficiente: i percorsi e le versioni rendono il risultato verificabile e permettono di ripetere la build in seguito.
 
 ## 5. Organizzazione delle directory
 
@@ -476,7 +478,7 @@ Le directory hanno funzioni diverse:
 - `engine-ufficiale` contiene la baseline e non deve essere modificata;
 - `engine-demo-dev1` contiene la prima copia di sviluppo;
 - `engine-demo-dev2` può contenere una variante successiva;
-- `demo-output` raccoglie risultati e diagnostica senza sporcare la copia dell’engine;
+- `demo-output` raccoglie risultati e diagnostica senza sporcare la copia dell'engine;
 - `modelli` conserva i file OBJ e gli altri asset sorgente.
 
 La release ufficiale deve rimanere intatta. Non va usata come cartella di esperimento, perché una modifica accidentale renderebbe difficile distinguere ciò che appartiene al pacchetto originale da ciò che è stato creato durante lo sviluppo.
@@ -492,7 +494,7 @@ Copy-Item `
 
 `-LiteralPath` impedisce che caratteri speciali nel percorso vengano interpretati come wildcard. `-Recurse` copia tutte le sottodirectory.
 
-Gli output diagnostici dovrebbero essere conservati fuori dalla copia dell’engine:
+Gli output diagnostici dovrebbero essere conservati fuori dalla copia dell'engine:
 
 ```text
 C:\3Dvibe64\demo-output\
@@ -511,7 +513,7 @@ Qui si possono salvare:
 - confronti tra build;
 - eventuali copie dei comandi di compilazione.
 
-Separare gli output ha due vantaggi. Il primo è che la directory dell’engine rimane leggibile. Il secondo è che diventa più facile eliminare i temporanei senza cancellare file necessari alla build.
+Separare gli output ha due vantaggi. Il primo è che la directory dell'engine rimane leggibile. Il secondo è che diventa più facile eliminare i temporanei senza cancellare file necessari alla build.
 
 ## 6. Come funziona la compilazione
 
@@ -548,17 +550,17 @@ work\3Dvibe64.prg
 
 Il file ASM è un prodotto intermedio. Non dovrebbe essere modificato manualmente per creare una demo canonica, perché una nuova esecuzione del builder lo rigenererà e cancellerà le modifiche.
 
-Se una funzione necessaria manca nell’engine, il percorso corretto è:
+Se una funzione necessaria manca nell'engine, il percorso corretto è:
 
 1. individuare con precisione il limite;
 2. dimostrare che il comportamento non è ottenibile con il JSON e le opzioni già disponibili;
 3. modificare il builder in una copia di sviluppo;
-4. aggiungere un’opzione JSON o compile-time generale, evitando condizioni legate a una singola scena;
+4. aggiungere un'opzione JSON o compile-time generale, evitando condizioni legate a una singola scena;
 5. verificare che gli esempi precedenti continuino a funzionare;
 6. ricostruire il PRG dal JSON;
 7. documentare la nuova opzione e il comando usato.
 
-Una patch applicata direttamente all’ASM può essere utile per una prova rapida o per confermare un’ipotesi tecnica. Non dovrebbe però diventare la sorgente definitiva della demo. Il risultato finale deve poter essere rigenerato senza interventi manuali successivi al builder.
+Una patch applicata direttamente all'ASM può essere utile per una prova rapida o per confermare un'ipotesi tecnica. Non dovrebbe però diventare la sorgente definitiva della demo. Il risultato finale deve poter essere rigenerato senza interventi manuali successivi al builder.
 
 ## 7. Le modalità grafiche
 
@@ -576,16 +578,16 @@ GraphicsMode 1 è il wireframe essenziale. Disegna principalmente gli spigoli de
 - visualizzare mesh semplici;
 - mostrare chiaramente la struttura geometrica;
 - realizzare demo tecniche;
-- controllare rapidamente l’orientamento e la forma di un modello;
+- controllare rapidamente l'orientamento e la forma di un modello;
 - verificare se una mesh viene trasformata e proiettata correttamente prima di passare a una modalità solida.
 
 In questa modalità le superfici non vengono riempite. Per questo può essere difficile capire quali linee appartengano alla parte anteriore o posteriore di un oggetto complesso. Il vantaggio è il costo più contenuto.
 
-Quando viene usato il profilo multimateriale supportato dall’engine, le modalità wire possono distinguere due famiglie cromatiche. Tale configurazione deve però rispettare il contratto effettivo del builder e va ricavata dagli esempi ufficiali, non improvvisata.
+Quando viene usato il profilo multimateriale supportato dall'engine, le modalità wire possono distinguere due famiglie cromatiche. Tale configurazione deve però rispettare il contratto effettivo del builder e va ricavata dagli esempi ufficiali, non improvvisata.
 
 ### GraphicsMode 2
 
-GraphicsMode 2 è il percorso hidden-wire. Mantiene l’aspetto a linee, ma gestisce in modo più avanzato le superfici, il culling, il mascheramento delle linee nascoste, i materiali e l’ordine di profondità.
+GraphicsMode 2 è il percorso hidden-wire. Mantiene l'aspetto a linee, ma gestisce in modo più avanzato le superfici, il culling, il mascheramento delle linee nascoste, i materiali e l'ordine di profondità.
 
 È utile quando si desidera:
 
@@ -594,7 +596,7 @@ GraphicsMode 2 è il percorso hidden-wire. Mantiene l’aspetto a linee, ma gest
 - mostrare meglio la forma di oggetti sovrapposti;
 - usare il clipping geometrico del Ground plane pur mantenendo una rappresentazione a linee.
 
-Il Ground resta line-only: non viene riempito come nelle modalità solide. Anche quando il profilo geometrico `plane` classifica e taglia le facce rispetto al terreno, la rappresentazione del Ground rimane una linea d’orizzonte, non un semipiano colorato.
+Il Ground resta line-only: non viene riempito come nelle modalità solide. Anche quando il profilo geometrico `plane` classifica e taglia le facce rispetto al terreno, la rappresentazione del Ground rimane una linea d'orizzonte, non un semipiano colorato.
 
 ### GraphicsMode 3
 
@@ -602,14 +604,14 @@ GraphicsMode 3 usa un rendering solido specializzato e veloce. Le facce vengono 
 
 Caratteristiche principali:
 
-- shading statico calcolato prima dell’esecuzione;
+- shading statico calcolato prima dell'esecuzione;
 - colori e pattern assegnati alle facce;
 - rasterizzatore dedicato;
 - fast path specifici;
 - minore costo rispetto allo shading dinamico;
 - assenza della trasformazione dinamica della luce necessaria alle modalità successive.
 
-È adatta quando il colore delle facce non deve cambiare continuamente in risposta alla luce. Per esempio, può essere una buona scelta per un oggetto che ruota ma usa un’ombreggiatura artistica predefinita, oppure per una scena nella quale la priorità è aumentare la velocità mantenendo superfici piene.
+È adatta quando il colore delle facce non deve cambiare continuamente in risposta alla luce. Per esempio, può essere una buona scelta per un oggetto che ruota ma usa un'ombreggiatura artistica predefinita, oppure per una scena nella quale la priorità è aumentare la velocità mantenendo superfici piene.
 
 La Mode 3 possiede alcuni percorsi propri, compreso il culling dedicato. Non bisogna quindi supporre che ogni opzione disponibile per Mode 4 e Mode 5 si applichi automaticamente anche a questa modalità.
 
@@ -627,9 +629,9 @@ Caratteristiche:
 - gestione delle mesh condivise quando richiesta nel JSON;
 - pipeline subpixel XY-Q2 attivata automaticamente dal profilo ufficiale.
 
-È indicata quando l’illuminazione deve reagire alla rotazione degli oggetti o al movimento della luce. È anche la modalità di riferimento per scene nelle quali la variazione dei materiali è una parte importante dell’effetto visivo.
+È indicata quando l'illuminazione deve reagire alla rotazione degli oggetti o al movimento della luce. È anche la modalità di riferimento per scene nelle quali la variazione dei materiali è una parte importante dell'effetto visivo.
 
-Il costo è maggiore rispetto alla Mode 3, perché normali, luce e shading devono essere aggiornati durante l’esecuzione. Prima di usarla su una mesh molto pesante conviene controllare memoria, viewport e numero di facce simultaneamente visibili.
+Il costo è maggiore rispetto alla Mode 3, perché normali, luce e shading devono essere aggiornati durante l'esecuzione. Prima di usarla su una mesh molto pesante conviene controllare memoria, viewport e numero di facce simultaneamente visibili.
 
 ### GraphicsMode 5
 
@@ -644,9 +646,9 @@ Caratteristiche:
 - contorno applicato secondo il painter order esistente;
 - uso del colore di sfondo del mondo per il bordo.
 
-Il fatto che il contorno venga calcolato sul poligono finale è importante. Se una faccia viene tagliata dal near plane o dai limiti dello schermo, l’outline segue la nuova forma risultante e non la geometria originale fuori campo. Le facce eliminate non devono lasciare contorni residui.
+Il fatto che il contorno venga calcolato sul poligono finale è importante. Se una faccia viene tagliata dal near plane o dai limiti dello schermo, l'outline segue la nuova forma risultante e non la geometria originale fuori campo. Le facce eliminate non devono lasciare contorni residui.
 
-Mode 5 è adatta a uno stile più grafico, leggibile o vicino all’illustrazione. L’outline ha però un costo misurabile, perché viene disegnato faccia per faccia dopo il riempimento. In una scena già vicina ai limiti di tempo o memoria, la Mode 4 può essere preferibile.
+Mode 5 è adatta a uno stile più grafico, leggibile o vicino all'illustrazione. L'outline ha però un costo misurabile, perché viene disegnato faccia per faccia dopo il riempimento. In una scena già vicina ai limiti di tempo o memoria, la Mode 4 può essere preferibile.
 
 ### Come scegliere rapidamente
 
@@ -674,7 +676,7 @@ I nomi non indicano soltanto quanti controlli sono disponibili. Ogni profilo pu�
 
 ### fixed
 
-La camera `fixed` rimane ferma durante l’esecuzione, salvo eventuali animazioni esplicitamente gestite dalla scena o da funzioni dedicate.
+La camera `fixed` rimane ferma durante l'esecuzione, salvo eventuali animazioni esplicitamente gestite dalla scena o da funzioni dedicate.
 
 È indicata per:
 
@@ -704,9 +706,9 @@ La camera `walkLite` è una camera mobile semplificata.
 
 ma non è necessario il roll.
 
-La camera parte dalla posa definita nella scena e rimane ferma finché l’utente non invia un comando. Il fatto che la camera sia ferma non blocca le altre animazioni: rotazione degli oggetti, luce orbitale e timeline possono continuare ad avanzare.
+La camera parte dalla posa definita nella scena e rimane ferma finché l'utente non invia un comando. Il fatto che la camera sia ferma non blocca le altre animazioni: rotazione degli oggetti, luce orbitale e timeline possono continuare ad avanzare.
 
-Il profilo `walkLite` usa la trasformazione Mobile Y-Q2. Se si desidera che le facce vengano tagliate realmente durante l’attraversamento del piano camera, va selezionato il profilo near `clip`.
+Il profilo `walkLite` usa la trasformazione Mobile Y-Q2. Se si desidera che le facce vengano tagliate realmente durante l'attraversamento del piano camera, va selezionato il profilo near `clip`.
 
 ### walkFull
 
@@ -720,11 +722,11 @@ In base ai controlli compilati può comprendere:
 - cursori: yaw e pitch;
 - `N` / `M`: roll.
 
-Il roll modifica l’orientamento degli assi laterale e verticale. Per questo, durante una camera inclinata, strafe e movimento verticale possono contribuire a più assi del mondo.
+Il roll modifica l'orientamento degli assi laterale e verticale. Per questo, durante una camera inclinata, strafe e movimento verticale possono contribuire a più assi del mondo.
 
 `walkFull` richiede più codice e più dati runtime rispetto a `walkLite`. Con mesh complesse, Ground geometrico, clipping e molte funzioni attive può essere necessario il layout `high-basic-v2`.
 
-I controlli non necessari possono essere rimossi compile-time. Per esempio, `-NoCameraRuntimeControls` permette di compilare una camera mobile senza l’infrastruttura di input runtime, mentre `-StaticPose` impedisce gli aggiornamenti automatici della posa della mesh. Eliminare funzioni inutili può ridurre codice e costo.
+I controlli non necessari possono essere rimossi compile-time. Per esempio, `-NoCameraRuntimeControls` permette di compilare una camera mobile senza l'infrastruttura di input runtime, mentre `-StaticPose` impedisce gli aggiornamenti automatici della posa della mesh. Eliminare funzioni inutili può ridurre codice e costo.
 
 ### Nota sul movimento della camera
 
@@ -736,7 +738,7 @@ Il movimento diagonale è additivo e non viene normalizzato. Premere due direzio
 
 ### Viewport
 
-La viewport è l’area nella quale viene renderizzata la scena 3D. Una viewport più grande offre un’immagine più leggibile, ma richiede di elaborare più pixel. Una viewport più piccola riduce il lavoro del rasterizzatore e può liberare margine per scene più complesse.
+La viewport è l'area nella quale viene renderizzata la scena 3D. Una viewport più grande offre un'immagine più leggibile, ma richiede di elaborare più pixel. Una viewport più piccola riduce il lavoro del rasterizzatore e può liberare margine per scene più complesse.
 
 Da riga di comando:
 
@@ -767,7 +769,7 @@ Comporta:
 
 È una delle prime opzioni da provare quando il rendering è troppo pesante, purché la riduzione della superficie visibile sia accettabile.
 
-L’area esterna alla viewport e la cornice VIC-II devono rimanere nere secondo il comportamento previsto dall’engine.
+L'area esterna alla viewport e la cornice VIC-II devono rimanere nere secondo il comportamento previsto dall'engine.
 
 ### Memory layout
 
@@ -778,7 +780,7 @@ Sono disponibili due layout principali:
 -MemoryLayout high-basic-v2
 ```
 
-Il layout stabilisce dove vengono collocati codice, dati e buffer nella memoria del C64. Non è un’opzione puramente estetica: una scena può compilare con un layout e superare una finestra di memoria con l’altro.
+Il layout stabilisce dove vengono collocati codice, dati e buffer nella memoria del C64. Non è un'opzione puramente estetica: una scena può compilare con un layout e superare una finestra di memoria con l'altro.
 
 #### stable
 
@@ -814,13 +816,13 @@ Il limite teorico di 255 elementi non significa che ogni scena possa contenere r
 
 Quando una build non entra in `stable`, il builder può suggerire `high-basic-v2`, ma il passaggio deve essere richiesto esplicitamente. Non bisogna interpretare il layout più grande come una soluzione automatica a qualsiasi problema: se anche quello viene superato, sarà necessario semplificare la scena.
 
-## 10. Unità dell’engine
+## 10. Unità dell'engine
 
 Per descrivere correttamente posizioni, angoli e tempi è necessario distinguere tre unità: WU, TU e ST.
 
 ### WU — World Unit
 
-WU significa **World Unit**. È l’unità lineare astratta usata per:
+WU significa **World Unit**. È l'unità lineare astratta usata per:
 
 - posizione;
 - dimensioni;
@@ -829,13 +831,13 @@ WU significa **World Unit**. È l’unità lineare astratta usata per:
 - quota del Ground;
 - coordinate della camera e degli oggetti, secondo i campi supportati.
 
-Una WU non equivale automaticamente a un metro, un centimetro o un’altra misura reale. La scala fisica viene decisa dall’autore della scena. Per esempio, si può stabilire che un cubo largo 56 WU rappresenti una piccola astronave oppure un edificio: l’engine non impone una corrispondenza reale.
+Una WU non equivale automaticamente a un metro, un centimetro o un'altra misura reale. La scala fisica viene decisa dall'autore della scena. Per esempio, si può stabilire che un cubo largo 56 WU rappresenti una piccola astronave oppure un edificio: l'engine non impone una corrispondenza reale.
 
 Dove viene usato un accumulatore fixed-point, una WU contiene 256 sotto-unità posizionali. Questo permette a movimenti inferiori a una WU per tick di accumularsi in modo fluido, anche se la geometria visibile viene poi elaborata attraverso coordinate quantizzate.
 
 ### TU — Turn Unit
 
-TU significa **Turn Unit** ed è l’unità angolare.
+TU significa **Turn Unit** ed è l'unità angolare.
 
 Un giro completo contiene 256 TU:
 
@@ -871,7 +873,7 @@ Le timeline lavorano a 50 tick logici al secondo:
 3000 ST = 1 minuto
 ```
 
-Il tick normalizzato permette di mantenere la stessa durata degli eventi su PAL e NTSC. In PAL viene normalmente prodotto un ST per VBlank. In NTSC l’engine usa cinque tick ogni sei VBlank, così da ottenere nominalmente 50 ST al secondo anche con un refresh video differente.
+Il tick normalizzato permette di mantenere la stessa durata degli eventi su PAL e NTSC. In PAL viene normalmente prodotto un ST per VBlank. In NTSC l'engine usa cinque tick ogni sei VBlank, così da ottenere nominalmente 50 ST al secondo anche con un refresh video differente.
 
 Questo significa che una sequenza di 150 ST deve durare circa tre secondi sia su PAL sia su NTSC. Il numero di frame realmente renderizzati può cambiare se la scena è pesante, ma il tempo logico della simulazione non dovrebbe cambiare.
 
@@ -879,7 +881,7 @@ Questo significa che una sequenza di 150 ST deve durare circa tre secondi sia su
 
 Il near plane definisce come vengono trattate le facce quando si avvicinano molto alla camera o attraversano il piano della camera.
 
-L’opzione pubblica è:
+L'opzione pubblica è:
 
 ```text
 -Mode4NearProfile default|late|clip
@@ -925,7 +927,7 @@ Il profilo `clip` esegue il clipping reale contro il piano camera.
 Caratteristiche:
 
 - conserva la parte proiettabile della faccia;
-- permette l’avvicinamento fino all’attraversamento;
+- permette l'avvicinamento fino all'attraversamento;
 - genera intersezioni proiettabili in prossimità del piano camera;
 - usa un divisore prospettico minimo 2;
 - rigetta la faccia soltanto dopo il reale attraversamento;
@@ -933,7 +935,7 @@ Caratteristiche:
 
 Se è attivo anche il Ground geometrico, il clipping rispetto al Ground viene eseguito prima del clipping contro il piano camera. Il culling camera-space continua a riferirsi al poligono originale, mentre rasterizzazione e outline Mode 5 usano il poligono finale post-clipping.
 
-Questo è il profilo più adatto quando la camera deve arrivare realmente a contatto con una parete o attraversare una superficie senza che l’intera faccia sparisca in anticipo.
+Questo è il profilo più adatto quando la camera deve arrivare realmente a contatto con una parete o attraversare una superficie senza che l'intera faccia sparisca in anticipo.
 
 ### Che cosa i profili near non fanno
 
@@ -963,9 +965,9 @@ Per Mode 4 e Mode 5 sono disponibili:
 
 ### default
 
-`default` usa il percorso tradizionale di culling. È adatto alla maggior parte delle scene e mantiene il comportamento standard dell’engine.
+`default` usa il percorso tradizionale di culling. È adatto alla maggior parte delle scene e mantiene il comportamento standard dell'engine.
 
-Il test tradizionale si basa sul risultato proiettato. In pose quasi edge-on, coordinate molto vicine e quantizzate possono talvolta far cambiare il segno dell’area da un frame all’altro.
+Il test tradizionale si basa sul risultato proiettato. In pose quasi edge-on, coordinate molto vicine e quantizzate possono talvolta far cambiare il segno dell'area da un frame all'altro.
 
 ### stable
 
@@ -978,23 +980,23 @@ Il test tradizionale si basa sul risultato proiettato. In pose quasi edge-on, co
 - pose quasi edge-on;
 - passaggi nei quali una faccia si presenta quasi di taglio.
 
-Il profilo utilizza dati camera-space nella banda più delicata per ridurre le variazioni provocate dall’arrotondamento delle coordinate proiettate. Fuori dalla zona quasi edge-on può continuare a usare il test screen-space previsto dal percorso ottimizzato.
+Il profilo utilizza dati camera-space nella banda più delicata per ridurre le variazioni provocate dall'arrotondamento delle coordinate proiettate. Fuori dalla zona quasi edge-on può continuare a usare il test screen-space previsto dal percorso ottimizzato.
 
-Le facce esattamente edge-on vengono conservate secondo il contratto dell’engine. Non viene introdotto uno stato tra frame e non viene applicata un’isteresi temporale.
+Le facce esattamente edge-on vengono conservate secondo il contratto dell'engine. Non viene introdotto uno stato tra frame e non viene applicata un'isteresi temporale.
 
 `stable` non abilita il rendering two-sided. Una faccia rivolta realmente dalla parte opposta continua a essere eliminata.
 
-La Mode 3 conserva il proprio percorso dedicato e non utilizza automaticamente `stable`. Se Codex riceve una richiesta di culling stabile in una modalità non supportata, deve controllare il builder e segnalare il limite invece di fingere che l’opzione sia stata applicata.
+La Mode 3 conserva il proprio percorso dedicato e non utilizza automaticamente `stable`. Se Codex riceve una richiesta di culling stabile in una modalità non supportata, deve controllare il builder e segnalare il limite invece di fingere che l'opzione sia stata applicata.
 
 ## 13. Ground
 
-Il Ground rappresenta il terreno o l’orizzonte della scena. Sono disponibili due concetti distinti: `simple` e `plane`.
+Il Ground rappresenta il terreno o l'orizzonte della scena. Sono disponibili due concetti distinti: `simple` e `plane`.
 
 ### Ground simple
 
 `simple` è la soluzione più leggera. È adatta quando basta un riferimento visivo del terreno e non serve che le mesh vengano tagliate geometricamente rispetto a un piano del mondo.
 
-A seconda della modalità grafica, può produrre una linea d’orizzonte decorativa oppure il comportamento screen-space tradizionale. Il vantaggio principale è il costo inferiore in byte e cicli.
+A seconda della modalità grafica, può produrre una linea d'orizzonte decorativa oppure il comportamento screen-space tradizionale. Il vantaggio principale è il costo inferiore in byte e cicli.
 
 È una buona scelta per:
 
@@ -1013,17 +1015,17 @@ world Z = ground.z
 
 Il comportamento dipende dalla modalità:
 
-- Mode 1: rimane disponibile la linea d’orizzonte decorativa, senza occlusione geometrica e senza fill;
+- Mode 1: rimane disponibile la linea d'orizzonte decorativa, senza occlusione geometrica e senza fill;
 - Mode 2: il Ground resta line-only, ma `plane` classifica le facce rispetto al piano, elimina quelle interamente dal lato opposto alla camera e taglia quelle che lo attraversano;
 - Mode 3: il semipiano può essere riempito e la geometria viene classificata e clippata;
 - Mode 4: il piano viene riempito e illuminato secondo il percorso dinamico;
-- Mode 5: il piano viene riempito e il risultato può includere l’outline previsto dalla modalità.
+- Mode 5: il piano viene riempito e il risultato può includere l'outline previsto dalla modalità.
 
 In Mode 2 non viene mai riempito un semipiano. Hidden-wire ed edge utilizzano il poligono risultante dopo il clipping.
 
 Il Ground plane può richiedere più memoria e più cicli rispetto a `simple`. Le scene che superano il layout `stable` devono selezionare esplicitamente `high-basic-v2`.
 
-La linea d’orizzonte è sensibile al roll. Secondo la convenzione dell’engine:
+La linea d'orizzonte è sensibile al roll. Secondo la convenzione dell'engine:
 
 ```text
 +32 TU  = orizzonte discendente verso destra
@@ -1048,7 +1050,7 @@ La struttura esatta può cambiare tra release. Prima di creare o modificare una 
 - lo schema eventualmente presente;
 - i test contrattuali, quando aiutano a chiarire campi e limiti.
 
-Non bisogna quindi prendere un esempio generico trovato online e supporre che tutti i campi siano validi. L’autorità finale è il builder contenuto nella release sulla quale si sta lavorando.
+Non bisogna quindi prendere un esempio generico trovato online e supporre che tutti i campi siano validi. L'autorità finale è il builder contenuto nella release sulla quale si sta lavorando.
 
 Una scena elementare comprende normalmente:
 
@@ -1062,9 +1064,9 @@ Una scena elementare comprende normalmente:
 - una o più luci;
 - il mondo, compreso il colore di sfondo;
 - un eventuale contratto della scena;
-- un’eventuale timeline.
+- un'eventuale timeline.
 
-Un esempio didattico, vicino alla struttura usata dagli esempi dell’engine, può apparire così:
+Un esempio didattico, vicino alla struttura usata dagli esempi dell'engine, può apparire così:
 
 ```json
 {
@@ -1127,20 +1129,20 @@ Un esempio didattico, vicino alla struttura usata dagli esempi dell’engine, pu
 }
 ```
 
-Questo esempio serve a comprendere l’organizzazione dei dati. Non deve essere copiato senza controllare gli esempi della release: campi, valori richiesti e combinazioni ammesse devono essere confermati dal builder.
+Questo esempio serve a comprendere l'organizzazione dei dati. Non deve essere copiato senza controllare gli esempi della release: campi, valori richiesti e combinazioni ammesse devono essere confermati dal builder.
 
-L’uso di `"builtin": "cube"` rende la mesh dell’esempio completa e compilabile
+L'uso di `"builtin": "cube"` rende la mesh dell'esempio completa e compilabile
 senza lasciare array geometrici vuoti. Quando si usa geometria esplicita, `vertices`
 e `faces` devono contenere dati validi; il builder rifiuta una mesh poligonale senza
 facce.
 
-In una descrizione puramente concettuale si può incontrare anche un’etichetta testuale come:
+In una descrizione puramente concettuale si può incontrare anche un'etichetta testuale come:
 
 ```json
 "schema": "3dvibe64-scene"
 ```
 
-Non bisogna però presumere che tale forma sia accettata dalla build effettiva. Negli esempi allegati all’engine lo schema è rappresentato numericamente. Codex deve usare il valore richiesto dal pacchetto reale.
+Non bisogna però presumere che tale forma sia accettata dalla build effettiva. Negli esempi allegati all'engine lo schema è rappresentato numericamente. Codex deve usare il valore richiesto dal pacchetto reale.
 
 ### Convenzione degli assi
 
@@ -1153,12 +1155,12 @@ world-z-up
 Significa che:
 
 - `+X` è verso destra e `-X` verso sinistra;
-- `+Y` è in avanti, cioè verso il fondo del mondo, e `-Y` all’indietro;
-- `+Z` è verso l’alto e `-Z` verso il basso.
+- `+Y` è in avanti, cioè verso il fondo del mondo, e `-Y` all'indietro;
+- `+Z` è verso l'alto e `-Z` verso il basso.
 
 Z rappresenta quindi normalmente la quota verticale. Questo vale per i vettori di scena, come posizione e velocità degli oggetti, posizione e rotazione della camera e posizione di una luce statica.
 
-Internamente l’engine usa una diversa disposizione degli assi e converte i vettori di scena. Le coordinate locali grezze delle mesh, tuttavia, devono essere controllate attentamente durante l’importazione: l’importatore deve consegnarle nell’orientamento realmente atteso dal renderer. Per questo il semplice inserimento di `axisConvention: "world-z-up"` non sostituisce la verifica visiva e geometrica della mesh.
+Internamente l'engine usa una diversa disposizione degli assi e converte i vettori di scena. Le coordinate locali grezze delle mesh, tuttavia, devono essere controllate attentamente durante l'importazione: l'importatore deve consegnarle nell'orientamento realmente atteso dal renderer. Per questo il semplice inserimento di `axisConvention: "world-z-up"` non sostituisce la verifica visiva e geometrica della mesh.
 
 ### Mesh e oggetti non sono la stessa cosa
 
@@ -1194,7 +1196,7 @@ Una mesh può essere fornita a Codex, per esempio, come file OBJ:
 C:\3Dvibe64\modelli\oggetto.obj
 ```
 
-L’importazione non dovrebbe consistere in una semplice copia delle coordinate. Prima della compilazione vanno controllati geometria, limiti numerici e convenzione degli assi.
+L'importazione non dovrebbe consistere in una semplice copia delle coordinate. Prima della compilazione vanno controllati geometria, limiti numerici e convenzione degli assi.
 
 Una richiesta consigliata è:
 
@@ -1214,7 +1216,7 @@ Prima della compilazione verifica:
 - vertici inutilizzati;
 - scala;
 - orientamento world-z-up;
-- compatibilità con i limiti dell’engine.
+- compatibilità con i limiti dell'engine.
 
 Non semplificare o modificare la mesh senza segnalarmelo.
 Crea una vista diagnostica e compila un PRG di prova.
@@ -1228,11 +1230,11 @@ Il numero influisce sia sul tempo di trasformazione e rasterizzazione sia sulla 
 
 #### Facce non triangolari
 
-L’engine può usare triangoli e quad nei percorsi supportati, ma un OBJ può contenere anche poligoni con un numero maggiore di vertici o facce concave. Codex deve determinare se vadano triangolati e segnalare qualsiasi trasformazione.
+L'engine può usare triangoli e quad nei percorsi supportati, ma un OBJ può contenere anche poligoni con un numero maggiore di vertici o facce concave. Codex deve determinare se vadano triangolati e segnalare qualsiasi trasformazione.
 
 #### Winding
 
-Il winding è l’ordine dei vertici di una faccia. Stabilisce quale lato viene considerato anteriore. Un winding invertito può far sparire una faccia a causa del backface culling.
+Il winding è l'ordine dei vertici di una faccia. Stabilisce quale lato viene considerato anteriore. Un winding invertito può far sparire una faccia a causa del backface culling.
 
 #### Normali
 
@@ -1240,17 +1242,17 @@ Le normali sono essenziali soprattutto per lo shading dinamico. Se sono incoeren
 
 #### Facce duplicate e vertici inutilizzati
 
-Le facce duplicate consumano memoria e possono creare sovrascritture o artefatti. I vertici inutilizzati non producono geometria visibile ma occupano spazio e complicano l’analisi.
+Le facce duplicate consumano memoria e possono creare sovrascritture o artefatti. I vertici inutilizzati non producono geometria visibile ma occupano spazio e complicano l'analisi.
 
 #### Scala e intervalli locali
 
-Le coordinate locali della mesh vengono convertite e quantizzate. Nella configurazione documentata dall’engine, i componenti locali devono rientrare nell’intervallo accettato dal builder e la scala viene convertita in Q6. Una scala nominale di `1.0` corrisponde a `64/64`; il massimo rappresentabile documentato è `127/64`, cioè `1.984375`.
+Le coordinate locali della mesh vengono convertite e quantizzate. Nella configurazione documentata dall'engine, i componenti locali devono rientrare nell'intervallo accettato dal builder e la scala viene convertita in Q6. Una scala nominale di `1.0` corrisponde a `64/64`; il massimo rappresentabile documentato è `127/64`, cioè `1.984375`.
 
 Non conviene affidarsi a una scala enorme per compensare un modello troppo piccolo o viceversa. È preferibile normalizzare consapevolmente la mesh e verificare che le coordinate locali rientrino nel dominio accettato.
 
 #### Orientamento
 
-Una mesh proveniente da Blender o da un altro programma può usare una diversa convenzione per l’asse verticale e l’asse forward. Codex deve controllarla con una vista diagnostica, non limitarsi a cambiare l’etichetta `axisConvention`.
+Una mesh proveniente da Blender o da un altro programma può usare una diversa convenzione per l'asse verticale e l'asse forward. Codex deve controllarla con una vista diagnostica, non limitarsi a cambiare l'etichetta `axisConvention`.
 
 Se la mesh è troppo pesante, Codex può preparare una variante low-poly. Devono però essere conservati:
 
@@ -1258,13 +1260,13 @@ Se la mesh è troppo pesante, Codex può preparare una variante low-poly. Devono
 - la variante derivata;
 - un rapporto delle modifiche;
 - il numero di vertici e facce prima e dopo;
-- l’indicazione di eventuali triangolazioni o rimozioni.
+- l'indicazione di eventuali triangolazioni o rimozioni.
 
 Nessuna semplificazione deve essere applicata in silenzio.
 
 ## 16. Materiali, colori e pattern
 
-L’engine utilizza colori, rampe e pattern compatibili con il VIC-II. Non tutti i nomi o le combinazioni inventabili dall’utente esistono realmente nelle tabelle del builder.
+L'engine utilizza colori, rampe e pattern compatibili con il VIC-II. Non tutti i nomi o le combinazioni inventabili dall'utente esistono realmente nelle tabelle del builder.
 
 Per evitare configurazioni incompatibili, bisogna chiedere a Codex di usare esclusivamente le famiglie effettivamente presenti.
 
@@ -1272,7 +1274,7 @@ Esempio:
 
 ```text
 Usa soltanto i colori e i pattern della famiglia gray già
-supportata dall’engine.
+supportata dall'engine.
 
 Assegna alle facce una combinazione leggibile di:
 
@@ -1300,7 +1302,7 @@ orange
 brown
 ```
 
-Possono essere selezionate per nome oppure, nei campi che lo consentono, attraverso l’indice corrispondente. Le riflettività documentate sono:
+Possono essere selezionate per nome oppure, nei campi che lo consentono, attraverso l'indice corrispondente. Le riflettività documentate sono:
 
 ```text
 satin
@@ -1343,7 +1345,7 @@ Nel percorso con mesh condivisa, `faceOverrides` appartiene alla mesh sorgente e
 Quando più livelli assegnano un materiale o un colore, la precedenza è:
 
 1. override locale della faccia sorgente;
-2. override dell’istanza;
+2. override dell'istanza;
 3. materiale della mesh sorgente.
 
 Questa regola permette di mantenere un materiale generale e cambiare soltanto ciò che serve.
@@ -1369,7 +1371,7 @@ Per una luce compile-time realmente statica usare:
 }
 ```
 
-È possibile aggiungere i campi richiesti dal contratto, per esempio l’intensità:
+È possibile aggiungere i campi richiesti dal contratto, per esempio l'intensità:
 
 ```json
 {
@@ -1389,7 +1391,7 @@ Questo percorso permette al builder di evitare:
 - tabelle duplicate;
 - infrastruttura orbitale non utilizzata.
 
-La luce rimane ferma nel mondo, ma lo shading può comunque cambiare quando l’oggetto ruota, perché cambiano le normali trasformate rispetto alla direzione luminosa.
+La luce rimane ferma nel mondo, ma lo shading può comunque cambiare quando l'oggetto ruota, perché cambiano le normali trasformate rispetto alla direzione luminosa.
 
 Non va confusa con il vecchio percorso:
 
@@ -1399,7 +1401,7 @@ Non va confusa con il vecchio percorso:
 }
 ```
 
-Quest’ultimo può mantenere parte della logica orbitale, compresi fase, divisore e tabelle. Se lo scopo è ottenere una luce realmente statica e più leggera, deve essere usato il campo `type` previsto dal percorso dedicato.
+Quest'ultimo può mantenere parte della logica orbitale, compresi fase, divisore e tabelle. Se lo scopo è ottenere una luce realmente statica e più leggera, deve essere usato il campo `type` previsto dal percorso dedicato.
 
 ### Luce orbitale
 
@@ -1425,13 +1427,13 @@ I profili orbitali documentati sono `flat` e `tumble3d`. Il numero di fasi può 
 
 `LightStaticPhase` può congelare un campione del percorso orbitale legacy. Questo non equivale necessariamente alla luce realmente statica `type: "static"`, perché può conservare dati e codice del sistema orbitale.
 
-La velocità della luce deve essere legata ai tick della simulazione o al timing del VIC-II, non al numero di iterazioni della CPU. In questo modo la durata dell’orbita rimane coerente su PAL, NTSC e CPU accelerate.
+La velocità della luce deve essere legata ai tick della simulazione o al timing del VIC-II, non al numero di iterazioni della CPU. In questo modo la durata dell'orbita rimane coerente su PAL, NTSC e CPU accelerate.
 
 ## 18. Istanze multiple
 
 Nelle Mode 4 e 5 è possibile riutilizzare una stessa mesh senza emettere più volte la geometria sorgente.
 
-L’opzione JSON è:
+L'opzione JSON è:
 
 ```json
 {
@@ -1459,11 +1461,11 @@ La geometria sorgente viene emessa una sola volta, mentre ogni istanza mantiene 
 - vertici proiettati;
 - posa corrente;
 - visibilità;
-- partecipazione all’ordine globale di profondità.
+- partecipazione all'ordine globale di profondità.
 
 Questo significa che due istanze possono trovarsi in posizioni e rotazioni differenti nello stesso frame. Non sono semplici copie grafiche post-render: entrambe partecipano alla pipeline 3D e al painter order globale.
 
-L’opzione è valida soltanto nelle Mode 4 e 5. Se viene richiesta in Mode 1, 2 o 3, la build deve interrompersi. Inoltre deve esistere un riuso reale: almeno una mesh deve essere referenziata da più istanze. L’engine non deve ricadere silenziosamente nell’espansione tradizionale.
+L'opzione è valida soltanto nelle Mode 4 e 5. Se viene richiesta in Mode 1, 2 o 3, la build deve interrompersi. Inoltre deve esistere un riuso reale: almeno una mesh deve essere referenziata da più istanze. L'engine non deve ricadere silenziosamente nell'espansione tradizionale.
 
 Esempio concettuale:
 
@@ -1489,7 +1491,7 @@ Esempio concettuale:
 Ordine di precedenza degli override:
 
 1. override della faccia;
-2. override dell’istanza;
+2. override dell'istanza;
 3. materiale della mesh.
 
 Nel percorso shared:
@@ -1497,9 +1499,9 @@ Nel percorso shared:
 - `faceOverrides` deve appartenere alla mesh sorgente;
 - le chiavi sono indici locali delle facce;
 - non sono ammesse mappe `faceOverrides` differenti per ciascuna istanza della stessa sorgente;
-- `materialOverride`, `reflectivityOverride` e `colorOverride` possono invece essere applicati all’istanza.
+- `materialOverride`, `reflectivityOverride` e `colorOverride` possono invece essere applicati all'istanza.
 
-Per le istanze shared usare letteralmente i nomi `...Override`. `material` o `materialFamily` senza suffisso non è un override dell’istanza in questo percorso. `materialOverride` può essere usato da solo e non richiede un corrispondente `reflectivityOverride`.
+Per le istanze shared usare letteralmente i nomi `...Override`. `material` o `materialFamily` senza suffisso non è un override dell'istanza in questo percorso. `materialOverride` può essere usato da solo e non richiede un corrispondente `reflectivityOverride`.
 
 La condivisione riduce la duplicazione della geometria sorgente, ma non elimina il costo dei buffer runtime di ogni istanza. Una scena con molte copie può quindi esaurire comunque la memoria. Gli indici a un byte impongono limiti teorici di 255 per varie categorie, ma i limiti pratici sono generalmente inferiori.
 
@@ -1621,7 +1623,7 @@ Con:
 "resetKey": "SPACE"
 ```
 
-il reset deve ripristinare stato, pose, visibilità e contatori secondo il contratto dell’engine. È utile per ripetere una sequenza durante i test senza riavviare il PRG.
+il reset deve ripristinare stato, pose, visibilità e contatori secondo il contratto dell'engine. È utile per ripetere una sequenza durante i test senza riavviare il PRG.
 
 ### Animazioni più complesse
 
@@ -1677,9 +1679,9 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass `
   -SkipCmdUpdate
 ```
 
-Il comando è suddiviso su più righe con il carattere di continuazione di PowerShell. L’accento grave deve essere l’ultimo carattere della riga: spazi o testo dopo di esso possono interrompere il comando.
+Il comando è suddiviso su più righe con il carattere di continuazione di PowerShell. L'accento grave deve essere l'ultimo carattere della riga: spazi o testo dopo di esso possono interrompere il comando.
 
-### Significato dei parametri dell’esempio
+### Significato dei parametri dell'esempio
 
 - `-File` indica lo script del builder;
 - `-SceneFile` indica il JSON della scena;
@@ -1700,7 +1702,7 @@ Il PRG viene normalmente prodotto in:
 work\3Dvibe64.prg
 ```
 
-Anche l’Assembly generato si trova normalmente sotto `work`. Prima di considerare la build riuscita, Codex deve controllare:
+Anche l'Assembly generato si trova normalmente sotto `work`. Prima di considerare la build riuscita, Codex deve controllare:
 
 - codice di uscita del builder;
 - messaggi di warning;
@@ -1716,7 +1718,7 @@ Per avviare il risultato:
 & $env:VICE_EXE -autostart .\work\3Dvibe64.prg
 ```
 
-Il semplice avvio non conclude il test. VICE deve rimanere in esecuzione abbastanza a lungo da produrre più frame completi e mostrare l’eventuale problema.
+Il semplice avvio non conclude il test. VICE deve rimanere in esecuzione abbastanza a lungo da produrre più frame completi e mostrare l'eventuale problema.
 
 ### Le opzioni possono cambiare
 
@@ -1728,14 +1730,14 @@ In particolare deve controllare:
 - la precedenza tra JSON e riga di comando;
 - le opzioni valide soltanto in alcune modalità;
 - le incompatibilità tra switch;
-- i parametri diagnostici che non appartengono all’API pubblica;
+- i parametri diagnostici che non appartengono all'API pubblica;
 - gli esempi ufficiali più vicini alla scena da costruire.
 
 Non bisogna aggiungere un flag soltanto perché il suo nome sembra plausibile. Un parametro inesistente, riservato o non collegato al runtime deve essere rimosso o segnalato.
 
 ## 21. Come iniziare una nuova demo con Codex
 
-Una buona richiesta iniziale deve fissare con chiarezza il perimetro del lavoro. Più informazioni vengono stabilite all’inizio, meno Codex dovrà interpretare liberamente.
+Una buona richiesta iniziale deve fissare con chiarezza il perimetro del lavoro. Più informazioni vengono stabilite all'inizio, meno Codex dovrà interpretare liberamente.
 
 È utile indicare:
 
@@ -1797,7 +1799,7 @@ Questa richiesta contiene sia il risultato desiderato sia i vincoli di sicurezza
 
 - La baseline è identificata e protetta.
 - La copia di sviluppo ha un percorso preciso.
-- Gli output non vengono dispersi nella directory dell’engine.
+- Gli output non vengono dispersi nella directory dell'engine.
 - Le principali opzioni di rendering sono già decise.
 - La mesh deve essere verificata prima della build.
 - Il test ha una durata minima.
@@ -1816,7 +1818,7 @@ Per esempio:
 Falla più lenta.
 ```
 
-Non specifica quale elemento deve rallentare. Potrebbe riferirsi alla traslazione, alla rotazione, alla luce, alla camera, alla timeline oppure all’intera simulazione.
+Non specifica quale elemento deve rallentare. Potrebbe riferirsi alla traslazione, alla rotazione, alla luce, alla camera, alla timeline oppure all'intera simulazione.
 
 È meglio scrivere:
 
@@ -1846,34 +1848,34 @@ La richiesta precisa definisce:
 
 ### Richieste sulle posizioni
 
-Invece di “spostalo un po’ più in basso”, usare:
+Invece di "spostalo un po' più in basso", usare:
 
 ```text
-Sposta l’oggetto di 8 WU verso il basso.
+Sposta l'oggetto di 8 WU verso il basso.
 ```
 
-Con `world-z-up`, “verso il basso” significa ridurre la componente Z. È comunque utile indicare sia la direzione sia il valore numerico per evitare ambiguità.
+Con `world-z-up`, "verso il basso" significa ridurre la componente Z. È comunque utile indicare sia la direzione sia il valore numerico per evitare ambiguità.
 
 ### Richieste sul timing
 
-Invece di “fallo entrare più tardi”, usare:
+Invece di "fallo entrare più tardi", usare:
 
 ```text
-Ritarda l’ingresso di 50 ST, equivalenti a un secondo.
+Ritarda l'ingresso di 50 ST, equivalenti a un secondo.
 ```
 
 Questa formulazione collega il valore tecnico alla durata percepita.
 
 ### Richieste sulle rotazioni
 
-Invece di “fallo girare più lentamente”, usare:
+Invece di "fallo girare più lentamente", usare:
 
 ```text
 Dimezza la velocità angolare e mantieni invariato il numero
 complessivo di rotazioni.
 ```
 
-Quest’ultima condizione implica che la durata della fase debba aumentare, se si vuole conservare il numero di giri. Senza specificarlo, Codex potrebbe dimezzare la velocità mantenendo la stessa durata e ottenere soltanto metà della rotazione totale.
+Quest'ultima condizione implica che la durata della fase debba aumentare, se si vuole conservare il numero di giri. Senza specificarlo, Codex potrebbe dimezzare la velocità mantenendo la stessa durata e ottenere soltanto metà della rotazione totale.
 
 ### Cambiare una sola variabile alla volta
 
@@ -1890,7 +1892,7 @@ Una buona variante dovrebbe registrare:
 
 ## 23. Come diagnosticare un problema
 
-Quando una faccia sparisce, lampeggia o viene disegnata nel posto sbagliato, non bisogna chiedere subito una patch casuale. La prima attività deve essere l’individuazione della fase responsabile.
+Quando una faccia sparisce, lampeggia o viene disegnata nel posto sbagliato, non bisogna chiedere subito una patch casuale. La prima attività deve essere l'individuazione della fase responsabile.
 
 Un prompt strutturato è:
 
@@ -1923,7 +1925,7 @@ la causa. Non usare indici di faccia hardcoded o condizioni
 specifiche per questa mesh.
 ```
 
-La frase “primo punto esatto” è fondamentale. Un errore visibile nel raster può essere stato causato molto prima, per esempio da una coordinata camera-space errata o da un poligono clippato male.
+La frase "primo punto esatto" è fondamentale. Un errore visibile nel raster può essere stato causato molto prima, per esempio da una coordinata camera-space errata o da un poligono clippato male.
 
 ### Strategia consigliata
 
@@ -1957,20 +1959,20 @@ Si può chiedere a Codex di registrare:
 - materiale;
 - livello di shading;
 - raggiungimento del raster;
-- poligono finale usato dall’outline, in Mode 5.
+- poligono finale usato dall'outline, in Mode 5.
 
-Una traccia utile deve indicare frame, oggetto, istanza e indice locale della faccia. In presenza di mesh condivise, un indice di faccia privo dell’identificatore dell’istanza può essere ambiguo.
+Una traccia utile deve indicare frame, oggetto, istanza e indice locale della faccia. In presenza di mesh condivise, un indice di faccia privo dell'identificatore dell'istanza può essere ambiguo.
 
 ### Correzioni da evitare
 
 Non sono accettabili come soluzione generale:
 
-- invertire soltanto una faccia perché “sembra funzionare” senza verificarne il winding;
+- invertire soltanto una faccia perché "sembra funzionare" senza verificarne il winding;
 - disabilitare il culling per tutta la scena per nascondere un errore locale;
 - forzare la profondità di un oggetto con un valore hardcoded;
 - saltare un indice specifico nel renderer;
 - introdurre una condizione legata al nome della mesh;
-- ritoccare manualmente l’ASM generato e non riportare la modifica nel builder.
+- ritoccare manualmente l'ASM generato e non riportare la modifica nel builder.
 
 Queste patch possono correggere un fotogramma e rompere altre pose o altre scene.
 
@@ -1980,11 +1982,11 @@ VICE è parte integrante del processo di sviluppo. Una build che termina senza e
 
 ### Test principale con x64sc
 
-Usare `x64sc` per le prove autorevoli, perché privilegia un’emulazione accurata del C64.
+Usare `x64sc` per le prove autorevoli, perché privilegia un'emulazione accurata del C64.
 
 Verificare:
 
-- almeno 8 `render_frame_end` o l’equivalente numero di frame completi osservabili;
+- almeno 8 `render_frame_end` o l'equivalente numero di frame completi osservabili;
 - nessun ritorno al BASIC;
 - nessuna schermata nera persistente non prevista;
 - nessuna corruzione bitmap;
@@ -2001,8 +2003,8 @@ Otto frame rappresentano soltanto il minimo per uno smoke test visuale. Per rota
 - almeno 32 frame consecutivi;
 - il passaggio attraverso pose quasi edge-on;
 - le fasi vicine al near plane;
-- l’eventuale attraversamento del Ground;
-- se possibile, un ciclo intero dell’animazione.
+- l'eventuale attraversamento del Ground;
+- se possibile, un ciclo intero dell'animazione.
 
 Un difetto periodico può non apparire nei primi frame. Se la timeline dura diversi secondi, il test deve coprire tutti gli stati e almeno una transizione completa.
 
@@ -2024,12 +2026,12 @@ Durante il confronto bisogna misurare eventi riconoscibili, per esempio:
 - ingresso di un oggetto;
 - inizio e fine di una rotazione;
 - cambio di stato della timeline;
-- completamento di un’orbita luminosa;
+- completamento di un'orbita luminosa;
 - reset della sequenza.
 
 ### Screenshot e log
 
-Chiedere a Codex di salvare fuori dall’engine:
+Chiedere a Codex di salvare fuori dall'engine:
 
 - screenshot;
 - log di VICE;
@@ -2073,7 +2075,7 @@ Quando presenti nella build:
 - cursori: yaw e pitch;
 - `N` / `M`: roll in `walkFull`.
 
-`-NoCameraRuntimeControls` mantiene il profilo mobile ma rimuove la lettura degli input della camera. È utile per una scena automatica che necessita della pipeline mobile ma non della navigazione dell’utente.
+`-NoCameraRuntimeControls` mantiene il profilo mobile ma rimuove la lettura degli input della camera. È utile per una scena automatica che necessita della pipeline mobile ma non della navigazione dell'utente.
 
 ### Rotazione
 
@@ -2096,16 +2098,16 @@ Prima di abilitare più controlli contemporaneamente, chiedere a Codex di verifi
 - conflitti;
 - precedenza;
 - comportamento effettivo della release;
-- presenza reale dell’handler nel codice generato;
+- presenza reale dell'handler nel codice generato;
 - indicazioni degli esempi ufficiali.
 
 ### Generic Text e overlay FPS
 
-DEV7 usa uno split same-bank con tre righe testuali sopra il body bitmap. `-HeaderText "..."` incorpora al massimo 40 caratteri del charset compatto in entrambe le bank video. Sono supportati spazio, cifre, punto e `S C R I T A D E M P O`; l’input non supportato diventa uno spazio. Il contatore FPS occupa le prime quattro celle della riga centrale. Il terminatore `$FF` è essenziale perché zero è il glifo spazio valido.
+DEV7 usa uno split same-bank con tre righe testuali sopra il body bitmap. `-HeaderText "..."` incorpora al massimo 40 caratteri del charset compatto in entrambe le bank video. Sono supportati spazio, cifre, punto e `S C R I T A D E M P O`; l'input non supportato diventa uno spazio. Il contatore FPS occupa le prime quattro celle della riga centrale. Il terminatore `$FF` è essenziale perché zero è il glifo spazio valido.
 
-L’intero header può essere incluso e commutato con `F`; non esiste uno stato runtime separato che nasconda soltanto le cifre FPS lasciando visibile Generic Text. La versione 1.1.2 mantiene attivo il double buffering mentre lo split è nascosto, pulisce l’intervallo charset compatto generato da 96 o 184 byte e lo ricostruisce prima di mostrare nuovamente l’header.
+L'intero header può essere incluso e commutato con `F`; non esiste uno stato runtime separato che nasconda soltanto le cifre FPS lasciando visibile Generic Text. La versione 1.1.2 mantiene attivo il double buffering mentre lo split è nascosto, pulisce l'intervallo charset compatto generato da 96 o 184 byte e lo ricostruisce prima di mostrare nuovamente l'header.
 
-- `-FpsOverlayOnStart` lo mostra fin dall’avvio;
+- `-FpsOverlayOnStart` lo mostra fin dall'avvio;
 - `-FpsOverlay` mantiene il selettore previsto dal contratto;
 - `-FpsCounterOnly` conserva il campionamento senza header visivo;
 - `-NoFpsOverlay` rimuove overlay e tasto FPS.
@@ -2126,7 +2128,7 @@ Nelle sole GraphicsMode 4 e 5 può essere presente la funzione associata a `H`. 
 
 Le righe escluse conservano temporaneamente il contenuto precedente, producendo un effetto interlacciato e una moderata scia.
 
-Non è una semplice modalità a bassa risoluzione e non garantisce un aumento di prestazioni. Trasformazione, proiezione, clipping, culling, ordinamento, shading e preparazione delle facce continuano a essere eseguiti; l’effetto può persino aumentare il costo del frame. Materiali, fill, painter order e outline Mode 5 rimangono invariati.
+Non è una semplice modalità a bassa risoluzione e non garantisce un aumento di prestazioni. Trasformazione, proiezione, clipping, culling, ordinamento, shading e preparazione delle facce continuano a essere eseguiti; l'effetto può persino aumentare il costo del frame. Materiali, fill, painter order e outline Mode 5 rimangono invariati.
 
 ## 26. Congelare una versione approvata
 
@@ -2206,24 +2208,24 @@ Non bisogna affidarsi soltanto al nome della cartella. Gli hash sono la prova ch
 
 ## 27. Quando una demo è canonica
 
-Una demo può essere considerata canonica quando il suo risultato è riproducibile, documentato e ottenuto attraverso il normale percorso dell’engine.
+Una demo può essere considerata canonica quando il suo risultato è riproducibile, documentato e ottenuto attraverso il normale percorso dell'engine.
 
 I criteri principali sono:
 
 - viene ricostruita dal JSON;
 - usa il builder ufficiale o una modifica del builder chiaramente documentata nella copia di sviluppo;
-- non richiede patch manuali successive all’ASM;
+- non richiede patch manuali successive all'ASM;
 - gli eventuali include esterni sono chiaramente separati;
 - il comando di compilazione è documentato;
 - il PRG è riproducibile;
 - gli hash sono registrati;
 - `x64sc` supera i test;
-- se è stata scelta la prova supplementare, l’eventuale risultato `xscpu64` viene registrato separatamente e non è usato come requisito di canonicità;
+- se è stata scelta la prova supplementare, l'eventuale risultato `xscpu64` viene registrato separatamente e non è usato come requisito di canonicità;
 - non restano temporanei necessari ma non documentati;
-- la release dell’engine è rimasta intatta;
+- la release dell'engine è rimasta intatta;
 - tutti gli asset indispensabili sono conservati.
 
-La parola “canonica” non significa che la demo debba usare soltanto una scena banale o esclusivamente funzioni già presenti negli esempi. Significa che ogni estensione deve essere controllabile e che il risultato non dipende da passaggi manuali dimenticati.
+La parola "canonica" non significa che la demo debba usare soltanto una scena banale o esclusivamente funzioni già presenti negli esempi. Significa che ogni estensione deve essere controllabile e che il risultato non dipende da passaggi manuali dimenticati.
 
 ### Effetti esterni ammessi
 
@@ -2236,11 +2238,11 @@ Non dovrebbe:
 - riscrivere materiali interni;
 - introdurre passaggi 3D separati;
 - intervenire sugli indici globali delle facce;
-- alterare la pipeline dell’engine;
+- alterare la pipeline dell'engine;
 - correggere con dati hardcoded una singola mesh;
 - rendere impossibile la ricostruzione automatica.
 
-Per esempio, una routine che disegna stelle nello sfondo può essere considerata decorativa. Una routine che ridisegna manualmente facce 3D saltate dal renderer non è più un semplice effetto esterno: sta sostituendo o correggendo la pipeline e deve essere trattata come una modifica dell’engine.
+Per esempio, una routine che disegna stelle nello sfondo può essere considerata decorativa. Una routine che ridisegna manualmente facce 3D saltate dal renderer non è più un semplice effetto esterno: sta sostituendo o correggendo la pipeline e deve essere trattata come una modifica dell'engine.
 
 ### Riproducibilità pratica
 
@@ -2250,7 +2252,7 @@ Per verificare che una demo sia davvero canonica, Codex dovrebbe essere in grado
 2. eliminare gli output generati;
 3. rilanciare il comando documentato;
 4. ottenere di nuovo il PRG;
-5. confrontarne l’hash;
+5. confrontarne l'hash;
 6. ripetere il test in VICE.
 
 Se il PRG non può essere rigenerato senza ricordare un intervento manuale, la procedura non è ancora completa.
@@ -2259,13 +2261,13 @@ Se il PRG non può essere rigenerato senza ricordare un intervento manuale, la p
 
 ### Modificare la release ufficiale
 
-La release ufficiale deve essere soltanto letta e copiata. Lavorare direttamente al suo interno rende difficile capire se un problema appartiene all’engine originale oppure a una modifica successiva.
+La release ufficiale deve essere soltanto letta e copiata. Lavorare direttamente al suo interno rende difficile capire se un problema appartiene all'engine originale oppure a una modifica successiva.
 
 Soluzione: creare sempre una copia separata prima di modificare JSON, builder, esempi o documentazione.
 
-### Modificare direttamente l’ASM generato
+### Modificare direttamente l'ASM generato
 
-L’Assembly sotto `work` viene rigenerato dal builder. Una modifica manuale:
+L'Assembly sotto `work` viene rigenerato dal builder. Una modifica manuale:
 
 - andrà persa alla build successiva;
 - non sarà rappresentata nel JSON;
@@ -2280,11 +2282,11 @@ Evitare richieste come:
 
 ```text
 più veloce
-un po’ più in basso
+un po' più in basso
 molto più lontano
 ```
 
-Queste espressioni dipendono dall’interpretazione e non permettono di confrontare con precisione due varianti.
+Queste espressioni dipendono dall'interpretazione e non permettono di confrontare con precisione due varianti.
 
 Preferire:
 
@@ -2310,18 +2312,18 @@ Una faccia che sparisce può dipendere da:
 - painter order;
 - degenerazione;
 - materiale;
-- posizione dell’oggetto;
+- posizione dell'oggetto;
 - overflow o wrap numerico.
 
 Non è necessariamente un problema di shading.
 
 Cambiare il colore può rendere una faccia più visibile, ma non corregge una decisione di culling. Disabilitare il culling può farla comparire, ma non dimostra che il culling sia sbagliato: il winding della mesh potrebbe essere invertito.
 
-### Aspettarsi di vedere una mesh dall’interno
+### Aspettarsi di vedere una mesh dall'interno
 
-Il rendering è normalmente monofacciale. Dentro un oggetto chiuso, molte facce vengono correttamente eliminate perché il loro lato anteriore è rivolto verso l’esterno.
+Il rendering è normalmente monofacciale. Dentro un oggetto chiuso, molte facce vengono correttamente eliminate perché il loro lato anteriore è rivolto verso l'esterno.
 
-I profili near `late` e `clip` non rendono le mesh two-sided. Il clipping conserva la porzione geometrica davanti alla camera, ma non cambia l’orientamento delle facce.
+I profili near `late` e `clip` non rendono le mesh two-sided. Il clipping conserva la porzione geometrica davanti alla camera, ma non cambia l'orientamento delle facce.
 
 ### Usare troppi poligoni
 
@@ -2339,7 +2341,7 @@ Per migliorare la velocità:
 - ridurre gli oggetti simultanei;
 - ridurre la durata delle fasi più pesanti;
 - eliminare controlli runtime inutili;
-- scegliere Mode 4 invece di Mode 5 quando l’outline non è indispensabile.
+- scegliere Mode 4 invece di Mode 5 quando l'outline non è indispensabile.
 
 La semplificazione deve essere controllata. Ridurre casualmente i poligoni può alterare silhouette, winding e normali.
 
@@ -2359,7 +2361,7 @@ Il passaggio a `high-basic-v2` deve essere esplicito. Se la scena continua a non
 
 ### Presumere che 255 sia sempre un limite raggiungibile
 
-Diversi indici e conteggi possono avere un massimo teorico di 255, ma codice, buffer, clipping, timeline e istanze consumano memoria prima di quel valore. Il limite effettivo dipende dall’intera configurazione.
+Diversi indici e conteggi possono avere un massimo teorico di 255, ma codice, buffer, clipping, timeline e istanze consumano memoria prima di quel valore. Il limite effettivo dipende dall'intera configurazione.
 
 ### Dimenticare la precedenza tra JSON e CLI
 
@@ -2381,7 +2383,7 @@ La timeline richiede `visible`. `visibility` può essere ignorato. Un warning de
 
 ### Considerare `H` una modalità prestazionale
 
-Il Temporal Scanline Mode conserva gran parte della pipeline e può aumentare il costo. Va usato come effetto visivo sperimentale, non come sostituto automatico dell’ottimizzazione.
+Il Temporal Scanline Mode conserva gran parte della pipeline e può aumentare il costo. Va usato come effetto visivo sperimentale, non come sostituto automatico dell'ottimizzazione.
 
 ### Collegare il tempo alla CPU
 
@@ -2404,16 +2406,16 @@ La fase di preparazione deve concludersi con una build reale. Il fatto che gli e
 
 ### Fase 2: nuova demo
 
-1. creare una copia dell’engine;
-2. scegliere l’esempio ufficiale più vicino al risultato desiderato;
-3. creare un nuovo JSON senza modificare l’esempio originale;
+1. creare una copia dell'engine;
+2. scegliere l'esempio ufficiale più vicino al risultato desiderato;
+3. creare un nuovo JSON senza modificare l'esempio originale;
 4. importare e verificare le mesh;
 5. selezionare modalità, camera, viewport, memoria, near e culling;
 6. compilare il primo PRG;
 7. eseguire il test in `x64sc`;
 8. salvare screenshot, log e comando.
 
-Partire dall’esempio più vicino riduce gli errori di schema. Una demo Mode 5 con mesh condivise dovrebbe partire da un esempio Mode 5 con sharing, non da una scena wire minimale.
+Partire dall'esempio più vicino riduce gli errori di schema. Una demo Mode 5 con mesh condivise dovrebbe partire da un esempio Mode 5 con sharing, non da una scena wire minimale.
 
 ### Fase 3: sviluppo iterativo
 
@@ -2426,7 +2428,7 @@ Partire dall’esempio più vicino riduce gli errori di schema. Una demo Mode 5 
 7. annotare ciò che deve rimanere invariato;
 8. aggiornare gli hash delle varianti importanti.
 
-Una buona iterazione deve poter rispondere alla domanda: “Quale singola modifica ha prodotto questa differenza?”.
+Una buona iterazione deve poter rispondere alla domanda: "Quale singola modifica ha prodotto questa differenza?".
 
 ### Fase 4: diagnosi
 
@@ -2439,7 +2441,7 @@ Una buona iterazione deve poter rispondere alla domanda: “Quale singola modifi
 7. ricompilare senza patch manuali;
 8. provare scene di regressione non collegate al caso iniziale.
 
-La diagnosi deve precedere la modifica. Una patch che “sembra funzionare” non è sufficiente se non è chiaro perché funzioni.
+La diagnosi deve precedere la modifica. Una patch che "sembra funzionare" non è sufficiente se non è chiaro perché funzioni.
 
 ### Fase 5: chiusura
 
@@ -2453,11 +2455,11 @@ La diagnosi deve precedere la modifica. Una patch che “sembra funzionare” no
 8. congelare la directory finale;
 9. creare una nuova copia per ogni sviluppo successivo.
 
-La chiusura non consiste soltanto nel copiare il PRG. La vera unità archivistica della demo comprende almeno JSON, builder identificato dall’hash, comando, asset, PRG e rapporto di test.
+La chiusura non consiste soltanto nel copiare il PRG. La vera unità archivistica della demo comprende almeno JSON, builder identificato dall'hash, comando, asset, PRG e rapporto di test.
 
 ## 30. Prompt completo per iniziare da zero
 
-Il seguente prompt raccoglie l’intero flusso di preparazione. Può essere adattato ai percorsi reali del computer.
+Il seguente prompt raccoglie l'intero flusso di preparazione. Può essere adattato ai percorsi reali del computer.
 
 ```text
 Voglio creare demo e PRG con 3Dvibe64 senza modificare
@@ -2465,11 +2467,11 @@ manualmente codice Assembly.
 
 Repository ufficiale:
 
-[incolla qui l’indirizzo copiato dal pulsante Code di GitHub]
+[incolla qui l'indirizzo copiato dal pulsante Code di GitHub]
 
-Prepara l’ambiente di sviluppo.
+Prepara l'ambiente di sviluppo.
 
-1. Individua e scarica lo ZIP dell’ultima release stabile.
+1. Individua e scarica lo ZIP dell'ultima release stabile.
 2. Estrailo in:
 
 C:\3Dvibe64\engine-ufficiale
@@ -2484,7 +2486,7 @@ C:\3Dvibe64\engine-ufficiale
    - VICE xscpu64, facoltativo e non contrattuale.
 
 5. Se manca qualcosa, usa esclusivamente fonti ufficiali.
-6. Chiedimi l’autorizzazione quando richiesta per download,
+6. Chiedimi l'autorizzazione quando richiesta per download,
    installazioni, privilegi amministrativi o avvio di programmi.
 7. Se possibile, preferisci versioni portabili di 64tass e VICE.
 8. Configura i percorsi degli strumenti.
@@ -2514,9 +2516,9 @@ Alla fine indicami:
 
 ### Come adattare il prompt
 
-Se lo ZIP è già stato scaricato, sostituire il punto relativo al download con il percorso locale. Se non si desidera installare Git, si può chiedere a Codex di segnalarne l’assenza e procedere con copie e hash.
+Se lo ZIP è già stato scaricato, sostituire il punto relativo al download con il percorso locale. Se non si desidera installare Git, si può chiedere a Codex di segnalarne l'assenza e procedere con copie e hash.
 
-Se VICE non può essere avviato automaticamente dall’ambiente, Codex deve comunque:
+Se VICE non può essere avviato automaticamente dall'ambiente, Codex deve comunque:
 
 - produrre il PRG;
 - indicare il comando esatto di avvio;
@@ -2546,6 +2548,6 @@ Il flusso raccomandato è:
 
 Non serve conoscere Assembly per creare una demo con questo metodo. Serve soprattutto lavorare in modo ordinato: baseline intatta, copie isolate, richieste precise, test ripetibili e PRG sempre ricostruibile dal JSON.
 
-L’Assembly rimane naturalmente al centro dell’esecuzione sul Commodore 64, ma non deve diventare il punto nel quale l’utente è costretto a intervenire manualmente. Il builder deve trasformare la descrizione della scena in codice, mentre Codex deve rendere trasparenti le decisioni tecniche, registrare i passaggi e impedire che una versione funzionante venga persa.
+L'Assembly rimane naturalmente al centro dell'esecuzione sul Commodore 64, ma non deve diventare il punto nel quale l'utente è costretto a intervenire manualmente. Il builder deve trasformare la descrizione della scena in codice, mentre Codex deve rendere trasparenti le decisioni tecniche, registrare i passaggi e impedire che una versione funzionante venga persa.
 
 Una demo ben organizzata non è soltanto un PRG che parte. È un progetto del quale si conoscono la sorgente JSON, gli asset, il builder, il comando, gli hash, i test e il percorso esatto di ricostruzione.

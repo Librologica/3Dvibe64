@@ -1,8 +1,8 @@
-# Reusable rendering and data — 1.15.0
+# Reusable rendering and data — 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
 
-Stable1.15.0 includes the qualified development modules with unchanged runtime. The package is published on GitHub; previous frozen releases and demos are preserved. [Base options](EXACT-RENDER.en.md). The default remains `-LegacyPlusOptimizations none`. New options retain the Mode4 legacy-plus, walkLite, normal160×100, high-basic-v2, NoFpsOverlay, Q4 near8/poly clipping profile. Geometry Q4, coefficients Q10, pixels and palette are not reduced. Every combination consumes real64KB RAM; a combination may fail even when its individual options fit.
+Stable1.15.1 retains the optional API contracts; renderer source is promoted unchanged from agentic17. The current package is local; previous frozen releases and demos are preserved. [Base options](EXACT-RENDER.en.md). The default remains `-LegacyPlusOptimizations none`. New options retain the Mode4 legacy-plus, walkLite, normal160×100, high-basic-v2, NoFpsOverlay, Q4 near8/poly clipping profile. Geometry Q4, coefficients Q10, pixels and palette are not reduced. Every combination consumes real64KB RAM; a combination may fail even when its individual options fit.
 
 ## Option selection
 
@@ -45,4 +45,4 @@ This optional data module does not promise higher FPS. Application interpolation
 
 Model-specific component order, hidden shuttle faces, camera and dynamics, sparser grid, FOV, procedural course and alternate scanlines are not moved into the renderer core. These change content, behavior or graphics and remain in the demo project. Rigid model rotation requires separate qualification before becoming a new object-transform API.
 
-[Current qualification](QUALIFICATION-1.15.0.en.md) separates native FPS, pixel identity and CPU callbacks. Wire benchmark results are not attributed to the shuttle or to the stream module alone.
+[Current qualification](QUALIFICATION-1.15.1.en.md) separates native FPS, pixel identity and CPU callbacks. Wire benchmark results are not attributed to the shuttle or to the stream module alone.

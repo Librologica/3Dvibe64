@@ -1,6 +1,8 @@
-# Roadmap — 1.15.0
+# Roadmap — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
 
 Inclusi: opzioni renderer esatte, span compatti MAT-01, adapter pareti conservativo, helper retini/palette statici e primitive opzionali pool/camera/SID. Billboard, materiali, entità, visibilità, mesh condivise, animazioni controllate, WORLD-01 e LEVEL-01 mantengono contratti delimitati.
 

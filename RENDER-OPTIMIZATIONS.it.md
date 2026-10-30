@@ -1,10 +1,12 @@
-# Ottimizzazioni esatte del renderer — 1.15.0
+# Ottimizzazioni esatte del renderer — 1.15.1
 
-> SDK sorgente stabile1.15.0 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+
+> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
 
 ## Supporto legacy-plus nella 1.15.0
 
-Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica nativa](QUALIFICATION-1.14.0.it.md).
+Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica corrente](QUALIFICATION-1.15.1.it.md).
 
 Tutte le nuove opzioni sono esplicite. Restano i default ordinari: precisione
 legacy, texture standard, linee precise, presentazione safe e LOD texture off.
@@ -116,7 +118,7 @@ per un altro progetto. Senza nuove opzioni il comportamento del renderer resta;
 SceneFile e gli input gameplay sono sempre esterni ed espliciti.
 
 
-Dati cache pareti: `2*face_count + 12*quad_count + 17` byte, oltre ai tre blocchi di codice e alle guardie dell’allocatore. Nessuna memoria ipoteticamente recuperabile è contata come libera. Le voci storiche referenceBuilds in PACKAGE-MANIFEST.json indicano input di regressione esterni, non file distribuiti nell’SDK.
+Dati cache pareti: `2*face_count + 12*quad_count + 17` byte, oltre ai tre blocchi di codice e alle guardie dell'allocatore. Nessuna memoria ipoteticamente recuperabile è contata come libera. Le voci storiche referenceBuilds in PACKAGE-MANIFEST.json indicano input di regressione esterni, non file distribuiti nell'SDK.
 
 
 ## Entry point per adapter
@@ -140,15 +142,15 @@ builder.build(my_output, my_scene_path, mode=6,
               camera_auto=True, geometry_adapter=adapt,
               engine_experiments='inside-planes')
 ```
-La sola geometria non dimostra opacità, limiti camera, trasformazioni oggetto/mondo o compatibilità shader. Dichiarare il contratto soltanto dopo queste verifiche dell’adapter. Per routine di disegno nei parts usare `draw_part`.
+La sola geometria non dimostra opacità, limiti camera, trasformazioni oggetto/mondo o compatibilità shader. Dichiarare il contratto soltanto dopo queste verifiche dell'adapter. Per routine di disegno nei parts usare `draw_part`.
 
 Chiavi e revisioni FlatCache devono essere immutabili/hashable; tipi errati non riusano voci esistenti.
 
-L’occlusione pareti richiede anche una palette hardware VIC condivisa e immutabile. Le due tabelle dei materiali vengono controllate omogenee in build e l’adapter deve conservarle a runtime. Palette miste e conflitti di proprietà delle celle non sono qualificati e vengono rifiutati.
+L'occlusione pareti richiede anche una palette hardware VIC condivisa e immutabile. Le due tabelle dei materiali vengono controllate omogenee in build e l'adapter deve conservarle a runtime. Palette miste e conflitti di proprietà delle celle non sono qualificati e vengono rifiutati.
 
-`palette_indices=None` controlla tutto il catalogo materiali. Se contiene palette inutilizzate, fornire una lista esplicita non vuota di tutte le voci raggiungibili, inclusi materiale+offset riflettività, inizializzazione e override istanza/colore. L’adapter garantisce che nessun’altra voce/colore diventi attivo. Sono controllate omogenee solo queste voci; transizioni dinamiche non dichiarate restano fuori contratto.
+`palette_indices=None` controlla tutto il catalogo materiali. Se contiene palette inutilizzate, fornire una lista esplicita non vuota di tutte le voci raggiungibili, inclusi materiale+offset riflettività, inizializzazione e override istanza/colore. L'adapter garantisce che nessun'altra voce/colore diventi attivo. Sono controllate omogenee solo queste voci; transizioni dinamiche non dichiarate restano fuori contratto.
 
-`static_patterns.native_cache(face_count,low=0,high=1,prefix='sf',row_cache='sp_current_row')` emette codice/dati di cache nativa alla generazione. Supporta1..255facce; dati6*face_count+68byte più codice/guardie. `sf_assign`: A=livello0..16,X=faccia, chiamare solo alla generazione/modifica. `sf_load`: X=faccia, copia quattro byte già pronti nella cache dello span; una faccia non assegnata restituisce carry zero senza cambiarla. `sf_invalidate`: X=faccia. Carry impostato indica successo; A/Y modificati,X conservato. Voci iniziali non assegnate; faccia/livello errati rifiutati. Aggiornare soltanto fra viste complete. L’adapter gestisce fallback e invalidazione per geometria/materiale/luce. Nessun calcolo di luce per frame viene installato.
+`static_patterns.native_cache(face_count,low=0,high=1,prefix='sf',row_cache='sp_current_row')` emette codice/dati di cache nativa alla generazione. Supporta1..255facce; dati6*face_count+68byte più codice/guardie. `sf_assign`: A=livello0..16,X=faccia, chiamare solo alla generazione/modifica. `sf_load`: X=faccia, copia quattro byte già pronti nella cache dello span; una faccia non assegnata restituisce carry zero senza cambiarla. `sf_invalidate`: X=faccia. Carry impostato indica successo; A/Y modificati,X conservato. Voci iniziali non assegnate; faccia/livello errati rifiutati. Aggiornare soltanto fra viste complete. L'adapter gestisce fallback e invalidazione per geometria/materiale/luce. Nessun calcolo di luce per frame viene installato.
 
 
 ## Confine applicativo 1.15.0

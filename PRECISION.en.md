@@ -1,6 +1,8 @@
-# Precision / Precisione — 1.15.0
+# Precision / Precisione — 1.15.1
 
-> Published stable1.15.0 source SDK. [Status and support](RELEASE-STATUS.en.md).
+Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+
+> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
 
 | Geometry | Modes | Camera/clipping | Mode7 textures |
 |---|---|---|---|
