@@ -1,9 +1,9 @@
 # Note di sviluppo e manutenzione — 1.20.0
 
-> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
 
-Lo sviluppo attivo aggiunge AnimatedMesh v1 alla agentic23 consegnata. Leggere [AGENTIC24](AGENTIC36.it.md) e [il contratto completo](ANIMATED-MESH.it.md). Hash correnti e risultati nativi appartengono a QUALIFICATION-1.20.0.json. Le qualifiche precedenti restano storico immutabile. Non viene usato o promosso lavoro deprecato1.15.3/1.16/1.17.
+La release include AnimatedMesh v1. Leggere le [note di release](RELEASE-NOTES-1.20.0.it.md) e [il contratto completo](ANIMATED-MESH.it.md). Hash e risultati nativi sono nel registro QUALIFICATION-1.20.0.json. I registri di qualifica precedenti conservano la provenienza originale.
 
 Non ampliare finestre RAM o indebolire clipping/matematica per accettare build.
 Conservare fallback e normalizzazione degli helper privati; chiamanti/layout

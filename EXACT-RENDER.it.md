@@ -1,10 +1,10 @@
 # Ottimizzazioni del rendering esatto — 1.20.0
 
-> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
 
 
-Le funzioni Mode4 opzionali introdotte nella1.15.0 conservano il contratto API. Il sorgente stabile corrente deriva dalla agentic36 ed è pubblicato su GitHub. Legacy/Q8 e le build plus senza selettore mantengono i contratti precedenti. Nessuna demo, scena, programma, media o cattura nativa nel pacchetto sorgente.
+Le funzioni Mode4 opzionali introdotte nella1.15.0 conservano il contratto API. La release sorgente stabile corrente è la 1.20.0, pubblicata su GitHub. Legacy/Q8 e le build plus senza selettore mantengono i contratti precedenti. Nessuna demo, scena, programma, media o cattura nativa nel pacchetto sorgente.
 
 ## Selezione e ambito
 

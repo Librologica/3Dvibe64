@@ -1,9 +1,9 @@
 # Development and maintenance notes — 1.20.0
 
-> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
 
-The active development adds AnimatedMesh v1 to delivered agentic23. Read [AGENTIC24](AGENTIC36.en.md) and [the full API contract](ANIMATED-MESH.en.md). Current hashes and native results belong to QUALIFICATION-1.20.0.json. Earlier versioned qualification files remain immutable history. No deprecated 1.15.3/1.16/1.17 work is used or promoted.
+This release includes AnimatedMesh v1. Read the [release notes](RELEASE-NOTES-1.20.0.en.md) and [full API contract](ANIMATED-MESH.en.md). Current hashes and native results are recorded in QUALIFICATION-1.20.0.json. Earlier qualification ledgers retain their original provenance.
 
 Do not enlarge RAM windows or weaken clipping/math to force a build. Keep
 fallbacks and private helper normalization; unknown callers/layouts must retain

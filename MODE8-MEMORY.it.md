@@ -1,6 +1,6 @@
 # Memoria Mode8 — 1.20.0
 
-> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
 
 I contratti mono/multi mantengono template auto/interactive separati. Il pacchetto
@@ -38,8 +38,6 @@ Etichette/mappe dell'assembler descrivono il documento realmente compilato.
 [Mode8](MODE8.it.md) · [Formato mappe](MAPS-2.5D.it.md) ·
 [Qualifica corrente](QUALIFICATION-1.20.0.json). MODE8-MEMORY.md è un rapporto storico.
 
-Agentic25: la cache profili multi conserva32 slot /4096 byte e usa una politica second-chance.32 byte di stato aggiuntivo sono a $ca00..$ca1f, nella finestra layout_support preesistente; nessun buffer è condiviso. Coefficienti/stato totali480 byte. La cache per piano da485 byte resta distinta. Auto/interattivo usano lo stesso algoritmo; nessuna modifica a geometria, campionamento lazy, input o pubblicazione delle immagini.
+La cache profili multi conserva 32 slot e 4096 byte e usa una politica second-chance. I 32 byte di stato aggiuntivo occupano $ca00..$ca1f nella finestra layout_support esistente; la cache per piano da 485 byte resta distinta. Il profilo nullo condiviso usa 128 byte e un helper di 24 byte a $ca20..$cab7; coefficienti e stato occupano complessivamente 608 byte, senza nuovi alias. Template automatici e interattivi condividono questo algoritmo. Guardie, geometria, campionamento lazy, input e presentazione restano quelli dei rispettivi contratti.
 
-Agentic26: profilo nullo condiviso128 byte e helper24 byte a $ca20..$cab7; coefficienti/stato totali608 byte. Finestre originali, nessun alias. Vedere AGENTIC26.it.md e QUALIFICATION-AGENTIC26.json.
-
-Agentic27 mantiene implementazione e programmi Mode8 della agentic26; il registro corrente verifica identità esatta delle build prima del riuso delle misure native.
+Il [registro corrente](QUALIFICATION-1.20.0.json) conserva le identità delle build e le condizioni necessarie per riutilizzare le misure native.

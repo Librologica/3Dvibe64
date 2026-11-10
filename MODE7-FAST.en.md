@@ -1,6 +1,6 @@
 # Mode 7 fast profile — 1.20.0
 
-> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
 
 
@@ -117,6 +117,6 @@ include additional scene-specific optimizations that are **not** promoted here.
 See [release notes](RELEASE-NOTES-1.7.0.md) for qualification scope and evidence.
 No production demo, generated PRG, music or raw benchmark is packaged.
 
-Agentic28: the guarded ordinary affine C span path saves/restores16 existing private math/UV bytes (parent4). The fill loop borrows once per face; the standalone span entry remains protected. U lives in X during the closed raster core, and its sampler uses Y for Q. No new global zero-page alias or persistent data table is introduced. Compiler-known consumers treat fill A/flags as volatile; changed private callees/consumers, other compositors and VIC color policy retain the parent path. See [current notes](AGENTIC33.en.md) for stack and qualification scope.
+Private affine span state: the guarded ordinary affine C span path saves/restores16 existing private math/UV bytes (parent4). The fill loop borrows once per face; the standalone span entry remains protected. U lives in X during the closed raster core, and its sampler uses Y for Q. No new global zero-page alias or persistent data table is introduced. Compiler-known consumers treat fill A/flags as volatile; changed private callees/consumers, other compositors and VIC color policy retain the parent path. See [current notes](QUALIFICATION-1.20.0.en.md) for stack and qualification scope.
 
-Agentic29 retains the saved16-byte private span contract. Packed ink borrows the retired U shadow after U moves to X; exact XOR nibble composition eliminates the sampler index spill. Only checked private consumers permit skipping attribute initialization for empty rows; consumed rows always initialize both endpoints. A per-face vertex range proof selects the unchecked edge-store interior, with the original comparisons retained otherwise. See [current notes](AGENTIC33.en.md).
+Packed affine sampling retains the saved16-byte private span contract. Packed ink borrows the retired U shadow after U moves to X; exact XOR nibble composition eliminates the sampler index spill. Only checked private consumers permit skipping attribute initialization for empty rows; consumed rows always initialize both endpoints. A per-face vertex range proof selects the unchecked edge-store interior, with the original comparisons retained otherwise. See [current notes](QUALIFICATION-1.20.0.en.md).

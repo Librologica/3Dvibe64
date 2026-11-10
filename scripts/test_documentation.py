@@ -90,6 +90,8 @@ def main():
                 assert obsolete not in text,(pair[language],obsolete)
     current=set(docs['currentBilingual'])|{x[l] for x in pairs for l in ('en','it')}
     assert not current & set(docs['historicalReports'])
+    for name in current|{'AGENTS.md'}:
+        assert not re.search(r'(?i)agentic[-_ ]*\d+',read(name)),('internal build name in current public documentation',name)
     for name in current-{'LICENSE-DOCUMENTATION.md'}:
         first=(ROOT/name).read_text('utf-8-sig').splitlines()[0]
         assert version in first and '-dev-' not in first,name

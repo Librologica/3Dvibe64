@@ -1,10 +1,10 @@
 # Exact rendering optimizations — 1.20.0
 
-> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
 
 
-The optional Mode4 features introduced in1.15.0 retain their API contract. The current stable source is promoted from agentic36 and is published on GitHub. Legacy/Q8 and ordinary plus builds without this selector retain their previous contracts. No demos, scenes, programs, media or native captures are packaged.
+The optional Mode4 features introduced in1.15.0 retain their API contract. The current stable source release is 1.20.0, published on GitHub. Legacy/Q8 and ordinary plus builds without this selector retain their previous contracts. No demos, scenes, programs, media or native captures are packaged.
 
 ## Selection and scope
 

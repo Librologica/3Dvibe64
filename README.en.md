@@ -1,6 +1,6 @@
 # 3Dvibe64 1.20.0
 
-Stable source SDK promoted from agentic36 and its r1 documentation revision. Published on GitHub.
+Stable source SDK with updated renderer, optional APIs and complete scene-design guidance. Published on GitHub.
 
 Graphics modes 1–8, inherited exact optimizations, optional Distance Fade, AnimatedMesh, RuntimeScene and bounded application modules. Profiles explicitly marked experimental retain their limits; promotion does not extend supported combinations.
 
@@ -297,9 +297,7 @@ The default affine path has no perspective correction. Optional projective inter
 Read the [complete Mode 7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.en.md), [PNG guide](PNG-TEXTURES.en.md), and [eight public examples](EXTERNAL-INPUTS.en.md). The paired Italian guides cover the same contract.
 
 
-1.15.1-dev-agentic8: exact affine Mode7-C legacy-plus span optimization. Mode7/1x timing tradeoff explicitly accepted; prioritize20x/64x. See AGENTIC-DEV.md and external evidence.
 
 
-1.15.1-dev-agentic8: exact full-byte UV expansion and cached immediate stable spans. See AGENTIC-DEV.md and external evidence.
 
 External gameplay adapters require explicit `--project-source` and a preset with `engineVersion: "1.20.0"`; these inputs are not bundled. See [external inputs](EXTERNAL-INPUTS.en.md).

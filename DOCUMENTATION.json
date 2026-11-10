@@ -347,7 +347,8 @@
     "RELEASE-NOTES-1.6.1.md",
     "RELEASE-NOTES-1.7.0.md",
     "RELEASE-NOTES-1.8.0.md",
-    "RELEASE-NOTES-1.9.0.md"
+    "RELEASE-NOTES-1.9.0.md",
+    "CHANGELOG-HISTORY.md"
   ],
   "historyPolicy": "Preserve versioned measurements and archived release notes; current paired contracts take precedence.",
   "gameplayProfiles": [
@@ -412,9 +413,11 @@
     "it": "DISTANCE-FADE.it.md"
   },
   "documentationRevision": {
-    "id": "stable-github-publication",
+    "id": "public-docs-r1",
     "date": "2026-11-10",
-    "scope": "publication metadata and bilingual status only; runtime and qualification unchanged"
+    "scope": "public release terminology and current bilingual documentation only; runtime and measurement anchors unchanged",
+    "runtimeTag": "v1.20.0",
+    "provenancePolicy": "Exact development identities remain in original machine-readable ledgers and historical archives."
   },
   "distanceFadeSceneGuidance": {
     "en": "DISTANCE-FADE.en.md#when-distance-fade-helps",
@@ -426,5 +429,10 @@
     "floating-origin",
     "random-volume-particles"
   ],
-  "profilePolicy": "gameplayProfiles lists the 13 --profile selectors of work/build-gameplay.py; optionalRuntimeSceneCapabilities describes separate ordinary-builder runtimeScene APIs, not gameplay CLI profiles."
+  "profilePolicy": "gameplayProfiles lists the 13 --profile selectors of work/build-gameplay.py; optionalRuntimeSceneCapabilities describes separate ordinary-builder runtimeScene APIs, not gameplay CLI profiles.",
+  "publicTerminologyPolicy": {
+    "scope": "current Markdown contracts and release-page prose",
+    "publicVersionsOnly": true,
+    "internalProvenancePreserved": true
+  }
 }

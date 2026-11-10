@@ -1,6 +1,6 @@
 # Profilo veloce Mode 7 — 1.20.0
 
-> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
 
 
@@ -117,6 +117,6 @@ delle due stanze includono ottimizzazioni specifiche **non** promosse qui.
 Le [note release](RELEASE-NOTES-1.7.0.md) descrivono ambito ed evidenze.
 Niente demo di produzione, PRG generato, musica o benchmark grezzo nel pacchetto.
 
-Agentic28: il percorso C affine ordinario controllato salva/ripristina16 byte privati math/UV esistenti (base4). Il ciclo di fill li prende in prestito una volta per faccia; l’ingresso span autonomo resta protetto. U resta in X nel core chiuso e il sampler usa Y per Q. Nessun nuovo alias globale zero page o tabella persistente. I chiamanti riconosciuti considerano A/flag del fill volatili; helper/chiamanti privati diversi, altri compositori e policy colore VIC conservano il percorso della base. Vedere le [note correnti](AGENTIC33.it.md) per stack e perimetro di verifica.
+Stato privato degli span affini: il percorso C affine ordinario controllato salva/ripristina16 byte privati math/UV esistenti (base4). Il ciclo di fill li prende in prestito una volta per faccia; l’ingresso span autonomo resta protetto. U resta in X nel core chiuso e il sampler usa Y per Q. Nessun nuovo alias globale zero page o tabella persistente. I chiamanti riconosciuti considerano A/flag del fill volatili; helper/chiamanti privati diversi, altri compositori e policy colore VIC conservano il percorso della base. Vedere le [note correnti](QUALIFICATION-1.20.0.it.md) per stack e perimetro di verifica.
 
-Agentic29 conserva il contratto di salvataggio dei16 byte privati. Ink usa la copia U ritirata dopo il trasferimento di U in X; una composizione XOR esatta dei nibble elimina lo spill dell’indice del sampler. Solo chiamanti privati controllati consentono di omettere gli attributi delle righe vuote; le righe consumate inizializzano entrambi gli estremi. La prova del range dei vertici una volta per faccia seleziona lo store interno; negli altri casi restano i confronti originali. Vedere le [note correnti](AGENTIC33.it.md).
+Il campionamento affine compatto conserva il contratto di salvataggio dei16 byte privati. Ink usa la copia U ritirata dopo il trasferimento di U in X; una composizione XOR esatta dei nibble elimina lo spill dell’indice del sampler. Solo chiamanti privati controllati consentono di omettere gli attributi delle righe vuote; le righe consumate inizializzano entrambi gli estremi. La prova del range dei vertici una volta per faccia seleziona lo store interno; negli altri casi restano i confronti originali. Vedere le [note correnti](QUALIFICATION-1.20.0.it.md).

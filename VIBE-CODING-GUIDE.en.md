@@ -1,6 +1,6 @@
 # Practical Manual for Creating Demos and PRGs with 3Dvibe64 Using Codex — 1.20.0
 
-> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
 
 

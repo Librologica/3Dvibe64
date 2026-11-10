@@ -1,6 +1,6 @@
 # 3Dvibe64 1.20.0
 
-SDK sorgente stabile derivato dalla agentic36 e dalla revisione documentale r1. Pubblicato su GitHub.
+SDK sorgente stabile con renderer aggiornato, API opzionali e guida completa alla progettazione delle scene. Pubblicato su GitHub.
 
 Rendering nelle modalità 1–8, ottimizzazioni esatte ereditate, Distance Fade opzionale, AnimatedMesh, RuntimeScene e moduli applicativi delimitati. I profili indicati come sperimentali conservano i propri limiti; la promozione non estende le combinazioni supportate.
 
@@ -296,9 +296,3 @@ Il Gouraud textured usa `gouraud.creaseAngle` (default 60°, intervallo 0–180�
 Il default affine non corregge la prospettiva. L'interpolazione prospettica opzionale richiede il profilo Q8 o legacy-plus limitato: vedere [precisione texture](TEXTURE-PRECISION.it.md). Niente bilinear, mipmapping, texture runtime packed o quad mapper nativo. Resta l'aliasing di campionamento.
 
 Leggere il [contratto Mode 7 completo](MODE7.it.md), la [guida texture](TEXTURE-GUIDE.it.md), la [guida PNG](PNG-TEXTURES.it.md) e gli [otto esempi pubblici](EXTERNAL-INPUTS.it.md). Le guide inglesi equivalenti coprono lo stesso contratto.
-
-
-1.15.1-dev-agentic8: exact affine Mode7-C legacy-plus span optimization. Mode7/1x timing tradeoff explicitly accepted; prioritize20x/64x. See AGENTIC-DEV.md and external evidence.
-
-
-1.15.1-dev-agentic8: exact full-byte UV expansion and cached immediate stable spans. See AGENTIC-DEV.md and external evidence.

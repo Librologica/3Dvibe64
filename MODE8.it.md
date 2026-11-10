@@ -1,23 +1,15 @@
 # GraphicsMode 8 — 2.5D — 1.20.0
 
-> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
 Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
 
 
-## Cache e qualifica correnti agentic26
+## Cache e qualifica correnti
 
-Multi mantiene la cache per piano da485 byte e l’helper da85 byte prima del
-font5800. I32 slot profili usano second-chance; i profili esattamente nulli
-condividono128 byte immutabili e24 byte helper nel layout_support originale.
-Coefficienti/stato totali608 byte. Margine codice basso multi canonico3 byte
-auto /1207 interattivo, con tutti i limiti assembler originali. Helper altezza
-fissa192 byte a5500. [Memoria](MODE8-MEMORY.it.md). Le prove native PAL
-Turbo6510 a1/20/64× riguardano le esatte build auto agentic26. Interattivo
-assemblato/kernel condiviso verificato, senza nuove misure native. I rapporti
-stock PAL/NTSC descrivono PRG storici; hardware e NTSC non sono nuovamente
-qualificati. [Registro corrente](QUALIFICATION-1.20.0.json).
+Il backend multi conserva la cache per piano da 485 byte e l’helper da 85 byte prima del font a $5800. I 32 slot profili usano second-chance; i profili esattamente nulli condividono 128 byte immutabili e 24 byte helper nel layout_support originale. Coefficienti e stato occupano complessivamente 608 byte. Il margine di codice basso dei template multi è di 3 byte in automatico e 1207 in interattivo, con tutti i limiti assembler attivi. L’helper ad altezza fissa resta di 192 byte a $5500. [Memoria](MODE8-MEMORY.it.md).
 
+Il registro di qualifica identifica le build automatiche misurate su PAL Turbo6510 a 1×, 20× e 64×. I template interattivi condividono i kernel verificati e sono assemblati, senza implicare nuove misure native per ogni combinazione. I rapporti stock PAL/NTSC descrivono programmi storici; hardware e NTSC non sono nuovamente qualificati. [Registro corrente](QUALIFICATION-1.20.0.json).
 
 Riferimento stabile1.15.1: [ottimizzazioni storiche](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
@@ -112,12 +104,6 @@ Gli strumenti di profilazione e misura restano esterni alla distribuzione. Usare
 
 Nota storica: la ricerca è iniziata con un compositore a caratteri a risoluzione ridotta e ha sperimentato altre architetture geometriche/grafiche. Gli archivi non fanno parte dell'SDK. Si promuove il bitmap con backend mono/multi distinti; nessun precedente target prestazionale torna come gate di rilascio.
 
-Agentic25: la cache profili multi conserva32 slot /4096 byte e usa una politica second-chance.32 byte di stato aggiuntivo sono a $ca00..$ca1f, nella finestra layout_support preesistente; nessun buffer è condiviso. Coefficienti/stato totali480 byte. La cache per piano da485 byte resta distinta. Auto/interattivo usano lo stesso algoritmo; nessuna modifica a geometria, campionamento lazy, input o pubblicazione delle immagini.
+La cache profili multi conserva 32 slot e 4096 byte e usa una politica second-chance. I 32 byte di stato aggiuntivo occupano $ca00..$ca1f nella finestra layout_support esistente; la cache per piano da 485 byte resta distinta. Il profilo nullo condiviso usa 128 byte e un helper di 24 byte a $ca20..$cab7; coefficienti e stato occupano complessivamente 608 byte, senza nuovi alias. Template automatici e interattivi condividono questo algoritmo. Guardie, geometria, campionamento lazy, input e presentazione restano quelli dei rispettivi contratti.
 
-Agentic26: profilo nullo condiviso128 byte e helper24 byte a $ca20..$cab7; coefficienti/stato totali608 byte. Finestre originali, nessun alias. Vedere AGENTIC26.it.md e QUALIFICATION-AGENTIC26.json.
-
-Agentic27 mantiene implementazione e programmi Mode8 della agentic26; il registro corrente verifica identità esatta delle build prima del riuso delle misure native.
-
-## Dissolvenza a distanza opzionale
-
-Mode8 accetta `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`, oltre alle opzioni mappa della tabella precedente. Le distanze usano celle della mappa, con frazioni Q8 della camera conservate. Default off. [Contratto](DISTANCE-FADE.it.md).
+Il [registro corrente](QUALIFICATION-1.20.0.json) conserva le identità delle build e le condizioni necessarie per riutilizzare le misure native.

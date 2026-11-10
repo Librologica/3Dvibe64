@@ -1,7 +1,7 @@
 # 3Dvibe64 1.20.0
 
-Stable source SDK from agentic36, published on GitHub.
-SDK sorgente stabile dalla agentic36, pubblicato su GitHub.
+Stable source SDK 1.20.0, published on GitHub.
+SDK sorgente stabile 1.20.0, pubblicato su GitHub.
 
 [English manual](README.en.md) · [Manuale italiano](README.it.md) · [Documentation / Documentazione](DOCS.md)
 

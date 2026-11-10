@@ -1,9 +1,9 @@
 # Roadmap — 1.20.0
 
-> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
 
-Implemented in agentic24: native AnimatedMesh v1, packed pose clips, independent instance phases, source-pose caching and optional frozen reference Gouraud. [Contract](ANIMATED-MESH.en.md).
+Implemented: native AnimatedMesh v1, packed pose clips, independent instance phases, source-pose caching and optional frozen reference Gouraud. [Contract](ANIMATED-MESH.en.md).
 
 
 Included: exact opt-in renderer flags, MAT-01 packed spans, conservative wall adapter, static pattern/palette helpers and optional pool/camera/SID primitives. Existing billboard, materials, entity, visibility, shared mesh, controlled motion, WORLD-01 and LEVEL-01 contracts remain bounded.

@@ -1,6 +1,6 @@
 # Release status and support — 1.20.0
 
-Stable source release 1.20.0, published on GitHub and promoted from agentic36, documentation revision r1. [Release page](https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0). Tag `v1.20.0` identifies the published sources; the attached source ZIP and SHA256SUMS file identify the distributed bytes.
+Stable source release 1.20.0, published on GitHub and with updated English and Italian documentation. [Release page](https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0). Tag `v1.20.0` identifies the published sources; the attached source ZIP and SHA256SUMS file identify the distributed bytes.
 
 Runtime code, defaults and API limits are unchanged from the qualified development. Features explicitly marked experimental in their contracts retain that scope. Not every mode, geometry and feature combination fits C64 memory.
 

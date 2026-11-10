@@ -1,23 +1,15 @@
 # GraphicsMode 8 — 2.5D — 1.20.0
 
-> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
 Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
 
 
-## Current agentic26 cache and qualification
+## Current cache and qualification
 
-Multi retains the485-byte plane-unit cache and85-byte helper before font5800.
-Its32 profile slots use second-chance replacement; exact zero profiles share
-128 immutable bytes plus24 helper bytes inside the original layout_support.
-Total coefficient/state data is608 bytes. Canonical multi low-code margins
-are3 bytes auto /1207 interactive; all assembler bounds remain enforced.
-The192-byte fixed-height helper remains at5500. [Memory](MODE8-MEMORY.en.md).
-Native evidence is PAL Turbo6510 at1/20/64× for the exact agentic26 auto builds.
-Interactive is assembled/shared-kernel checked, without new native timing.
-Prior stock PAL/NTSC reports describe historical PRGs; hardware and NTSC are
-not newly qualified. [Current ledger](QUALIFICATION-1.20.0.json).
+The multi backend retains the 485-byte plane-unit cache and 85-byte helper before the font at $5800. Its 32 profile slots use second-chance replacement; exact zero profiles share 128 immutable bytes plus 24 helper bytes inside the original layout_support. Total coefficient/state data is 608 bytes. Canonical multi low-code margins are 3 bytes in automatic mode and 1207 in interactive mode, with all assembler bounds enforced. The 192-byte fixed-height helper remains at $5500. [Memory](MODE8-MEMORY.en.md).
 
+The qualification ledger identifies automatic builds measured on PAL Turbo6510 at 1×, 20× and 64×. Interactive templates share verified kernels and are assembled, without implying new native timing for every combination. Earlier stock PAL/NTSC reports describe historical programs; hardware and NTSC are not newly qualified. [Current ledger](QUALIFICATION-1.20.0.json).
 
 Stable reference 1.15.1: [historical optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
@@ -113,8 +105,6 @@ Profiling and measurement tools remain external to this distribution. Use PRG an
 
 Historical note: the research began with a low-resolution character-based compositor and tested other geometric/rendering approaches. Those archives are not part of this SDK. The promoted path is bitmap with separate monolevel and multi-level implementations; no old performance target is reintroduced as a release gate.
 
-Agentic25: the multi profile cache keeps32 slots /4096 bytes and uses second-chance replacement.32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; no buffer alias is introduced. Total coefficient/state allocation is480 bytes. The485-byte plane-unit cache is separate. Auto/interactive share this algorithm; geometry, lazy sampling, input and presentation are unchanged.
+The multi profile cache retains 32 slots and 4096 bytes with second-chance replacement. Its 32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; the 485-byte plane-unit cache is separate. The shared zero profile uses 128 bytes and a 24-byte helper at $ca20..$cab7; total coefficient/state data is 608 bytes, without new aliases. Automatic and interactive templates share this algorithm. Guards, geometry, lazy sampling, input and presentation retain their respective contracts.
 
-Agentic26: shared immutable zero profile128 bytes and helper24 bytes at $ca20..$cab7; total coefficient/state data608 bytes. Original windows, no aliases. See AGENTIC26.en.md and QUALIFICATION-AGENTIC26.json.
-
-The stable promotion preserves the qualified agentic36 Mode8 implementation; the current ledger records cold-build identity before native evidence reuse.
+The [current ledger](QUALIFICATION-1.20.0.json) retains build identities and the conditions required to reuse native measurements.

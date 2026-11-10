@@ -1,6 +1,6 @@
 # Mode8 memory — 1.20.0
 
-> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
 
 Current native mono and multi map contracts retain separate auto/interactive
@@ -38,8 +38,6 @@ Assembler labels/maps are authoritative for the compiled document.
 [Mode8](MODE8.en.md) · [Map format](MAPS-2.5D.en.md) ·
 [Current qualification](QUALIFICATION-1.20.0.json). Old MODE8-MEMORY.md is historical.
 
-Agentic25: the multi profile cache keeps32 slots /4096 bytes and uses second-chance replacement.32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; no buffer alias is introduced. Total coefficient/state allocation is480 bytes. The485-byte plane-unit cache is separate. Auto/interactive share this algorithm; geometry, lazy sampling, input and presentation are unchanged.
+The multi profile cache retains 32 slots and 4096 bytes with second-chance replacement. Its 32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; the 485-byte plane-unit cache is separate. The shared zero profile uses 128 bytes and a 24-byte helper at $ca20..$cab7; total coefficient/state data is 608 bytes, without new aliases. Automatic and interactive templates share this algorithm. Guards, geometry, lazy sampling, input and presentation retain their respective contracts.
 
-Agentic26: shared immutable zero profile128 bytes and helper24 bytes at $ca20..$cab7; total coefficient/state data608 bytes. Original windows, no aliases. See AGENTIC26.en.md and QUALIFICATION-AGENTIC26.json.
-
-The stable promotion preserves the qualified agentic36 Mode8 implementation; the current ledger records cold-build identity before native evidence reuse.
+The [current ledger](QUALIFICATION-1.20.0.json) retains build identities and the conditions required to reuse native measurements.

@@ -1,11 +1,18 @@
 # Release notes — 1.20.0
 
-Stable source release promoted from agentic36, published on GitHub. Source-only distribution: no demos, benchmarks, PRGs, music or application assets included.
+3Dvibe64 1.20.0 is a stable source release for graphics modes 1–8, with updated English and Italian documentation. Published on GitHub.
 
-Promotion preserves the qualified engine: inherited exact optimizations across eight modes, native AnimatedMesh, RuntimeScene, optional caches and bounded application APIs. Distance Fade supports Modes 1–8 and defaults to off; Mode7 texture LOD remains independent. The 17 Bayer levels and Q8 arithmetic are retained. Included agentic36 work comprises per-plane level caching and strided Bayer fills for multilevel Mode8, exact polygon distance arithmetic and corrected wire face-owner writes.
+## Highlights
 
-Updated IT/EN documentation covers APIs, limitations, external-input compilation, memory, testing and scene types where fade saves work or costs more than it saves. Earlier numbered reports remain historical.
+- Optional Distance Fade in modes 1–8, with 17 Bayer levels, configurable distance ranges and Q8 arithmetic. It defaults to off; mode 7 texture LOD remains independent.
+- Exact rendering optimizations: shading/material work reuse, affine texture sampling, profile caching and per-plane fade-level reuse in the multilevel mode 8 backend. Strided Bayer fills and exact polygon distance arithmetic avoid repeated work; wire face-owner writes are corrected.
+- AnimatedMesh for indexed pose clips and RuntimeScene for optional camera, visibility and simulation support, within the documented profiles and bounds.
+- Complete guidance for APIs, external-input builds, memory and scene types where fade saves work or adds overhead.
 
-[Quick start](QUICKSTART.en.md) · [Fade](DISTANCE-FADE.en.md) · [Index](DOCS.md) · [Qualification and limits](QUALIFICATION-1.20.0.en.md).
+Defaults and individual contract limits are retained. Not every geometry/feature combination fits C64 memory. The package contains sources, documentation and correctness tests; no demos, benchmark suite/drivers, music or compiled applications.
 
-This promotion adds no new optimization over agentic36. Historical 1.15.0=100 index: parent and stable 137.505630, change 0%; inherited reconstructed estimates, with canonical calculation still blocked by historical PowerShell identity. Separate extended index: 100, inherited by identity from first-delivered agentic36; no new anchor. Existing RAM/layout blocks remain explicit without reducing quality to fit. No new hardware/NTSC qualification.
+[Quick start](QUICKSTART.en.md) · [Complete index](DOCS.md) · [Distance Fade](DISTANCE-FADE.en.md) · [Qualification and limits](QUALIFICATION-1.20.0.en.md).
+
+## Verification
+
+Release source and correctness gates passed. Native VICE PAL Turbo6510 measurements at 1×, 20× and 64× are retained through exact runtime/program identity; coverage, repeats and blocked configurations remain explicit in the qualification ledger. This documentation revision does not change rendering or introduce new FPS runs. No new hardware or NTSC qualification is implied.

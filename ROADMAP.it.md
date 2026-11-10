@@ -1,9 +1,9 @@
 # Roadmap — 1.20.0
 
-> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
 
-Implementati in agentic24: AnimatedMesh v1 nativa, clip di pose compresse, fasi indipendenti, cache della posa sorgente e Gouraud di riferimento congelato facoltativo. [Contratto](ANIMATED-MESH.it.md).
+Implementati: AnimatedMesh v1 nativa, clip di pose compresse, fasi indipendenti, cache della posa sorgente e Gouraud di riferimento congelato facoltativo. [Contratto](ANIMATED-MESH.it.md).
 
 
 Inclusi: opzioni renderer esatte, span compatti MAT-01, adapter pareti conservativo, helper retini/palette statici e primitive opzionali pool/camera/SID. Billboard, materiali, entità, visibilità, mesh condivise, animazioni controllate, WORLD-01 e LEVEL-01 mantengono contratti delimitati.

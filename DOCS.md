@@ -1,6 +1,6 @@
 # Documentation / Documentazione — 1.20.0
 
-Stable source package from agentic36. Published on GitHub. / SDK sorgente stabile dalla agentic36. Pubblicato su GitHub.
+Stable source package 1.20.0. Published on GitHub. / SDK sorgente stabile 1.20.0. Pubblicato su GitHub.
 
 [Quick start / Guida rapida](QUICKSTART.md) · [Testing / Verifiche](TESTING.md) · [Release notes / Note](RELEASE-NOTES-1.20.0.md)
 

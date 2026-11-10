@@ -1,6 +1,6 @@
 # Dissolvenza a distanza — 1.20.0
 
-> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
 Visibilità opzionale a retino per GraphicsMode 1–8. Disattivata per impostazione predefinita. Nessuna demo o scena distribuita.
 
@@ -114,12 +114,12 @@ Una CPU più veloce non rende di per sé conveniente il fade. Confrontare la sce
 
 La visibilità parziale richiede ancora geometria e spesso campionamento texture. La mascheratura aggiunge lavoro: meno puntini visibili **non** significano proporzionalmente meno calcoli o più FPS. L'esclusione completa degli oggetti può risparmiare molto lavoro. Anche le fasce parziali Mode8 e il ripristino dello sfondo mono possono costare più del renderer originale. Misurare scena, target e distribuzione delle distanze effettivi; l'opzione resta spenta per default.
 
-Verifiche e misure native correnti sono in [AGENTIC36](AGENTIC36.it.md) e nella [qualifica](QUALIFICATION-1.20.0.json). Gli FPS nativi contano viste complete presentate nel tempo PAL Turbo6510 dopo warm-up, mai replay CPU o tempo host/warp. Il test compilato di aritmetica/scritture verifica solo la correttezza: `python -B scripts/test_distance_fade.py` (dipendenze di sviluppo:64tass e py65). Le distribuzioni sorgenti non contengono scene di prova, demo, musica, PRG o catture; tutte le evidenze native restano esterne.
+Verifiche e misure native correnti sono in [Note di release](RELEASE-NOTES-1.20.0.it.md) e nella [qualifica](QUALIFICATION-1.20.0.json). Gli FPS nativi contano viste complete presentate nel tempo PAL Turbo6510 dopo warm-up, mai replay CPU o tempo host/warp. Il test compilato di aritmetica/scritture verifica solo la correttezza: `python -B scripts/test_distance_fade.py` (dipendenze di sviluppo:64tass e py65). Le distribuzioni sorgenti non contengono scene di prova, demo, musica, PRG o catture; tutte le evidenze native restano esterne.
 
-## Implementazione agentic35
+## Dispatch delle scritture e delle maschere
 
-Dispatch del writer e selezione maschera passano agli aggiornamenti del livello privato, con variante Mode7 compatta per conservare RAM. Mode8 pulisce il viewport identico per porzioni contigue di righe carattere e limita i campioni parziali all'unione conservativa top/bottom. Nessun cambiamento di metrica, campionamento, pixel visibile o configurazione pubblica. Le [note correnti](AGENTIC36.it.md) descrivono prove, misure native e limiti.
+Dispatch del writer e selezione maschera passano agli aggiornamenti del livello privato, con variante Mode7 compatta per conservare RAM. Mode8 pulisce il viewport identico per porzioni contigue di righe carattere e limita i campioni parziali all'unione conservativa top/bottom. Nessun cambiamento di metrica, campionamento, pixel visibile o configurazione pubblica. Le [note correnti](QUALIFICATION-1.20.0.it.md) descrivono prove, misure native e limiti.
 
-## Agentic36
+## Riutilizzo del lavoro per vista
 
-Metodo/API/output conservati. Riutilizzo per vista dei livelli dei piani nel multi, wrapper più leggero e riempimenti scalari in quattro fasi eliminano lavoro ripetuto; esclusione per intervallo e quadrati poligonali restano esatti. Gli intervalli wire non sovrascrivono più i proprietari poligonali. Payload multi920/2449, mono766/2449, guardie originali. Vedere [implementazione e perimetro delle misure](AGENTIC36.it.md).
+Metodo/API/output conservati. Riutilizzo per vista dei livelli dei piani nel multi, wrapper più leggero e riempimenti scalari in quattro fasi eliminano lavoro ripetuto; esclusione per intervallo e quadrati poligonali restano esatti. Gli intervalli wire non sovrascrivono più i proprietari poligonali. Payload multi920/2449, mono766/2449, guardie originali. Vedere [implementazione e perimetro delle misure](QUALIFICATION-1.20.0.it.md).
