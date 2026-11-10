@@ -1,4 +1,7 @@
-# Security policy / Sicurezza — 1.15.1
+# Security policy / Sicurezza — 1.20.0
+
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+
 
 Stable1.15.1 is published on GitHub. Previous releases have independent publication status. / La stabile1.15.1 è pubblicata su GitHub. Le release precedenti mantengono uno stato separato.
 

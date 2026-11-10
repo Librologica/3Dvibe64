@@ -160,7 +160,7 @@ def allocate(source,assembler,directory):
         choices=gr17_choices+choices
         for projection,raster_name,variant,details,info in choices:
             strategy=camera+'-'+projection+'-'+raster_name
-            try:result=_allocate(variant,assembler,directory/strategy)
+            try:result=_allocate(variant,assembler,directory/('v'+str(len(attempts))))
             except PlacementFailure as exc:
                 last_failure=exc
                 attempts.append(dict(strategy=strategy,status='does-not-fit',reason=exc.reason,nodes=exc.nodes,budget=exc.budget));continue
@@ -168,7 +168,9 @@ def allocate(source,assembler,directory):
                 if raster_name!='original' and str(exc).startswith('PLUS_BASE_LAYOUT:'):
                     attempts.append(dict(strategy=strategy,status='base-layout-does-not-fit',reason=str(exc)));continue
                 raise
-            report=json.loads((directory/strategy/'allocation.json').read_text())
+            report=json.loads((directory/('v'+str(len(attempts)))/'allocation.json').read_text())
+            report['placementScratchDirectory']='v'+str(len(attempts))
+            report['placementStrategyName']=strategy
             attempts.append(dict(strategy=strategy,status='placed'))
             report['exactRotation']=dict(strategy=camera,attempts=attempts,allocationWindowsChanged=False,qualityChanged=False,sceneSpecific=False)
             report['exactProjection']=dict(details,cameraPlacementPreserved=True,dev13Fallback=True,originalRAMWindows=True)

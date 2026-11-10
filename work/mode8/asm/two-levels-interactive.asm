@@ -983,6 +983,10 @@ reset_cache:
  ldx #31
 reset_slots:
  sta slot_keys,x
+ pha
+ lda #0
+ sta gr25_profile_used,x
+ pla
  dex
  bpl reset_slots
 geometry_begin:
@@ -2275,8 +2279,17 @@ get_profile:
  lda cache_map,x
  cmp #$ff
  beq cache_miss
- bmi cache_complete
+ cmp #$fe
+ bne gr26_regular_profile
+ jmp gr26_zero_pointer
+gr26_regular_profile:
+ tay
+ and #31
  tax
+ lda #1
+ sta gr25_profile_used,x
+ tya
+ bmi cache_complete
  stx lazy_slot
  lda cache_lo,x
  sta p_out
@@ -2284,8 +2297,6 @@ get_profile:
  sta p_out+1
  jmp lazy_samples
 cache_complete:
- and #31
- tax
  lda cache_lo,x
  sta p_out
  lda cache_hi,x
@@ -2297,6 +2308,23 @@ cache_miss:
  inc cache_misses+1
 cache_miss_counted:
  ldx cache_next
+gr25_clock_choose:
+ lda slot_keys,x
+ cmp #255
+ beq gr25_clock_selected
+ lda gr25_profile_used,x
+ beq gr25_clock_selected
+ lda #0
+ sta gr25_profile_used,x
+ inx
+ cpx #32
+ bcc gr25_clock_choose
+ ldx #0
+ beq gr25_clock_choose
+gr25_clock_selected:
+ stx cache_next
+ lda #1
+ sta gr25_profile_used,x
  stx lazy_slot
  ldy slot_keys,x
  cpy #$ff
@@ -2326,10 +2354,8 @@ cache_slot_ready:
  lda #0
  sta lazy_mode
 cache_read:
- ldx p_key
- lda cache_map,x
- bmi cache_complete
- jmp lazy_samples
+ lda p_key
+ jmp get_profile
 
 project_profile:
  ldx p_key
@@ -2632,6 +2658,10 @@ p_all_above:
 p_uniform:
  ldx lazy_mode
  beq p_uniform_full
+ cmp #0
+ bne gr26_ordinary_uniform
+ jmp gr26_share_zero
+gr26_ordinary_uniform:
  pha
  ldx lazy_slot
  lda #0
@@ -6214,5 +6244,27 @@ ramp_slope_hi:
  .byte $cf,$cf,$ce,$ce,$cd,$cd,$cc,$cc,$cb,$cb,$cb,$ca,$ca,$c9,$c9,$c8
 *=$ca00
 layout_support:
+gr25_profile_used:
+ .fill 32,0
+gr25_profile_used_end:
+.cerror gr25_profile_used_end-gr25_profile_used != 32,"Profile replacement state must have32 bytes"
+; GR26: immutable all-above profile; $fe cannot encode a real slot.
+gr26_share_zero:
+ ldx lazy_slot
+ lda #$ff
+ sta slot_keys,x
+ ldx p_key
+ lda #$fe
+ sta cache_map,x
+gr26_zero_pointer:
+ lda #<gr26_zero_samples
+ sta p_out
+ lda #>gr26_zero_samples
+ sta p_out+1
+ rts
+gr26_zero_samples:
+ .fill 128,0
+gr26_zero_samples_end:
+ .cerror gr26_zero_samples_end-gr26_zero_samples != 128,"Zero profile must have128 samples"
 layout_support_end:
 .cerror layout_support_end>$cb00,"Layout overlaps screen"

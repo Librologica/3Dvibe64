@@ -1,10 +1,10 @@
-# VIS-01 — visibilità conservativa per settori e portali — 1.15.1
+# VIS-01 — visibilità conservativa per settori e portali — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](../../../RELEASE-STATUS.it.md) · [Qualifica corrente](../../../QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](../../../QUALIFICATION-1.20.0.it.md).
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](../../../RELEASE-STATUS.it.md).
 
-Release stabile GitHub 1.15.1: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+Release sorgente stabile 1.20.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
@@ -52,7 +52,6 @@ evita esclusioni basate su un occludente già tagliato dal near plane.
 
 ```powershell
 python -B work/build-gameplay.py --profile sector-visibility --out ../builds/visibility --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../builds/visibility --checks --benchmark --launcher
 ```
 
 `--visibility` accetta un JSON alternativo entro il contratto dell'adapter.
@@ -73,3 +72,5 @@ dev7. Ai keyframe 0–4,24–28,44–47 lo sguardo resta orizzontale per esercit
 la selezione; gli altri tratti conservano le variazioni verticali. Le due
 configurazioni del benchmark usano la stessa camera. Con enabled:false
 si conserva anche il percorso originale, per ricostruire il PRG dev7.
+
+Le verifiche native e prestazionali di un progetto gameplay richiedono strumenti e input esterni, con PRG e simboli della stessa compilazione; il relativo driver non è incluso. Vedere [le verifiche](../../../TESTING.it.md).

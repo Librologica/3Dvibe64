@@ -1,5 +1,5 @@
 {
-  "version": "1.15.1",
+  "version": "1.20.0",
   "locales": [
     "en",
     "it"
@@ -216,16 +216,6 @@
       "it": "CIRCLE-SPHERES.it.md"
     },
     {
-      "id": "RELEASE-NOTES-1.15.1",
-      "en": "RELEASE-NOTES-1.15.1.en.md",
-      "it": "RELEASE-NOTES-1.15.1.it.md"
-    },
-    {
-      "id": "QUALIFICATION-1.15.1",
-      "en": "QUALIFICATION-1.15.1.en.md",
-      "it": "QUALIFICATION-1.15.1.it.md"
-    },
-    {
       "id": "AGENTIC-OPTIMIZATIONS",
       "en": "AGENTIC-OPTIMIZATIONS.en.md",
       "it": "AGENTIC-OPTIMIZATIONS.it.md"
@@ -244,6 +234,36 @@
       "id": "MODE8-MEMORY",
       "en": "MODE8-MEMORY.en.md",
       "it": "MODE8-MEMORY.it.md"
+    },
+    {
+      "id": "DISTANCE-FADE",
+      "en": "DISTANCE-FADE.en.md",
+      "it": "DISTANCE-FADE.it.md"
+    },
+    {
+      "id": "ANIMATED-MESH",
+      "en": "ANIMATED-MESH.en.md",
+      "it": "ANIMATED-MESH.it.md"
+    },
+    {
+      "id": "RUNTIME-SCENE",
+      "en": "RUNTIME-SCENE.en.md",
+      "it": "RUNTIME-SCENE.it.md"
+    },
+    {
+      "id": "DYNAMICS",
+      "en": "DYNAMICS.en.md",
+      "it": "DYNAMICS.it.md"
+    },
+    {
+      "id": "RELEASE-NOTES",
+      "en": "RELEASE-NOTES-1.20.0.en.md",
+      "it": "RELEASE-NOTES-1.20.0.it.md"
+    },
+    {
+      "id": "QUALIFICATION",
+      "en": "QUALIFICATION-1.20.0.en.md",
+      "it": "QUALIFICATION-1.20.0.it.md"
     }
   ],
   "currentBilingual": [
@@ -257,10 +277,17 @@
     "SECURITY.md",
     "TESTING.md",
     "WORLD-METRICS.md",
-    "RELEASE-NOTES-1.15.1.md",
-    "AGENTIC-DEV.md"
+    "CHANGELOG.md",
+    "RELEASE-NOTES-1.20.0.md"
   ],
   "historicalReports": [
+    "AGENTIC-DEV.md",
+    "AGENTIC33.en.md",
+    "AGENTIC33.it.md",
+    "AGENTIC35.en.md",
+    "AGENTIC35.it.md",
+    "AGENTIC36.en.md",
+    "AGENTIC36.it.md",
     "DEVELOPMENT-1.14.0-dev1.en.md",
     "DEVELOPMENT-1.14.0-dev1.it.md",
     "GOURAUD-MODE6-REPORT.md",
@@ -286,6 +313,8 @@
     "QUALIFICATION-1.15.0-dev2.it.md",
     "QUALIFICATION-1.15.0.en.md",
     "QUALIFICATION-1.15.0.it.md",
+    "QUALIFICATION-1.15.1.en.md",
+    "QUALIFICATION-1.15.1.it.md",
     "RELEASE-NOTES-1.10.0-rc1.md",
     "RELEASE-NOTES-1.10.0.md",
     "RELEASE-NOTES-1.10.1-rc1.md",
@@ -308,6 +337,9 @@
     "RELEASE-NOTES-1.15.0.en.md",
     "RELEASE-NOTES-1.15.0.it.md",
     "RELEASE-NOTES-1.15.0.md",
+    "RELEASE-NOTES-1.15.1.en.md",
+    "RELEASE-NOTES-1.15.1.it.md",
+    "RELEASE-NOTES-1.15.1.md",
     "RELEASE-NOTES-1.4.0.md",
     "RELEASE-NOTES-1.5.0.md",
     "RELEASE-NOTES-1.5.5.md",
@@ -365,9 +397,34 @@
     "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1",
     "releasePageCreated": true
   },
-  "updated": "2026-10-30",
+  "updated": "2026-11-10",
   "developmentIndex": "DOCS.md",
   "quickStart": "QUICKSTART.md",
   "testing": "TESTING.md",
-  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1"
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0",
+  "distanceFadeOptions": [
+    "DistanceFade",
+    "DistanceFadeStart",
+    "DistanceFadeEnd"
+  ],
+  "distanceFadeContract": {
+    "en": "DISTANCE-FADE.en.md",
+    "it": "DISTANCE-FADE.it.md"
+  },
+  "documentationRevision": {
+    "id": "stable-github-publication",
+    "date": "2026-11-10",
+    "scope": "publication metadata and bilingual status only; runtime and qualification unchanged"
+  },
+  "distanceFadeSceneGuidance": {
+    "en": "DISTANCE-FADE.en.md#when-distance-fade-helps",
+    "it": "DISTANCE-FADE.it.md#quando-conviene-usare-distance-fade"
+  },
+  "optionalRuntimeSceneCapabilities": [
+    "runtime-scene",
+    "bounded-planar-contacts",
+    "floating-origin",
+    "random-volume-particles"
+  ],
+  "profilePolicy": "gameplayProfiles lists the 13 --profile selectors of work/build-gameplay.py; optionalRuntimeSceneCapabilities describes separate ordinary-builder runtimeScene APIs, not gameplay CLI profiles."
 }

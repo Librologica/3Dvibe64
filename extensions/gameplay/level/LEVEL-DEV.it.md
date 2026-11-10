@@ -1,10 +1,10 @@
-# Formato comune e budget del livello — — 1.15.1
+# Formato comune e budget del livello — — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](../../../RELEASE-STATUS.it.md) · [Qualifica corrente](../../../QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](../../../QUALIFICATION-1.20.0.it.md).
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](../../../RELEASE-STATUS.it.md).
 
-Release stabile GitHub 1.15.1: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+Release sorgente stabile 1.20.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
@@ -30,7 +30,6 @@ la fondazione e Mode 8 mantengono i rispettivi contratti.
 ```powershell
 python -B work/build-level.py --level ../my-level/level.json --validate-only
 python -B work/build-level.py --level ../my-level/level.json --out ../builds/common-level --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../builds/common-level/native --benchmark --launcher
 ```
 
 L'output deve essere nuovo e fuori dal repository. `launch-level.cmd`
@@ -222,3 +221,5 @@ La consegna conserva una misura nativa del livello ricostruito dal suo
 formato e i comandi/raw fuori dal sorgente: VICE Turbo6510 PAL× 64,
 preciso/LOD, silent, warm-up 101 refresh e misura 3072 refresh del giro A→B→A.
 Il budget ipotetico non introduce un nuovo valore FPS. Documentazione corrente inclusa nella release 1.12.0.
+
+Le verifiche native e prestazionali di un progetto gameplay richiedono strumenti e input esterni, con PRG e simboli della stessa compilazione; il relativo driver non è incluso. Vedere [le verifiche](../../../TESTING.it.md).

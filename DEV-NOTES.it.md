@@ -1,15 +1,9 @@
-# Note di sviluppo e manutenzione — 1.15.1
+# Note di sviluppo e manutenzione — 1.20.0
 
-Questa stabile GitHub promuove la dev consegnata agentic17, non il lavoro
-deprecato1.15.3/1.16/1.17 di un'altra chat storica. Renderer/API restano identici;
-release ufficiali precedenti e demo congelate sono preservate. La pubblicazione
-è registrata in RELEASE.json, non dedotta dal nome previsto del tag v1.15.1.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
-Passaggi automatici e cerchi opzionali sono in
-[AGENTIC-OPTIMIZATIONS](AGENTIC-OPTIMIZATIONS.it.md). Flag Mode4 opzionali, altre
-precisioni e adattatori sperimentali mantengono domini distinti. Le qualifiche
-delle API1.15.0 sono prove storiche, non promesse sugli hash sorgente correnti.
-Gli hash correnti sono in QUALIFICATION-1.15.1.json.
+
+Lo sviluppo attivo aggiunge AnimatedMesh v1 alla agentic23 consegnata. Leggere [AGENTIC24](AGENTIC36.it.md) e [il contratto completo](ANIMATED-MESH.it.md). Hash correnti e risultati nativi appartengono a QUALIFICATION-1.20.0.json. Le qualifiche precedenti restano storico immutabile. Non viene usato o promosso lavoro deprecato1.15.3/1.16/1.17.
 
 Non ampliare finestre RAM o indebolire clipping/matematica per accettare build.
 Conservare fallback e normalizzazione degli helper privati; chiamanti/layout
@@ -20,4 +14,4 @@ Le misure native si conservano solo dopo ricompilazione con identità di PRG e
 etichette numeriche e condizioni uguali. I callback CPU non sono FPS. Conservare
 flag, indice fisso e compromesso Mode7/1x; diagnosticare l'effetto delle finestre
 senza sostituire i punteggi. [Test](TESTING.it.md),
-[qualifica](QUALIFICATION-1.15.1.it.md), [stato](RELEASE-STATUS.it.md).
+[qualifica](QUALIFICATION-1.20.0.json), [stato](RELEASE-STATUS.it.md).

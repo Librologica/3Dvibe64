@@ -1,6 +1,20 @@
-# Ottimizzazioni agentiche del renderer — 1.15.1
+# Ottimizzazioni agentiche del renderer — 1.20.0
 
-La stabile1.15.1 promuove agentic17 senza cambiare sorgenti di renderer/API.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+
+
+Current agentic36 contracts and score provenance: [notes](AGENTIC36.en.md), [ledger](QUALIFICATION-1.20.0.json). Historical tables below retain their original scope/scales; the required historical series is first stable1.15.0=100, and the extended series starts at delivered36=100. / Contratti e provenienza correnti: [note IT](AGENTIC36.it.md). Le tabelle precedenti conservano perimetro/scala originali; storico1.15.0=100 ed esteso36=100 restano distinti.
+
+
+## Promozione corrente
++
++La stabile 1.20.0 conserva la agentic36: ottimizzazioni esatte Mode6/7/8 ereditate, cache del livello per piano e riempimenti Bayer a passo quattro per il fade Mode8 multi, aritmetica della distanza poligonale esatta e scritture wire corrette. Default e contratti restano invariati. [Note correnti](RELEASE-NOTES-1.20.0.it.md).
++
++Indice generale storico, 1.15.0=100: agentic36 e stabile 137,505630, variazione 0%. Stime ricostruite ereditate; il calcolo canonico è ancora bloccato dall’hash PowerShell storico. L’indice esteso separato resta 100, ancorato alla prima agentic36, ereditato per identità. I numeri della vecchia stabile riportati sotto appartengono alla loro qualifica originale.
++
++## Storico della promozione 1.15.1
++
++La stabile1.15.1 promuove agentic17 senza cambiare sorgenti di renderer/API.
 I passaggi automatici vengono scelti solo per forme sorgente provate e profili
 supportati: non sono `EngineExperiments` né il flag opzionale Mode4
 `LegacyPlusOptimizations`. Chiamanti/layout sconosciuti mantengono i fallback.

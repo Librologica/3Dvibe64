@@ -15,3 +15,34 @@ LICENSE text eol=lf
 *.bmp binary
 *.gif binary
 *.zip binary
+
+# Byte-preserved qualification/history inputs; do not normalize line endings.
+AGENTIC24.en.md -text
+AGENTIC24.it.md -text
+AGENTIC34.en.md -text
+AGENTIC34.it.md -text
+LICENSE-DOCUMENTATION.md -text
+QUALIFICATION-AGENTIC18.json -text
+QUALIFICATION-AGENTIC19.json -text
+QUALIFICATION-AGENTIC20.json -text
+QUALIFICATION-AGENTIC21.json -text
+QUALIFICATION-AGENTIC22.json -text
+QUALIFICATION-AGENTIC23.json -text
+QUALIFICATION-AGENTIC24.json -text
+QUALIFICATION-AGENTIC25.json -text
+QUALIFICATION-AGENTIC26.json -text
+QUALIFICATION-AGENTIC27.json -text
+QUALIFICATION-AGENTIC28.json -text
+QUALIFICATION-AGENTIC29.json -text
+QUALIFICATION-AGENTIC31.json -text
+QUALIFICATION-AGENTIC32.json -text
+QUALIFICATION-AGENTIC33.json -text
+QUALIFICATION-AGENTIC34.json -text
+scripts/test_distance_fade_layout.py -text
+work/distance_fade_legacy.py -text
+work/legacy_gouraud_coherent.py -text
+work/legacy_wire_segment_clip.py -text
+work/mode8/build.py -text
+work/normalized_build.py -text
+work/q8/build.py -text
+work/q8/src/wire_build.py -text

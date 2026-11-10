@@ -1,10 +1,10 @@
-# BB-02 / primo ENT-01 — 1.15.1
+# BB-02 / primo ENT-01 — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](../../../RELEASE-STATUS.it.md) · [Qualifica corrente](../../../QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](../../../QUALIFICATION-1.20.0.it.md).
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](../../../RELEASE-STATUS.it.md).
 
-Release stabile GitHub 1.15.1: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+Release sorgente stabile 1.20.0: [ottimizzazioni correnti](../../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 La distribuzione 1.12.0 include soltanto il modulo riutilizzabile. I nuovi progetti/asset demo sono esclusi. Catture, checkpoint e misure native sotto descrivono prove storiche esterne. Le build di progetto richiedono `--project-source`; vedere la [guida di integrazione](../../../GAMEPLAY.it.md).
@@ -21,7 +21,6 @@ cambia asset, posizione, dimensioni e animazione modificando solo i dati.
 
 ```powershell
 python -B work/build-gameplay.py --profile interactive-billboard --out ../builds/interactive-dev3 --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../builds/interactive-dev3 --checks --benchmark --launcher
 ```
 
 Per un'altra configurazione usare `--gameplay-scene percorso/gameplay-scene.json`.
@@ -87,3 +86,5 @@ programmano tentativi d'uso nel giro automatico 48 chiavi, non input tastiera;
 il default è 0/36. Asset: `width:16`, `height:32`, `transparentIndex:0`,
 `opaqueBlackIndex:4`,1–6`frames` da 512 indici interi 0–4. Campi/tipi/conteggi
 errati sono rifiutati. JSON e asset completi in [GAMEPLAY](../../../GAMEPLAY.it.md).
+
+Le verifiche native e prestazionali di un progetto gameplay richiedono strumenti e input esterni, con PRG e simboli della stessa compilazione; il relativo driver non è incluso. Vedere [le verifiche](../../../TESTING.it.md).

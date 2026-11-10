@@ -1,3 +1,13 @@
+# Changelog — 1.20.0
+
+## 1.20.0 — 2026-11-10
+
+Promote agentic36 with its r1 Distance Fade scene guidance. Runtime generators, defaults, API limits and output remain unchanged from the qualified development. Inherit exact Mode6/7/8 optimizations and optional AnimatedMesh/RuntimeScene support. Update complete IT/EN navigation and qualification. No demos, benchmark drivers or suites, compiled programs or application assets. Published on GitHub.
+
+Promossa la agentic36 con la guida r1 ai tipi di scena per Distance Fade. Generatori runtime, default, limiti API e output invariati dalla dev qualificata. Ereditate le ottimizzazioni esatte Mode6/7/8 e le API opzionali AnimatedMesh/RuntimeScene. Aggiornati navigazione e qualifica IT/EN. Nessuna demo, driver/suite prestazionale, programma compilato o asset applicativo. Pubblicata su GitHub.
+
+Historical entries below retain their original scope. / Le voci seguenti mantengono il proprio perimetro storico.
+
 # Changelog — 1.15.1
 
 ## 1.15.1 — 2026-10-30

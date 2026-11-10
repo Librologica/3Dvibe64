@@ -1,13 +1,13 @@
-# Building Mode 8 maps — 1.15.1
+# Building Mode 8 maps — 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
-
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
-
-Stable release 1.15.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
 
-Current 1.15.1 source contract. This manual describes the ordinary exporter unless
+
+Stable source release 1.20.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -176,16 +176,6 @@ Use a new empty output directory for each build. Output inside the SDK is reject
 
 ## 7. Optional cost atlas
 
-Long empty rays, owner discontinuities, successive overhead apertures and distinct profile keys can cost more than a visually crowded room. The multi cache contains 32 profiles: a view requesting more distinct profiles can churn it. Cell-access frequency is not itself the whole cost of that cell; shared profile costs must not be added twice.
+Long empty rays, owner discontinuities, successive overhead apertures and distinct profile keys can cost more than a visually crowded room. The multi cache contains 32 profiles: more distinct keys can churn it. Cell-access frequency is not the whole cost of that cell; shared profile costs must not be added twice.
 
-Install optional dependencies separately: `python -m pip install py65==1.2.0 Pillow`. Build the map first, then run:
-
-```powershell
-python -B scripts/analyze_mode8.py --scene ../my-inputs/mode8/perimeter.json --build ../perimeter-reference-build --sampling ../my-inputs/mode8/sampling/perimeter.json --out ../perimeter-cost
-```
-
-Use a build of that **same** scene (for example the public command in [MODE 8.en.md](MODE8.en.md)). The sampling document contains `poses`, each `[xQ8,yQ8,yaw,eyeInteger,eyeFraction]`, evaluated in order with persistent RAM. For another map check every sampling pose; invalid footprint/eye/range samples are explicitly recorded and skipped, not converted.
-
-Outputs: `poses.json`, `poses.csv`, `REPORT.md`, `atlas-host.png`. Mean and worst observed cell costs are separate; the arrow marks the costliest sampled yaw. Grey is unsampled, blue unreachable, pink invalid, black solid. This is a **host-generated map atlas**, not a VICE screenshot. Every valid render compares all 7,040 bitmap bytes (viewport plus margins) with the independent fixed oracle.
-
-Cycles come from executing the assembled 6502 instructions in py65, excluding VIC stalls, IRQ, input, simulation and presentation. They are not native FPS. Native timings require `scripts/qualify_mode8.py` with stock x64sc. Neither tool inserts instrumentation into the distributed PRG. Worst sampled pose is not a global worst-case bound; no automatic scene optimizer or guaranteed speedup is provided.
+Profiling tools and the performance suite remain external to this distribution. Profile the same build and map with matching compilation symbols, then measure new complete frames on the native target. CPU replay cycles exclude VIC stalls, IRQ and presentation and are not FPS. A sampled pose is not a global worst-case bound. [Protocol and coverage](TESTING.en.md).

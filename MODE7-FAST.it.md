@@ -1,13 +1,13 @@
-# Profilo veloce Mode 7 — 1.15.1
+# Profilo veloce Mode 7 — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
-
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
-
-Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
 
-Contratto sorgente corrente 1.15.1. Il manuale descrive l'exporter ordinario
+
+Release sorgente stabile 1.20.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.20.0. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -116,3 +116,7 @@ dipendono da copertura, clipping, shader e memoria. Gli FPS del video di svilupp
 delle due stanze includono ottimizzazioni specifiche **non** promosse qui.
 Le [note release](RELEASE-NOTES-1.7.0.md) descrivono ambito ed evidenze.
 Niente demo di produzione, PRG generato, musica o benchmark grezzo nel pacchetto.
+
+Agentic28: il percorso C affine ordinario controllato salva/ripristina16 byte privati math/UV esistenti (base4). Il ciclo di fill li prende in prestito una volta per faccia; l’ingresso span autonomo resta protetto. U resta in X nel core chiuso e il sampler usa Y per Q. Nessun nuovo alias globale zero page o tabella persistente. I chiamanti riconosciuti considerano A/flag del fill volatili; helper/chiamanti privati diversi, altri compositori e policy colore VIC conservano il percorso della base. Vedere le [note correnti](AGENTIC33.it.md) per stack e perimetro di verifica.
+
+Agentic29 conserva il contratto di salvataggio dei16 byte privati. Ink usa la copia U ritirata dopo il trasferimento di U in X; una composizione XOR esatta dei nibble elimina lo spill dell’indice del sampler. Solo chiamanti privati controllati consentono di omettere gli attributi delle righe vuote; le righe consumate inizializzano entrambi gli estremi. La prova del range dei vertici una volta per faccia seleziona lo store interno; negli altri casi restano i confronti originali. Vedere le [note correnti](AGENTIC33.it.md).

@@ -1,8 +1,10 @@
-# Precision / Precisione — 1.15.1
+# Precision / Precisione — 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
+
+
 
 | Geometry | Modes | Camera/clipping | Mode7 textures |
 |---|---|---|---|

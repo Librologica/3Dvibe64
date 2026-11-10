@@ -1,13 +1,13 @@
-# BB-02 / ENT-01 — configured entity, 1.15.1
+# BB-02 / ENT-01 — configured entity, 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](../../../RELEASE-STATUS.en.md) · [Current qualification](../../../QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
-
-> Stable1.15.1 source SDK published on GitHub. [Status and support](../../../RELEASE-STATUS.en.md).
-
-Stable GitHub release 1.15.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
 
 
-Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `interactive-billboard` inherits mixed-surfaces. `assets/gameplay-scene.json`
@@ -17,7 +17,6 @@ size and animation can change through data rather than renderer edits.
 
 ```powershell
 python -B work/build-gameplay.py --profile interactive-billboard --out ../entity-build --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../entity-build --checks --benchmark --launcher
 ```
 
 Override with `--gameplay-scene path/gameplay-scene.json` (`-GameplayScene`
@@ -77,3 +76,5 @@ keyboard events. The default lists 0/36. Source asset fields are `width:16`,
 `height:32`, `transparentIndex:0`, `opaqueBlackIndex:4`, and 1–6`frames`,
 each 512 integer pixel indices 0–4. Unknown configuration fields and invalid pixel/timing types/counts fail validation.
 The full default JSON and asset are linked in [GAMEPLAY](../../../GAMEPLAY.en.md).
+
+Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

@@ -2,10 +2,10 @@
   "schema": 1,
   "package": {
     "name": "3Dvibe64",
-    "displayName": "3Dvibe64 1.15.1",
-    "version": "1.15.1",
+    "displayName": "3Dvibe64 1.20.0",
+    "version": "1.20.0",
     "distribution": "source-sdk",
-    "permanentFiles": 387,
+    "permanentFiles": 474,
     "precompiledPrograms": false,
     "author": "librologica.digital",
     "softwareLicense": "PolyForm-Noncommercial-1.0.0",
@@ -14,7 +14,7 @@
   },
   "builder": {
     "path": "work/build-3Dvibe64.ps1",
-    "sha256": "B03D5D7CE6E9E5AF85D47C04950841DA96F1F3E6DC7B50F5C26A1F97C5BB7E70"
+    "sha256": "D2DDF5D9EAAD48F91D179BC97207812BC37E931819C9A74C1BE5564377C3874F"
   },
   "examples": [],
   "releaseEngine": {
@@ -28,7 +28,9 @@
     ],
     "hybridFlatGouraud": false,
     "torusFpsScene": "examples/mode6-gouraud-torus-fps.json",
-    "torusFpsPrgSha256": "F59587562E2CD78F7E28ACE58108274B88013A7DDC2A4F6949C393CD87844662"
+    "torusFpsPrgSha256": "F59587562E2CD78F7E28ACE58108274B88013A7DDC2A4F6949C393CD87844662",
+    "historical": true,
+    "referencedSceneNotBundled": true
   },
   "renderer": {
     "graphicsModes": [
@@ -649,9 +651,9 @@
       "work/mode8/asm/apertures-interactive.asm": "A1CAB36B68A0C23F54EFEF69CB5FA9CBBB79D87547310290EA3B1185DD9AEA8F",
       "work/mode8/asm/perimeter-auto.asm": "077DB9A83F12922DE9C75B960333009DF38CC67CF66A242B014433DBEA3234EB",
       "work/mode8/asm/perimeter-interactive.asm": "8DB36FDE1A9C85B3BE546E7048260DC4304EA10C5236D964469BC2A4172963DC",
-      "work/mode8/asm/two-levels-auto.asm": "64FDFEA749F5FE2752D88EA3BA01A474922E31A94DDFAB8647696CB3DD93DDDF",
-      "work/mode8/asm/two-levels-interactive.asm": "A18CEE04FA01CD421DAC0AB2C5D99FDB566321B694D908116DCC340E038A35FD",
-      "work/mode8/build.py": "E18CE5F24736B312244383DC63E69A0E445484557A4DA5189F021FF8B0AA33B9",
+      "work/mode8/asm/two-levels-auto.asm": "ABFD88B3FD47A93D98CE3F1061115083C88C1EC54CC6EDE204B16988C9FEFDAA",
+      "work/mode8/asm/two-levels-interactive.asm": "BF947AFA9B16653E9C5598F5B583DCA954CC25A0C2120FECAC934FD1ABA3C503",
+      "work/mode8/build.py": "6B5DC06C82478184DCA1E89DD2B04D334D80270854AF2C031F55715FB828E50F",
       "work/mode8/common.py": "5540C8F5D03ACEC80FE495814ECBB16412D7596C101F42CB7FB3584B27FCE0AD",
       "work/mode8/contract.py": "5EF28DE6D85EAF7B0FEF848D84B683F03C11697A018E40B753EF9E4F5F6248BF",
       "work/mode8/directions.py": "A31912E4C6943AA4DBC6C176F9E05DF2E87A28B731085ABC42F5E597819F5C86",
@@ -670,7 +672,66 @@
       "work/mode8/walls.py": "CAB801EB268AFB8BEE866E02D5A0439325992301A7D343D1B881AB850772D66A",
       "work/mode8/provenance.py": "529F5BB85C0795C4455CF9616E653245AC5FD3AE412E4C333D62522924F8587F"
     },
-    "referenceBuildScope": "Current 1.15.1 cold builds from external public contract fixtures; input scenes and output programs are not bundled."
+    "referenceBuildScope": "Historical Stable1.15.1 public fixture hashes/margins. Current canonical templates and native evidence are external in agentic26 qualification.",
+    "profileReplacement": {
+      "policy": "second-chance",
+      "slots": 32,
+      "extraStateBytes": 32,
+      "stateRange": [
+        51712,
+        51744
+      ],
+      "totalProfileStateBytes": 608,
+      "existingWindow": [
+        51712,
+        51968
+      ],
+      "sharedZeroProfileBytes": 128,
+      "sharedZeroSentinel": 254,
+      "sharedZeroSupportRange": [
+        51744,
+        51896
+      ],
+      "currentCanonicalTemplateBuilds": [
+        {
+          "side": "parent",
+          "run": "auto",
+          "PRGSHA256": "31ece5b9a3e640be6d337d9c163bf7619b7014bf3964e451c0c595cf2cfee790",
+          "labelsSHA256": "24763cda190a82e93aeb8a675868eed667e03849bf99ba67d04a3c6c8f8e0a42",
+          "lowCodeEnd": 12282,
+          "lowCodeFree": 6,
+          "layoutSupportEnd": 51744
+        },
+        {
+          "side": "parent",
+          "run": "interactive",
+          "PRGSHA256": "6f6e3584933c74a365219dd1de7958e3aeb4499c9dff5fa111780c99f528fec2",
+          "labelsSHA256": "cb1758e5845c9f5364985782b44bb5fcf48da6f88876e9a67be30ec527c0a27a",
+          "lowCodeEnd": 11078,
+          "lowCodeFree": 1210,
+          "layoutSupportEnd": 51744
+        },
+        {
+          "side": "candidate",
+          "run": "auto",
+          "PRGSHA256": "a2419a8aec285ba7b814f1585d4f849bcc2283e29bd2c02d0cc1a487d49100b2",
+          "labelsSHA256": "77aa6a81d4104e3cb9bb6827bb3c70b44f4c68de01246bb73c06571739078f54",
+          "lowCodeEnd": 12285,
+          "lowCodeFree": 3,
+          "layoutSupportEnd": 51896
+        },
+        {
+          "side": "candidate",
+          "run": "interactive",
+          "PRGSHA256": "8fe23c0fd1fa5e593abaa0584fabf8a642f300dabdcb7d25f57c9f209d891b96",
+          "labelsSHA256": "1e0e7aa2a88f73116ab6043883de6e90cdeb2e968ed1ecadb6cf617610c13876",
+          "lowCodeEnd": 11081,
+          "lowCodeFree": 1207,
+          "layoutSupportEnd": 51896
+        }
+      ]
+    },
+    "referenceBuildsScope": "Inherited default-OFF/silent contract fixture ledger, not current active-fade/SID qualification; current public-template capacity and native evidence are linked by QUALIFICATION-AGENTIC36.json."
   },
   "precision": {
     "default": "legacy",
@@ -722,7 +783,7 @@
       "music": false,
       "outputOutsideSDK": true,
       "backendHashes": {
-        "work/q8/build.py": "8F68530A67AD1D76775DA58146C8EEE5AECB1D63913769DB857D07B2413D6DB5",
+        "work/q8/build.py": "B57CBBE683DAD0DE13EB09821218BA3C7D91469C739DB0691D946E899B6EFF11",
         "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
         "work/q8/src/camera.py": "C1497B56E9C3325D1738C068DDED7C97BF20DB524214F2C6EF483EE3C14B5909",
         "work/q8/src/clip.asm": "69178B5C3A359F5299631CA53DEBBA7431E7AA413E3E2B5C568CA82C57CDFB5B",
@@ -738,7 +799,7 @@
         "work/q8/src/wide.asm": "6653F13A13A25F1D2C3D2B43778CF2F4096318940C0EFF4AF3C65EEB46243576",
         "work/q8/src/winding.asm": "FB40675AF44961A177856594AB462D47FDB7819667EF58E7D151E36C676A1874",
         "work/q8/src/wire.py": "AB7E272243FA35083D1A5661FFD32ABB0CC45167E3013B8DFCBE9E233D7863C4",
-        "work/q8/src/wire_build.py": "294B1F7E4AFAF8178552F9094C6C6153234F6AC60844ECA9D364B74532001A2C",
+        "work/q8/src/wire_build.py": "DAFDB08435D3700D38AD0169E95BB9DE5FEDD6862A96F354A1B2DB3EB061F300",
         "work/q8/src/wire_line.asm": "A5684C79B802B2BCA0602CB756C315F0EF55E4F1C4A695A3CBED0ECDABB232DE",
         "work/subpixel_probe.py": "261D1DD18616585C4D10BAC880ADA6950CF9B4A1593B8BE9F75DC7C064317FF9",
         "work/subpixel-x-probe.asm": "FB7113490FC125A832965F5CC5BE1BA982EF355EEDED56B3A7BD36CE35EBCEFF",
@@ -1136,7 +1197,7 @@
       "guideIt": "NORMALIZED16.it.md",
       "qualification": "NORMALIZED16-QUALIFICATION.md",
       "backendHashes": {
-        "work/normalized_build.py": "69A929406460C3A101B1A2E44F25D246089017889979CDC5DE37360433B0E9A7",
+        "work/normalized_build.py": "4D86EE41F8AAC0F6A6A1D4407FE7AFDB8A4EC4AAB6492661509E080735BBD78C",
         "work/q8/src/normalized.py": "F13D888302D8F51B5C6099036F62B9A7C1EB13954FC9A48A9F363DDA8D498DE3",
         "work/q8/src/nf_modes.py": "DFE6D771D5AAB0EB4D8D6FE85E794E50DA949928B86BCE080B8250BAA7C8C490",
         "work/q8/src/allocation.py": "F0B6BB8F3ADAD81950B9F87C2676A138A1D6F2868DBFAF261D686B1E62E031C0"
@@ -1897,16 +1958,6 @@
     "platform": "Windows; Linux and physical hardware not tested",
     "nativeSummaryScope": "Historical opt-in experiment evidence only; current stable qualification is QUALIFICATION-1.15.1.json."
   },
-  "stablePromotion": {
-    "version": "1.15.1",
-    "status": "complete",
-    "sourceDevelopment": "1.15.1-dev-agentic17",
-    "runtimeAndDefaultsUnchanged": true,
-    "defaultProgramBytesUnchanged": true,
-    "GitHubPublished": true,
-    "publicationPending": false,
-    "qualification": "QUALIFICATION-1.15.1.json"
-  },
   "gameplayDevelopment": {
     "experimental": true,
     "builder": "work/build-gameplay.py",
@@ -2085,39 +2136,66 @@
     "budgetPolicy": "Historical per-profile byte budgets exclude new optional helpers; use actual assembled map and allocator guards"
   },
   "release": {
-    "version": "1.15.1",
+    "version": "1.20.0",
     "classification": "stable",
     "publicationStatus": "published",
     "GitHubPublished": true,
     "releasePageCreated": true,
-    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1",
-    "tag": "v1.15.1",
+    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0",
+    "tag": "v1.20.0",
+    "plannedTag": "v1.20.0",
     "tagCreated": true,
-    "tagLocation": "https://github.com/Librologica/3Dvibe64/tree/v1.15.1",
-    "sourceDevelopment": "1.15.1-dev-agentic17",
-    "baseOfficialVersion": "1.15.0",
-    "runtimeChangedDuringPromotion": false,
-    "qualifiedAsStable": true,
-    "localStableRelease": false,
-    "qualification": "QUALIFICATION-1.15.1.json",
+    "baseOfficialVersion": "1.15.1",
     "sourceOnly": true,
     "demosIncluded": false,
+    "benchmarksIncluded": false,
+    "qualifiedAsStable": true,
+    "qualification": "QUALIFICATION-1.20.0.json",
+    "sourceDevelopment": "1.15.2-dev-agentic36",
+    "sourceDocumentationRevision": "fade-scene-guidance-r1",
+    "runtimeChangedDuringPromotion": false,
     "stable": true,
-    "prerelease": false,
-    "status": "published stable",
-    "privateUnderworldPortIncluded": false
+    "privateUnderworldPortIncluded": false,
+    "tagLocation": "https://github.com/Librologica/3Dvibe64/tree/v1.20.0"
   },
   "distributionPolicy": {
     "newDemosIncluded": false,
     "baseline": "v1.10.2",
     "preexistingExampleFiles": [],
     "ordinaryEngineSHA256": {
+      "extensions/gameplay/billboards/masked.py": "0B60413BE10B2757F8228985DD8AB2F8D8624002FAA57FE0B0501FA2AF16CC03",
+      "extensions/gameplay/billboards/multiple.py": "4AAC4638E492AA0C83D27B31C16B0C09C70E629D0794F86399A3BA289B45484A",
+      "extensions/gameplay/billboards/outlined.py": "22695BFB6224FE86B8ED68AF05768ADE5A6CDB5E79225C25F234D716431A7391",
+      "extensions/gameplay/billboards/scene.py": "EE23117A101C86D52AB9251DB807E5818320E32C2D3E7F67C351A0D37DB702CB",
+      "extensions/gameplay/dynamics.py": "D069BE57C35BAAA6CD695AF1D4F6D302FB67C264FA24070AA4299DB62B251CFE",
+      "extensions/gameplay/entities/door.py": "2AAEF3C73605D2FF722AB4808507ED932C7974DEFC4E7157BBC803760B5F94AC",
+      "extensions/gameplay/entities/runtime.py": "6967B414039A76D2DA32929E4EED1D7EA63193B62C2AF31D3830E6441B1C5E6D",
+      "extensions/gameplay/level/budget.py": "5C4924294A4A4F93CA10E1B133D5AA5DC3A837171E047D67ECCF91A57A07B117",
+      "extensions/gameplay/level/format.py": "C162C1C7CF1F58073DDB5B067828954C3D0B46E3EB28866CA567E121553BD96D",
+      "extensions/gameplay/level/level.schema.json": "CFEF3722E9330CA10813BBBA928500DC3483CCA5A52EB273117B407FF1E6952A",
+      "extensions/gameplay/materials/animation.py": "1AF275A8BF388A4A6FA6C3244F5249303D9A8FB8628C9F108ADB263646AAB8EC",
+      "extensions/gameplay/materials/light_bake.py": "86A4A83BB7F67D42E39E44A094EE707B2456BF144C605975882C9070EE4A9655",
+      "extensions/gameplay/materials/static_patterns.py": "617098451565DC91FCF720952F2548FDB90944F98676A60DE962A9AB5F950584",
+      "extensions/gameplay/materials/surfaces.py": "FCA34CA68ECEFA08DE1BA10D31430EFA23281F38056E6EBCC75A71D2C222F77F",
+      "extensions/gameplay/meshes/shared.py": "D06176CAB17C958D2696BD3880C11DF74E8D1F2DB8264E7B630F771FF189D12A",
+      "extensions/gameplay/motion/controlled.py": "12FBBF0931E0D62203DC0BA393306CE28D9FED04AC97AAD1F3C39AA5F36F00FE",
+      "extensions/gameplay/runtime_support.py": "2C57234410FCED5009ED4176C3719A27EEB64571D21A4D577A3C93DFE8028E9A",
+      "extensions/gameplay/source-inputs.json": "711B1DEB23FD419830513BA81487E8FEA8EAABC512236F5C9EEE2BF189C0FAFF",
+      "extensions/gameplay/visibility/compiler.py": "98345678D4159ACB0D7BE75AB63D4E93F10F841D7F48F49F456B4CD955BF25EF",
+      "extensions/gameplay/visibility/wall_occlusion.py": "E96C134B0089AE4DCF867143EF171E0F410914A1FC8C74953A726C47F8CB884A",
+      "extensions/gameplay/world/groups.py": "F57B87D069EFF3F4CE811817711B64BC2DC85232D18572907FF913C58DD12A14",
+      "extensions/gameplay/world/io.asm": "4E0B20F08F9FDDA027D1E12E0929C68E154CD2FCFCBDB8137A5950E10A0D500E",
+      "work/animated_mesh.asm": "6B891201F48BB8B397DAA88B548001D3F71C2AF186500A84C20D37E4AC6C97B8",
+      "work/animated_mesh.py": "7C17586C94EAFB2103294601F131BA13B59D4ED126A57C19042C0B27915F89EB",
       "work/build/.gitkeep": "01BA4719C80B6FE911B091A7C05124B64EEECE964E09C058EF8F9805DACA546B",
-      "work/build-3Dvibe64.ps1": "B03D5D7CE6E9E5AF85D47C04950841DA96F1F3E6DC7B50F5C26A1F97C5BB7E70",
+      "work/build-3Dvibe64.ps1": "D2DDF5D9EAAD48F91D179BC97207812BC37E931819C9A74C1BE5564377C3874F",
       "work/build-gameplay.ps1": "4F2B1E58B0329F706F885F8A24EB55990D8128087CE88F846606EC134792B70B",
       "work/build-gameplay.py": "143A449EEBBB0BC550D9F0D19FE1E0E547958A6308C67FC9B2D9EEFEE8229844",
       "work/build-level.py": "562E0478EBBE7E3FC8D409FE93828AF87AD0E7B7194BF7B02FD0988F61C32577",
       "work/compact_keyframes.py": "62D188613D6EBA83EC9EFDC9DAD7323BA13EA2B96D18D6BCA5DBAFB2F599F2DE",
+      "work/distance_fade.py": "155CAE039BD75C3DF256454C993111533BB4AECF323C59163DB3D972572C7162",
+      "work/distance_fade_legacy.py": "A350D4853AFF932ED033ED24E888A1C6E86A7C4B690CE8CB22E9E0BA453EF76E",
+      "work/distance_fade_mode8.py": "9D9A57F1C7669D4EF7AC4EEB4878A051DFF656AF18399C05B36FF720788AB1BB",
       "work/exact_render/convex.asm": "3C81DDFFBCC794745C68570428085553AE56B3E24C7B4DA231F19B06EAB0DC59",
       "work/exact_render/edges.asm": "A04E08E3620A89D17181E17288D1649990B0679E9AB6B6C3B4E01F3C5438EF71",
       "work/exact_render/product.asm": "CEBD9EB4B2CA6329002572E27816C44A8FC3911C95D4951F60246228199C6D7D",
@@ -2125,28 +2203,34 @@
       "work/exact_render_wire.py": "90E9F47E8CEA8EB0680AEA23363352C1D3000BBAEA2565B28C4DC06D9B9F23AD",
       "work/experiments.py": "2DC25ED75837E6A3F0769DF6A58C679B6B21C6FC408E9C67A83DC4868597A0F5",
       "work/legacy_camera.py": "D96E3F74AF5E22051CDB9720976CBFC6A6D3D2E1851EE07DCB5D15674FF2E280",
-      "work/legacy_gouraud_coherent.py": "0A5807E0B98774EFF7E1EAA47F97D223E338F35DAAA82E6A0339BF8A4BC7B50A",
+      "work/legacy_gouraud_coherent.py": "43AA47F6FC339389AA1C6B2AFD1F234D8C821D6B76EC11A63F782AD1C55E3B7B",
       "work/legacy_gouraud_material.py": "26DB6A20A28517B1FCA0C137DBDC44334B30A10A61608FF141ACE725617647E3",
-      "work/legacy_mode7_biased_uv.py": "AE72F09F7CB3A710A2C8CA9BC97B8BB064397338545F7BE9602A10F7F011EED9",
+      "work/legacy_gouraud_zp.py": "BC3E89B89D86F41F9176C1143B9F32605206DE37E4CF471CD99D67CE905C7BC0",
+      "work/legacy_mode7_biased_uv.py": "68957905976128D7C3818E0527FB5F42F84EA0C53688D0B0CC2A2689B2401D87",
       "work/legacy_mode7_binary_divider.py": "1D559E50BF8093A075F1796CAF84634B4BBA4F6C7D91BAD23C7F56FAF9F016ED",
-      "work/legacy_mode7_fused_edges.py": "088EA2047A74C75588B500C829B4160EE8932A9BE4C3042EB2A8A7FCF60DE214",
+      "work/legacy_mode7_edge_bias.py": "E6CCB17E7BDAB96DC1EB68ABF8C7837FD6EDE465A7C9C1D25D901672C019EED9",
+      "work/legacy_mode7_fused_edges.py": "2292D4B773F072BAA77CCA5CA014426A119AF001EF46B29E47D68726AA7F58A0",
+      "work/legacy_mode7_parent_biased.py": "AE72F09F7CB3A710A2C8CA9BC97B8BB064397338545F7BE9602A10F7F011EED9",
+      "work/legacy_mode7_parent_exact.py": "B947E091BDD2C86E47455FC651660387FB2FF77CA990BD13DD0504CADB1C216B",
+      "work/legacy_mode7_table.py": "D70CBD312F299F42BE6892A7E745AF918C673DDE5739DB6DD7B951A951CA06A5",
       "work/legacy_plus_attributes.py": "DE6F1C908714CD8CBED17F8AE00780A235D4FB40FCE354D51047DE851C2EE0F2",
       "work/legacy_plus_clip.py": "B99E330176F382DEEA603AA31AC42C4AEC57C32CD5E9BF1D6EF25792F33BC0EE",
       "work/legacy_plus_exact.py": "EDF38A1BBA33159A94CC04076C2DB75413630136E396284D98B8C050D9057085",
-      "work/legacy_plus_memory.py": "8A277E928BBB2011BD249DB72A8CD53BBFDADB5A8EE91FF9A0FBCB79868E736A",
-      "work/legacy_plus_mode7_exact.py": "B947E091BDD2C86E47455FC651660387FB2FF77CA990BD13DD0504CADB1C216B",
+      "work/legacy_plus_memory.py": "ED4DAD362702534117BE8803B4BA393332095EA88652C700635B25593C4F9BA6",
+      "work/legacy_plus_mode7_exact.py": "148949AB2623DBAB5B2F02437646F8D686F112747C05D0E1D3634D7A0DDC38FF",
       "work/legacy_plus_modes.py": "5EC2342769692E3C2B6F48099E6B474C14B16A3F4B0E8973641968BC8DCF4400",
       "work/legacy_plus_near.py": "A68848C1B71E8F28D59F4436395B31D6E3FF289F4C10F9625B6709037DB3EBD8",
       "work/legacy_plus_near_screen.py": "BD5094F7329D03D8693C340ECB7B3D92238229EF2B9CA4C0BA4A997C4EABEB47",
       "work/legacy_plus_projective.py": "B3ED84D78D5A37013B01BA78118BA25144BE76BD32670FB4D198F7B674B8A24A",
       "work/legacy_projection_exact.py": "AE4A1D7D1210AF5299EABC5673AB76D5175ADD0DC28AEFC6FBAEE5281DED49D0",
-      "work/legacy_render_tuning.py": "4FC6E8FEFC4DA0649ED58A315CE95626E6E907E419C6C3D971AB40408DF5ACAF",
+      "work/legacy_render_tuning.py": "BBB4984E31E1F5453EF8D1B521CBA6553CB63C104E545A47C0A328DBC1CE3C9A",
       "work/legacy_rotation.py": "6C8763A1C604ACE2B59E75B1208A6DBF8F0A4F0F3828DCCAF7623C4C023EBBBC",
       "work/legacy_rotation_exact.py": "B6446029632121067D23464957A6BF1B9206C0E69E16A035460053699541BE45",
       "work/legacy_rotation_products.py": "85EDA6B81A95B30FD8E855F380ACC1865DC11BD0792E5720C85CE3A06DCC95C4",
       "work/legacy_rotation_terms.py": "1BD81E8598B4B6C54107D352A67FFB1D1AAB761F19F883658C68454A3C097D34",
       "work/legacy_stability.py": "03BC4719C9E5B86BFC2B958125721E376D73005380EE7A85083B01D446FCC2B1",
       "work/legacy_wire_cursor.py": "40707F479271F6C2ABBDBF95BBE36D5C88D57BEF94AE47BC494C5BA45F440074",
+      "work/legacy_wire_segment_clip.py": "0E4B1BFEF87F3A7161466DC101959D443D7ECE7A2F78A40600ECB65AE7A8CB8D",
       "work/mode7-compositor-b.asm": "35D5EED91766980BBEE41515303DDBA366E4E0E258483B0B60F2226A4B150225",
       "work/mode7-compositor-c.asm": "5C3E2E1C58E882BBC90BA1F81AF3F5D3E9094DA9C9FBD7ECA5D5BAB1DD71AF05",
       "work/mode7-gouraud.asm": "1734DD130773E99887010B1A03614F9B422C631D3121257A2CB73BCB752456C4",
@@ -2165,9 +2249,9 @@
       "work/mode8/asm/apertures-interactive.asm": "A1CAB36B68A0C23F54EFEF69CB5FA9CBBB79D87547310290EA3B1185DD9AEA8F",
       "work/mode8/asm/perimeter-auto.asm": "077DB9A83F12922DE9C75B960333009DF38CC67CF66A242B014433DBEA3234EB",
       "work/mode8/asm/perimeter-interactive.asm": "8DB36FDE1A9C85B3BE546E7048260DC4304EA10C5236D964469BC2A4172963DC",
-      "work/mode8/asm/two-levels-auto.asm": "64FDFEA749F5FE2752D88EA3BA01A474922E31A94DDFAB8647696CB3DD93DDDF",
-      "work/mode8/asm/two-levels-interactive.asm": "A18CEE04FA01CD421DAC0AB2C5D99FDB566321B694D908116DCC340E038A35FD",
-      "work/mode8/build.py": "E18CE5F24736B312244383DC63E69A0E445484557A4DA5189F021FF8B0AA33B9",
+      "work/mode8/asm/two-levels-auto.asm": "ABFD88B3FD47A93D98CE3F1061115083C88C1EC54CC6EDE204B16988C9FEFDAA",
+      "work/mode8/asm/two-levels-interactive.asm": "BF947AFA9B16653E9C5598F5B583DCA954CC25A0C2120FECAC934FD1ABA3C503",
+      "work/mode8/build.py": "6B5DC06C82478184DCA1E89DD2B04D334D80270854AF2C031F55715FB828E50F",
       "work/mode8/common.py": "5540C8F5D03ACEC80FE495814ECBB16412D7596C101F42CB7FB3584B27FCE0AD",
       "work/mode8/contract.py": "5EF28DE6D85EAF7B0FEF848D84B683F03C11697A018E40B753EF9E4F5F6248BF",
       "work/mode8/directions.py": "A31912E4C6943AA4DBC6C176F9E05DF2E87A28B731085ABC42F5E597819F5C86",
@@ -2186,8 +2270,8 @@
       "work/mode8/vice.py": "0B95CDF1FEC4D3327620666F930F5B13268B93FD0E706D3077CEB60DA005A2DA",
       "work/mode8/walls.py": "CAB801EB268AFB8BEE866E02D5A0439325992301A7D343D1B881AB850772D66A",
       "work/mode8_build.py": "03822F02A21497BB27D94BD6C09B6DE8B685CA666D02DFB504005EE74341D80A",
-      "work/normalized_build.py": "69A929406460C3A101B1A2E44F25D246089017889979CDC5DE37360433B0E9A7",
-      "work/q8/build.py": "8F68530A67AD1D76775DA58146C8EEE5AECB1D63913769DB857D07B2413D6DB5",
+      "work/normalized_build.py": "4D86EE41F8AAC0F6A6A1D4407FE7AFDB8A4EC4AAB6492661509E080735BBD78C",
+      "work/q8/build.py": "B57CBBE683DAD0DE13EB09821218BA3C7D91469C739DB0691D946E899B6EFF11",
       "work/q8/src/allocation.py": "F0B6BB8F3ADAD81950B9F87C2676A138A1D6F2868DBFAF261D686B1E62E031C0",
       "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
       "work/q8/src/camera.py": "C1497B56E9C3325D1738C068DDED7C97BF20DB524214F2C6EF483EE3C14B5909",
@@ -2220,10 +2304,13 @@
       "work/q8/src/wide.asm": "6653F13A13A25F1D2C3D2B43778CF2F4096318940C0EFF4AF3C65EEB46243576",
       "work/q8/src/winding.asm": "FB40675AF44961A177856594AB462D47FDB7819667EF58E7D151E36C676A1874",
       "work/q8/src/wire.py": "AB7E272243FA35083D1A5661FFD32ABB0CC45167E3013B8DFCBE9E233D7863C4",
-      "work/q8/src/wire_build.py": "294B1F7E4AFAF8178552F9094C6C6153234F6AC60844ECA9D364B74532001A2C",
+      "work/q8/src/wire_build.py": "DAFDB08435D3700D38AD0169E95BB9DE5FEDD6862A96F354A1B2DB3EB061F300",
       "work/q8/src/wire_line.asm": "A5684C79B802B2BCA0602CB756C315F0EF55E4F1C4A695A3CBED0ECDABB232DE",
-      "work/qualify-gameplay.py": "81FACBC31D29805F2560BD890F6C7D91FE88C004A76380A09A1253553C0968CA",
       "work/reusable_render.py": "DDB88DB4E663BC51EFA91FA2983FB69BEEC40790C0F8E28E48D89BC185CD0517",
+      "work/runtime_contacts.py": "6560B9A186765BFF59AE8C19A4C95D5A0FC48BAB1A1F8032C880AD7BF8C7070D",
+      "work/runtime_scene.py": "90C4EBE1F7A935BA7480ECD762E24A14AEAB3FAF00DFAABC6CFC221DB1F567F8",
+      "work/runtime_scene_view.py": "FA91C3D1D69555239F9889B4E87B9836505B4AF22B7E503744F04139289F0C8D",
+      "work/runtime_support_native.py": "2093DA10FCD0B86C9A163AA2565EDD0F3159B905A6223DDDA3C5714A4A7FA7FF",
       "work/sphere_impostors.asm": "A637ACDC1AC50CE0600A5D48A88C3C909F7E908A1057D909B1F040656914B2FD",
       "work/sphere_impostors.py": "3088E456655A9F27CAAA1D71FB303F6DBA182773FD74053CA75F41E8B477F922",
       "work/subpixel-mobile-x.asm": "834F680A9A0F8E36D15EFB68C1E1806669196D059C115663025B311F1E907B81",
@@ -2236,7 +2323,7 @@
     "referenceInputs": "Historical examples/validation references are external, not shipped",
     "engineTemplates": "Mode8 assembly is the bounded backend implementation; no default scene is built",
     "promotedEngineSHA256": {
-      "work/build-3Dvibe64.ps1": "F76F154D7A4A2E7D4DEF1ED568566F852C93F301506446EF89F85BD6B8C7E2F5",
+      "work/build-3Dvibe64.ps1": "D2DDF5D9EAAD48F91D179BC97207812BC37E931819C9A74C1BE5564377C3874F",
       "work/build-gameplay.ps1": "4F2B1E58B0329F706F885F8A24EB55990D8128087CE88F846606EC134792B70B",
       "work/build-gameplay.py": "143A449EEBBB0BC550D9F0D19FE1E0E547958A6308C67FC9B2D9EEFEE8229844",
       "work/build-level.py": "562E0478EBBE7E3FC8D409FE93828AF87AD0E7B7194BF7B02FD0988F61C32577",
@@ -2262,13 +2349,13 @@
       "work/mode7_png.py": "E8EF15B42F1F04D65F423E2702DD7E3E459EABF7959B7F177E949F26E1B25038",
       "work/mode7_raster.py": "DE1AE3727A92ECBF403BFD52F1E5147D341017E10C940391119D478E55E84193",
       "work/mode8_build.py": "03822F02A21497BB27D94BD6C09B6DE8B685CA666D02DFB504005EE74341D80A",
-      "work/normalized_build.py": "69A929406460C3A101B1A2E44F25D246089017889979CDC5DE37360433B0E9A7",
+      "work/normalized_build.py": "4D86EE41F8AAC0F6A6A1D4407FE7AFDB8A4EC4AAB6492661509E080735BBD78C",
       "work/qualify-gameplay.py": "81FACBC31D29805F2560BD890F6C7D91FE88C004A76380A09A1253553C0968CA",
       "work/subpixel-mobile-x.asm": "834F680A9A0F8E36D15EFB68C1E1806669196D059C115663025B311F1E907B81",
       "work/subpixel-x-probe.asm": "FB7113490FC125A832965F5CC5BE1BA982EF355EEDED56B3A7BD36CE35EBCEFF",
       "work/subpixel_probe.py": "261D1DD18616585C4D10BAC880ADA6950CF9B4A1593B8BE9F75DC7C064317FF9",
       "work/mode8/analyze.py": "496D43EC9FCEFC935912BE81FB6489F840ADF96C7407B95D388AE35D90BF7596",
-      "work/mode8/build.py": "57BE68CC567A77388756F541990134FE8CB9A2C902BAB4DDD96AF2D091D8BBEC",
+      "work/mode8/build.py": "6B5DC06C82478184DCA1E89DD2B04D334D80270854AF2C031F55715FB828E50F",
       "work/mode8/common.py": "5540C8F5D03ACEC80FE495814ECBB16412D7596C101F42CB7FB3584B27FCE0AD",
       "work/mode8/contract.py": "5EF28DE6D85EAF7B0FEF848D84B683F03C11697A018E40B753EF9E4F5F6248BF",
       "work/mode8/directions.py": "A31912E4C6943AA4DBC6C176F9E05DF2E87A28B731085ABC42F5E597819F5C86",
@@ -2287,7 +2374,7 @@
       "work/mode8/vice.py": "0B95CDF1FEC4D3327620666F930F5B13268B93FD0E706D3077CEB60DA005A2DA",
       "work/mode8/walls.py": "CAB801EB268AFB8BEE866E02D5A0439325992301A7D343D1B881AB850772D66A",
       "work/mode8/__init__.py": "82DC6002877FD7691492A495097667D100C75CB240974B2227F582A768AE4D7B",
-      "work/q8/build.py": "8F68530A67AD1D76775DA58146C8EEE5AECB1D63913769DB857D07B2413D6DB5",
+      "work/q8/build.py": "B57CBBE683DAD0DE13EB09821218BA3C7D91469C739DB0691D946E899B6EFF11",
       "work/tools/c64_material_scales.generated.json": "C13E925CAF65D95D03BDFFAD14249ECA723E30D89CC579376A1500C002D75F6C",
       "work/q8/src/allocation.py": "F0B6BB8F3ADAD81950B9F87C2676A138A1D6F2868DBFAF261D686B1E62E031C0",
       "work/q8/src/camera.asm": "44181677CD2D386693F7FEEA0703D3FA58411E434FDC334FC20CEE258B0E57E3",
@@ -2321,16 +2408,16 @@
       "work/q8/src/wide.asm": "6653F13A13A25F1D2C3D2B43778CF2F4096318940C0EFF4AF3C65EEB46243576",
       "work/q8/src/winding.asm": "FB40675AF44961A177856594AB462D47FDB7819667EF58E7D151E36C676A1874",
       "work/q8/src/wire.py": "AB7E272243FA35083D1A5661FFD32ABB0CC45167E3013B8DFCBE9E233D7863C4",
-      "work/q8/src/wire_build.py": "294B1F7E4AFAF8178552F9094C6C6153234F6AC60844ECA9D364B74532001A2C",
+      "work/q8/src/wire_build.py": "DAFDB08435D3700D38AD0169E95BB9DE5FEDD6862A96F354A1B2DB3EB061F300",
       "work/q8/src/wire_line.asm": "A5684C79B802B2BCA0602CB756C315F0EF55E4F1C4A695A3CBED0ECDABB232DE",
       "work/mode8/asm/apertures-auto.asm": "AEF3E285406B4B67ADB3FF092B8D8D2C50807F4C46D8C81A74E9DF018BA0D850",
       "work/mode8/asm/apertures-interactive.asm": "A1CAB36B68A0C23F54EFEF69CB5FA9CBBB79D87547310290EA3B1185DD9AEA8F",
       "work/mode8/asm/perimeter-auto.asm": "077DB9A83F12922DE9C75B960333009DF38CC67CF66A242B014433DBEA3234EB",
       "work/mode8/asm/perimeter-interactive.asm": "8DB36FDE1A9C85B3BE546E7048260DC4304EA10C5236D964469BC2A4172963DC",
-      "work/mode8/asm/two-levels-auto.asm": "539D1D15D55E6C7DB0DEE31F0D699156D01FF31EDCCB312FBE06426B97F79207",
-      "work/mode8/asm/two-levels-interactive.asm": "F78CC063D1CAE9E95F13F88FA7360F3B88140A1F7F43D045D32539C9094911D0",
+      "work/mode8/asm/two-levels-auto.asm": "ABFD88B3FD47A93D98CE3F1061115083C88C1EC54CC6EDE204B16988C9FEFDAA",
+      "work/mode8/asm/two-levels-interactive.asm": "BF947AFA9B16653E9C5598F5B583DCA954CC25A0C2120FECAC934FD1ABA3C503",
       "work/legacy_plus_attributes.py": "DE6F1C908714CD8CBED17F8AE00780A235D4FB40FCE354D51047DE851C2EE0F2",
-      "work/legacy_plus_memory.py": "B46D04696B137669FC0B33F95377A44AD8E27CCC175CECB6E91F5DABADFD86B6",
+      "work/legacy_plus_memory.py": "ED4DAD362702534117BE8803B4BA393332095EA88652C700635B25593C4F9BA6",
       "work/legacy_plus_modes.py": "5EC2342769692E3C2B6F48099E6B474C14B16A3F4B0E8973641968BC8DCF4400",
       "work/legacy_plus_projective.py": "B3ED84D78D5A37013B01BA78118BA25144BE76BD32670FB4D198F7B674B8A24A"
     },
@@ -2338,8 +2425,20 @@
     "publication": "stable source release published on GitHub",
     "GitHubPublished": true,
     "repositoryURL": "https://github.com/Librologica/3Dvibe64",
-    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1",
-    "releasePageCreated": true
+    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0",
+    "releasePageCreated": true,
+    "ordinaryEngineScope": "Current delivered compiler hashes. Static-path preservation is verified by cold-built PRG identity, not inferred from source identity.",
+    "benchmarksIncluded": false,
+    "allDemosExcluded": true,
+    "excludedHelperScripts": [
+      "scripts/analyze_mode8.py",
+      "scripts/benchmark_native_render.py",
+      "scripts/benchmark_normalized16.py",
+      "scripts/qualify_mode8.py",
+      "scripts/seal_dev.py",
+      "scripts/sphere_api_example.py",
+      "work/qualify-gameplay.py"
+    ]
   },
   "renderOptimizations": {
     "default": false,
@@ -2362,10 +2461,54 @@
     }
   },
   "development": {
-    "sourceDevelopment": "1.15.1-dev-agentic17",
-    "status": "promoted-to-stable",
-    "notes": "AGENTIC-DEV.md",
-    "scope": "Renderer source unchanged from the delivered development; stable docs and host release gates updated"
+    "version": "1.15.2-dev-agentic34",
+    "status": "development-qualification-in-progress",
+    "baseEngine": "1.15.2-dev-agentic33",
+    "officialStable": "1.15.1",
+    "sourceOnly": true,
+    "demosIncluded": false,
+    "published": false,
+    "GitHubPublished": false,
+    "releasePageCreated": false,
+    "releaseURL": null,
+    "qualifiedAsStable": false,
+    "release": {
+      "version": "1.15.2-dev-agentic34",
+      "classification": "development",
+      "publicationStatus": "unpublished",
+      "GitHubPublished": false,
+      "releasePageCreated": false,
+      "releaseURL": null,
+      "tag": null,
+      "tagCreated": false,
+      "baseOfficialVersion": "1.15.1",
+      "sourceOnly": true,
+      "demosIncluded": false,
+      "qualifiedAsStable": false,
+      "qualification": "QUALIFICATION-AGENTIC34.json",
+      "baseDevelopment": "1.15.2-dev-agentic33"
+    },
+    "distanceFade": {
+      "default": "off",
+      "modes": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "textureLODIndependent": true
+    },
+    "generalIndex": {
+      "anchor": "1.15.0=100",
+      "base": 137.50563008162632,
+      "new": 137.50563008162632,
+      "deltaPercent": 0,
+      "status": "inherited reconstructed estimate for unchanged default paths; canonical calculation blocked"
+    }
   },
   "inheritedStablePromotion": {
     "version": "1.14.0",
@@ -2390,11 +2533,11 @@
     "precision": "legacy-plus",
     "frozenLightingSeparate": true,
     "sourceSHA256": {
-      "work/compact_keyframes.py": "62d188613d6eba83ec9efdc9dad7323ba13ea2b96d18d6bca5dbafb2f599f2de",
-      "work/exact_render_convex.py": "f7d1db8b2cfcd33f275a7aec8b229f77d847ef06993bb64759690c954b976e49",
-      "work/exact_render_wire.py": "90e9f47e8cea8eb0680aea23363352c1d3000bbaea2565b28c4dc06d9b9f23ad",
-      "work/legacy_plus_exact.py": "edf38a1bba33159a94cc04076c2db75413630136e396284d98b8c050d9057085",
-      "work/reusable_render.py": "ddb88db4e663bc51efa91fa2983fb69beec40790c0f8e28e48d89bc185cd0517"
+      "work/compact_keyframes.py": "62D188613D6EBA83EC9EFDC9DAD7323BA13EA2B96D18D6BCA5DBAFB2F599F2DE",
+      "work/exact_render_convex.py": "F7D1DB8B2CFCD33F275A7AEC8B229F77D847EF06993BB64759690C954B976E49",
+      "work/exact_render_wire.py": "90E9F47E8CEA8EB0680AEA23363352C1D3000BBAEA2565B28C4DC06D9B9F23AD",
+      "work/legacy_plus_exact.py": "EDF38A1BBA33159A94CC04076C2DB75413630136E396284D98B8C050D9057085",
+      "work/reusable_render.py": "DDB88DB4E663BC51EFA91FA2983FB69BEEC40790C0F8E28E48D89BC185CD0517"
     },
     "automaticOptions": [
       "arithmetic",
@@ -2432,8 +2575,8 @@
       "NoFpsOverlay"
     ],
     "sourceSHA256": {
-      "work/sphere_impostors.py": "3088e456655a9f27caaa1d71fb303f6dba182773fd74053ca75f41e8b477f922",
-      "work/sphere_impostors.asm": "a637acdc1ac50ce0600a5d48a88c3c909f7e908a1057d909b1f040656914b2fd"
+      "work/sphere_impostors.py": "3088E456655A9F27CAAA1D71FB303F6DBA182773FD74053CA75F41E8B477F922",
+      "work/sphere_impostors.asm": "A637ACDC1AC50CE0600A5D48A88C3C909F7E908A1057D909B1F040656914B2FD"
     },
     "docs": {
       "en": "CIRCLE-SPHERES.en.md",
@@ -2466,6 +2609,104 @@
       ],
       "publicAutoLowFree": 62,
       "publicInteractiveLowFree": 1266
+    }
+  },
+  "baseStablePromotion": {
+    "version": "1.15.1",
+    "status": "complete",
+    "sourceDevelopment": "1.15.1-dev-agentic17",
+    "runtimeAndDefaultsUnchanged": true,
+    "defaultProgramBytesUnchanged": true,
+    "GitHubPublished": true,
+    "publicationPending": false,
+    "qualification": "QUALIFICATION-1.15.1.json",
+    "historicalOnly": true
+  },
+  "stablePromotion": {
+    "status": "complete",
+    "sourceDevelopment": "1.15.2-dev-agentic36",
+    "runtimeAndDefaultsUnchanged": true,
+    "defaultProgramBytesUnchanged": true,
+    "GitHubPublished": true,
+    "publicationPending": false,
+    "qualification": "QUALIFICATION-1.20.0.json",
+    "releasePageCreated": true,
+    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0"
+  },
+  "agenticDevelopment": {
+    "base": "1.15.2-dev-agentic35",
+    "qualification": "QUALIFICATION-AGENTIC36.json",
+    "distanceFadeOptimized": true,
+    "mode8FadeSupported": true,
+    "mode8SemanticsChanged": false,
+    "wireOwnerCorruptionFixed": true,
+    "allocatorWindowsExpanded": false,
+    "allocatorOrderAndBudgetUnchanged": true,
+    "qualityChanged": false
+  },
+  "animatedMeshes": {
+    "version": 1,
+    "modes": [
+      4,
+      5,
+      6
+    ],
+    "precision": "legacy-plus",
+    "sceneField": "animatedMeshes",
+    "contractEN": "ANIMATED-MESH.en.md",
+    "contractIT": "ANIMATED-MESH.it.md",
+    "frozenLightingMode": 6,
+    "defaultEnabled": false,
+    "allocatorWindowsUnchanged": true,
+    "compactRenderer": "explicit compact-gouraud; known-body hashes and profile guards",
+    "nativeQualifiedModes": [
+      4,
+      5,
+      6
+    ],
+    "demosIncluded": false
+  },
+  "runtimeScene": {
+    "version": 1,
+    "modes": [
+      4,
+      5,
+      6
+    ],
+    "defaultEnabled": false,
+    "contractEN": "RUNTIME-SCENE.en.md",
+    "contractIT": "RUNTIME-SCENE.it.md",
+    "demosIncluded": false
+  },
+  "distanceFade": {
+    "default": "off",
+    "modes": [
+      1,
+      2,
+      3,
+      4,
+      5,
+      6,
+      7,
+      8
+    ],
+    "cli": [
+      "DistanceFade",
+      "DistanceFadeStart",
+      "DistanceFadeEnd"
+    ],
+    "scene": "distanceFade.mode/start/end",
+    "range": "0 <= start < end <= 32767",
+    "coverageStates": 17,
+    "textureLODIndependent": true,
+    "Mode8PayloadBytes": 2449,
+    "allocatorWindowsUnchanged": true,
+    "EN": "DISTANCE-FADE.en.md",
+    "IT": "DISTANCE-FADE.it.md",
+    "backendHashes": {
+      "work/distance_fade.py": "155CAE039BD75C3DF256454C993111533BB4AECF323C59163DB3D972572C7162",
+      "work/distance_fade_legacy.py": "A350D4853AFF932ED033ED24E888A1C6E86A7C4B690CE8CB22E9E0BA453EF76E",
+      "work/distance_fade_mode8.py": "9D9A57F1C7669D4EF7AC4EEB4878A051DFF656AF18399C05B36FF720788AB1BB"
     }
   }
 }

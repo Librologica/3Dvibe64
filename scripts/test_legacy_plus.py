@@ -15,8 +15,10 @@ def main():
     assert current['version']=='1.15.0-dev2' and not current['GitHubPublished']
     assert len(current['inheritedDefaultIdentity'])==57 and all(x['identicalPRG'] for x in current['inheritedDefaultIdentity'])
     # Historical source ledger above belongs to dev2. Current byte identity is
-    # checked against the separately qualified stable source, not obsolete hashes.
-    stable=json.loads((ROOT/'QUALIFICATION-1.15.1.json').read_text())
+    # checked against the explicitly selected current qualification ledger; the
+    # historical stable ledger remains unchanged.
+    current=json.loads((ROOT/'RELEASE.json').read_text())
+    stable=json.loads((ROOT/current['qualification']).read_text())
     for name,digest in stable['runtimeSourceSHA256'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest().lower()==digest.lower(),name
     assert len(q['finalIdentity'])==len(q['nativeFPS'])==57

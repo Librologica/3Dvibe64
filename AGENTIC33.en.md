@@ -1,0 +1,17 @@
+# Agentic33 — 1.15.2-dev-agentic35
+
+Unpublished development from delivered agentic32. [Italiano](AGENTIC35.it.md). [Current qualification](QUALIFICATION-AGENTIC33.json). Previous ledgers remain historical.
+
+The recognized ordinary affine Mode7-C path shares one full-byte UV/Q kernel instead of keeping separate normal and stable copies. Two132-byte tables contain the exact four packed C-light/Bayer pixel contributions for the even/odd row classes. The original inclusive thresholds and local texel codes are retained. Each horizontal phase masks its own two-bit contribution; all bitmap addresses and endpoint rules remain unchanged. Partial bytes retain the parent compositor, reading the unscaled value of the private Q shadow. Only the private span Q shadow and its quotient/corrected step are scaled by4; Q errors and all public endpoint/final values retain their parent representation. Stable-band Q advancement is still skipped using the original selector. Three cursor increments are published together before the fourth full-byte sample. Texture low/high operand caching still supports unaligned source pages.
+
+Known-source guards cover the full/partial samplers, selector, span producers, Q advance and compositor. Unknown/custom kernels or active RuntimeScene/Dynamics retain parent code. The original bounded allocator windows, strategy order and60000-node search budget are unchanged. New code/tables occupy real bounded RAM; no ZP aliases or data-stack bytes are added. Quality/defaults, lighting, interpolation and public APIs are unchanged. All agentic32 edge/DDA, agentic31 Mode6 and inherited gameplay APIs remain available.
+
+Qualification uses PAL VICE Turbo6510 at1x/20x/64x, original SID, warm128 refreshes (~2.554s), at least1024 measured refreshes (~20.429s), unchanged16-pose route and complete new views only. Raw clocks, FPS/render/p95/worst, phases, commands and hashes stay external. CPU callbacks prove pixels/state/stack only. Technical Debug uses matching PRG/labels, paused reads, no live sampling and maincpu_clk machine time; never multiply it by64 to invent CPU cycles. Hardware/NTSC are not newly qualified.
+
+Always include base/candidate general indices on the first official stable1.15.0=100 scale and their delta. Historical performance-v1 remains blocked by the PowerShell hash mismatch. Matched-current-tool ratios and reconstructed historical estimates must be explicitly distinguished; never silently change anchors or aggregate favorable partial cases. Verify suite alignment and compare the previous release at every new dev/release. Holdouts are final validation only.
+
+Source-only delivery. Evidence and experimental builds are external in3Dvibe64_Verifiche_1.15.2-dev-agentic33_2026-11-08. No demos, scenes, models, music, PRGs or captures bundled; no stable promotion/publication. Final measured results and limitations are in the qualification ledger.
+
+## Final qualification
+
+81 cold case builds,54 buildable cases,162 native catalog cells (18 fresh,144 exact-program reuses),648 identical parent captures,27 inherited blocks and no new block. Three-repeat targeted runs and eight-period long runs are bound to the same delivered PRGs. General index on first stable1.15.0=100: agentic32 136.806507 → agentic33 137.505630; paired change +0.511030%. Both historical-scale values are estimates; canonical fixed index remains blocked. See the ledger for every FPS, p95/worst and limitation.

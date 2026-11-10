@@ -1,6 +1,8 @@
-# Contributing / Contribuire — 1.15.1
+# Contributing / Contribuire — 1.20.0
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+
+
 
 ## English
 

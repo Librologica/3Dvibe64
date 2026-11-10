@@ -1,6 +1,8 @@
-# Circle-rendered spheres — 1.15.1
+# Circle-rendered spheres — 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+
+
 
 Optional stable API, independent of scene geometry and object identities.
 It represents a sphere by a screen-aligned circular impostor, with native
@@ -149,19 +151,9 @@ call `er_sphere_begin_view` after updating camera angles, and use
 `er_sphere_draw_world`. World/camera draw calls repeat projection and raster
 for each requested view; the engine does not cache lighting or geometry.
 
-## External example and verification
+## Integration and verification
 
-```powershell
-$env:TASS64_EXE='C:/path/to/64tass.exe'
-python -B scripts/sphere_api_example.py --out C:/projects/circle-spheres --mode 4
-```
-
-The source tool creates/builds an external project with a cube, caller-defined
-layers and floating orbs of different world radii. `--mode 6` uses a compact
-two-object caller to fit its tighter RAM budget. Its common four-color palette
-and its motion are example policy, not engine assumptions. Each project has
-`launch-demo.cmd`, `launch.ps1`, a PRG and a one-byte-disabled control PRG.
-No precompiled example or media is distributed inside this source SDK.
+Create your external project and use the ASM calls documented above. The application owns draw order, motion and lighting. This package does not include a demo generator.
 
 `scripts/test_sphere_impostors.py --build <assembled-work> --out <report>`
 checks the emitted6502 against independent circle coverage, framebuffer masks,

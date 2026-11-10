@@ -1,8 +1,10 @@
-# Reusable rendering and data — 1.15.1
+# Reusable rendering and data — 1.20.0
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
-Stable1.15.1 retains the optional API contracts; renderer source is promoted unchanged from agentic17. The current package is local; previous frozen releases and demos are preserved. [Base options](EXACT-RENDER.en.md). The default remains `-LegacyPlusOptimizations none`. New options retain the Mode4 legacy-plus, walkLite, normal160×100, high-basic-v2, NoFpsOverlay, Q4 near8/poly clipping profile. Geometry Q4, coefficients Q10, pixels and palette are not reduced. Every combination consumes real64KB RAM; a combination may fail even when its individual options fit.
+
+
+The optional exact-render contracts are inherited. AnimatedMesh is an additional separate API in this stable source package; previous frozen releases and demos are preserved. [Base options](EXACT-RENDER.en.md). The default remains `-LegacyPlusOptimizations none`. New options retain the Mode4 legacy-plus, walkLite, normal160×100, high-basic-v2, NoFpsOverlay, Q4 near8/poly clipping profile. Geometry Q4, coefficients Q10, pixels and palette are not reduced. Every combination consumes real64KB RAM; a combination may fail even when its individual options fit.
 
 ## Option selection
 

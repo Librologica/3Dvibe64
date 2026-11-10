@@ -1,13 +1,13 @@
-# Costruire mappe Mode 8 — 1.15.1
+# Costruire mappe Mode 8 — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
-
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
-
-Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
 
-Contratto sorgente corrente 1.15.1. Il manuale descrive l'exporter ordinario
+
+Release sorgente stabile 1.20.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.20.0. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -174,18 +174,8 @@ Scegliere una cartella esterna nuova e vuota per ciascuna build: output interno 
 | `LOW_BUDGET`, `ASSEMBLER` | Superato budget sorgenti/dati | Leggere assembler.log e ridurre dati variabili ammessi, non modificare indirizzi |
 | `OUTPUT_DIRECTORY`, `OUTPUT_EXISTS` | Output nell'SDK o cartella non vuota | Usare una nuova cartella esterna |
 
-## 7. Atlante opzionale dei costi
+## 7. Analisi dei costi
 
-Raggi lunghi nello spazio vuoto, discontinuità degli owner, aperture successive e profili distinti possono costare più di una stanza apparentemente affollata. La cache multi ha 32 profili: una vista con più profili distinti può causare espulsioni ripetute. Frequenza di lettura di una cella non significa costo totale di quella cella; i costi condivisi dei profili non vanno sommati due volte.
+Raggi lunghi nel vuoto, discontinuità dei proprietari, aperture sovrapposte e molte chiavi di profilo possono costare più di una stanza visivamente densa. La cache multi contiene 32 profili: più chiavi distinte possono causare ricambio frequente. Gli accessi a una cella non rappresentano da soli tutto il suo costo; non sommare due volte costi condivisi.
 
-Dipendenze opzionali: `python -m pip install py65==1.2.0 Pillow`. Compilare prima la scena, poi eseguire:
-
-```powershell
-python -B scripts/analyze_mode8.py --scene ../my-inputs/mode8/perimeter.json --build ../perimeter-reference-build --sampling ../my-inputs/mode8/sampling/perimeter.json --out ../perimeter-cost
-```
-
-Usare una build della **stessa** scena, per esempio quella del comando in [MODE 8.it.md](MODE8.it.md). Il campionamento contiene `poses`, ciascuna `[xQ8,yQ8,yaw,eyeInteger,eyeFraction]`, valutate in ordine con RAM persistente. Su una mappa diversa ricontrollare le pose: campioni con impronta/quota/intervallo errati vengono registrati e saltati, non convertiti.
-
-Output: `poses.json`, `poses.csv`, `REPORT.md`, `atlas-host.png`. Media e massimo osservato per cella sono separati; la freccia indica lo yaw più costoso campionato. Grigio=non campionato, blu=irraggiungibile, rosa=invalido, nero=solido. È un **atlante host**, non uno screenshot VICE. Ogni render valido confronta tutti i 7.040 byte bitmap, viewport e margini, contro l'oracolo fixed indipendente.
-
-I cicli derivano dalle istruzioni 6502 assemblate eseguite in py65, senza stall VIC, IRQ, input, simulazione e presentazione: non sono FPS nativi. Per questi usare `scripts/qualify_mode8.py` con x64sc stock. Nessuno strumento inserisce diagnostica nel PRG distribuito. Il worst campionato non è un limite globale; non viene fornito un ottimizzatore automatico delle mappe né un guadagno garantito.
+Gli strumenti di profilazione e la suite prestazionale restano esterni alla distribuzione. Profilare la stessa build e la stessa mappa, con simboli della medesima compilazione; misurare poi i nuovi frame completi sul target nativo. I cicli di un replay CPU escludono VIC, IRQ e presentazione e non sono FPS. Una posa campionata non costituisce un limite globale del caso peggiore. [Protocollo e copertura](TESTING.it.md).

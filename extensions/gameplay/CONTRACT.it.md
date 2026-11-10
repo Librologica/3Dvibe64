@@ -1,10 +1,10 @@
-# Contratto sorgente billboard delimitato — 1.15.1
+# Contratto sorgente billboard delimitato — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](../../RELEASE-STATUS.it.md) · [Qualifica corrente](../../QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](../../QUALIFICATION-1.20.0.it.md).
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](../../RELEASE-STATUS.it.md).
 
-Release stabile GitHub 1.15.1: [ottimizzazioni correnti](../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+Release sorgente stabile 1.20.0: [ottimizzazioni correnti](../../RENDER-OPTIMIZATIONS.it.md), [input esterni](../../EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 La distribuzione conserva `billboards/masked.py`, `outlined.py`, `scene.py`

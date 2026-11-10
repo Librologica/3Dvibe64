@@ -1,13 +1,13 @@
-# WORLD-01 — external resident room groups, 1.15.1
+# WORLD-01 — external resident room groups, 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](../../../RELEASE-STATUS.en.md) · [Current qualification](../../../QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
-
-> Stable1.15.1 source SDK published on GitHub. [Status and support](../../../RELEASE-STATUS.en.md).
-
-Stable GitHub release 1.15.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
 
 
-Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `room-groups` loads real external data through C64 KERNAL. The default route
@@ -17,7 +17,6 @@ palette and guardian frames remain resident/shared.
 
 ```powershell
 python -B work/build-gameplay.py --profile room-groups --out ../world-build --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../world-build --checks --benchmark --launcher
 ```
 
 Keep generated `project/media` alongside `launch-demo.cmd`; the PRG alone
@@ -87,3 +86,5 @@ new full views, base PAL cycles and at least 20 emulated seconds after warm-up
 count; warp/host timing is excluded. General integration remains separate.
 
 [Italiano](WORLD-DEV.it.md).
+
+Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

@@ -1,6 +1,10 @@
-# 3Dvibe64 — Guida per il programmatore assembly — 1.15.1
+# 3Dvibe64 — Guida per il programmatore assembly — 1.20.0
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+
+Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
+
+
 
 ## Copia di lavoro e output
 
@@ -12,21 +16,21 @@ parametro per un output esterno nuovo. I file descritti sotto sono generati,
 non file precompilati distribuiti con questo SDK.
 
 
-## Release stabile 1.15.1
+## Release sorgente stabile 1.20.0
 
-`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica corrente](QUALIFICATION-1.15.1.it.md). Pacchetto sorgente stabile1.15.1 pubblicato su GitHub. Solo scene/asset esterni.
-
-
-Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+`-Precision legacy-plus` supporta Mode1–7 con geometria Q4 e camera più fine, incluse texture Mode7 affini/prospettiche. Richiede walkLite, normal160×100, high-basic-v2 e -NoFpsOverlay; clipping poligonale near8/schermo. Legacy predefinita e Q8 esplicito conservano i propri contratti. Vedere [legacy-plus](LEGACY-PLUS.it.md) e [qualifica corrente](QUALIFICATION-1.20.0.json). SDK sorgente di sviluppo non pubblicato. Solo scene/asset esterni.
 
 
-Contratto sorgente corrente 1.15.1. Il manuale descrive l'exporter ordinario
+Release sorgente stabile 1.20.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Contratto sorgente corrente 1.20.0. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione sorgente stabile1.15.1 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione stabile contiene solo sorgenti. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 ## Mode 7 veloce — 1.7.0
 
@@ -799,3 +803,7 @@ Con questo metodo 3Dvibe64 diventa leggibile come un engine assembly specializza
 Il selettore `-LegacyPlusOptimizations` è distinto da EngineExperiments,dal raster Q8 ibrido e dagli altri backend. Richiede Mode4 legacy-plus nel profilo qualificato; default none. `all` comprende arithmetic,edges,spans,outcodes,convex,integer-edges. Wire e stream sono API ASM esplicite escluse da all,non sostituzioni automatiche; stream richiede outcodes e possesso degli slot nativi. Frozen-lighting è separata e cambia intenzionalmente la risposta alle luci mobili. Il codec di chiavi è un modulo dati facoltativo. L'errore Bresenham a8bit non riduce la precisione geometrica Q4/Q10. La matrice oggetto ordinaria resta Q6; nessuna nuova API di rotazione rigida degli oggetti è implicita.
 
 [Opzioni e profilo](EXACT-RENDER.it.md) · [ABI,materiali,memoria e ripieghi](REUSABLE-RENDER.it.md) · [Stato e supporto](RELEASE-STATUS.it.md). Alcune combinazioni non entrano nei64KB e vengono rifiutate.
+
+Agentic28: il percorso C affine ordinario controllato salva/ripristina16 byte privati math/UV esistenti (base4). Il ciclo di fill li prende in prestito una volta per faccia; l’ingresso span autonomo resta protetto. U resta in X nel core chiuso e il sampler usa Y per Q. Nessun nuovo alias globale zero page o tabella persistente. I chiamanti riconosciuti considerano A/flag del fill volatili; helper/chiamanti privati diversi, altri compositori e policy colore VIC conservano il percorso della base. Vedere le [note correnti](AGENTIC33.it.md) per stack e perimetro di verifica.
+
+Agentic29 conserva il contratto di salvataggio dei16 byte privati. Ink usa la copia U ritirata dopo il trasferimento di U in X; una composizione XOR esatta dei nibble elimina lo spill dell’indice del sampler. Solo chiamanti privati controllati consentono di omettere gli attributi delle righe vuote; le righe consumate inizializzano entrambi gli estremi. La prova del range dei vertici una volta per faccia seleziona lo store interno; negli altri casi restano i confronti originali. Vedere le [note correnti](AGENTIC33.it.md).

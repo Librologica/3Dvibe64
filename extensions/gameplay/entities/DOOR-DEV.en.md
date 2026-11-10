@@ -1,13 +1,13 @@
-# ENT-01 — polygonal sliding door, 1.15.1
+# ENT-01 — polygonal sliding door, 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](../../../RELEASE-STATUS.en.md) · [Current qualification](../../../QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
-
-> Stable1.15.1 source SDK published on GitHub. [Status and support](../../../RELEASE-STATUS.en.md).
-
-Stable GitHub release 1.15.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
 
 
-Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `door-entity` retains UI, configurable guardian and mixed surfaces. A divider
@@ -17,7 +17,6 @@ door; the original comparison profile remains separate.
 
 ```powershell
 python -B work/build-gameplay.py --profile door-entity --out ../door-build --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../door-build --checks --benchmark --launcher
 ```
 
 SPACE uses the nearby guardian and toggles the open request. WASD starts the
@@ -65,3 +64,5 @@ door movement also changes drawn area/occlusion, so its FPS delta includes
 that work. Raw commands and timing remain external source-release evidence.
 
 [Italiano](DOOR-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)
+
+Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

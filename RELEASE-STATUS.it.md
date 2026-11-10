@@ -1,29 +1,9 @@
-# Stato release e supporto — 1.15.1
+# Stato della release e supporto — 1.20.0
 
-**Release stabile1.15.1 di soli sorgenti, promossa dalla dev consegnata agentic17 e pubblicata su GitHub.**
-Release/download: [v1.15.1](https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1). [RELEASE.json](RELEASE.json)
-è lo stato canonico. Release ufficiali precedenti e demo congelate sono preservate.
+Release sorgente stabile 1.20.0, pubblicata su GitHub e derivata dalla agentic36, revisione documentale r1. [Pagina della release](https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0). Il tag `v1.20.0` identifica i sorgenti pubblicati; lo ZIP allegato e il file SHA256SUMS permettono di verificarne il contenuto.
 
-Lo ZIP contiene renderer, moduli riutilizzabili, strumenti host e documentazione;
-nessun progetto demo, scena, asset, musica, PRG, cattura o dipendenza. I generatori
-API possono creare progetti solo su invocazione esplicita dell'utente; nessun
-progetto generato è allegato.
+Il runtime conserva codice, default e limiti API della dev qualificata. Le funzioni dichiarate sperimentali nei singoli contratti mantengono tale perimetro. Non ogni combinazione di modalità, geometria e funzione entra nella memoria C64.
 
-Renderer e API coincidono byte per byte con agentic17. La qualifica stabile
-ricompila il catalogo completo:54 programmi a1/20/64× e27 casi già bloccati.
-Si riusano soltanto osservazioni di PRG ed etichette numeriche identici; valori
-FPS/p95/peggiore e segnalazioni originali restano conservati.
-[Qualifica](QUALIFICATION-1.15.1.it.md).
+[Qualifica corrente](QUALIFICATION-1.20.0.it.md) · [Dati](QUALIFICATION-1.20.0.json) · [Test](TESTING.it.md) · [Note](RELEASE-NOTES-1.20.0.it.md).
 
-Sono qualificati i profili benchmark PAL Turbo6510 misurati e le API4/6, non
-qualsiasi combinazione di renderer e opzioni. Nessuna nuova qualifica su NTSC
-stock, hardware C64 fisico o altri host. I rapporti versionati valgono per i
-programmi originari. Normalized16 e gli adattatori gameplay opzionali restano
-moduli sperimentali separati; il pacchetto stabile non ne amplia i contratti.
-
-Le guardie64KB restano attive: combinazioni sovradimensionate o non supportate
-sono rifiutate. Mode7 a1× conserva il compromesso temporale già documentato,
-senza eliminare celle dall'indice. Il caso validation4/1× conserva la segnalazione
-della finestra breve e la diagnosi su finestre lunghe.
-
-[Input esterni](EXTERNAL-INPUTS.it.md) · [Test](TESTING.it.md) · [Documenti](DOCS.md)
+Nessuna demo o suite/driver di benchmark è inclusa. Le prove esterne conservano 177 programmi compilabili e 56 configurazioni bloccate preesistenti. Le misure VICE Turbo6510 PAL a 1×, 20× e 64× sono ereditate dalla dev solo dopo verifica d’identità del programma e di tutti i simboli numerici. Non sono nuove misure della stabile. Nessuna nuova qualifica hardware, NTSC o altri host è implicita.

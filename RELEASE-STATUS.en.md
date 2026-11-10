@@ -1,27 +1,9 @@
-# Release status and support — 1.15.1
+# Release status and support — 1.20.0
 
-**Stable1.15.1 source release, promoted from delivered agentic17 and published on GitHub.**
-Release/downloads: [v1.15.1](https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1). [RELEASE.json](RELEASE.json) is
-canonical. Previous official releases and frozen demos are preserved.
+Stable source release 1.20.0, published on GitHub and promoted from agentic36, documentation revision r1. [Release page](https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0). Tag `v1.20.0` identifies the published sources; the attached source ZIP and SHA256SUMS file identify the distributed bytes.
 
-The source ZIP contains renderer, reusable modules, host tools and documentation;
-no demo projects, scenes, artwork, music, native PRGs, captures or dependencies.
-API generators may create projects only when the caller explicitly invokes them;
-no generated project is bundled.
+Runtime code, defaults and API limits are unchanged from the qualified development. Features explicitly marked experimental in their contracts retain that scope. Not every mode, geometry and feature combination fits C64 memory.
 
-Renderer and public API source bytes match agentic17. The stable qualification
-cold-rebuilds the full catalog:54 programs at1/20/64×,27 existing blocked cases.
-Only observations of identical PRGs and all numeric labels are reused. All original
-FPS/p95/worst values and flags are preserved. [Qualification](QUALIFICATION-1.15.1.en.md).
+[Current qualification](QUALIFICATION-1.20.0.en.md) · [Data](QUALIFICATION-1.20.0.json) · [Tests](TESTING.en.md) · [Notes](RELEASE-NOTES-1.20.0.en.md).
 
-This qualifies the measured PAL Turbo6510 benchmark profiles and public API4/6,
-not every possible renderer/option combination. Stock NTSC, physical C64 hardware
-and other hosts have no new qualification. Historical versioned reports apply to
-their original programs. Normalized16 and optional gameplay adapters remain
-separate experimental modules; stable packaging does not broaden their contracts.
-
-Real64KB guards remain; oversized or unsupported combinations fail explicitly.
-Mode7 at1× retains the documented prior timing tradeoff, without removing index
-cells. The validation4/1× short-window flag is retained with long-window diagnosis.
-
-[External inputs](EXTERNAL-INPUTS.en.md) · [Tests](TESTING.en.md) · [Docs](DOCS.md)
+No demos or benchmark suite/drivers are included. External evidence retains 177 buildable programs and 56 existing blocked configurations. VICE Turbo6510 PAL measurements at 1×, 20× and 64× are inherited only after program and all-numeric-symbol identity verification. They are not new stable timing runs. No new hardware, NTSC or other-host qualification is implied.

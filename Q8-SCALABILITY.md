@@ -1,6 +1,8 @@
-# Q8 scalability — 1.15.1
+# Q8 scalability — 1.20.0
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+
+
 
 3Dvibe64 1.12.0: [EN optimization contract](RENDER-OPTIMIZATIONS.en.md) · [Contratto IT](RENDER-OPTIMIZATIONS.it.md).
 All examples require external inputs / Tutti gli esempi richiedono input esterni.

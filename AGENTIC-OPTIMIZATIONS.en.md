@@ -1,6 +1,20 @@
-# Agentic renderer optimizations — 1.15.1
+# Agentic renderer optimizations — 1.20.0
 
-Stable1.15.1 promotes delivered agentic17 without changing renderer/public API
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+
+
+Current agentic36 contracts and score provenance: [notes](AGENTIC36.en.md), [ledger](QUALIFICATION-1.20.0.json). Historical tables below retain their original scope/scales; the required historical series is first stable1.15.0=100, and the extended series starts at delivered36=100. / Contratti e provenienza correnti: [note IT](AGENTIC36.it.md). Le tabelle precedenti conservano perimetro/scala originali; storico1.15.0=100 ed esteso36=100 restano distinti.
+
+
+## Current promotion
++
++Stable 1.20.0 retains agentic36: inherited exact Mode6/7/8 optimizations, per-plane level caching and strided Bayer fills for multilevel Mode8 fade, exact polygon distance arithmetic and corrected wire writes. Defaults and contracts are unchanged. [Current notes](RELEASE-NOTES-1.20.0.en.md).
++
++Historical general index, 1.15.0=100: agentic36 and stable 137.505630, change 0%. Inherited reconstructed estimates; canonical calculation remains blocked by historical PowerShell identity. The separate extended index stays 100, anchored at first-delivered agentic36, inherited by identity. Old stable figures below belong to their original qualification.
++
++## Historical 1.15.1 promotion
++
++Stable1.15.1 promotes delivered agentic17 without changing renderer/public API
 source bytes. These automatic passes are selected only for proven source shapes
 and supported precision/profile; they are not `EngineExperiments` or the optional
 Mode4 `LegacyPlusOptimizations` flag. Unknown callers/layouts retain original

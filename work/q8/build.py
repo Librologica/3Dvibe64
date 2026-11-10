@@ -20,11 +20,13 @@ def assemble(source,out,stem):
     r=subprocess.run(cmd,capture_output=True,text=True,cwd=out);(out/(stem+'.log')).write_text(r.stdout+r.stderr)
     if r.returncode:raise RuntimeError(r.stdout+r.stderr)
     return labels(out/(stem+'.labels'))
-def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True,texture_precision=None,texture_quality=None,frame_presentation='safe',line_raster='precise',texture_lod=None,lod_near=None,lod_far=None,geometry_adapter=None,engine_experiments=None,face_attribute_masks=None):
+def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=False,motion=False,camera_mobile=False,camera_auto=False,memory_recovery=True,texture_precision=None,texture_quality=None,frame_presentation='safe',line_raster='precise',texture_lod=None,lod_near=None,lod_far=None,geometry_adapter=None,engine_experiments=None,face_attribute_masks=None,distance_fade=None,fade_start=None,fade_end=None):
     scene=Path(scene).resolve();spec=json.loads(scene.read_text(encoding='utf-8-sig'));out=Path(name).resolve()
     validate(spec,mode,standard,out)
     sys.path.insert(0,str(ROOT.parent))
     from experiments import parse as parse_experiments
+    from distance_fade import config as fade_config
+    fade=fade_config(spec,distance_fade,fade_start,fade_end)
     experiments=parse_experiments(engine_experiments if engine_experiments is not None else spec.get('engineExperiments'),'q8')
     if experiments and (mode<3 or precision!='q8'):
         raise ValueError('ENGINE_EXPERIMENTS: Q8 polygon Modes3..7 required')
@@ -76,11 +78,11 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
         if spec['world']['grounds']:raise ValueError('Q8_GROUND_UNQUALIFIED')
     out.mkdir(parents=True,exist_ok=False);sdk=out/'sdk'
     shutil.copytree(SDK_ROOT,sdk,ignore=shutil.ignore_patterns('q8','__pycache__','*.pyc','3Dvibe64.asm','3Dvibe64.prg','3Dvibe64.cmd','3Dvibe64.log','build'))
-    if texture_precision=='perspective' or 'texturePrecision' in spec:
+    if texture_precision=='perspective' or 'texturePrecision' in spec or 'distanceFade' in spec:
         # Generate only the established affine intermediate geometry/materials.
         # Perspective interpolation is attached explicitly below, never ignored.
         intermediate=json.loads(json.dumps(spec))
-        for key in ('texturePrecision','textureQuality','textureLOD','textureLODNear','textureLODFar'):intermediate.pop(key,None)
+        for key in ('texturePrecision','textureQuality','textureLOD','textureLODNear','textureLODFar','distanceFade'):intermediate.pop(key,None)
         for texture in intermediate.get('textures',[]):
             if 'source' in texture:texture['source']=str((scene.parent/texture['source']).resolve())
         scene=out/'intermediate-scene.json';scene.write_text(json.dumps(intermediate,indent=2))
@@ -93,10 +95,10 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
     (out/'build.log').write_text(r.stdout+r.stderr)
     if precision=='q8' and mode<=2:
         from wire_build import finish_wire
-        return finish_wire(out,sdk,spec,cmd,r,music,motion,camera_mobile,camera_auto,memory_recovery,line_raster,frame_presentation,geometry_adapter)
+        return finish_wire(out,sdk,spec,cmd,r,music,motion,camera_mobile,camera_auto,memory_recovery,line_raster,frame_presentation,geometry_adapter,fade)
     if r.returncode:raise RuntimeError(r.stdout+r.stderr)
     source=(sdk/'work/3Dvibe64.asm').read_text(encoding='utf-8-sig');lab=assemble(source,out,'base')
-    info=dict(precision=precision,scene=spec,command=cmd,
+    info=dict(precision=precision,scene=spec,command=cmd,distanceFade=fade,
               precisionContract=dict(default='legacy',q8OptIn=True,fullPrecisionClipping='bounded profile qualified',
                                      q8CameraRotation=False,internalFallback='none; nonzero camera angles set explicit fault',
                                      cameraTests='fractional translation only; controls disabled'))
@@ -184,6 +186,10 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
         if set(applied)!=experiments:raise ValueError('ENGINE_EXPERIMENTS: requested experiment not applied')
         info['engineExperiments']=dict(requested=sorted(experiments),applied=applied)
         if face_attribute_masks is not None:info['faceAttributeMasks']=list(face_attribute_masks)
+        if fade['mode']!='off':
+            from distance_fade import adapt as fade_adapt
+            source,parts=fade_adapt(source,parts,fade)
+            info['distanceFade']=fade
         sizing_source=attach(source,parts)
         verify_retired_state_absent(sizing_source)
         sizing=assemble(sizing_source,out,'sizing')
@@ -224,6 +230,6 @@ if __name__=='__main__':
     p.add_argument('--texture-quality',choices=['standard','fast'],default=None)
     p.add_argument('--engine-experiments',default=None)
     p.add_argument('--frame-presentation',choices=['safe','legacy'],default='safe');p.add_argument('--line-raster',choices=['precise','hybrid'],default='precise')
-    p.add_argument('--texture-lod',choices=['off','gradual'],default=None);p.add_argument('--lod-near',type=int,default=None);p.add_argument('--lod-far',type=int,default=None);a=p.parse_args()
-    try:build(a.out,a.scene,standard=a.standard,mode=a.mode,camera_mobile=a.camera!='stationary',camera_auto=a.camera=='auto',texture_precision=getattr(a,'texture_precision',None),texture_quality=a.texture_quality,frame_presentation=a.frame_presentation,line_raster=a.line_raster,texture_lod=a.texture_lod,lod_near=a.lod_near,lod_far=a.lod_far,engine_experiments=a.engine_experiments)
+    p.add_argument('--texture-lod',choices=['off','gradual'],default=None);p.add_argument('--lod-near',type=int,default=None);p.add_argument('--lod-far',type=int,default=None);p.add_argument('--distance-fade',choices=['off','dither'],default=None);p.add_argument('--fade-start',type=int,default=None);p.add_argument('--fade-end',type=int,default=None);a=p.parse_args()
+    try:build(a.out,a.scene,standard=a.standard,mode=a.mode,camera_mobile=a.camera!='stationary',camera_auto=a.camera=='auto',texture_precision=getattr(a,'texture_precision',None),texture_quality=a.texture_quality,frame_presentation=a.frame_presentation,line_raster=a.line_raster,texture_lod=a.texture_lod,lod_near=a.lod_near,lod_far=a.lod_far,engine_experiments=a.engine_experiments,distance_fade=a.distance_fade,fade_start=a.fade_start,fade_end=a.fade_end)
     except (ValueError,KeyError,TypeError) as e:raise SystemExit(f'Q8 validation/build refused: {e}')

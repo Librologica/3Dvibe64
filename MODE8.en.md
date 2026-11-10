@@ -1,24 +1,28 @@
-# GraphicsMode 8 — 2.5D — 1.15.1
+# GraphicsMode 8 — 2.5D — 1.20.0
 
-## Current1.15.1 cache and qualification
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
-Multi adds485 cache-data bytes and85 helper-code bytes before font5800,
-with explicit overlap guards; mono is unchanged. Public auto low-code free
-space is62 bytes for two-levels; interactive1266. The fixed-height helper
-still occupies192 bytes at5500. [Current memory](MODE8-MEMORY.en.md).
-Current native qualification uses PAL Turbo6510 at1/20/64× and exact agentic17
-programs. Prior stock x64sc PAL/NTSC reports describe their historical PRGs;
-they are not fresh NTSC or hardware qualification of this cache implementation.
+Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
 
 
-Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+## Current agentic26 cache and qualification
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+Multi retains the485-byte plane-unit cache and85-byte helper before font5800.
+Its32 profile slots use second-chance replacement; exact zero profiles share
+128 immutable bytes plus24 helper bytes inside the original layout_support.
+Total coefficient/state data is608 bytes. Canonical multi low-code margins
+are3 bytes auto /1207 interactive; all assembler bounds remain enforced.
+The192-byte fixed-height helper remains at5500. [Memory](MODE8-MEMORY.en.md).
+Native evidence is PAL Turbo6510 at1/20/64× for the exact agentic26 auto builds.
+Interactive is assembled/shared-kernel checked, without new native timing.
+Prior stock PAL/NTSC reports describe historical PRGs; hardware and NTSC are
+not newly qualified. [Current ledger](QUALIFICATION-1.20.0.json).
 
-Stable release 1.15.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+Stable reference 1.15.1: [historical optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
-Current 1.15.1 source contract. This manual describes the ordinary exporter unless
+Base API contract inherited from1.15.1. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -53,6 +57,7 @@ The builder prints the selected backend and reason. It dispatches before any pol
 | `-OutputDirectory` | New empty external directory; default `3Dvibe64-output/mode8` beside the SDK |
 | `-ValidateOnly` | Full map/route validation; no output or assembler needed |
 | `-VideoStandard auto` | Runtime PAL/NTSC detection; explicit pal/ntsc rejected |
+| `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd` | Optional; map-cell distance policy in DISTANCE-FADE.en.md |
 | All other polygon options | Rejected when explicitly requested; their legacy defaults do not affect Mode 8 |
 
 This includes `CameraMode`, `CameraViewport`, `Quality`, `MemoryLayout`, `HeaderText`, lighting/material switches and `SkipCmdUpdate`: they are not Mode 8 controls. The three new options are rejected on Modes 1–7. Existing legacy commands/defaults are retained. Current public-template build hashes are recorded in PACKAGE-MANIFEST.json; older reports retain their original PRG hashes.
@@ -87,8 +92,8 @@ There are no triangle fills, mesh transforms, vertex normals, Gouraud, active wa
 - CPU/VIC banking uses `$01`, `$DD00`, `$D018` and the qualified PAL/NTSC split handlers.
 - Clear/initialization and comparisons include the appropriate margins; full body comparison is 7,040 bytes, not the per-frame active clear size.
 - Source templates retain layout guards, sprite-pointer guards and private foreground SMC. IRQ must not reuse foreground scratch. The runtime is not reentrant.
-- Multi profile cache: 4,096 bytes; coefficient/state: 448 bytes; fine buffer: 144 active bytes, 256 reserved.
-- Current automatic low-code free space: 157/120/62 bytes for perimeter/apertures/two-levels. Multi helper code is 192 bytes at `$5500`. PRG file size includes reserved gaps; it is not a RAM-used metric.
+- Multi profile cache: 4,096 bytes; coefficient/state: 608 bytes; fine buffer: 144 active bytes, 256 reserved.
+- Current automatic low-code free space: 157/120/3 bytes for perimeter/apertures/two-levels. Multi helper code is 192 bytes at `$5500`. PRG file size includes reserved gaps; it is not a RAM-used metric.
 
 See [memory map](MODE8-MEMORY.en.md) and each build's `build.json`. Additional scene data must fit existing capacities. There is no relocation, automatic resolution reduction or precision downgrade to force acceptance. Stock 64 KB C64, documented 6510 instructions, no REU or acceleration required.
 
@@ -98,12 +103,18 @@ Interactive: W/S movement, A/D rotation. Automatic: the complete validated cycli
 
 Static apertures only; fixed supported ramp formulas; no room-over-room, arbitrary steps, PVS, advanced portal traversal, wall UV texture mapping, floor textures, dynamic lighting or 3D sprites. Modes 1–7 remain distinct polygon-renderer builds.
 
-[TESTING.en.md](TESTING.en.md) separates host gates, public map builds, instruction/oracle comparisons and native timing. [Current qualification](QUALIFICATION-1.15.1.en.md) retains the identical agentic17 PAL Turbo6510 programs and their native FPS/p95/worst values at 1×, 20× and 64×. [The 1.4.0 report](RELEASE-NOTES-1.4.0.md) describes historical stock PAL/NTSC builds only. CPU-only sampling is not converted to FPS. Hardware execution is **not tested**; current accelerated results do not qualify stock NTSC or physical hardware.
+[TESTING.en.md](TESTING.en.md) separates host gates, compiler checks, correctness oracles and native timing. [Current qualification](QUALIFICATION-1.20.0.json) records the exact qualified programs and FPS/p95/worst at1×,20× and64×. Unchanged programs reuse native evidence only after exact cold PRG/numeric-label and protocol identity; the changed multi stress build also has new matched native repetitions. [The1.4.0 report](RELEASE-NOTES-1.4.0.md) is historical stock PAL/NTSC evidence. CPU replay is not FPS. Hardware and stock NTSC are not newly qualified.
 
 For a hardware check: transfer the appropriate interactive PRG to a stock PAL/NTSC C64, load/run it, traverse the scene including both ramp joins, inspect split stability and buffer presentation, then run its automatic counterpart for a full loop. Record machine model, video standard, loader and observed faults. Do not claim a hardware PASS without performing and recording this test.
 
 ## Optional analysis
 
-`scripts/analyze_mode8.py` uses py65 and Pillow to produce an external instruction-cost atlas; `scripts/qualify_mode8.py` uses `VICE_X64SC` or x64sc on PATH for native captures. Both write outside the SDK. Neither instruments the distributed runtime. Instructions and coverage limits are in [the map guide](MAPS-2.5D.en.md#7-optional-cost-atlas).
+Profiling and measurement tools remain external to this distribution. Use PRG and symbols from the same compilation and distinguish CPU cost from native FPS; see [the map guide](MAPS-2.5D.en.md#7-optional-cost-atlas).
 
 Historical note: the research began with a low-resolution character-based compositor and tested other geometric/rendering approaches. Those archives are not part of this SDK. The promoted path is bitmap with separate monolevel and multi-level implementations; no old performance target is reintroduced as a release gate.
+
+Agentic25: the multi profile cache keeps32 slots /4096 bytes and uses second-chance replacement.32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; no buffer alias is introduced. Total coefficient/state allocation is480 bytes. The485-byte plane-unit cache is separate. Auto/interactive share this algorithm; geometry, lazy sampling, input and presentation are unchanged.
+
+Agentic26: shared immutable zero profile128 bytes and helper24 bytes at $ca20..$cab7; total coefficient/state data608 bytes. Original windows, no aliases. See AGENTIC26.en.md and QUALIFICATION-AGENTIC26.json.
+
+The stable promotion preserves the qualified agentic36 Mode8 implementation; the current ledger records cold-build identity before native evidence reuse.

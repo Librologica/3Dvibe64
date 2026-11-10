@@ -1,17 +1,17 @@
-# Mode 7 texture precision — 1.15.1
+# Mode 7 texture precision — 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+
 
 ## Legacy-plus projective profile
 
 In 1.14.0, Mode7 perspective is also available with `-Precision legacy-plus`. Use the [plus build/configuration contract](LEGACY-PLUS.en.md): Q4 geometry, near8, camera-forward depth8–256WU, standard texture quality and LOD off. Lighting none/flat/Gouraud A/B/C is supported. UW/VW/W unsigned16 carriers reuse a texture sampler without linking Q8 geometry. The Q8-specific depth1–256 and compositor-C restrictions below apply to Q8 only. [Native comparison](QUALIFICATION-1.14.0.en.md).
 
-Stable release 1.15.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Stable source release 1.20.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
-Current 1.15.1 source contract. This manual describes the ordinary exporter unless
+Current 1.20.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 

@@ -1,16 +1,9 @@
-# Development and maintenance notes — 1.15.1
+# Development and maintenance notes — 1.20.0
 
-This stable GitHub source release promotes delivered agentic17; it does not
-promote the deprecated1.15.3/1.16/1.17 work from a different historical chat.
-Renderer/public API source bytes remain unchanged; prior official releases and
-frozen demos are preserved. Publication is recorded in RELEASE.json, not inferred
-from the intended v1.15.1 tag name.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
-Current automatic optimizations and optional circles are documented in
-[AGENTIC-OPTIMIZATIONS](AGENTIC-OPTIMIZATIONS.en.md). Existing optional Mode4 flags,
-other precisions and experimental adapters retain separate domains. The old
-1.15.0 optional API qualifications are historical evidence, not current-source
-hash promises. All current source hashes are in QUALIFICATION-1.15.1.json.
+
+The active development adds AnimatedMesh v1 to delivered agentic23. Read [AGENTIC24](AGENTIC36.en.md) and [the full API contract](ANIMATED-MESH.en.md). Current hashes and native results belong to QUALIFICATION-1.20.0.json. Earlier versioned qualification files remain immutable history. No deprecated 1.15.3/1.16/1.17 work is used or promoted.
 
 Do not enlarge RAM windows or weaken clipping/math to force a build. Keep
 fallbacks and private helper normalization; unknown callers/layouts must retain
@@ -21,4 +14,4 @@ Native timing is inherited only after fresh PRG+all-numeric-label identity and
 matching target/conditions. Correctness CPU callbacks are not FPS. Keep raw
 flags, the fixed index and prior Mode7/1x policy; diagnose finite-window effects
 without replacing original scores. [Tests](TESTING.en.md),
-[qualification](QUALIFICATION-1.15.1.en.md), [status](RELEASE-STATUS.en.md).
+[qualification](QUALIFICATION-1.20.0.json), [status](RELEASE-STATUS.en.md).

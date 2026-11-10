@@ -1,6 +1,8 @@
-# Sfere rese mediante cerchi — 1.15.1
+# Sfere rese mediante cerchi — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+
+
 
 API opzionale di sviluppo, indipendente dalla scena e dall'identità degli
 oggetti. La sfera è rappresentata da un cerchio orientato verso lo schermo,
@@ -152,20 +154,9 @@ della camera e usare `er_sphere_draw_world`. Le chiamate di disegno ripetono
 proiezione e raster per ogni vista richiesta; l'engine non memorizza
 illuminazione o geometria già calcolate.
 
-## Esempio esterno e verifiche
+## Integrazione e verifiche
 
-```powershell
-$env:TASS64_EXE='C:/percorso/64tass.exe'
-python -B scripts/sphere_api_example.py --out C:/progetti/sfere-cerchi --mode 4
-```
-
-Lo strumento sorgente genera e compila un progetto esterno con un cubo,
-livelli gestiti dal chiamante e sfere sospese di raggi diversi. `--mode 6`
-usa un chiamante compatto a due oggetti per rispettare la memoria disponibile.
-Palette comune a quattro colori e movimento sono scelte dell'esempio.
-Ogni progetto ha `launch-demo.cmd`, `launch.ps1`, PRG e controllo che
-differisce solo per un byte di attivazione. Nessun esempio precompilato o
-media è distribuito nell'SDK sorgente.
+Creare il proprio progetto esterno e usare le chiamate ASM descritte sopra. L’applicazione gestisce ordine di disegno, movimento e illuminazione. Il pacchetto non contiene un generatore di demo.
 
 `scripts/test_sphere_impostors.py --build <work-assemblato> --out <rapporto>`
 confronta il6502 emesso con copertura indipendente, maschere del framebuffer,

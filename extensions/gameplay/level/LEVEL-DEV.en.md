@@ -1,13 +1,13 @@
-# Common level format and exact memory budget — 1.15.1
+# Common level format and exact memory budget — 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](../../../RELEASE-STATUS.en.md) · [Current qualification](../../../QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
-
-> Stable1.15.1 source SDK published on GitHub. [Status and support](../../../RELEASE-STATUS.en.md).
-
-Stable GitHub release 1.15.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
 
 
-Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `work/build-level.py` resolves IDs/assets and lowers groups, rooms, objects,
@@ -20,7 +20,6 @@ outside that backend are diagnosed and rejected, never silently omitted.
 ```powershell
 python -B work/build-level.py --level ../my-level/level.json --validate-only
 python -B work/build-level.py --level ../my-level/level.json --out ../level-build --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../level-build/native --benchmark --launcher
 python -B work/build-level.py --level ../my-level/level.json --plan-only --out ../level-plan
 ```
 
@@ -149,3 +148,5 @@ Inherited native timing: PAL× 64, precise/LOD,silent,101 refresh warm-up,
 3072 refresh A→B→A measurement. No new FPS comes from the hypothetical budget.
 
 [Italiano](LEVEL-DEV.it.md).
+
+Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

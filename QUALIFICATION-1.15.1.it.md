@@ -1,4 +1,6 @@
-# Qualifica nativa — 1.15.1
+# Qualifica nativa — 1.15.2-dev-agentic23
+
+> Sviluppo locale non pubblicato, derivato da agentic22 (base stabile1.15.1). Il contratto pubblico e le opzioni restano quelli della base; i dati di qualificazione precedenti sono storici. Stato e nuove modifiche: [AGENTIC23.it.md](AGENTIC23.it.md).
 
 La promozione locale ricompila il catalogo fisso dal renderer/API della dev
 consegnata agentic17, con VERSION stabile1.15.1. Tutti i54 PRG compilabili e

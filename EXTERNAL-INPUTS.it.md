@@ -1,8 +1,8 @@
-# Input esterni — 1.15.1
+# Input esterni — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+
 
 ## Copia di lavoro e output
 
@@ -45,7 +45,7 @@ fornire `examples/gameplay/<profile>.json`, `extensions/gameplay/common`,
 `extensions/gameplay/billboards` ed `extensions/gameplay/profiles/<profile>`
 per tutti i profili nella catena di ereditarietà. Fornisce scena/UI/asset,
 binding dei materiali, script di build, camera e logica applicativa. L'SDK
-non genera questi input. Aggiornare `engineVersion` del preset a1.15.1 e
+non genera questi input. Aggiornare `engineVersion` del preset a 1.20.0 e
 riqualificare l'hash. [GAMEPLAY](GAMEPLAY.it.md) descrive l'ABI dei13 profili.
 
 ## Input di regressione

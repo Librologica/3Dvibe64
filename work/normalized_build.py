@@ -50,7 +50,7 @@ def adapter(source,parts,lab):
         result['nf_face_abi']=''.join(result.pop(n) for n in names if n in result)
     return source,result
 
-def build(out,scene,mode,standard='pal',camera='stationary',frame_presentation='safe'):
+def build(out,scene,mode,standard='pal',camera='stationary',frame_presentation='safe',distance_fade=None,fade_start=None,fade_end=None):
     if camera not in ('stationary','interactive'):
         raise ValueError('NORMALIZED_CAMERA: stationary or interactive only')
     if frame_presentation not in ('safe','legacy'):
@@ -58,7 +58,7 @@ def build(out,scene,mode,standard='pal',camera='stationary',frame_presentation='
     spec=json.loads(Path(scene).read_text(encoding='utf-8-sig'))
     validate(spec,mode,standard,out)
     # An explicit independent adapter. Unselected Q8 code generation is unchanged.
-    output=q8_build(out,scene,mode=mode,standard=standard,camera_mobile=camera!='stationary',camera_auto=camera=='auto',frame_presentation=frame_presentation,geometry_adapter=adapter)
+    output=q8_build(out,scene,mode=mode,standard=standard,camera_mobile=camera!='stationary',camera_auto=camera=='auto',frame_presentation=frame_presentation,geometry_adapter=adapter,distance_fade=distance_fade,fade_start=fade_start,fade_end=fade_end)
     path=output/'build.json';meta=json.loads(path.read_text())
     meta.update(precision='normalized16',experimental=True,geometryFormat='signed16, unit 2^e/16 WU, e0..4',
                 rasterFormat='Q2',texturePrecision='affine' if mode==7 else None,
@@ -72,6 +72,6 @@ if __name__=='__main__':
     p.add_argument('--out',type=Path,required=True);p.add_argument('--scene',type=Path,required=True)
     p.add_argument('--mode',type=int,required=True);p.add_argument('--standard',choices=['pal','ntsc'],default='pal')
     p.add_argument('--camera',choices=['stationary','interactive'],default='stationary')
-    p.add_argument('--frame-presentation',choices=['safe','legacy'],default='safe');a=p.parse_args()
-    try:build(a.out,a.scene,a.mode,a.standard,a.camera,a.frame_presentation)
+    p.add_argument('--frame-presentation',choices=['safe','legacy'],default='safe');p.add_argument('--distance-fade',choices=['off','dither'],default=None);p.add_argument('--fade-start',type=int,default=None);p.add_argument('--fade-end',type=int,default=None);a=p.parse_args()
+    try:build(a.out,a.scene,a.mode,a.standard,a.camera,a.frame_presentation,a.distance_fade,a.fade_start,a.fade_end)
     except (ValueError,KeyError,TypeError) as e:raise SystemExit(f'Normalized16 build refused: {e}')

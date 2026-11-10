@@ -1,4 +1,11 @@
-# Guida rapida — 1.15.1
+# Guida rapida — 1.20.0
+
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+
+Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
+
+
+Per le mesh animate native partire dalla scena esterna completa e dal comando del [manuale AnimatedMesh v1](ANIMATED-MESH.it.md). Gli altri profili sotto restano distinti.
 
 Installare Python3 (qualifica con3.13.14), PowerShell7 e64tass1.60.3243.
 Pillow serve all'importazione PNG; NumPy/py65 ai test di correttezza opzionali.
@@ -79,8 +86,7 @@ Per Mode4/5 in questo profilo plus mantenere `-DynamicLight` se la scena non dic
 `-SphereRenderer circles` emette API opzionali Mode4/6 plus da chiamare in ASM
 nell'ordine painter. Non crea entità sfera JSON; il default `none` non aggiunge
 codice/RAM. [API cerchi](CIRCLE-SPHERES.it.md) documenta unità e limiti.
-`scripts/sphere_api_example.py` è un generatore sorgente opzionale: invocarlo
-crea un progetto esterno. Nessuna demo o PRG generato è incluso nella release.
+Integrare le chiamate ASM nel proprio progetto esterno; vedere il contratto per ordine di disegno e limiti.
 
 ```powershell
 python -m pip install -r requirements-tests.txt

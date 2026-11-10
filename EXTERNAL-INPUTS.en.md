@@ -1,8 +1,8 @@
-# External inputs — 1.15.1
+# External inputs — 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+
 
 ## Working copy and output paths
 
@@ -45,7 +45,7 @@ supply `examples/gameplay/<profile>.json`, `extensions/gameplay/common`,
 `extensions/gameplay/billboards` and `extensions/gameplay/profiles/<profile>`
 for every profile in its inheritance chain. It supplies scene/UI/assets,
 material bindings, build script, camera and application logic. The SDK does not
-invent any of these. Update the preset `engineVersion` to1.15.1 and qualify its
+invent any of these. Update the preset `engineVersion` to 1.20.0 and qualify its
 checkpoint hash again. Use [GAMEPLAY](GAMEPLAY.en.md) for the full13-profile ABI.
 
 ## Regression inputs

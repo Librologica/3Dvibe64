@@ -1,4 +1,11 @@
-# Quick start — 1.15.1
+# Quick start — 1.20.0
+
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+
+Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
+
+
+For native animated meshes, start with the complete external scene and exact build command in [AnimatedMesh v1](ANIMATED-MESH.en.md). Other profiles below remain separate.
 
 Install Python3 (qualification used3.13.14), PowerShell7 and64tass1.60.3243.
 Pillow supports PNG import; NumPy/py65 support optional correctness tests.
@@ -78,8 +85,7 @@ For Mode4/5 in this plus profile, keep `-DynamicLight` when the scene declares n
 `-SphereRenderer circles` emits optional Mode4/6 plus APIs; application ASM must
 call them in painter order. It creates no sphere JSON objects. Default `none`
 adds no code/RAM. [Circle API](CIRCLE-SPHERES.en.md) documents all units and limits.
-`scripts/sphere_api_example.py` is an optional source generator; invoking it
-creates an external project. No generated demo/PRG is included in this release.
+Integrate the ASM calls into your external project; see the contract for draw order and limits.
 
 ```powershell
 python -m pip install -r requirements-tests.txt

@@ -1,4 +1,6 @@
-# Note di release — 1.15.1
+# Note di release — 1.15.2-dev-agentic23
+
+> Sviluppo locale non pubblicato, derivato da agentic22 (base stabile1.15.1). Il contratto pubblico e le opzioni restano quelli della base; i dati di qualificazione precedenti sono storici. Stato e nuove modifiche: [AGENTIC23.it.md](AGENTIC23.it.md).
 
 Release stabile GitHub di soli sorgenti,30 ottobre2026. Promossa dalla dev
 consegnata agentic17 e pubblicata come v1.15.1. Nessuna demo, esempio,

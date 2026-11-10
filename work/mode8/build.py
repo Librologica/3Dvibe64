@@ -31,7 +31,7 @@ def integers(v,n,field):
     require(isinstance(v,list) and len(v)==n and all(type(x)is int for x in v),'FORMAT',field+f' requires {n} integers')
 
 def syntax(data):
-    require(isinstance(data,dict) and set(data)=={'scene','navigation'},'DOCUMENT','requires exactly scene and navigation')
+    require(isinstance(data,dict) and set(data) in ({'scene','navigation'},{'scene','navigation','distanceFade'}),'DOCUMENT','requires exactly scene and navigation')
     s,nav=data['scene'],data['navigation']
     require(isinstance(s,dict) and isinstance(nav,dict),'FORMAT','scene/navigation must be objects')
     required={'schema','size','solid','floor','ceiling','initial','eyeHeight','doors','ramps'}
@@ -79,11 +79,13 @@ def validate(data,route=True):
         'multi':'ramps or multiple free-cell floor values; validated heightfield'}[c['backend']])
     return c
 
-def build(scene,out,run='interactive',validate_only=False,engine_experiments=None):
+def build(scene,out,run='interactive',validate_only=False,engine_experiments=None,distance_fade=None,fade_start=None,fade_end=None):
     from experiments import parse
     parse(engine_experiments,'mode8') # none/omission only; retired requests fail explicitly
-    data=load(scene);c=validate(data)
-    print('Mode 8 backend:',c['backend'],'—',c['reason'],flush=True)
+    from distance_fade import config as fade_config
+    from distance_fade_mode8 import apply as fade_apply
+    data=load(scene);fade=fade_config(data,distance_fade,fade_start,fade_end);c=validate(data)
+    print('Mode 8 backend:',c['backend'],'â€”',c['reason'],flush=True)
     if validate_only:
         print(json.dumps(c,indent=2));return c
     dest=Path(out).resolve()
@@ -104,13 +106,14 @@ def build(scene,out,run='interactive',validate_only=False,engine_experiments=Non
             s=s.replace(' cmp #142\n',f' cmp #{len(nav["nodes"])}\n')
             for name,axis,shift in (('nav_xlo',0,0),('nav_xhi',0,8),('nav_ylo',1,0),('nav_yhi',1,8)):
                 s=replace(s,name,[v[axis]>>shift for v in nav['nodes']])
-        stats.update(keys=len(p['keys']),events=len(p['events']),profileCacheBytes=4096,profileStateBytes=448,planeUnitCacheBytes=485,planeUnitCacheRange=[0x55c0,0x57a5])
+        stats.update(keys=len(p['keys']),events=len(p['events']),profileCacheBytes=4096,profileStateBytes=608,sharedZeroProfileBytes=128,sharedZeroProfileSentinel=254,sharedZeroProfileWindow=[0xca20,0xcb00],profileReplacementStateBytes=32,profileReplacementStateRange=[0xca00,0xca20],profileReplacementPolicy="second-chance",planeUnitCacheBytes=485,planeUnitCacheRange=[0x55c0,0x57a5])
     else:
         ids,segs=walls(bytes(geom['solid']));planes=[0]+[x['plane']+(64 if x['bank']>=2 else 0) for x in segs]
         require(len(planes)<=97,'OWNER_CAPACITY',str(len(planes)-1))
         s=replace(s,'wall_ids',ids);s=replace(s,'fx_wall_plane',planes+[0]*(97-len(planes)))
         (dest/'map.bin').write_bytes(bytes(geom['solid']));stats['owners']=len(segs)
     shutil.copyfile(SOURCE/'font.bin',dest/'font.bin')
+    s=fade_apply(s,fade,c['backend']=='multi')
     asm=dest/'3Dvibe64.asm';asm.write_text(s,encoding='utf-8')
     tass=os.environ.get('TASS64_EXE')
     if not tass and os.environ.get('TASS64_PATH'):
@@ -126,6 +129,7 @@ def build(scene,out,run='interactive',validate_only=False,engine_experiments=Non
         prgSHA256=sha(dest/'3Dvibe64.prg'),prgBytes=(dest/'3Dvibe64.prg').stat().st_size,
         codeLowBytes=lab['code_end']-0x80d,lowFree=(0x3000 if c['backend']=='multi' else 0x2f00)-lab['code_end'],
         viewport=[128,144],activeBitmapBytes=4608,videoStandard='auto',**stats)
+    report['distanceFade']=dict(**fade,unit='map cells',metric='plane-normal distance, conservative near-layer groups for mono')
     save(dest/'scene.json',data);save(dest/'build.json',report)
     print(json.dumps(report,indent=2));return report
 
@@ -134,6 +138,7 @@ def main():
     p.add_argument('--scene',required=True);p.add_argument('--out',required=True)
     p.add_argument('--run',choices=['auto','interactive'],default='interactive');p.add_argument('--validate-only',action='store_true')
     p.add_argument('--engine-experiments',default=None)
+    p.add_argument('--distance-fade',choices=['off','dither'],default=None);p.add_argument('--fade-start',type=int,default=None);p.add_argument('--fade-end',type=int,default=None)
     a=p.parse_args()
-    try:build(a.scene,a.out,a.run,a.validate_only,a.engine_experiments)
+    try:build(a.scene,a.out,a.run,a.validate_only,a.engine_experiments,a.distance_fade,a.fade_start,a.fade_end)
     except (ValueError,OSError,json.JSONDecodeError) as e:p.exit(2,str(e)+'\n')

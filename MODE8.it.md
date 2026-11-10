@@ -1,24 +1,28 @@
-# GraphicsMode 8 — 2.5D — 1.15.1
+# GraphicsMode 8 — 2.5D — 1.20.0
 
-## Cache e qualifica correnti1.15.1
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
-Multi aggiunge485 byte cache dati e85 byte helper prima del font5800, con
-guardie esplicite; mono è invariato. Il codice basso auto two-levels conserva
-62 byte, interactive1266. L'helper altezza fissa occupa ancora192 byte a5500.
-[Memoria corrente](MODE8-MEMORY.it.md). La qualifica nativa corrente usa PAL
-Turbo6510 a1/20/64× e i programmi esatti agentic17. I vecchi rapporti stock
-x64sc PAL/NTSC descrivono i PRG storici: non sono una nuova qualifica NTSC o
-hardware di questa implementazione della cache.
+Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
 
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+## Cache e qualifica correnti agentic26
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Multi mantiene la cache per piano da485 byte e l’helper da85 byte prima del
+font5800. I32 slot profili usano second-chance; i profili esattamente nulli
+condividono128 byte immutabili e24 byte helper nel layout_support originale.
+Coefficienti/stato totali608 byte. Margine codice basso multi canonico3 byte
+auto /1207 interattivo, con tutti i limiti assembler originali. Helper altezza
+fissa192 byte a5500. [Memoria](MODE8-MEMORY.it.md). Le prove native PAL
+Turbo6510 a1/20/64× riguardano le esatte build auto agentic26. Interattivo
+assemblato/kernel condiviso verificato, senza nuove misure native. I rapporti
+stock PAL/NTSC descrivono PRG storici; hardware e NTSC non sono nuovamente
+qualificati. [Registro corrente](QUALIFICATION-1.20.0.json).
 
-Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+Riferimento stabile1.15.1: [ottimizzazioni storiche](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.15.1. Il manuale descrive l'exporter ordinario
+Contratto API di base ereditato dalla1.15.1. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
@@ -87,8 +91,8 @@ Non vengono eseguiti fill di triangoli, trasformazioni di mesh, normali, Gouraud
 - Banking CPU/VIC tramite `$01`, `$DD00`, `$D018` e handler split PAL/NTSC qualificati.
 - Inizializzazione e confronti includono i margini pertinenti; il confronto del corpo completo comprende 7.040 byte, non la dimensione del clear attivo per frame.
 - I template conservano guardie layout/puntatori sprite e SMC privato del foreground. L'IRQ non deve riutilizzarne lo scratch; runtime non rientrante.
-- Cache multi 4.096 byte, coefficienti/stato 448 byte, buffer fine 144 byte attivi/256 riservati.
-- Margine low delle mappe originali automatiche 157/120/62 byte: perimetro/aperture/due-livelli. Helper multi 192 byte a `$5500`. La dimensione PRG comprende intervalli riservati, non coincide con RAM utilizzata.
+- Cache multi 4.096 byte, coefficienti/stato 608 byte, buffer fine 144 byte attivi/256 riservati.
+- Margine low delle mappe originali automatiche 157/120/3 byte: perimetro/aperture/due-livelli. Helper multi 192 byte a `$5500`. La dimensione PRG comprende intervalli riservati, non coincide con RAM utilizzata.
 
 Vedere [mappa memoria](MODE8-MEMORY.it.md) e `build.json`. Dati aggiuntivi devono rispettare le capacità esistenti. Non si riloca, riduce la risoluzione o abbassa la precisione per accettare una scena. C64 stock 64 KB, istruzioni 6510 documentate, senza REU o accelerazione.
 
@@ -98,12 +102,22 @@ Interattiva: W/S movimento, A/D rotazione. Automatica: itinerario ciclico comple
 
 Solo aperture statiche e formule di rampa previste; niente room-over-room, gradini arbitrari, PVS, traversal avanzato a portali, texture UV delle pareti, texture pavimento, luce dinamica o sprite 3D. Le Mode 1–7 conservano build poligonali distinte.
 
-[TESTING.it.md](TESTING.it.md) distingue gate host, build pubbliche delle mappe, confronti istruzioni/oracolo e misure native. La [qualifica corrente](QUALIFICATION-1.15.1.it.md) conserva i programmi agentic17 PAL Turbo6510 identici e i relativi FPS/p95/peggiori nativi a 1×, 20× e 64×. Il [rapporto 1.4.0](RELEASE-NOTES-1.4.0.md) descrive soltanto le build storiche stock PAL/NTSC. Il campionamento CPU non viene convertito in FPS. Hardware reale **non testato**: i risultati accelerati correnti non qualificano NTSC stock o hardware fisico.
+[TESTING.it.md](TESTING.it.md) distingue gate host, compilazione, oracoli di correttezza e misure native. La [qualifica corrente](QUALIFICATION-1.20.0.json) registra i programmi effettivi e FPS/p95/peggiore a1×,20× e64×. I dati nativi dei programmi invariati si riutilizzano soltanto dopo identità esatta di PRG/label numeriche ricompilati e protocollo; lo stress multi modificato ha anche nuove ripetizioni native prima/dopo. Il [rapporto1.4.0](RELEASE-NOTES-1.4.0.md) è storico stock PAL/NTSC. Il replay CPU non misura FPS. Hardware e NTSC stock non sono nuovamente qualificati.
 
 Per la prova hardware: trasferire il PRG interattivo su C64 stockPAL/NTSC, caricarlo/avviarlo, attraversare la scena e i raccordi delle due rampe, verificare split e presentazione, poi eseguire un giro automatico completo. Registrare modello, standard video, loader ed eventuali difetti. Non dichiarare PASS hardware senza esecuzione e registrazione effettive.
 
 ## Analisi opzionale
 
-`scripts/analyze_mode8.py` usa py65 e Pillow per un atlante dei cicli istruzione; `scripts/qualify_mode8.py` usa `VICE_X64SC` o x64sc nel PATH per catture native. Entrambi scrivono fuori dall'SDK e non strumentano il runtime distribuito. Istruzioni e limiti nella [guida mappe](MAPS-2.5D.it.md#7-atlante-opzionale-dei-costi).
+Gli strumenti di profilazione e misura restano esterni alla distribuzione. Usare PRG e simboli della stessa compilazione e distinguere i costi CPU dagli FPS nativi; vedere [la guida mappe](MAPS-2.5D.it.md#7-analisi-dei-costi).
 
 Nota storica: la ricerca è iniziata con un compositore a caratteri a risoluzione ridotta e ha sperimentato altre architetture geometriche/grafiche. Gli archivi non fanno parte dell'SDK. Si promuove il bitmap con backend mono/multi distinti; nessun precedente target prestazionale torna come gate di rilascio.
+
+Agentic25: la cache profili multi conserva32 slot /4096 byte e usa una politica second-chance.32 byte di stato aggiuntivo sono a $ca00..$ca1f, nella finestra layout_support preesistente; nessun buffer è condiviso. Coefficienti/stato totali480 byte. La cache per piano da485 byte resta distinta. Auto/interattivo usano lo stesso algoritmo; nessuna modifica a geometria, campionamento lazy, input o pubblicazione delle immagini.
+
+Agentic26: profilo nullo condiviso128 byte e helper24 byte a $ca20..$cab7; coefficienti/stato totali608 byte. Finestre originali, nessun alias. Vedere AGENTIC26.it.md e QUALIFICATION-AGENTIC26.json.
+
+Agentic27 mantiene implementazione e programmi Mode8 della agentic26; il registro corrente verifica identità esatta delle build prima del riuso delle misure native.
+
+## Dissolvenza a distanza opzionale
+
+Mode8 accetta `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`, oltre alle opzioni mappa della tabella precedente. Le distanze usano celle della mappa, con frazioni Q8 della camera conservate. Default off. [Contratto](DISTANCE-FADE.it.md).

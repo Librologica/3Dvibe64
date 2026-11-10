@@ -1,4 +1,6 @@
-# Native qualification — 1.15.1
+# Native qualification — 1.15.2-dev-agentic23
+
+> Unpublished local development from delivered agentic22 (stable base1.15.1). Public contracts and options are inherited; earlier qualification data are historical. Current status and changes: [AGENTIC23.en.md](AGENTIC23.en.md).
 
 This stable promotion cold-rebuilds the full fixed benchmark catalog from
 the delivered agentic17 renderer/public API bytes, with stable VERSION1.15.1.

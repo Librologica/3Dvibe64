@@ -5,7 +5,7 @@ from continuous import pieces,verify_retired_state_absent
 from emit import attach
 from wire import prepare_wire,wire_pieces
 
-def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_auto=False,memory_recovery=True,line_raster='precise',frame_presentation='safe',geometry_adapter=None):
+def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_auto=False,memory_recovery=True,line_raster='precise',frame_presentation='safe',geometry_adapter=None,fade=None):
     source=(sdk/'work/3Dvibe64.asm').read_text(encoding='utf-8-sig')
     # Mode 1 legacy poly clipping overflows its middle segment for this profile.
     # Only this known error is allowed during source emission. Adapter removes
@@ -33,6 +33,9 @@ def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_
         parts=adapt(parts)
     if geometry_adapter is not None:
         source,parts=geometry_adapter(source,parts,lab)
+    if fade and fade['mode']!='off':
+        from distance_fade import adapt as fade_adapt
+        source,parts=fade_adapt(source,parts,fade)
     verify_retired_state_absent(source)
     sizing=assemble(attach(source,parts),out,'sizing')
     assert sizing['RUNTIME_BUFFER_COLOR_POLICY_END']<=0x9000,'wire adapter overlaps runtime state'
@@ -77,6 +80,7 @@ def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_
               prgSHA256=sha(out/'3Dvibe64.prg'),bytes=len(data),legacySourceAssemblyExit=result.returncode,
               recommendation='Q8 above 20 MHz; legacy at <=20 MHz. Recommendation, not measured FPS.')
     meta['objectRanges']=object_ranges
+    if fade:meta['distanceFade']=fade
     meta.update(lineRaster=line_raster,framePresentation=frame_presentation)
     if camera_mobile:meta.update(cameraMobile=True,cameraAutomatic=camera_auto)
     if recovery:meta['q8MemoryRecovery']=recovery

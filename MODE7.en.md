@@ -1,17 +1,19 @@
-# GraphicsMode 7 — Texture Mapping — 1.15.1
+# GraphicsMode 7 — Texture Mapping — 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
+
+
 
 ## Legacy-plus support in 1.15.0
 
-Mode1–7 plus and Mode7 affine/perspective remain supported in this stable SDK. The near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [current qualification](QUALIFICATION-1.15.1.en.md).
+Mode1–7 plus and Mode7 affine/perspective remain supported in this stable SDK. The near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [current qualification](QUALIFICATION-1.20.0.json).
 
-Stable release 1.15.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Stable source release 1.20.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
-Current 1.15.1 source contract. This manual describes the ordinary exporter unless
+Current 1.20.0 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -101,3 +103,7 @@ and [tests](TESTING.md). Modes 1–6/8 and old affine output retain their refere
 ## 1.15.0 application boundary
 
 Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](RELEASE-NOTES-1.14.0.en.md#distribution-and-private-application-boundary).
+
+Agentic28: the guarded ordinary affine C span path saves/restores16 existing private math/UV bytes (parent4). The fill loop borrows once per face; the standalone span entry remains protected. U lives in X during the closed raster core, and its sampler uses Y for Q. No new global zero-page alias or persistent data table is introduced. Compiler-known consumers treat fill A/flags as volatile; changed private callees/consumers, other compositors and VIC color policy retain the parent path. See [current notes](AGENTIC33.en.md) for stack and qualification scope.
+
+Agentic29 retains the saved16-byte private span contract. Packed ink borrows the retired U shadow after U moves to X; exact XOR nibble composition eliminates the sampler index spill. Only checked private consumers permit skipping attribute initialization for empty rows; consumed rows always initialize both endpoints. A per-face vertex range proof selects the unchecked edge-store interior, with the original comparisons retained otherwise. See [current notes](AGENTIC33.en.md).

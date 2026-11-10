@@ -1,31 +1,25 @@
-# 3Dvibe64 1.15.1
+# 3Dvibe64 1.20.0
 
-## Current1.15.1 additions
+Stable source SDK promoted from agentic36 and its r1 documentation revision. Published on GitHub.
 
-This stable GitHub release promotes delivered agentic17 without changing renderer
-or public API bytes. [Current release notes](RELEASE-NOTES-1.15.1.en.md),
-[optimization contracts](AGENTIC-OPTIMIZATIONS.en.md), [circle API](CIRCLE-SPHERES.en.md)
-and [native qualification](QUALIFICATION-1.15.1.en.md) take precedence over archived
-release claims. No demo/scene/media is bundled; build inputs are caller-owned.
-Existing optional Mode4 exact selectors remain distinct from automatic passes.
+Graphics modes 1–8, inherited exact optimizations, optional Distance Fade, AnimatedMesh, RuntimeScene and bounded application modules. Profiles explicitly marked experimental retain their limits; promotion does not extend supported combinations.
 
+Distance Fade defaults to off. Its guide covers distances, coordinates, memory and [suitable and costly scene types](DISTANCE-FADE.en.md#when-distance-fade-helps), by mode and CPU budget. Mode7 texture LOD remains independent.
 
-Stable1.15.1 source SDK published on GitHub. No demos,examples,PRGs or media. [Status/support](RELEASE-STATUS.en.md) · [Changes](RELEASE-NOTES-1.15.1.en.md) · [Qualification](QUALIFICATION-1.15.1.en.md).
+[Quick start](QUICKSTART.en.md) · [Complete index](DOCS.md) · [Release notes](RELEASE-NOTES-1.20.0.en.md) · [Qualification and limits](QUALIFICATION-1.20.0.en.md) · [Testing](TESTING.en.md)
 
-New optimizations/APIs are limited to the documented Mode4 legacy-plus profile; ordinary Mode1–7 plus and other backends remain separate. Defaults legacy and optimizations none. `all` excludes wire,stream,frozen-lighting. [Options](EXACT-RENDER.en.md) · [API/memory](REUSABLE-RENDER.en.md). Gameplay and Normalized16 retain experimental status.
+Legacy, standard texture quality, precise lines, LOD off and safe presentation remain defaults. Exact Mode4 options retain their contracts; `all` excludes wire, stream and frozen-lighting. [Options](EXACT-RENDER.en.md) · [Reusable rendering](REUSABLE-RENDER.en.md) · [Spheres](CIRCLE-SPHERES.en.md).
 
-Legacy remains the default. Select precise Q8 explicitly with `-Precision q8`, recommended above 20 MHz. Standard texture quality, precise lines, LOD off and safe presentation remain the ordinary defaults.
+AnimatedMesh uses reference-pose normals: it does not imply skeletal animation, automatic root motion or deforming-normal recalculation. [AnimatedMesh](ANIMATED-MESH.en.md) · [RuntimeScene](RUNTIME-SCENE.en.md) · [Dynamics](DYNAMICS.en.md).
 
-## Stable source distribution
+<a id="stable-source-distribution"></a>
+## Source distribution
 
-This stable1.15.1 source distribution is published on GitHub. No demos or examples are shipped, including
-preexisting ones. Supply your own scenes/assets and explicit external project
-inputs. The renderer and reusable gameplay modules remain included. See
-[external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.15.1.en.md).
+This package contains engine sources, documentation and correctness tests. No demos, application scenes, benchmark suite, models, music, PRGs or captures are included. Supply [external inputs](EXTERNAL-INPUTS.en.md) and compile in a working copy. Earlier numbered qualifications are historical records.
 
 | ID | Module | Contract |
 |---|---|---|
+|ANIM-01|Native animated indexed meshes|[reference](ANIMATED-MESH.en.md)|
 |BB-01|Masked/outlined billboard emitters|[reference](extensions/gameplay/CONTRACT.en.md)|
 |BB-02 / ENT-01|Billboard configuration and local events|[reference](extensions/gameplay/entities/DEV.en.md)|
 |ENT-01 door|Sliding polygonal door|[reference](extensions/gameplay/entities/DOOR-DEV.en.md)|
@@ -38,6 +32,7 @@ and [qualification](QUALIFICATION-1.15.1.en.md).
 |Q8-02|Controlled animation and camera roll|[reference](extensions/gameplay/motion/CONTROLLED-DEV.en.md)|
 |WORLD-01|Bounded group loading and state|[reference](extensions/gameplay/world/WORLD-DEV.en.md)|
 |LEVEL-01|Common level format and memory accounting|[reference](extensions/gameplay/level/LEVEL-DEV.en.md)|
+
 
 ## Ordinary builder contract
 
@@ -307,4 +302,4 @@ Read the [complete Mode 7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.
 
 1.15.1-dev-agentic8: exact full-byte UV expansion and cached immediate stable spans. See AGENTIC-DEV.md and external evidence.
 
-External gameplay adapters require explicit `--project-source` and a preset with `engineVersion: "1.15.1"`; these inputs are not bundled. See [external inputs](EXTERNAL-INPUTS.en.md).
+External gameplay adapters require explicit `--project-source` and a preset with `engineVersion: "1.20.0"`; these inputs are not bundled. See [external inputs](EXTERNAL-INPUTS.en.md).

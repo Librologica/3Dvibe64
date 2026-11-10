@@ -1,67 +1,30 @@
-# Verifiche — 1.15.1
+# Verifiche — 1.20.0
 
-## Gate dello ZIP sorgente pulito
-
-Installare separatamente `requirements-tests.txt`, Python3, PowerShell7 e64tass.
-Eseguire da un'estrazione pulita dello ZIP, con asserzioni attive:
+SDK stabile pubblicato su GitHub. I test di correttezza sono inclusi; demo, suite e driver di benchmark non sono distribuiti. Python 3, PowerShell 7 e 64tass vanno installati esternamente. Servono le dipendenze di `requirements-tests.txt`. Eseguire da un’estrazione pulita con le asserzioni Python attive:
 
 ```powershell
 $env:TASS64_EXE='C:/tools/64tass.exe'
 python -B scripts/run_release_tests.py
 ```
 
-La suite predefinita crea copie SDK temporanee indipendenti da MANIFEST.sha256.
-Verifica metadati stabili/locali, assenza di demo, link e contratti IT/EN,
-API host legacy-plus, rendering esatto riutilizzabile, guardie API cerchi,
-aritmetica/pannelli/materiali assemblati e configurazione dei moduli gameplay.
-Non richiede scene allegate. I callback host/CPU non misurano FPS.
+Ogni gate usa una copia SDK indipendente contenente esattamente i file del manifest. Il set predefinito stabile verifica distribuzione, hash, documentazione IT/EN e link locali, correttezza renderer, gameplay delimitato, AnimatedMesh, RuntimeScene, Distance Fade e layout. La qualifica JSON registra nomi ed esiti effettivi. Un gate di identità della vecchia release non viene dichiarato superato su questa versione.
 
-## Controlli API emesse opzionali
+## Prove opzionali con input esterni
 
-Compilare progetti del chiamante fuori dallo SDK e conservare ASM/PRG ed
-etichette VICE numeriche. I comandi mirati accettano build esterne esplicite:
+I test registrati storici possono richiedere esempi e validation esterni della loro versione, mediante `--test-inputs`; non sono tutti gate della release corrente. Le prove aggiuntive dei kernel ricevono esplicitamente build e scene esterne:
 
 ```powershell
+python -B scripts/test_animated_mesh.py --native-build C:/qa/animated --scene C:/qa/scene.json --out C:/qa/decoder.json
 python -B scripts/test_reusable_render.py --control C:/qa/control --exact C:/qa/exact --api C:/qa/api --wire-reference C:/qa/wire --out C:/qa/reusable.json
-python -B scripts/test_legacy_plus_exact.py --control C:/qa/control --exact C:/qa/exact --out C:/qa/kernels.json
 python -B scripts/test_sphere_impostors.py --build C:/qa/sphere-work --out C:/qa/sphere.json
 ```
 
-Servono build reali corrispondenti, non cartelle vuote. Per i cerchi fornire
-`3Dvibe64.prg` e `3Dvibe64.labels` numerico. [API cerchi](CIRCLE-SPHERES.it.md)
-descrive il generatore; [guida rapida](QUICKSTART.it.md) i profili di build.
+AnimatedMesh richiede `3Dvibe64.asm`, `raw.prg` (immagine 64tass non rilocata) e `labels.txt` numeriche della stessa compilazione; un launcher impacchettato non sostituisce l’immagine raw. I replay CPU verificano correttezza, mai FPS nativi.
 
-## Gate storici e regressioni con input esterni
+## Prestazioni native e promozione
 
-Altri script registrati richiedono input esterni fidati `examples/` e
-`validation/`, intenzionalmente assenti dal pacchetto. Script e rapporti legati
-agli hash PRG storici sono diagnostica storica: non qualificano automaticamente
-ogni vecchia scena/hash sulla release corrente. Selezionare un test e input
-compatibili; `--test-inputs` li copia solo nelle copie QA. Gli adattatori
-opzionali richiedono `--project-source` esplicito e un preset con
-`engineVersion` uguale a1.15.1. Il perimetro sperimentale resta invariato.
+La suite prestazionale rimane esterna. Usare il target VICE Turbo6510 PAL, SID attivo, nessuna REU, a 1×/20×/64×. Contare nuove viste complete e conservare comandi, opzioni, percorso, hash PRG/simboli, clock emulati, FPS medi e p95/peggiore intervallo. Warp e tempo host non sono velocità della macchina emulata. Core/fade/interop usano 128 eventi IRQ di warm-up (circa 2,53–2,55 s effettivi) e 1024 refresh misurati; many usa 129 eventi e almeno 128 periodi PAL completi, poi 16384/32768 refresh a 1× o 2048 a 20×/64×, con tre ripetizioni many a 64×. Sono protocolli distinti e non vanno confusi.
 
-## Tempi nativi e identità stabile
+Le misure originali possono essere ereditate per modifiche documentali/distributive solo dopo identità esatta di runtime, programma, tutti i simboli numerici e condizioni. La promozione registra zero nuove esecuzioni FPS e conserva i blocchi preesistenti. Una modifica renderer richiede nuove misure native. Scene, ancoraggi, pesi e qualità congelati non vanno adattati per migliorare l’indice. Nessuna nuova qualifica NTSC o hardware.
 
-La promozione stabile ricompila tutti gli81 casi:54 programmi ed etichette
-numeriche coincidono con agentic17;162 osservazioni PAL Turbo6510 1×/20×/64×
-sono conservate per identità esatta. I27 casi già bloccati restano invariati.
-La [qualifica corrente](QUALIFICATION-1.15.1.it.md) include FPS,p95/peggiore,
-tempo render, hash PRG, target/percorso e segnalazioni conservate.
-
-Condizioni benchmark: musica SID originale a tre voci; warm-up128 refresh PAL
-(~2,553639s), poi1024 refresh misurati (~20,429114s), percorso originale16 pose.
-Contare solo nuove viste complete. Conservare comando VICE, opzioni, cicli
-grezzi, immagini e hash. Warp, tempo host e replay CPU non sono FPS. I campioni
-API cerchi sono carichi separati silenziosi con SID emulato attivo:2048 refresh
-a1×,1024 a20×/64×, dopo warm-up128.
-
-Resta il flag validation4/1× del catalogo (11 contro12 viste); tre finestre
-native di8 periodi per parte (~163,43s,93 viste ciascuna) non confermano una
-regressione persistente oltre soglia. Restano espliciti il compromesso Mode7/1×
-e i pesi dell'indice. Non sostituire i dati originali con diagnosi favorevoli.
-
-Modifiche al renderer richiedono nuove misure native. Documentazione e controlli
-host conservano le osservazioni solo dopo verifica esatta di PRG/etichette e
-condizioni. La promozione non qualifica nuovamente NTSC, hardware fisico o Linux.
-Tracce grezze e build QA private restano fuori dallo ZIP sorgente.
+[Qualification / Qualifica](QUALIFICATION-1.20.0.json) · [Docs](DOCS.md)

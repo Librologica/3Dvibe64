@@ -1,13 +1,13 @@
-# VIS-01 — conservative sector/portal visibility, 1.15.1
+# VIS-01 — conservative sector/portal visibility, 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](../../../RELEASE-STATUS.en.md) · [Current qualification](../../../QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
-
-> Stable1.15.1 source SDK published on GitHub. [Status and support](../../../RELEASE-STATUS.en.md).
-
-Stable GitHub release 1.15.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
 
 
-Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `sector-visibility` extends static-light. The host builds potentially visible
@@ -42,7 +42,6 @@ occluder edges. The reserve contains the complete near-view volume for the
 
 ```powershell
 python -B work/build-gameplay.py --profile sector-visibility --out ../visibility-build --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../visibility-build --checks --benchmark --launcher
 ```
 
 `--visibility path.json` stays within this adapter contract. `culling:false`
@@ -55,3 +54,5 @@ Native FPS is measured, never inferred from eliminated-face counts. General
 level integration and angular portal reduction remain future work.
 
 [Italiano](VISIBILITY-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)
+
+Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

@@ -1,13 +1,13 @@
-# TEX-01 — texture frames and UV scrolling, 1.15.1
+# TEX-01 — texture frames and UV scrolling, 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](../../../RELEASE-STATUS.en.md) · [Current qualification](../../../QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
-
-> Stable1.15.1 source SDK published on GitHub. [Status and support](../../../RELEASE-STATUS.en.md).
-
-Stable GitHub release 1.15.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
 
 
-Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `animated-textures` extends multiple-billboards, retaining door, mixed
@@ -53,16 +53,16 @@ FPS uses intact automatic programs and counts only newly presented full views.
 ## External adapter build and qualification
 
 Provide the complete caller-owned project via `--project-source`, with preset
-engineVersion1.15.1 and its required source/checkpoint contracts. These optional
+engineVersion 1.20.0 and its required source/checkpoint contracts. These optional
 commands invoke that external adapter's build/check/benchmark/launcher hooks;
 they do not supply a demo and are not a new qualification of the core release.
 
 ```powershell
 python -B work/build-gameplay.py --profile animated-textures --out ../builds/textures-dev6 --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../builds/textures-dev6 --checks --benchmark --launcher
 ```
 
 Run only with compatible external inputs, toolchain and VICE. Current core
-qualification is in [1.15.1](../../../QUALIFICATION-1.15.1.en.md); checkpoint
+qualification is in [1.20.0](../../../QUALIFICATION-1.20.0.en.md); checkpoint
 measurements in this module document remain historical and profile-limited.
 
+Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

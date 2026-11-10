@@ -28,7 +28,7 @@ def advance(tag,current,error,step,rem,direction,immediate=False):
  code+=f' clc\n adc {direction}\n jmp gr15_{tag}_apply\ngr15_{tag}_no_correction:\n sta {error}\n'
  code+=f'gr15_{tag}_step:\n lda #0\n' if immediate else f' lda {step}\n'
  return code+f'gr15_{tag}_apply:\n clc\n adc {current}\n sta {current}\n'
-def code():
+def code(optimized=False):
  out='''gr15_build_edges:
  ldx face_ymin
 gr15_init:
@@ -167,6 +167,19 @@ gr15_right_check:
 gr15_store_done:
  rts
 '''
+ if optimized:
+  # Every visited row initializes both endpoints on its first stored edge
+  # sample. Empty sentinel rows are skipped by the checked fill caller.
+  init=' lda gouraud_vshade0\n sta leftshade,x\n sta rightshade,x\n lda m7_v0\n sta m7_leftv,x\n sta m7_rightv,x\n lda m3_q0\n sta m3_leftq,x\n sta m3_rightq,x\n'
+  assert out.count(init)==1;out=out.replace(init,'',1)
+  out=out.replace('gr15_build_edges:\n','gr15_build_edges:\n jsr gr29_set_store_range\n',1)
+  out=out.replace('gr15_store:\n lda gouraud_edge_row\n','gr15_store:\n lda gouraud_edge_row\ngr29_store_gate:\n jmp gr29_store_check\ngr29_store_check:\n',1)
+  helper='gr29_set_store_range:\n'
+  for i in range(4):
+   if i==3:helper+=' .if HAS_TRI_FACES != 0\n lda loaded_face_vertex_count\n cmp #4\n bne gr29_store_fast\n .endif\n'
+   helper+=' lda vy'+str(i)+'\n cmp face_ymin\n bcc gr29_store_slow\n cmp face_ymax\n bcc gr29_store_vertex_'+str(i)+'\n beq gr29_store_vertex_'+str(i)+'\n jmp gr29_store_slow\ngr29_store_vertex_'+str(i)+':\n'
+  helper+='gr29_store_fast:\n lda #<gr15_store_range\n ldx #>gr15_store_range\n jmp gr29_store_select\ngr29_store_slow:\n lda #<gr29_store_check\n ldx #>gr29_store_check\ngr29_store_select:\n sta gr29_store_gate+1\n stx gr29_store_gate+2\n rts\n'
+  out+=helper
  return out
 def patch(s):
  s=original_source(s)
@@ -182,5 +195,7 @@ def patch(s):
   s=s[:a]+f'; GR15_RESTORE_{name} {digest} {payload}\n'+s[b:]
  s=s.replace(TRIPLE,CALL)
  if any(re.search(r'\b'+re.escape(n)+r'\b',s) for n in removed):return raw,dict(applied=False,reason='External consumer of original edge helpers retained')
- s+='\n; Plus allocation block mode7_fused_edges\n.virtual $4000\nlpa_block_mode7_fused_edges_begin:\n'+code()+'lpa_block_mode7_fused_edges_end:\n.endvirtual\n'
- return s,dict(applied=True,sharedXYTraversal=True,channels='UVQ',newRAMVariables=0,newRAMTables=0,extraDataStackBytes=0,privateSpanScratchReused=True,qualityChanged=False,exactTopLeftAndTieRules=True)
+ counts={'leftshade':5,'rightshade':4,'m7_leftv':2,'m7_rightv':2,'m3_leftq':3,'m3_rightq':7}
+ optimized='gr28_span_core:\n' in s and all(len(re.findall(r'\b'+n+r'\b',s))==c for n,c in counts.items()) and not re.search(r'\b(?:gr15_trace|gr15_store)\b',s)
+ s+='\n; Plus allocation block mode7_fused_edges\n.virtual $4000\nlpa_block_mode7_fused_edges_begin:\n'+code(optimized)+'lpa_block_mode7_fused_edges_end:\n.endvirtual\n'
+ return s,dict(applied=True,sharedXYTraversal=True,channels='UVQ',newRAMVariables=0,newRAMTables=0,extraDataStackBytes=0,privateSpanScratchReused=True,qualityChanged=False,exactTopLeftAndTieRules=True,attributeInitElidedForSkippedRows=optimized,rangeGate=True and optimized)

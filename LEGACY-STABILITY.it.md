@@ -1,8 +1,8 @@
-# LEGACY STABILITY — 1.15.1
+# LEGACY STABILITY — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+
 
 Il selettore di compatibilità è `-Precision legacy -LegacyStability corrected`.
 Omettere LegacyStability o scegliere `historical` conserva il legacy ordinario.

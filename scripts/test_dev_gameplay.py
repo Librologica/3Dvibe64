@@ -7,8 +7,8 @@ def main():
     package=json.loads((ROOT/'PACKAGE-MANIFEST.json').read_text())
     policy=package['distributionPolicy']
     assert not policy['newDemosIncluded'] and policy['baseline']=='v1.10.2'
-    assert (ROOT/'VERSION').read_text().strip()=='1.15.1'
-    assert package['package']['prerelease'] is False
+    assert (ROOT/'VERSION').read_text().strip()=='1.20.0'
+    assert package['package']['prerelease'] is False and package['release']['stable']
     for name,digest in policy['ordinaryEngineSHA256'].items():
         assert hashlib.sha256((ROOT/name).read_bytes()).hexdigest().upper()==digest,name
     expected=set(policy['preexistingExampleFiles'])

@@ -1,4 +1,6 @@
-# Release notes — 1.15.1
+# Release notes — 1.15.2-dev-agentic23
+
+> Unpublished local development from delivered agentic22 (stable base1.15.1). Public contracts and options are inherited; earlier qualification data are historical. Current status and changes: [AGENTIC23.en.md](AGENTIC23.en.md).
 
 Stable GitHub source release,30 October2026. Promoted from delivered agentic17;
 published as v1.15.1. No demos, examples, scenes, media or PRGs

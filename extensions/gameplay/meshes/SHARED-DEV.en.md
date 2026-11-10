@@ -1,13 +1,13 @@
-# Q8-01 — shared source meshes, 1.15.1
+# Q8-01 — shared source meshes, 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](../../../RELEASE-STATUS.en.md) · [Current qualification](../../../QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
-
-> Stable1.15.1 source SDK published on GitHub. [Status and support](../../../RELEASE-STATUS.en.md).
-
-Stable GitHub release 1.15.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
 
 
-Current 1.12.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `shared-meshes` places four polygonal solids in the LABIRINTO room. One
@@ -17,7 +17,6 @@ viewport 96 × 60 and texture LOD 14–22 are retained.
 
 ```powershell
 python -B work/build-gameplay.py --profile shared-meshes --out ../shared-build --project-source ../my-project
-python -B work/qualify-gameplay.py --out ../shared-build --checks --benchmark --launcher
 ```
 
 `--shared-meshes path.json` replaces instance descriptors. Editable mesh:
@@ -70,3 +69,5 @@ this adapter does not change that general API. Historical raw/FPS checkpoints
 remain external and apply only to their recorded program/conditions.
 
 [Italiano](SHARED-DEV.it.md).
+
+Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

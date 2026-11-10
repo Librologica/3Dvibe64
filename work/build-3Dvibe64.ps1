@@ -12,6 +12,10 @@ param(
  [string]$LineRaster = 'precise',
  [ValidateSet('off','gradual')]
  [string]$TextureLOD = 'off',
+ [ValidateSet('off','dither')]
+ [string]$DistanceFade = 'off',
+ [int]$DistanceFadeStart = 64,
+ [int]$DistanceFadeEnd = 96,
  [int]$TextureLODNear = 28,
  [int]$TextureLODFar = 44,
  [ValidateSet("legacy", "legacy-plus", "q8", "normalized16")]
@@ -335,8 +339,37 @@ function Get-SceneContractObject([object]$Doc) {
 
 # Texture interpolation is independent of geometric precision. Never silently
 # accept a perspective request in the legacy generator or another mode.
+$RuntimeScenePlan = ''
+if ($SceneFile) {
+$runtimeSceneDocument = Get-Content -LiteralPath $SceneFile -Raw | ConvertFrom-Json
+if (Has-Property $runtimeSceneDocument 'runtimeScene') {
+ if (-not $LegacyPlusClipEdges -or $GraphicsMode -notin @('4','5','6') -or -not $NoFpsOverlay) {
+  throw 'RuntimeScene requires native legacy-plus Mode4/5/6, normal walkLite/high-basic-v2 and NoFpsOverlay.'
+ }
+ $runtimeSceneDirectory = Join-Path $PSScriptRoot 'build/runtime-scene'
+ & python -B (Join-Path $PSScriptRoot 'runtime_scene.py') prepare --scene (Resolve-Path -LiteralPath $SceneFile).Path --out $runtimeSceneDirectory
+ if ($LASTEXITCODE -ne 0) { throw 'RuntimeScene validation failed' }
+ $SceneFile = Join-Path $runtimeSceneDirectory 'scene.json'
+ $RuntimeScenePlan = Join-Path $runtimeSceneDirectory 'plan.json'
+}
+}
+$AnimatedMeshPlan = ''
 if ($SceneFile) {
  $textureScene = Get-Content -LiteralPath $SceneFile -Raw | ConvertFrom-Json
+ if (Has-Property $textureScene 'animatedMeshes') {
+  if (-not $LegacyPlusClipEdges -or $GraphicsMode -notin @('4','5','6') -or $CameraMode -ne 'walkLite' -or $MemoryLayout -ne 'high-basic-v2' -or $CameraViewport -ne 'normal' -or -not $NoFpsOverlay) {
+   throw 'AnimatedMesh v1 requires legacy-plus, GraphicsMode 4/5/6, walkLite, high-basic-v2, normal viewport and NoFpsOverlay.'
+  }
+  $animatedDirectory = Join-Path $PSScriptRoot 'build/animated-mesh'
+  & python -B (Join-Path $PSScriptRoot 'animated_mesh.py') prepare --scene (Resolve-Path -LiteralPath $SceneFile).Path --out $animatedDirectory
+  if ($LASTEXITCODE -ne 0) { throw 'AnimatedMesh scene validation failed' }
+  $SceneFile = Join-Path $animatedDirectory 'scene.json'
+  $AnimatedMeshPlan = Join-Path $animatedDirectory 'plan.json'
+  $textureScene = Get-Content -LiteralPath $SceneFile -Raw | ConvertFrom-Json
+  $animatedNativePlan = Get-Content -LiteralPath $AnimatedMeshPlan -Raw | ConvertFrom-Json
+  if ($GraphicsMode -ne '6' -and $animatedNativePlan.renderer -eq 'compact-gouraud') { throw 'AnimatedMesh compact-gouraud requires GraphicsMode 6.' }
+  if ($GraphicsMode -ne '6' -and @($animatedNativePlan.instances | Where-Object { $_.frozen }).Count -gt 0) { throw 'AnimatedMesh frozen lighting requires GraphicsMode 6.' }
+ }
  if ($textureScene.PSObject.Properties.Name -contains 'texturePrecision') {
   if ($textureScene.texturePrecision -notin @('affine','perspective')) { throw 'texturePrecision must be affine or perspective.' }
   if (-not $PSBoundParameters.ContainsKey('TexturePrecision')) { $TexturePrecision = $textureScene.texturePrecision }
@@ -368,6 +401,22 @@ if ($PSBoundParameters.ContainsKey('TexturePrecision') -and $GraphicsMode -ne '7
  throw '-TexturePrecision is only applicable to GraphicsMode 7.'
 }
 
+# Independent of texture LOD. Explicit CLI values override scene values.
+$fadeInput = Get-Content -LiteralPath $SceneFile -Raw | ConvertFrom-Json
+if (Has-Property $fadeInput 'distanceFade') {
+ $f = $fadeInput.distanceFade
+ if ($null -eq $f -or $f -isnot [pscustomobject] -or @($f.PSObject.Properties.Name | Where-Object { $_ -notin @('mode','start','end') }).Count -ne 0) { throw 'DISTANCE_FADE: object with mode/start/end required' }
+ foreach ($pair in @(@('mode','DistanceFade'),@('start','DistanceFadeStart'),@('end','DistanceFadeEnd'))) {
+  if ((Has-Property $f $pair[0]) -and -not $PSBoundParameters.ContainsKey($pair[1])) {
+   $v=$f.($pair[0])
+   if ($pair[0] -ne 'mode' -and $v -isnot [int] -and $v -isnot [long]) { throw 'DISTANCE_FADE: integer distances required' }
+   Set-Variable -Name $pair[1] -Value $v
+  }
+ }
+}
+if ($DistanceFade -notin @('off','dither') -or $DistanceFadeStart -lt 0 -or $DistanceFadeEnd -gt 32767 -or $DistanceFadeStart -ge $DistanceFadeEnd) { throw 'DISTANCE_FADE: off/dither and 0 <= start < end <= 32767 required' }
+if ($DistanceFade -eq 'off' -and ($PSBoundParameters.ContainsKey('DistanceFadeStart') -or $PSBoundParameters.ContainsKey('DistanceFadeEnd') -or (-not $PSBoundParameters.ContainsKey('DistanceFade') -and (Has-Property $fadeInput 'distanceFade') -and ((Has-Property $fadeInput.distanceFade 'start') -or (Has-Property $fadeInput.distanceFade 'end'))))) { throw 'DISTANCE_FADE: distances require dither' }
+
 # Precision is an explicit opt-in, never selected from CPU speed or scene data.
 if ($PSBoundParameters.ContainsKey('LineRaster') -and ($Precision -ne 'q8' -or $GraphicsMode -notin @('1','2','5'))) { throw 'LineRaster requires Q8 GraphicsMode 1, 2 or 5.' }
 if (($TextureLOD -ne 'off' -or $PSBoundParameters.ContainsKey('TextureLOD')) -and ($Precision -ne 'q8' -or $GraphicsMode -ne '7' -or $TexturePrecision -ne 'perspective')) { throw 'TextureLOD requires Q8 perspective GraphicsMode 7.' }
@@ -376,7 +425,7 @@ if ($TextureLOD -eq 'gradual' -and ($TextureLODNear -le 1 -or $TextureLODFar -ge
 # The adapter works in a fresh output tree; legacy generation below is unchanged.
 if ($Precision -eq 'normalized16') {
  if ($PSBoundParameters.ContainsKey('EngineExperiments')) { throw '-EngineExperiments requires Q8 or Mode8.' }
- $allowed = @('Precision','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','VideoStandard')
+ $allowed = @('DistanceFade','DistanceFadeStart','DistanceFadeEnd','Precision','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','VideoStandard')
  foreach ($key in $PSBoundParameters.Keys) {
   if ($key -notin $allowed) { throw "Normalized16: option -$key is not supported. See NORMALIZED16.en.md." }
  }
@@ -386,12 +435,15 @@ if ($Precision -eq 'normalized16') {
  if ($VideoStandard -eq 'auto') { throw 'Normalized16 requires pal or ntsc.' }
  if (-not $OutputDirectory) { $OutputDirectory = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) '3Dvibe64-output/normalized16' }
  $python = if ($env:PYTHON_EXE) { $env:PYTHON_EXE } else { 'python' }
- & $python -B (Join-Path $PSScriptRoot 'normalized_build.py') --scene (Resolve-Path -LiteralPath $SceneFile).Path --out $OutputDirectory --mode $GraphicsMode --standard $VideoStandard --camera $Q8Camera --frame-presentation $FramePresentation
+ $nfArgs = @('-B',(Join-Path $PSScriptRoot 'normalized_build.py'),'--scene',(Resolve-Path -LiteralPath $SceneFile).Path,'--out',$OutputDirectory,'--mode',$GraphicsMode,'--standard',$VideoStandard,'--camera',$Q8Camera,'--frame-presentation',$FramePresentation)
+ if ($DistanceFade -ne 'off' -or $PSBoundParameters.ContainsKey('DistanceFade')) { $nfArgs += @('--distance-fade',$DistanceFade) }
+ if ($DistanceFade -ne 'off') { $nfArgs += @('--fade-start',$DistanceFadeStart,'--fade-end',$DistanceFadeEnd) }
+ & $python @nfArgs
  if ($LASTEXITCODE -ne 0) { throw "Normalized16 build failed with exit code $LASTEXITCODE." }
  return
 }
 if ($Precision -eq 'q8') {
- $allowed = @('EngineExperiments','Precision','TexturePrecision','TextureQuality','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','LineRaster','TextureLOD','TextureLODNear','TextureLODFar',
+ $allowed = @('DistanceFade','DistanceFadeStart','DistanceFadeEnd','EngineExperiments','Precision','TexturePrecision','TextureQuality','Q8Camera','GraphicsMode','SceneFile','OutputDirectory','FramePresentation','LineRaster','TextureLOD','TextureLODNear','TextureLODFar',
               'VideoStandard','CameraMode','CameraViewport','MemoryLayout','Quality',
               'Projection','NoFpsOverlay','SkipCmdUpdate')
  foreach ($key in $PSBoundParameters.Keys) {
@@ -412,6 +464,8 @@ if ($Precision -eq 'q8') {
  $q8args = @('-B', (Join-Path $PSScriptRoot 'q8/build.py'), '--scene', (Resolve-Path -LiteralPath $SceneFile).Path, '--out', $OutputDirectory, '--mode', $GraphicsMode, '--standard', $VideoStandard, '--camera', $Q8Camera)
  $q8args += @('--frame-presentation',$FramePresentation,'--line-raster',$LineRaster,'--texture-lod',$TextureLOD)
  if ($PSBoundParameters.ContainsKey('EngineExperiments')) { $q8args += @('--engine-experiments',$EngineExperiments) }
+ if ($DistanceFade -ne 'off' -or $PSBoundParameters.ContainsKey('DistanceFade')) { $q8args += @('--distance-fade',$DistanceFade) }
+ if ($DistanceFade -ne 'off') { $q8args += @('--fade-start',$DistanceFadeStart,'--fade-end',$DistanceFadeEnd) }
  if ($TextureLOD -eq 'gradual') { $q8args += @('--lod-near',$TextureLODNear,'--lod-far',$TextureLODFar) }
  if ($GraphicsMode -eq '7') { $q8args += @('--texture-precision', $TexturePrecision, '--texture-quality', $TextureQuality) }
  & $python @q8args
@@ -423,7 +477,7 @@ if ($PSBoundParameters.ContainsKey('Q8Camera')) { throw '-Q8Camera requires -Pre
 # Mode 8 is a distinct public map contract, dispatched before polygon setup.
 if ($GraphicsMode -eq "8") {
  if ($PSBoundParameters.ContainsKey('FramePresentation') -or $PSBoundParameters.ContainsKey('LineRaster') -or $PSBoundParameters.ContainsKey('TextureLOD')) { throw 'Mode8 uses its own presentation/rendering contract.' }
- $allowed = @('EngineExperiments','GraphicsMode', 'SceneFile', 'Mode8Run', 'OutputDirectory', 'ValidateOnly', 'VideoStandard', 'Precision')
+ $allowed = @('DistanceFade','DistanceFadeStart','DistanceFadeEnd','EngineExperiments','GraphicsMode', 'SceneFile', 'Mode8Run', 'OutputDirectory', 'ValidateOnly', 'VideoStandard', 'Precision')
  foreach ($key in $PSBoundParameters.Keys) {
   if ($key -notin $allowed) { throw "Mode 8: explicitly requested option -$key is not applicable. See MODE8.en.md." }
  }
@@ -432,6 +486,8 @@ if ($GraphicsMode -eq "8") {
  if (-not $OutputDirectory) { $OutputDirectory = Join-Path (Split-Path -Parent (Split-Path -Parent $PSScriptRoot)) '3Dvibe64-output/mode8' }
  $python = if ($env:PYTHON_EXE) { $env:PYTHON_EXE } else { 'python' }
  $arguments = @('-B', (Join-Path $PSScriptRoot 'mode8_build.py'), '--scene', (Resolve-Path -LiteralPath $SceneFile).Path, '--out', $OutputDirectory, '--run', $Mode8Run)
+ if ($DistanceFade -ne 'off' -or $PSBoundParameters.ContainsKey('DistanceFade')) { $arguments += @('--distance-fade',$DistanceFade) }
+ if ($DistanceFade -ne 'off') { $arguments += @('--fade-start',$DistanceFadeStart,'--fade-end',$DistanceFadeEnd) }
  if ($ValidateOnly) { $arguments += '--validate-only' }
  if ($PSBoundParameters.ContainsKey('EngineExperiments')) { $arguments += @('--engine-experiments',$EngineExperiments) }
  & $python @arguments
@@ -8731,6 +8787,20 @@ foreach ($v in $MeshVertices) {
 $xCoords = @($vertX | Sort-Object -Unique)
 $yCoords = @($vertY | Sort-Object -Unique)
 $zCoords = @($vertZ | Sort-Object -Unique)
+if ($AnimatedMeshPlan) {
+ # Every integer between animation endpoints must have a contribution entry.
+ # Include existing static coordinates; the opt-out path is byte-identical.
+ $animatedBounds = (Get-Content -LiteralPath $AnimatedMeshPlan -Raw | ConvertFrom-Json).axisBounds
+ $xAll = @($xCoords) + @($animatedBounds[0][0],$animatedBounds[0][1])
+ $yAll = @($yCoords) + @($animatedBounds[1][0],$animatedBounds[1][1])
+ $zAll = @($zCoords) + @($animatedBounds[2][0],$animatedBounds[2][1])
+ $xRange = $xAll | Measure-Object -Minimum -Maximum
+ $yRange = $yAll | Measure-Object -Minimum -Maximum
+ $zRange = $zAll | Measure-Object -Minimum -Maximum
+ $xCoords = @([int]$xRange.Minimum..[int]$xRange.Maximum)
+ $yCoords = @([int]$yRange.Minimum..[int]$yRange.Maximum)
+ $zCoords = @([int]$zRange.Minimum..[int]$zRange.Maximum)
+}
 if ($xCoords.Count -gt 255 -or $yCoords.Count -gt 255 -or $zCoords.Count -gt 255) {
  throw "Too many unique coordinate values for byte-sized contribution tables"
 }
@@ -38814,6 +38884,14 @@ if ($LegacyPlusClipEdges -and $Mode7Experimental -and $TexturePrecision -eq 'aff
  & python -B (Join-Path $Root 'legacy_plus_mode7_exact.py') $AsmPath
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus exact Mode7 generation failed' }
 }
+if ($AnimatedMeshPlan) {
+ & python -B (Join-Path $Root 'animated_mesh.py') emit --plan $AnimatedMeshPlan --asm $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'AnimatedMesh native generation failed' }
+}
+if ($RuntimeScenePlan) {
+ & python -B (Join-Path $Root 'runtime_scene.py') emit --plan $RuntimeScenePlan --asm $AsmPath
+ if ($LASTEXITCODE -ne 0) { throw 'RuntimeScene native generation failed' }
+}
 if ($LegacyPlusClipEdges -and $GraphicsMode -notin @('1','2')) {
  & python -B (Join-Path $Root 'legacy_plus_memory.py') $AsmPath --assembler $Tass
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus solid helper placement failed' }
@@ -38824,6 +38902,12 @@ if ($LegacyPlusClipEdges -and $GraphicsMode -in @('1','2')) {
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus exact wire cursor generation failed' }
  & python -B (Join-Path $Root 'legacy_render_tuning.py') $AsmPath
  if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus exact raster tuning generation failed' }
+ & python -B (Join-Path $Root 'legacy_wire_segment_clip.py') $AsmPath --assembler $Tass
+ if ($LASTEXITCODE -ne 0) { throw 'Legacy-plus exact wire segment clipping failed' }
+}
+if ($DistanceFade -ne 'off') {
+ & python -B (Join-Path $Root 'distance_fade_legacy.py') $AsmPath --start $DistanceFadeStart --end $DistanceFadeEnd --assembler $Tass
+ if ($LASTEXITCODE -ne 0) { throw 'Distance fade generation failed' }
 }
 $tassArgs = @("-a", "-B", "-o", $PrgPath)
 if ($StableRelocatedCodeFlag -ne 0) {

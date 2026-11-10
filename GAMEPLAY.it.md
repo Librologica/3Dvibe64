@@ -1,15 +1,17 @@
-# Moduli sorgente gameplay — 1.15.1
+# Moduli sorgente gameplay — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
+Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
 
-Release stabile 1.15.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+
+
+Release stabile 1.20.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione sorgente stabile1.15.1 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione stabile contiene solo sorgenti. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
 
 | ID | Modulo | Contratto |
 |---|---|---|
@@ -39,7 +41,7 @@ Il driver di compatibilità `work/build-gameplay.py` riceve una radice esterna:
 `extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` e
 `extensions/gameplay/billboards/<implementation>.py` per i collegamenti
 dell'utilizzatore. Questi percorsi appartengono al progetto esterno, non
-all'SDK. Il preset contiene `profile`, `engineVersion` (1.15.1), `extends`
+all'SDK. Il preset contiene `profile`, `engineVersion` (1.20.0), `extends`
 opzionale, `buildName`, `billboardImplementation`, `distributionPRG`,
 `textureQuality`, `textureLOD`, `viewportLogical`,
 `expectedCheckpointPRGSHA256` e `scope` opzionale. Il driver sovrappone i
@@ -124,3 +126,7 @@ disco, ombre texturizzate dinamiche o API generali di integrazione completa.
 ## Confine applicativo 1.15.0
 
 Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).
+
+## API RuntimeScene distinte
+
+Le capacità `runtime-scene`, `bounded-planar-contacts`, `floating-origin` e `random-volume-particles` descrivono funzioni dell’oggetto scena `runtimeScene`, compilato dal builder ordinario. Non sono valori di `--profile` del builder gameplay, che conserva i 13 selettori elencati sopra. Per campi, profili supportati, ABI e limiti RAM vedere [RuntimeScene](RUNTIME-SCENE.it.md) e [Dynamics](DYNAMICS.it.md).

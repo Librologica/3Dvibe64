@@ -1,12 +1,12 @@
-# Exact renderer optimizations — 1.15.1
+# Exact renderer optimizations — 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+
 
 ## Legacy-plus support in 1.15.0
 
-Mode1–7 plus and Mode7 affine/perspective remain supported in this stable SDK. The near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [current qualification](QUALIFICATION-1.15.1.en.md).
+Mode1–7 plus and Mode7 affine/perspective remain supported in this stable SDK. The near8, Q4 geometry, lighting A/B/C, RAM and camera constraints are in [LEGACY-PLUS](LEGACY-PLUS.en.md). The ordinary legacy Mode7 camera-plane `Mode4NearProfile clip` requirement below is not the plus profile: plus requires default/near8/poly. Fast texture sampling and LOD remain Q8-only. Results and regressions are in [current qualification](QUALIFICATION-1.20.0.json).
 
 All new options are explicit. Legacy precision, standard texture quality,
 precise lines, safe presentation and texture LOD off remain ordinary defaults.
@@ -113,7 +113,7 @@ z-buffer or a general occlusion solver. Counters oc_frames/oc_culled_total are
 
 ## Qualification and migration
 
-See [current qualification](QUALIFICATION-1.15.1.en.md), [testing](TESTING.md),
+See [current qualification](QUALIFICATION-1.20.0.json), [testing](TESTING.md),
 [external inputs](EXTERNAL-INPUTS.en.md) and [optional support](ADAPTER-SUPPORT.en.md).
 Compare equal camera ticks and native complete-view FPS before selecting options
 for another project. Existing build calls with no options keep renderer behavior;

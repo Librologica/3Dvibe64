@@ -1,10 +1,10 @@
-# Ottimizzazioni del rendering esatto — 1.15.1
+# Ottimizzazioni del rendering esatto — 1.20.0
 
-Stabile1.15.1, release GitHub di soli sorgenti. [Stato release](RELEASE-STATUS.it.md) · [Qualifica corrente](QUALIFICATION-1.15.1.it.md). Scene e asset sono esterni; nessun progetto demo incluso.
+> SDK sorgente stabile 1.20.0, derivato dalla agentic36. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
 
-> SDK sorgente stabile1.15.1 pubblicato su GitHub. [Stato e supporto](RELEASE-STATUS.it.md).
 
-Le funzioni Mode4 opzionali introdotte nella1.15.0 conservano il contratto API. Il sorgente1.15.1 deriva da agentic17 ed è disponibile in locale. Legacy/Q8 e le build plus senza selettore mantengono i contratti precedenti. Nessuna demo, scena, programma, media o cattura nativa nel pacchetto sorgente.
+
+Le funzioni Mode4 opzionali introdotte nella1.15.0 conservano il contratto API. Il sorgente stabile corrente deriva dalla agentic36 ed è pubblicato su GitHub. Legacy/Q8 e le build plus senza selettore mantengono i contratti precedenti. Nessuna demo, scena, programma, media o cattura nativa nel pacchetto sorgente.
 
 ## Selezione e ambito
 

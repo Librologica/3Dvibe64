@@ -34,13 +34,13 @@ copia tabelle, crea il secondo font, pulisce la bitmap e installa i vettori.
 | Color RAM `$D800` I/O | Set during initialization; separate from underlying font RAM / impostata all'init, distinta dal font sottostante |
 | `$FFFA–$FFFF` | NMI/IRQ vectors: protected, not bitmap pixels / vettori protetti |
 
-Multi-only: 4,096-byte profile cache, 448-byte coefficient/state allocation,
+Multi-only: 4,096-byte profile cache, 608-byte coefficient/state allocation,
 144 bytes of active fine-ray data in a 256-byte reservation. Its helper at
 `$5500–$55BF` occupies 192 bytes. Key/event tables have byte identifiers and at
 most 255 entries each; the per-ray path limit is a **different** capacity.
 See [map limits EN](MAPS-2.5D.en.md) / [limiti mappe IT](MAPS-2.5D.it.md).
 
-Solo multi: cache profili da 4.096 byte, coefficienti/stato da 448 byte,
+Solo multi: cache profili da 4.096 byte, coefficienti/stato da 608 byte,
 144 byte di dati fine-ray attivi in una riserva da 256. Helper di 192 byte a
 `$5500–$55BF`. Tabelle key/event con identificativi byte e massimo 255 entry
 ciascuna; la capacità del percorso del singolo raggio è **distinta**.
@@ -76,3 +76,7 @@ template; il margine low interattivo è 634 byte. Gli altri layout sono invariat
 La dimensione PRG comprende riserve e buchi di caricamento: non è la RAM viva
 totale. Le varianti interattive hanno sorgenti/report propri. Il workflow mappe
 non cambia il layout né riduce silenziosamente la precisione per farlo rientrare.
+
+Agentic25: the multi profile cache keeps32 slots /4096 bytes and uses second-chance replacement.32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; no buffer alias is introduced. Total coefficient/state allocation is480 bytes. The485-byte plane-unit cache is separate. Auto/interactive share this algorithm; geometry, lazy sampling, input and presentation are unchanged.
+
+Agentic26: shared immutable zero profile128 bytes and helper24 bytes at $ca20..$cab7; total coefficient/state data608 bytes. Original windows, no aliases. See AGENTIC26.en.md and QUALIFICATION-AGENTIC26.json.

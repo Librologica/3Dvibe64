@@ -1,8 +1,8 @@
-# CAMERA ROTATION — 1.15.1
+# CAMERA ROTATION — 1.20.0
 
-Stable1.15.1, source-only GitHub release. [Release status](RELEASE-STATUS.en.md) · [Current qualification](QUALIFICATION-1.15.1.en.md). Input scenes/assets are external; no demo projects are bundled.
+> Stable source SDK 1.20.0, promoted from agentic36. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
 
-> Stable1.15.1 source SDK published on GitHub. [Status and support](RELEASE-STATUS.en.md).
+
 
 `-Precision legacy -LegacyStability rotation` preserves the original finer
 camera-rotation profile. It requires Mode2, walkLite, normal, high-basic-v2 and

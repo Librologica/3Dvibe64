@@ -5,7 +5,7 @@ Required Notice: 3Dvibe64. PolyForm Noncommercial 1.0.0.
 import base64,hashlib,json,re,zlib
 REGIONS=[('raster','gouraud_draw_scan_span_bytes:\n','; Texture is page aligned.'),('advance','m7_advance:\n','m7_prepare_span:\n'),('fast','lpa_block_mode7_immediate_kernel_begin:\n','lpa_block_mode7_immediate_kernel_end:\n'),('setup','lp8_patch_uv_constants:\n','lpa_block_mode7_immediate_setup_end:\n')]
 MARKER=re.compile(r'; GR16_BIASED_UV ([0-9a-f]{64}) ([A-Za-z0-9+/=]+)\n')
-PATTERN=re.compile(r'(?m)^( adc (?:m7_[uv]rem|#(?:\$00|0))\n) bcs (\w+)\n(?:(\w+):\n)? cmp (?:m7_den|#(?:\$00|0))\n bcc (\w+)\n\2:\n(?: sec\n)?')
+PATTERN=re.compile(r'(?m)^( adc (?:m7_[uv]rem|crosshi|mul16hi|#(?:\$00|0))\n) bcs (\w+)\n(?:(\w+):\n)? cmp (?:m7_den|mul16mul|#(?:\$00|0))\n bcc (\w+)\n\2:\n(?: sec\n)?')
 def region(s,first,last):
  a=s.index(first);b=s.index(last,a);return a,b,s[a:b]
 def original_source(s):
@@ -17,6 +17,9 @@ def original_source(s):
   a,b,_=region(s,first,last);s=s[:a]+saved[name]+s[b:]
  return s
 def patch(s):
+ if 'gr28_span_core:\n' not in s:
+  from legacy_mode7_parent_biased import patch as parent_patch
+  return parent_patch(s)
  s=original_source(s)
  if not re.search(r'(?m)^GRAPHICS_MODE = \$07$',s) or 'm31_c_instructions_end = *' not in s:return s,dict(applied=False,reason='Known Mode7-C only')
  if any(first not in s or last not in s for name,first,last in REGIONS):return s,dict(applied=False,reason='Other raster retained')
@@ -45,15 +48,20 @@ def patch(s):
   patched[name]=body
  if total!=18 or len(removed)!=8:return s,dict(applied=False,reason='Other UV step count retained')
  setup=patched['setup']
- for label in removed:
-  line=' sta '+label+'+1\n'
-  if setup.count(line)!=1:return s,dict(applied=False,reason='Other immediate cache retained')
-  setup=setup.replace(line,'',1)
- old=' cmp lp8_fast_imm_m7_den_0+1\n';new=' cmp lp8_fast_imm_m7_den_1+1\n'
- if setup.count(old)!=1:return s,dict(applied=False,reason='Other denominator cache retained')
- patched['setup']=setup.replace(old,new,1)
+ patched['setup']=setup
+ # GR28: known Horner shifts and before-end comparisons supply C=0
+ # at each U-error entry. A biased correction subtracts D from E'<D,
+ # so the immediate fast coordinate add also receives C=0 on both paths.
+ u_entries=0;fast_adds=0
+ for name in ['raster','advance','fast']:
+  body=patched[name]
+  body,n=re.subn(r'(?m)^((?:\w+_)?m7_span_uv_begin:\n) clc\n( lda prodlo\n)',r'\1\2',body);u_entries+=n
+  if name in ['fast','raster','advance']:
+   body,n=re.subn(r'(?m)^((?:\w+_)?lp8_[uv]_apply:\n) clc\n( adc p1(?:lo|hi)\n)',r'\1\2',body);fast_adds+=n
+  patched[name]=body
+ if u_entries!=9 or fast_adds!=18:return s,dict(applied=False,reason='Other carry-entry/add contexts retained')
  for name,first,last in REGIONS:
   a,b,_=region(s,first,last);s=s[:a]+patched[name]+s[b:]
  payload=json.dumps(saved,sort_keys=True,separators=(',',':')).encode('ascii');encoded=base64.b64encode(zlib.compress(payload,9)).decode('ascii')
  s+='; GR16_BIASED_UV '+hashlib.sha256(payload).hexdigest()+' '+encoded+'\n'
- return s,dict(applied=True,stepSites=total,removedImmediateComparisons=len(removed),errorRepresentation='E-D modulo256 within private span shadows only',entryAndExitConvert=True,newRAMVariables=0,newRAMTables=0,extraDataStackBytes=0,originalPublicErrorStateRestored=True,qualityChanged=False,exact=True)
+ return s,dict(applied=True,stepSites=total,redundantUEntryCLC=u_entries,redundantFastAddCLC=fast_adds,removedImmediateComparisons=len(removed),errorRepresentation='E-D modulo256 within private span shadows only',entryAndExitConvert=True,newRAMVariables=0,newRAMTables=0,extraDataStackBytes=0,originalPublicErrorStateRestored=True,qualityChanged=False,exact=True)

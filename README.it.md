@@ -1,27 +1,25 @@
-# 3Dvibe64 1.15.1
+# 3Dvibe64 1.20.0
 
-## Novità correnti1.15.1
+SDK sorgente stabile derivato dalla agentic36 e dalla revisione documentale r1. Pubblicato su GitHub.
 
-La release stabile GitHub promuove agentic17 senza modificare renderer o API.
-[Note correnti](RELEASE-NOTES-1.15.1.it.md), [contratti delle ottimizzazioni](AGENTIC-OPTIMIZATIONS.it.md),
-[API cerchi](CIRCLE-SPHERES.it.md) e [qualifica nativa](QUALIFICATION-1.15.1.it.md)
-prevalgono sulle vecchie dichiarazioni di release. Nessuna demo, scena o media
-è allegata: gli input appartengono al progetto esterno. I selettori Mode4 esatti
-opzionali restano distinti dai passaggi automatici.
+Rendering nelle modalità 1–8, ottimizzazioni esatte ereditate, Distance Fade opzionale, AnimatedMesh, RuntimeScene e moduli applicativi delimitati. I profili indicati come sperimentali conservano i propri limiti; la promozione non estende le combinazioni supportate.
 
+Distance Fade è disattivato per default. La guida descrive distanze, coordinate, memoria e [tipi di scena favorevoli e sfavorevoli](DISTANCE-FADE.it.md#quando-conviene-usare-distance-fade), distinti per modalità e budget CPU. Il LOD texture Mode7 resta indipendente.
 
-SDK sorgente stabile1.15.1 pubblicato su GitHub. Non sono inclusi demo,esempi,PRG o media. [Stato e supporto](RELEASE-STATUS.it.md) · [Novità](RELEASE-NOTES-1.15.1.it.md) · [Qualifica](QUALIFICATION-1.15.1.it.md).
+[Guida rapida](QUICKSTART.it.md) · [Indice completo](DOCS.md) · [Note di release](RELEASE-NOTES-1.20.0.it.md) · [Qualifica e limiti](QUALIFICATION-1.20.0.it.md) · [Verifiche](TESTING.it.md)
 
-Le nuove ottimizzazioni/API sono limitate al Mode4 legacy-plus documentato; il supporto plus ordinario Mode1–7 e gli altri backend restano distinti. Default `legacy` e ottimizzazioni `none`. `all` esclude wire,stream,frozen-lighting. [Opzioni](EXACT-RENDER.it.md) · [API e memoria](REUSABLE-RENDER.it.md). Gameplay e Normalized16 conservano lo stato sperimentale.
+Restano i default legacy, qualità texture standard, linee precise, LOD off e presentazione safe. Le opzioni esatte Mode4 conservano i propri contratti; `all` esclude wire, stream e frozen-lighting. [Opzioni](EXACT-RENDER.it.md) · [Rendering riutilizzabile](REUSABLE-RENDER.it.md) · [Sfere](CIRCLE-SPHERES.it.md).
 
-Legacy resta il default. Selezionare Q8 preciso esplicitamente con `-Precision q8`, consigliato sopra 20 MHz. Qualità texture standard, linee precise, LOD off e presentazione safe restano i default ordinari.
+AnimatedMesh usa le normali della posa di riferimento: non implica animazione scheletrica, root motion automatico o ricalcolo delle normali deformate. [AnimatedMesh](ANIMATED-MESH.it.md) · [RuntimeScene](RUNTIME-SCENE.it.md) · [Dynamics](DYNAMICS.it.md).
 
-## Distribuzione di soli sorgenti
+<a id="stable-source-distribution"></a>
+## Distribuzione sorgente
 
-Questa distribuzione sorgente stabile1.15.1 è pubblicata su GitHub. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Il pacchetto contiene sorgenti dell’engine, documentazione e test di correttezza. Nessuna demo, scena applicativa, suite di benchmark, modello, musica, PRG o cattura è inclusa. Fornire [input esterni](EXTERNAL-INPUTS.it.md) e compilare in una copia di lavoro. Le qualifiche numerate precedenti sono documenti storici.
 
 | ID | Modulo | Contratto |
 |---|---|---|
+|ANIM-01|Mesh indicizzate animate native|[riferimento](ANIMATED-MESH.it.md)|
 |BB-01|Emitter billboard mascherati/contornati|[reference](extensions/gameplay/CONTRACT.it.md)|
 |BB-02 / ENT-01|Configurazione billboard ed eventi locali|[reference](extensions/gameplay/entities/DEV.it.md)|
 |ENT-01 door|Porta poligonale scorrevole|[reference](extensions/gameplay/entities/DOOR-DEV.it.md)|
@@ -34,6 +32,7 @@ Questa distribuzione sorgente stabile1.15.1 è pubblicata su GitHub. Non contien
 |Q8-02|Animazione controllabile e roll camera|[reference](extensions/gameplay/motion/CONTROLLED-DEV.it.md)|
 |WORLD-01|Caricamento e stato di gruppi delimitati|[reference](extensions/gameplay/world/WORLD-DEV.it.md)|
 |LEVEL-01|Formato comune di livello e contabilità memoria|[reference](extensions/gameplay/level/LEVEL-DEV.it.md)|
+
 
 ## Contratto del builder ordinario
 

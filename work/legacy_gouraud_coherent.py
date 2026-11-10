@@ -129,12 +129,14 @@ def _coherent_patch(s):
 
 
 import legacy_gouraud_material as material_cache
+import legacy_wire_segment_clip as segment_clip
 
 def original_source(s):
-    return material_cache.original_source(_coherent_original_source(s))
+    return material_cache.original_source(_coherent_original_source(segment_clip.original_source(s)))
 
 def patch(s):
     s=original_source(s)
     s,shader=_coherent_patch(s)
     s,material=material_cache.patch(s)
-    return s,dict(applied=shader['applied'] or material['applied'],shader=shader,material=material,newRAMVariables=0,newRAMTables=0,qualityChanged=False)
+    s,segment=segment_clip.patch(s)
+    return s,dict(applied=shader['applied'] or material['applied'] or segment['applied'],shader=shader,material=material,wireSegmentClip=segment,newRAMVariables=0,newRAMTables=0,qualityChanged=False)
