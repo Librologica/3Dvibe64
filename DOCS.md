@@ -1,8 +1,8 @@
-# Documentation / Documentazione — 1.20.0
+# Documentation / Documentazione — 1.20.1
 
-Stable source package 1.20.0. Published on GitHub. / SDK sorgente stabile 1.20.0. Pubblicato su GitHub.
+Stable source SDK 1.20.1. / SDK sorgente stabile 1.20.1.
 
-[Quick start / Guida rapida](QUICKSTART.md) · [Testing / Verifiche](TESTING.md) · [Release notes / Note](RELEASE-NOTES-1.20.0.md)
+[Quick start / Guida rapida](QUICKSTART.md) · [Testing / Verifiche](TESTING.md) · [Release notes / Note](RELEASE-NOTES-1.20.1.en.md)
 
 ## Current contracts / Contratti correnti
 
@@ -58,8 +58,8 @@ Stable source package 1.20.0. Published on GitHub. / SDK sorgente stabile 1.20.0
 | ANIMATED-MESH | [English](ANIMATED-MESH.en.md) | [Italiano](ANIMATED-MESH.it.md) |
 | RUNTIME-SCENE | [English](RUNTIME-SCENE.en.md) | [Italiano](RUNTIME-SCENE.it.md) |
 | DYNAMICS | [English](DYNAMICS.en.md) | [Italiano](DYNAMICS.it.md) |
-| RELEASE-NOTES | [English](RELEASE-NOTES-1.20.0.en.md) | [Italiano](RELEASE-NOTES-1.20.0.it.md) |
-| QUALIFICATION | [English](QUALIFICATION-1.20.0.en.md) | [Italiano](QUALIFICATION-1.20.0.it.md) |
+| RELEASE-NOTES | [English](RELEASE-NOTES-1.20.1.en.md) | [Italiano](RELEASE-NOTES-1.20.1.it.md) |
+| QUALIFICATION | [English](QUALIFICATION-1.20.1.en.md) | [Italiano](QUALIFICATION-1.20.1.it.md) |
 
 ## Scope / Perimetro
 
@@ -69,6 +69,4 @@ Gli esempi di API e formato scena sono frammenti documentali, non applicazioni i
 
 ## History / Storico
 
-Versioned release notes, AGENTIC reports and old qualification JSON files retain their original identities. They do not state the current publication status. The machine-readable index is [DOCUMENTATION.json](DOCUMENTATION.json); current contracts take precedence over historical proposals.
-
-Note numerate, rapporti AGENTIC e vecchie qualifiche JSON conservano le identità originali. Non rappresentano lo stato di pubblicazione corrente. L’indice leggibile dalle macchine è [DOCUMENTATION.json](DOCUMENTATION.json); i contratti correnti prevalgono sulle proposte storiche.
+[Published releases / Release pubblicate](https://github.com/Librologica/3Dvibe64/releases)

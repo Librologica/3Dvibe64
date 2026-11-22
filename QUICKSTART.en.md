@@ -1,6 +1,6 @@
-# Quick start — 1.20.0
+# Quick start — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
 

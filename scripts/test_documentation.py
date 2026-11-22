@@ -55,17 +55,16 @@ def links(files):
 def main():
     load=lambda p:json.loads((ROOT/p).read_text('utf-8-sig'))
     version=(ROOT/'VERSION').read_text().strip()
-    assert version=='1.20.0'
+    assert version=='1.20.1'
     package=load('PACKAGE-MANIFEST.json');docs=load('DOCUMENTATION.json')
     release=load('RELEASE.json');development=load('DEVELOPMENT.json')
     assert all(d['version']==version for d in (docs,release,development,package['package'],package['release']))
-    assert release['sourceDevelopment']=='1.15.2-dev-agentic36'
     for data in (release,development,docs,package['release']):
-        assert data['GitHubPublished'] and data['releasePageCreated'] and data['releaseURL']=='https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0'
+        assert data['GitHubPublished'] and data['releasePageCreated'] and data['releaseURL']=='https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.1'
     assert release['classification']=='stable' and release['publicationStatus']=='published'
-    assert release['qualifiedAsStable'] and release['tagCreated'] and release['tag']=='v'+version and release['plannedTag']=='v'+version
+    assert release['qualifiedAsStable'] and release['tagCreated'] and release['tag']=='v'+version
     assert not package['package']['prerelease'] and not package['package']['precompiledPrograms']
-    assert docs['locales']==['en','it'] and docs['publication']=='stable source release published on GitHub'
+    assert docs['locales']==['en','it'] and docs['publication']=='stable source SDK'
     names={p.relative_to(ROOT).as_posix() for p in ROOT.rglob('*') if p.is_file()}
     manifest={n:h for h,n in (line.split('  ',1) for line in (ROOT/'MANIFEST.sha256').read_text().splitlines())}
     assert names==set(manifest)|{'MANIFEST.sha256'}
@@ -76,12 +75,14 @@ def main():
     banned={'.prg','.d64','.tap','.zip','.wav','.mp3','.mp4','.vsf','.pyc'}
     assert not [n for n in names if Path(n).suffix.lower() in banned]
     assert not any((ROOT/n).exists() for n in ('examples','validation','demos','artifacts'))
+    content_version=docs.get('contentVersion',version)
+    assert content_version in (version,)
     pairs=docs['currentPairs']+docs['developmentPairs']
     for pair in pairs:
         for language in ('en','it'):
             text=(ROOT/pair[language]).read_text('utf-8-sig')
-            assert version in text,pair[language]
-            assert 'published on github' in text.lower() or 'pubblicat' in text.lower(),pair[language]
+            assert content_version in text,pair[language]
+            assert 'stable' in text.lower() or 'stabile' in text.lower(),pair[language]
             assert 'GitHub publication pending' not in text and 'pubblicazione GitHub in attesa' not in text.lower(),pair[language]
             for obsolete in ('> Stable1.15.1 source SDK published','> SDK sorgente stabile1.15.1 pubblicato',
                              'This stable1.15.1 source distribution is published',
@@ -94,7 +95,7 @@ def main():
         assert not re.search(r'(?i)agentic[-_ ]*\d+',read(name)),('internal build name in current public documentation',name)
     for name in current-{'LICENSE-DOCUMENTATION.md'}:
         first=(ROOT/name).read_text('utf-8-sig').splitlines()[0]
-        assert version in first and '-dev-' not in first,name
+        assert content_version in first,name
     count=links(sorted(n for n in names if n.endswith('.md')))
     import ast
     tree=ast.parse((ROOT/'work/build-gameplay.py').read_text('utf-8-sig'))

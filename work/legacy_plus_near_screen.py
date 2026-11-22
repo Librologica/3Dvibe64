@@ -333,6 +333,49 @@ lps_proj_fraction:
  sta lps_remlo
  sta lps_remhi
  ldx #32
+.if GRAPHICS_MODE = $01 || GRAPHICS_MODE = $02
+ ; A prefix smaller than the divisor emits only zero quotient bits.
+ ; Seed that prefix into the remainder and skip its restoring steps.
+ lda lps_prod3
+ cmp p1hi
+ bcc lps_proj_prefix16
+ bne lps_proj_test_prefix8
+ lda lps_prod2
+ cmp p1lo
+ bcc lps_proj_prefix16
+lps_proj_test_prefix8:
+ lda p1hi
+ bne lps_proj_prefix8
+ lda lps_prod3
+ cmp p1lo
+ bcs lps_proj_div
+lps_proj_prefix8:
+ lda lps_prod3
+ sta lps_remlo
+ lda lps_prod2
+ sta lps_prod3
+ lda prodhi
+ sta lps_prod2
+ lda prodlo
+ sta prodhi
+ lda #0
+ sta prodlo
+ ldx #24
+ bne lps_proj_div
+lps_proj_prefix16:
+ lda lps_prod3
+ sta lps_remhi
+ lda lps_prod2
+ sta lps_remlo
+ lda prodhi
+ sta lps_prod3
+ lda prodlo
+ sta lps_prod2
+ lda #0
+ sta prodhi
+ sta prodlo
+ ldx #16
+.endif
 lps_proj_div:
  asl prodlo
  rol prodhi

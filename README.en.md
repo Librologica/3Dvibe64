@@ -1,12 +1,12 @@
-# 3Dvibe64 1.20.0
+# 3Dvibe64 1.20.1
 
-Stable source SDK with updated renderer, optional APIs and complete scene-design guidance. Published on GitHub.
+Stable source SDK. Modes 1 and 2 reduce work in shallow wire spans, material caching and near-plane projection. Mode 8 speeds up ray traversal and inner rendering routines in its mono and multilayer backends. [3Dvibe64 1.20.1](RELEASE-NOTES-1.20.1.en.md) · [Qualification](QUALIFICATION-1.20.1.en.md).
 
 Graphics modes 1–8, inherited exact optimizations, optional Distance Fade, AnimatedMesh, RuntimeScene and bounded application modules. Profiles explicitly marked experimental retain their limits; promotion does not extend supported combinations.
 
 Distance Fade defaults to off. Its guide covers distances, coordinates, memory and [suitable and costly scene types](DISTANCE-FADE.en.md#when-distance-fade-helps), by mode and CPU budget. Mode7 texture LOD remains independent.
 
-[Quick start](QUICKSTART.en.md) · [Complete index](DOCS.md) · [Release notes](RELEASE-NOTES-1.20.0.en.md) · [Qualification and limits](QUALIFICATION-1.20.0.en.md) · [Testing](TESTING.en.md)
+[Quick start](QUICKSTART.en.md) · [Complete index](DOCS.md) · [Release notes](RELEASE-NOTES-1.20.1.en.md) · [Qualification and limits](QUALIFICATION-1.20.1.en.md) · [Testing](TESTING.en.md)
 
 Legacy, standard texture quality, precise lines, LOD off and safe presentation remain defaults. Exact Mode4 options retain their contracts; `all` excludes wire, stream and frozen-lighting. [Options](EXACT-RENDER.en.md) · [Reusable rendering](REUSABLE-RENDER.en.md) · [Spheres](CIRCLE-SPHERES.en.md).
 
@@ -300,4 +300,4 @@ Read the [complete Mode 7 contract](MODE7.en.md), [texture guide](TEXTURE-GUIDE.
 
 
 
-External gameplay adapters require explicit `--project-source` and a preset with `engineVersion: "1.20.0"`; these inputs are not bundled. See [external inputs](EXTERNAL-INPUTS.en.md).
+External gameplay adapters require explicit `--project-source` and a preset with `engineVersion: "1.20.1"`; these inputs are not bundled. See [external inputs](EXTERNAL-INPUTS.en.md).

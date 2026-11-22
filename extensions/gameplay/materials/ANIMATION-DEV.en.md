@@ -1,13 +1,13 @@
-# TEX-01 — texture frames and UV scrolling, 1.20.0
+# TEX-01 — texture frames and UV scrolling, 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
-
-
-
-Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.1. [Qualification](../../../QUALIFICATION-1.20.1.en.md).
 
 
-Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source SDK 1.20.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.1 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `animated-textures` extends multiple-billboards, retaining door, mixed
@@ -48,12 +48,12 @@ Inherited native evidence:11 samples across 0–128 ticks,24 frozen ticks,
 three LOD traces at 14/18/22 WU (weights 16/8/0). Billboard/door cases are repeated.
 FPS uses intact automatic programs and counts only newly presented full views.
 
-[Italiano](ANIMATION-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)
+[Italiano](ANIMATION-DEV.it.md) · [Release notes](https://github.com/Librologica/3Dvibe64/releases/tag/v1.12.0)
 
 ## External adapter build and qualification
 
 Provide the complete caller-owned project via `--project-source`, with preset
-engineVersion 1.20.0 and its required source/checkpoint contracts. These optional
+engineVersion 1.20.1 and its required source/checkpoint contracts. These optional
 commands invoke that external adapter's build/check/benchmark/launcher hooks;
 they do not supply a demo and are not a new qualification of the core release.
 
@@ -62,7 +62,7 @@ python -B work/build-gameplay.py --profile animated-textures --out ../builds/tex
 ```
 
 Run only with compatible external inputs, toolchain and VICE. Current core
-qualification is in [1.20.0](../../../QUALIFICATION-1.20.0.en.md); checkpoint
+qualification is in [1.20.0](../../../QUALIFICATION-1.20.1.en.md); checkpoint
 measurements in this module document remain historical and profile-limited.
 
 Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

@@ -190,6 +190,7 @@ df8_clear_plane_levels:
  rts
 """
         # Existing get_profile calls are same-size hooks: low-code budget stays bounded.
+        s=s.replace('MODE8_FINE_ZERO_FAST = 1','MODE8_FINE_ZERO_FAST = 0')
         s=s.replace(' jsr get_profile\n',' jsr df8_get_profile\n')
         s=s.replace(' jsr draw_samples\n',' jsr df8_samples\n').replace(' jmp draw_samples\n',' jmp df8_samples\n')
         s=s.replace('draw_samples:\n','df8_original_samples:\n',1)

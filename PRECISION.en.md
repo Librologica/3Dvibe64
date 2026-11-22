@@ -1,6 +1,6 @@
-# Precision / Precisione — 1.20.0
+# Precision / Precisione — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
 
@@ -14,7 +14,7 @@ Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFade
 |normalized16|1–7|Experimental separate profile|Affine|
 |Mode8|8|Dedicated renderer|Own contract|
 
-Stable public SDK profile; legacy/Q8 reference builds remain byte-identical. Plus does not become Q8 when projective textures are enabled. Its constraints and camera ABI are in [LEGACY-PLUS](LEGACY-PLUS.en.md), FPS/stability in [qualification](QUALIFICATION-1.14.0.en.md). The sections below retain the established Q8 contract; they do not widen plus to fixed/walkFull, small viewport, Ground or roll.
+Stable public SDK profile; legacy/Q8 reference builds remain byte-identical. Plus does not become Q8 when projective textures are enabled. Its constraints and camera ABI are in [LEGACY-PLUS](LEGACY-PLUS.en.md), FPS/stability in [qualification](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0). The sections below retain the established Q8 contract; they do not widen plus to fixed/walkFull, small viewport, Ground or roll.
 
 ## Default and recommendation
 
@@ -105,9 +105,9 @@ The family checkpoint covered 280 numeric poses, 4,480 vertex checks, 3,840
 clipped faces, 112 primary CPU-rendered views and 22 native paired frames.
 Release tests additionally compare silent public builds against silent rebuilds
 of that frozen source, test defaults/refusals and rerun release runtime checks.
-See [testing](TESTING.md) and [release notes](RELEASE-NOTES-1.5.0.md).
+See [testing](TESTING.md) and [release notes](https://github.com/Librologica/3Dvibe64/releases/tag/v1.5.0).
 The paragraph above describes historical Q8 qualification. Release 1.10.0 adds the
-[scalability qualification](Q8-QUALIFICATION.md) and [release notes](RELEASE-NOTES-1.10.0.md).
+[scalability qualification](Q8-QUALIFICATION.md) and [release notes](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.0).
 Legacy reference hashes are retained. No hardware test or universal FPS guarantee is claimed.
 
 ## 1.15.0 optimizations and APIs
@@ -115,3 +115,8 @@ Legacy reference hashes are retained. No hardware test or universal FPS guarante
 `-LegacyPlusOptimizations` is separate from EngineExperiments,the Q8 hybrid line raster and other backends. It requires the qualified Mode4 legacy-plus profile and defaults to none. `all` contains arithmetic,edges,spans,outcodes,convex,integer-edges. Wire/stream are explicit ASM caller APIs excluded from all,not automatic replacements; stream requires outcodes and owned resident slots. Frozen-lighting is separate and intentionally changes moving-light response. Compact keyframes are an optional data module. An8bit Bresenham error does not reduce Q4/Q10 geometric precision. The ordinary object matrix remains Q6; no new rigid object-rotation API is implied.
 
 [Options/profile](EXACT-RENDER.en.md) · [ABI,materials,memory,fallbacks](REUSABLE-RENDER.en.md) · [Status/support](RELEASE-STATUS.en.md). Some combinations exceed real64KB RAM and are refused.
+
+
+## Q8 division
+
+The 48/24-bit divider for Q8 wireframe and nonprojective polygons seeds its remainder from the high 24 numerator bits when they are below the divisor. This skips the first 24 steps whose quotient bits are zero. The quotient, remainder, operand domains and zero-divisor handling retain their exact contracts. [Scope](RELEASE-NOTES-1.20.1.en.md).

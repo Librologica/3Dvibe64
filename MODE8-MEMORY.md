@@ -6,7 +6,7 @@ Evidenza storica/versionata: misure, hash e fasi seguenti mantengono l’ambito
 originale; non sono nuove acquisizioni o promesse di funzioni1.11.0.
 Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
 [gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
-[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
+[qualification EN](https://github.com/Librologica/3Dvibe64/releases/tag/v1.11.0), [qualificazione IT](https://github.com/Librologica/3Dvibe64/releases/tag/v1.11.0).
 
 The source ASM and emitted `labels.txt`, `listing.txt`, `assembler.log` are the
 authoritative per-build layout. The two backends do not share a single allocation
@@ -77,6 +77,6 @@ La dimensione PRG comprende riserve e buchi di caricamento: non è la RAM viva
 totale. Le varianti interattive hanno sorgenti/report propri. Il workflow mappe
 non cambia il layout né riduce silenziosamente la precisione per farlo rientrare.
 
-Agentic25: the multi profile cache keeps32 slots /4096 bytes and uses second-chance replacement.32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; no buffer alias is introduced. Total coefficient/state allocation is480 bytes. The485-byte plane-unit cache is separate. Auto/interactive share this algorithm; geometry, lazy sampling, input and presentation are unchanged.
+Multilayer profile cache: the multi profile cache keeps32 slots /4096 bytes and uses second-chance replacement.32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; no buffer alias is introduced. Total coefficient/state allocation is480 bytes. The485-byte plane-unit cache is separate. Auto/interactive share this algorithm; geometry, lazy sampling, input and presentation are unchanged.
 
-Agentic26: shared immutable zero profile128 bytes and helper24 bytes at $ca20..$cab7; total coefficient/state data608 bytes. Original windows, no aliases. See AGENTIC26.en.md and QUALIFICATION-AGENTIC26.json.
+Immutable zero profile: shared immutable zero profile128 bytes and helper24 bytes at $ca20..$cab7; total coefficient/state data608 bytes. Original windows, no aliases.

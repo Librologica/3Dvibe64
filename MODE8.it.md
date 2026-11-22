@@ -1,6 +1,6 @@
-# GraphicsMode 8 — 2.5D — 1.20.0
+# GraphicsMode 8 — 2.5D — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
 
@@ -9,7 +9,7 @@ Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither
 
 Il backend multi conserva la cache per piano da 485 byte e l’helper da 85 byte prima del font a $5800. I 32 slot profili usano second-chance; i profili esattamente nulli condividono 128 byte immutabili e 24 byte helper nel layout_support originale. Coefficienti e stato occupano complessivamente 608 byte. Il margine di codice basso dei template multi è di 3 byte in automatico e 1207 in interattivo, con tutti i limiti assembler attivi. L’helper ad altezza fissa resta di 192 byte a $5500. [Memoria](MODE8-MEMORY.it.md).
 
-Il registro di qualifica identifica le build automatiche misurate su PAL Turbo6510 a 1×, 20× e 64×. I template interattivi condividono i kernel verificati e sono assemblati, senza implicare nuove misure native per ogni combinazione. I rapporti stock PAL/NTSC descrivono programmi storici; hardware e NTSC non sono nuovamente qualificati. [Registro corrente](QUALIFICATION-1.20.0.json).
+Il registro di qualifica identifica le build automatiche misurate su PAL Turbo6510 a 1×, 20× e 64×. I template interattivi condividono i kernel verificati e sono assemblati, senza implicare nuove misure native per ogni combinazione. I rapporti stock PAL/NTSC descrivono programmi storici; hardware e NTSC non sono nuovamente qualificati. [Registro corrente](QUALIFICATION-1.20.1.json).
 
 Riferimento stabile1.15.1: [ottimizzazioni storiche](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
@@ -18,14 +18,14 @@ Contratto API di base ereditato dalla1.15.1. Il manuale descrive l'exporter ordi
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
-Backend 1.10.2 conservato nella 1.12.0: resta il percorso bitmap qualificato. EngineExperiments omesso/none è accettato; all e i flag Mode 8 ritirati/combinazioni sono rifiutati. Vedere [note di rilascio](RELEASE-NOTES-1.13.0.it.md).
+Backend 1.10.2 conservato nella 1.12.0: resta il percorso bitmap qualificato. EngineExperiments omesso/none è accettato; all e i flag Mode 8 ritirati/combinazioni sono rifiutati. Vedere [note di rilascio](https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0).
 <!-- maintenance-1.10.1 -->
-La 1.10.1 ufficiale richiede provenienza acquisizione per riuso nativo e mantiene i vincoli input con Python ottimizzato. Heading coincidente 64. Il renderer adattivo può perdere discontinuità interne: vedere [diagnostica, costo misurato e limite noto](QUALIFICATION-1.10.1-rc1.it.md). Campionamento runtime invariato.
+La 1.10.1 ufficiale richiede provenienza acquisizione per riuso nativo e mantiene i vincoli input con Python ottimizzato. Heading coincidente 64. Il renderer adattivo può perdere discontinuità interne: vedere [diagnostica, costo misurato e limite noto](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.1). Campionamento runtime invariato.
 
 Nella 1.5.5 mono-portals azzera lo stato all'uscita e include l'identità del piano
 frontale nel raffinamento adattivo. Mappe ammesse e API sotto restano invariati:
 non aggiunge mondi procedurali né architravi multiple arbitrarie per raggio.
-Vedere [note di release](RELEASE-NOTES-1.5.5.md).
+Vedere [note di release](https://github.com/Librologica/3Dvibe64/releases/tag/v1.5.5).
 
 3Dvibe64 1.4.0 aggiunge all'SDK un renderer indipendente per mappe. Per costruire ambienti partire da [Costruire mappe Mode 8](MAPS-2.5D.it.md). Il sottoinsieme è deliberatamente conservativo: tre template completi, validazione per proprietà, partenze fisse e rampe/aperture limitate. Non sono disponibili conversione di mesh o composizione simultanea poligonale/2.5D.
 
@@ -94,7 +94,7 @@ Interattiva: W/S movimento, A/D rotazione. Automatica: itinerario ciclico comple
 
 Solo aperture statiche e formule di rampa previste; niente room-over-room, gradini arbitrari, PVS, traversal avanzato a portali, texture UV delle pareti, texture pavimento, luce dinamica o sprite 3D. Le Mode 1–7 conservano build poligonali distinte.
 
-[TESTING.it.md](TESTING.it.md) distingue gate host, compilazione, oracoli di correttezza e misure native. La [qualifica corrente](QUALIFICATION-1.20.0.json) registra i programmi effettivi e FPS/p95/peggiore a1×,20× e64×. I dati nativi dei programmi invariati si riutilizzano soltanto dopo identità esatta di PRG/label numeriche ricompilati e protocollo; lo stress multi modificato ha anche nuove ripetizioni native prima/dopo. Il [rapporto1.4.0](RELEASE-NOTES-1.4.0.md) è storico stock PAL/NTSC. Il replay CPU non misura FPS. Hardware e NTSC stock non sono nuovamente qualificati.
+[TESTING.it.md](TESTING.it.md) distingue gate host, compilazione, oracoli di correttezza e misure native. La [qualifica corrente](QUALIFICATION-1.20.1.json) registra i programmi effettivi e FPS/p95/peggiore a1×,20× e64×. I dati nativi dei programmi invariati si riutilizzano soltanto dopo identità esatta di PRG/label numeriche ricompilati e protocollo; lo stress multi modificato ha anche nuove ripetizioni native prima/dopo. Il [rapporto1.4.0](https://github.com/Librologica/3Dvibe64/releases/tag/v1.4.0) è storico stock PAL/NTSC. Il replay CPU non misura FPS. Hardware e NTSC stock non sono nuovamente qualificati.
 
 Per la prova hardware: trasferire il PRG interattivo su C64 stockPAL/NTSC, caricarlo/avviarlo, attraversare la scena e i raccordi delle due rampe, verificare split e presentazione, poi eseguire un giro automatico completo. Registrare modello, standard video, loader ed eventuali difetti. Non dichiarare PASS hardware senza esecuzione e registrazione effettive.
 
@@ -106,4 +106,4 @@ Nota storica: la ricerca è iniziata con un compositore a caratteri a risoluzion
 
 La cache profili multi conserva 32 slot e 4096 byte e usa una politica second-chance. I 32 byte di stato aggiuntivo occupano $ca00..$ca1f nella finestra layout_support esistente; la cache per piano da 485 byte resta distinta. Il profilo nullo condiviso usa 128 byte e un helper di 24 byte a $ca20..$cab7; coefficienti e stato occupano complessivamente 608 byte, senza nuovi alias. Template automatici e interattivi condividono questo algoritmo. Guardie, geometria, campionamento lazy, input e presentazione restano quelli dei rispettivi contratti.
 
-Il [registro corrente](QUALIFICATION-1.20.0.json) conserva le identità delle build e le condizioni necessarie per riutilizzare le misure native.
+Il [registro corrente](QUALIFICATION-1.20.1.json) conserva le identità delle build e le condizioni necessarie per riutilizzare le misure native.

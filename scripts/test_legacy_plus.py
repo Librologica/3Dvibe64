@@ -11,8 +11,7 @@ def main():
     assert q['version']=='1.14.0' and q['GitHubPublished']
     assert q['defaultPrecision']=='legacy' and q['publicSelector']=='-Precision legacy-plus'
     assert not q['aliasOfRotation'] and not q['q8GeometryBackendIntroduced']
-    current=json.loads((ROOT/'QUALIFICATION-1.15.0-dev2.json').read_text())
-    assert current['version']=='1.15.0-dev2' and not current['GitHubPublished']
+    current=json.loads((ROOT/'scripts/legacy-default-identity.json').read_text())
     assert len(current['inheritedDefaultIdentity'])==57 and all(x['identicalPRG'] for x in current['inheritedDefaultIdentity'])
     # Historical source ledger above belongs to dev2. Current byte identity is
     # checked against the explicitly selected current qualification ledger; the

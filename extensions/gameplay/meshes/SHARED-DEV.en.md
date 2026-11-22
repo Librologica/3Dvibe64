@@ -1,13 +1,13 @@
-# Q8-01 — shared source meshes, 1.20.0
+# Q8-01 — shared source meshes, 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
-
-
-
-Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.1. [Qualification](../../../QUALIFICATION-1.20.1.en.md).
 
 
-Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source SDK 1.20.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.1 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `shared-meshes` places four polygonal solids in the LABIRINTO room. One

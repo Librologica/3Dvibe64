@@ -1,9 +1,9 @@
-# AnimatedMesh v1 — 1.20.0
+# AnimatedMesh v1 — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 [English](ANIMATED-MESH.en.md) ·
-[Note di release](RELEASE-NOTES-1.20.0.it.md) · [Verifiche](TESTING.it.md).
+[Note di release](RELEASE-NOTES-1.20.1.it.md) · [Verifiche](TESTING.it.md).
 
 ## Profilo supportato
 

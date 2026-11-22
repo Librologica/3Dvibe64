@@ -112,7 +112,7 @@ def build(name,scene,precision='q8',standard='pal',mode=6,near='skip',music=Fals
         radius=max(o['radiusWU'] for o in object_ranges)
         info.update(vertices=vertices,scaleQ6=byte('object_scale'),scaledRadiusWU=radius)
         info['objectRanges']=object_ranges
-        parts=pieces(lab,music,motion)
+        parts=pieces(lab,music,motion,division_prefix=texture_precision=='affine')
         if mode<=2:
             from wire import prepare_wire,wire_pieces
             source=prepare_wire(source,music,motion,mode)

@@ -1,17 +1,17 @@
-# Moduli sorgente gameplay — 1.20.0
+# Moduli sorgente gameplay — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
 
 
 
-Release stabile 1.20.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+SDK sorgente stabile 1.20.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
 ## Distribuzione di soli sorgenti
 
-Questa distribuzione stabile contiene solo sorgenti. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](QUALIFICATION-1.14.0.it.md).
+Questa distribuzione stabile contiene solo sorgenti. Non contiene demo o esempi, neppure quelli preesistenti. Fornire scene e asset esterni e, quando richiesto, `--project-source` esplicito. Restano inclusi renderer e moduli gameplay riutilizzabili. Vedere [input esterni](EXTERNAL-INPUTS.it.md), [ottimizzazioni](RENDER-OPTIMIZATIONS.it.md) e [qualificazione](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).
 
 | ID | Modulo | Contratto |
 |---|---|---|
@@ -41,7 +41,7 @@ Il driver di compatibilità `work/build-gameplay.py` riceve una radice esterna:
 `extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` e
 `extensions/gameplay/billboards/<implementation>.py` per i collegamenti
 dell'utilizzatore. Questi percorsi appartengono al progetto esterno, non
-all'SDK. Il preset contiene `profile`, `engineVersion` (1.20.0), `extends`
+all'SDK. Il preset contiene `profile`, `engineVersion` (1.20.1), `extends`
 opzionale, `buildName`, `billboardImplementation`, `distributionPRG`,
 `textureQuality`, `textureLOD`, `viewportLogical`,
 `expectedCheckpointPRGSHA256` e `scope` opzionale. Il driver sovrappone i
@@ -125,7 +125,7 @@ disco, ombre texturizzate dinamiche o API generali di integrazione completa.
 
 ## Confine applicativo 1.15.0
 
-Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).
+Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).
 
 ## API RuntimeScene distinte
 

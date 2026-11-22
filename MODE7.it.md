@@ -1,6 +1,6 @@
-# GraphicsMode 7 — Texture mapping — 1.20.0
+# GraphicsMode 7 — Texture mapping — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
 
@@ -8,17 +8,17 @@ Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither
 
 ## Supporto legacy-plus nella 1.15.0
 
-Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica corrente](QUALIFICATION-1.20.0.json).
+Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica corrente](QUALIFICATION-1.20.1.json).
 
-Release sorgente stabile 1.20.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+SDK sorgente stabile 1.20.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.20.0. Il manuale descrive l'exporter ordinario
+Contratto sorgente corrente 1.20.1. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
 <!-- maintenance-1.10.1 -->
-La 1.10.1 ufficiale corregge casi numerici Mode 7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
+La 1.10.1 ufficiale corregge casi numerici Mode 7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.1); contratti e misure storiche sotto conservano il proprio ambito versionato.
 
 La release 1.8.0 aggiunge [LOD graduale opzionale](MODE7-LOD.it.md) e
 la [correzione comune di presentazione](PRESENTATION.it.md). Fast/standard,
@@ -38,7 +38,7 @@ nel profilo Q8 limitato; Q8 da solo non la attiva. Leggere il
 La 1.6.1 ottimizza soltanto la divisione UV prospettica flat/Gouraud C non
 uniforme, in modo esatto. Otto byte zero page `$E8..$EF` sono riservati: gli
 IRQ esterni non devono usarli. Renderer affine default e contratti di luce/output
-invariati. [Note manutenzione](RELEASE-NOTES-1.6.1.md): costo e misure circoscritte.
+invariati. [Note manutenzione](https://github.com/Librologica/3Dvibe64/releases/tag/v1.6.1): costo e misure circoscritte.
 
 ## Modalità e illuminazione
 
@@ -102,8 +102,8 @@ Vedere [formato texture](TEXTURE-GUIDE.it.md), [import PNG](PNG-TEXTURES.it.md),
 
 ## Confine applicativo 1.15.0
 
-Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).
+Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).
 
-Stato privato degli span affini: il percorso C affine ordinario controllato salva/ripristina16 byte privati math/UV esistenti (base4). Il ciclo di fill li prende in prestito una volta per faccia; l’ingresso span autonomo resta protetto. U resta in X nel core chiuso e il sampler usa Y per Q. Nessun nuovo alias globale zero page o tabella persistente. I chiamanti riconosciuti considerano A/flag del fill volatili; helper/chiamanti privati diversi, altri compositori e policy colore VIC conservano il percorso della base. Vedere le [note correnti](QUALIFICATION-1.20.0.it.md) per stack e perimetro di verifica.
+Stato privato degli span affini: il percorso C affine ordinario controllato salva/ripristina16 byte privati math/UV esistenti (base4). Il ciclo di fill li prende in prestito una volta per faccia; l’ingresso span autonomo resta protetto. U resta in X nel core chiuso e il sampler usa Y per Q. Nessun nuovo alias globale zero page o tabella persistente. I chiamanti riconosciuti considerano A/flag del fill volatili; helper/chiamanti privati diversi, altri compositori e policy colore VIC conservano il percorso della base. Vedere le [note correnti](QUALIFICATION-1.20.1.it.md) per stack e perimetro di verifica.
 
-Il campionamento affine compatto conserva il contratto di salvataggio dei16 byte privati. Ink usa la copia U ritirata dopo il trasferimento di U in X; una composizione XOR esatta dei nibble elimina lo spill dell’indice del sampler. Solo chiamanti privati controllati consentono di omettere gli attributi delle righe vuote; le righe consumate inizializzano entrambi gli estremi. La prova del range dei vertici una volta per faccia seleziona lo store interno; negli altri casi restano i confronti originali. Vedere le [note correnti](QUALIFICATION-1.20.0.it.md).
+Il campionamento affine compatto conserva il contratto di salvataggio dei16 byte privati. Ink usa la copia U ritirata dopo il trasferimento di U in X; una composizione XOR esatta dei nibble elimina lo spill dell’indice del sampler. Solo chiamanti privati controllati consentono di omettere gli attributi delle righe vuote; le righe consumate inizializzano entrambi gli estremi. La prova del range dei vertici una volta per faccia seleziona lo store interno; negli altri casi restano i confronti originali. Vedere le [note correnti](QUALIFICATION-1.20.1.it.md).

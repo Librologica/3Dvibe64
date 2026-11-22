@@ -1,6 +1,6 @@
-# 3Dvibe64 world metrics / Metrica del mondo 3Dvibe64 — 1.20.0
+# 3Dvibe64 world metrics / Metrica del mondo 3Dvibe64 — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
 
@@ -12,7 +12,7 @@ Current 1.12.0 ordinary metric/geometry contract; inherited sections retain thei
 Contratto metrico/geometrico ordinario 1.12.0; sezioni ereditate con profilo/versione dichiarati.
 Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
 [gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
-[qualification EN](QUALIFICATION-1.13.0.en.md), [qualificazione IT](QUALIFICATION-1.13.0.it.md).
+[qualification EN](https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0), [qualificazione IT](https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0).
 
 ## Precision profiles / Profili di precisione — 1.10.0
 

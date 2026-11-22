@@ -1,9 +1,9 @@
-# Security policy / Sicurezza — 1.20.0
+# Security policy / Sicurezza — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
-Stable1.15.1 is published on GitHub. Previous releases have independent publication status. / La stabile1.15.1 è pubblicata su GitHub. Le release precedenti mantengono uno stato separato.
+Stable 1.20.0 is published on GitHub. This development SDK is unpublished. / La stabile 1.20.0 è pubblicata su GitHub. Questa dev è non pubblicata.
 
 Treat scene files,images,external project sources and test inputs as untrusted data. Review executable adapters before running them; install tools separately and keep generated outputs outside the pristine source package. / Trattare gli input esterni come dati non attendibili e rivedere gli adapter eseguibili.
 

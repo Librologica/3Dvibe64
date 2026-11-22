@@ -1,6 +1,6 @@
-# Q8 scalability — 1.20.0
+# Q8 scalability — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
 
@@ -16,7 +16,7 @@ Current 1.12.0 ordinary metric/geometry contract; inherited sections retain thei
 Contratto metrico/geometrico ordinario 1.12.0; sezioni ereditate con profilo/versione dichiarati.
 Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
 [gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
-[qualification EN](QUALIFICATION-1.13.0.en.md), [qualificazione IT](QUALIFICATION-1.13.0.it.md).
+[qualification EN](https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0), [qualificazione IT](https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0).
 
 ## Historical qualification / Qualificazione storica
 
@@ -45,7 +45,7 @@ interactive and automatic camera profiles remain supported. Scaled radius
 Normalized 16 keeps its separate experimental two-object/16-runtime-vertex
 scope with an explicit object guard; expanding Q8 does not silently expand NF.
 
-[Qualification / Qualificazione](Q8-QUALIFICATION.md) · [Release notes / Note di versione](RELEASE-NOTES-1.10.0.md).
+[Qualification / Qualificazione](Q8-QUALIFICATION.md) · [Release notes / Note di versione](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.0).
 
 ## Build / Compilazione
 
@@ -91,7 +91,7 @@ Servono Python 3, PowerShell 7 e 64tass; i test richiedono anche py65.
 L'output deve essere nuovo ed esterno a questo SDK. Comandi grezzi e dati nativi
 della qualificazione sono distribuiti separatamente nel pacchetto delle prove.
 Vedere [qualificazione](Q8-QUALIFICATION.md) e
-[note di versione](RELEASE-NOTES-1.10.0.md).
+[note di versione](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.0).
 
 
 ## Current optional budgets / Budget opzionali correnti — 1.12.0

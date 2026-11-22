@@ -1,6 +1,6 @@
-# Ottimizzazioni del renderer e prestazioni — 1.20.0
+# Ottimizzazioni del renderer e prestazioni — 1.20.1
 
-SDK sorgente stabile pubblicato su GitHub. [Note di release](RELEASE-NOTES-1.20.0.it.md) · [Qualifica](QUALIFICATION-1.20.0.it.md).
+SDK sorgente stabile. [Note di release](RELEASE-NOTES-1.20.1.it.md) · [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 ## Percorsi ottimizzati
 
@@ -20,7 +20,7 @@ Non si riducono precisione, clipping, palette, risoluzione o qualità per ottene
 
 ## Lettura delle prestazioni
 
-Il punteggio generale non è una media degli FPS. La serie storica conserva il riferimento 1.15.0=100; la 1.20.0 conserva 137,505630 come stima ricostruita ereditata, con calcolo canonico storico ancora bloccato. La serie estesa resta separata, con riferimento congelato identificato nel [registro](QUALIFICATION-1.20.0.json). Non si modificano ancoraggi, pesi o scene.
+Il punteggio generale non è una media degli FPS. La serie storica conserva il riferimento 1.15.0=100; la 1.20.0 conserva 137,505630 come stima ricostruita ereditata, con calcolo canonico storico ancora bloccato. La serie estesa resta separata, con riferimento congelato identificato nel [registro](QUALIFICATION-1.20.1.json). Non si modificano ancoraggi, pesi o scene.
 
 Il costo dipende dalla scena: lunghezza e clipping degli spigoli per il wire; span, celle e overdraw per solid/flat; perimetri per i contorni; interpolazione di spigoli e shade per Gouraud; pixel coperti e transizioni UV/luce per le texture; profili ed eventi delle superfici per le mappe multilivello. Queste indicazioni orientano lo sviluppo; ogni progetto va misurato con il proprio PRG e percorso. Per il fade vedere [tipi di scena e budget CPU](DISTANCE-FADE.it.md#quando-conviene-usare-distance-fade).
 

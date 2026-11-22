@@ -1,12 +1,12 @@
-# Supporti opzionali per adapter — 1.20.0
+# Supporti opzionali per adapter — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 
 
 ## Supporto legacy-plus nella 1.15.0
 
-Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica corrente](QUALIFICATION-1.20.0.json).
+Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica corrente](QUALIFICATION-1.20.1.json).
 
 `extensions/gameplay/runtime_support.py` espone emitter assembly nativi e tabelle
 host. Sono primitive esplicite per adapter esterni, non un generatore Backrooms,
@@ -69,7 +69,7 @@ volume/mix e registrazione IRQ restano al chiamante. Nessun brano SID incluso.
 I test autonomi eseguono successo/errore del pool,1024chiamate a un player
 sintetico con ripristino banca/ZP, limiti camera e matematica degli span.
 Non misurano FPS e non qualificano player SID arbitrari. Le prove native usano
-progetti esterni: [qualificazione](QUALIFICATION-1.14.0.it.md),
+progetti esterni: [qualificazione](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0),
 [input](EXTERNAL-INPUTS.it.md).
 
 I callback del pool devono usare staging o ripristinare lo slot precedente in caso di errore: il manager non annulla scritture geometriche arbitrarie. Usare prefissi assembly unici quando si emettono più helper.
@@ -77,7 +77,7 @@ I callback del pool devono usare staging o ripristinare lo slot precedente in ca
 
 ## Confine applicativo 1.15.0
 
-Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).
+Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).
 
 ## Ottimizzazioni e API della1.15.0
 

@@ -1,12 +1,12 @@
-# RuntimeScene — 1.20.0
+# RuntimeScene — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
 
 [Italiano](RUNTIME-SCENE.it.md).
 Optional source compiler, not an application or a new graphics mode.
-See [dynamics](DYNAMICS.en.md), [assembly/memory](ASSEMBLY-GUIDE.en.md) and [qualification](QUALIFICATION-1.20.0.json).
+See [dynamics](DYNAMICS.en.md), [assembly/memory](ASSEMBLY-GUIDE.en.md) and [qualification](QUALIFICATION-1.20.1.json).
 
 An external Scene1 may include `runtimeScene`. The ordinary builder validates
 and strips this record before native compilation. Supported profile: `legacy-plus`,

@@ -1,6 +1,6 @@
-# Mode8 memory — 1.20.0
+# Mode8 memory — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
 Current native mono and multi map contracts retain separate auto/interactive
@@ -36,8 +36,8 @@ PRG file size includes gaps; it is not total RAM usage.
 profileStateBytes,planeUnitCacheBytes and the half-open planeUnitCacheRange.
 Assembler labels/maps are authoritative for the compiled document.
 [Mode8](MODE8.en.md) · [Map format](MAPS-2.5D.en.md) ·
-[Current qualification](QUALIFICATION-1.20.0.json). Old MODE8-MEMORY.md is historical.
+[Current qualification](QUALIFICATION-1.20.1.json). Old MODE8-MEMORY.md is historical.
 
 The multi profile cache retains 32 slots and 4096 bytes with second-chance replacement. Its 32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; the 485-byte plane-unit cache is separate. The shared zero profile uses 128 bytes and a 24-byte helper at $ca20..$cab7; total coefficient/state data is 608 bytes, without new aliases. Automatic and interactive templates share this algorithm. Guards, geometry, lazy sampling, input and presentation retain their respective contracts.
 
-The [current ledger](QUALIFICATION-1.20.0.json) retains build identities and the conditions required to reuse native measurements.
+The [current ledger](QUALIFICATION-1.20.1.json) retains build identities and the conditions required to reuse native measurements.

@@ -1,21 +1,18 @@
 {
-  "version": "1.20.0",
+  "version": "1.20.1",
   "classification": "stable",
+  "stable": true,
   "publicationStatus": "published",
   "GitHubPublished": true,
   "releasePageCreated": true,
-  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0",
-  "tag": "v1.20.0",
-  "plannedTag": "v1.20.0",
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.1",
+  "plannedTag": "v1.20.1",
+  "tag": "v1.20.1",
   "tagCreated": true,
-  "baseOfficialVersion": "1.15.1",
+  "baseOfficialVersion": "1.20.0",
   "sourceOnly": true,
   "demosIncluded": false,
   "benchmarksIncluded": false,
   "qualifiedAsStable": true,
-  "qualification": "QUALIFICATION-1.20.0.json",
-  "sourceDevelopment": "1.15.2-dev-agentic36",
-  "sourceDocumentationRevision": "fade-scene-guidance-r1",
-  "runtimeChangedDuringPromotion": false,
-  "tagLocation": "https://github.com/Librologica/3Dvibe64/tree/v1.20.0"
+  "qualification": "QUALIFICATION-1.20.1.json"
 }

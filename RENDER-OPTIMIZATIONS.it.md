@@ -1,12 +1,12 @@
-# Ottimizzazioni esatte del renderer — 1.20.0
+# Ottimizzazioni esatte del renderer — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 
 
 ## Supporto legacy-plus nella 1.15.0
 
-Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica corrente](QUALIFICATION-1.20.0.json).
+Mode1–7 plus e Mode7 affine/prospettica sono promosse dalla dev qualificata in questo SDK stabile. Near8, geometria Q4, luce A/B/C e vincoli RAM/camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md). Il requisito camera-plane `Mode4NearProfile clip` della Mode7 legacy ordinaria sotto non è il profilo plus: plus richiede default/near8/poly. Campionamento texture fast e LOD restano solo Q8. Risultati e regressioni sono nella [qualifica corrente](QUALIFICATION-1.20.1.json).
 
 Tutte le nuove opzioni sono esplicite. Restano i default ordinari: precisione
 legacy, texture standard, linee precise, presentazione safe e LOD texture off.
@@ -111,7 +111,7 @@ oc_frames/oc_culled_total sono16bit; contano occorrenze, non pareti uniche.
 
 ## Qualificazione e migrazione
 
-Vedere [prove native](QUALIFICATION-1.14.0.it.md), [test](TESTING.md),
+Vedere [prove native](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0), [test](TESTING.md),
 [input esterni](EXTERNAL-INPUTS.it.md) e [supporti opzionali](ADAPTER-SUPPORT.it.md).
 Confrontare immagini agli stessi tick e FPS nativi prima di scegliere opzioni
 per un altro progetto. Senza nuove opzioni il comportamento del renderer resta;
@@ -155,7 +155,7 @@ L'occlusione pareti richiede anche una palette hardware VIC condivisa e immutabi
 
 ## Confine applicativo 1.15.0
 
-Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).
+Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).
 
 ## Ottimizzazioni e API della1.15.0
 

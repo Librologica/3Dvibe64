@@ -6,7 +6,7 @@ Evidenza storica/versionata: misure, hash e fasi seguenti mantengono l’ambito
 originale; non sono nuove acquisizioni o promesse di funzioni1.11.0.
 Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
 [gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
-[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
+[qualification EN](https://github.com/Librologica/3Dvibe64/releases/tag/v1.11.0), [qualificazione IT](https://github.com/Librologica/3Dvibe64/releases/tag/v1.11.0).
 
 ## Release identity
 

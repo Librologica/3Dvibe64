@@ -1,13 +1,13 @@
-# ENT-01 — polygonal sliding door, 1.20.0
+# ENT-01 — polygonal sliding door, 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
-
-
-
-Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.1. [Qualification](../../../QUALIFICATION-1.20.1.en.md).
 
 
-Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source SDK 1.20.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.1 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `door-entity` retains UI, configurable guardian and mixed surfaces. A divider
@@ -63,6 +63,6 @@ the programmed camera does not exercise collision in that control. Actual
 door movement also changes drawn area/occlusion, so its FPS delta includes
 that work. Raw commands and timing remain external source-release evidence.
 
-[Italiano](DOOR-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)
+[Italiano](DOOR-DEV.it.md) · [Release notes](https://github.com/Librologica/3Dvibe64/releases/tag/v1.12.0)
 
 Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

@@ -1,22 +1,22 @@
-# Precisione texture Mode 7 — 1.20.0
+# Precisione texture Mode 7 — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 
 
 ## Profilo prospettico legacy-plus
 
-Nella 1.14.0, Mode7 prospettica è disponibile anche con `-Precision legacy-plus`. Usare il [contratto build/configurazione plus](LEGACY-PLUS.it.md): geometria Q4, near8, profondità lungo camera8–256WU, qualità texture standard e LOD off. Sono supportati none/flat/Gouraud A/B/C. I carrier unsigned16 UW/VW/W riusano il campionatore texture senza collegare geometria Q8. I vincoli Q8 depth1–256 e compositor C delle sezioni seguenti valgono solo per Q8. [Confronto nativo](QUALIFICATION-1.14.0.it.md).
+Nella 1.14.0, Mode7 prospettica è disponibile anche con `-Precision legacy-plus`. Usare il [contratto build/configurazione plus](LEGACY-PLUS.it.md): geometria Q4, near8, profondità lungo camera8–256WU, qualità texture standard e LOD off. Sono supportati none/flat/Gouraud A/B/C. I carrier unsigned16 UW/VW/W riusano il campionatore texture senza collegare geometria Q8. I vincoli Q8 depth1–256 e compositor C delle sezioni seguenti valgono solo per Q8. [Confronto nativo](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).
 
-Release sorgente stabile 1.20.0: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
+SDK sorgente stabile 1.20.1: [ottimizzazioni correnti](RENDER-OPTIMIZATIONS.it.md), [input esterni](EXTERNAL-INPUTS.it.md). Tutte le demo, gli esempi e le prove native sono esterni alla distribuzione sorgente.
 
 
-Contratto sorgente corrente 1.20.0. Il manuale descrive l'exporter ordinario
+Contratto sorgente corrente 1.20.1. Il manuale descrive l'exporter ordinario
 salvo indicazione esplicita; API delimitate gameplay/configurazione/roll/gruppi
 in [GAMEPLAY](GAMEPLAY.it.md). [Indice documentazione](DOCS.md).
 
 <!-- maintenance-1.10.1 -->
-La 1.10.1 ufficiale corregge casi numerici Mode 7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](QUALIFICATION-1.10.1-rc1.it.md); contratti e misure storiche sotto conservano il proprio ambito versionato.
+La 1.10.1 ufficiale corregge casi numerici Mode 7 e aggiunge il fallback allineato con budget. Vedere [comportamento numerico](NUMERIC-CORRECTNESS.it.md) e [qualificazione](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.1); contratti e misure storiche sotto conservano il proprio ambito versionato.
 
 Release 1.10.0: i tetti di codifica Q8 sono estesi; la nuova qualificazione
 nativa con più oggetti copre i Modes 1–7 affine. Le misure perspective/fast/LOD
@@ -135,9 +135,9 @@ cubo misurata risparmia 16,30% Gouraud / 17,36% flat dei cicli delle istruzioni,
 esclusi stall VIC, IRQ, attesa e presentazione: non sono FPS nativi o guadagni
 universali. Il codice aggiunto riduce il margine memoria della singola scena;
 layout non sicuri restano rifiutati, non semplificati in silenzio.
-Vedere [note release](RELEASE-NOTES-1.6.1.md).
+Vedere [note release](https://github.com/Librologica/3Dvibe64/releases/tag/v1.6.1).
 
 
 ## Confine applicativo 1.15.0
 
-Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](RELEASE-NOTES-1.14.0.it.md#distribuzione-e-confine-del-port-privato).
+Legacy-plus Mode1–7 e Mode7 affine/prospettica sono stabili nel [profilo plus pubblico](LEGACY-PLUS.it.md). Il port privato Underworld usa viewport, loader/layout RAM, culling e ottimizzazioni materiali/LOD/campionatore diversi: non sono nuovi default pubblici o una nuova ABI gameplay generica. Gli adapter gameplay riutilizzabili conservano i vincoli di precisione/profilo esistenti. Vedere [ambito della promozione stabile](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).

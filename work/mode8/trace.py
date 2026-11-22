@@ -17,7 +17,7 @@ class Trace:
         self.points={l[n]:n for n in sorted(names) if n in l}
         groups=load(ROOT/'work/mode8/profile-groups.json')[2 if self.multi else 0 if backend=='mono-opaque' else 1]['groups']
         self.categories={n:g['category'] for g in groups for n in g['routines']}
-        self.hooks={l[n]:n for n in ('ray_next','ss_sample','ss_reuse_sample','sr_restore_coarse','portal_exit','ss_refine','trace_path','trace_advance','trace_event_counted','cache_miss','cache_complete','lazy_need_group','project_profile','get_profile','dda_read') if n in l}
+        self.hooks={l[n]:n for n in ('ray_next','ss_sample','ss_reuse_sample','sr_restore_coarse','portal_exit','ss_refine','trace_path','trace_advance','trace_event_counted','cache_miss','cache_complete','lazy_need_group','project_profile','get_profile','dda_read','dda_read_y') if n in l}
         self.step_points={l[n] for n in l if re.fullmatch(r'dda_q[0-3]_(?:[xy]r|xd)',n) or n=='portal_exit_test'}
         self.coarse_phase=True
         self.execute(l['init_masks'] if self.multi else l['layout_copy_tables'],False)
@@ -39,7 +39,7 @@ class Trace:
                     if hook=='ray_next':cnt['fineRaysActual' if m[l['ss_active']] else 'mainRaysActual']+=1
                     if hook=='trace_path':cnt['mainRaysActual' if self.coarse_phase else 'fineRaysActual']+=1
                     if hook=='get_profile':profiles[c.a]+=1
-                    if hook=='dda_read':
+                    if hook in ('dda_read','dda_read_y'):
                         addr=m[pc+1]+256*m[pc+2]+c.y;idx=addr&1023;bank=(addr-0x4400)//1024
                         cells[f'boundary-map:{bank}:cell:{idx%32},{idx//32}']+=1
                     if hook=='trace_event_counted':events['encountered:'+str(c.x)]+=1

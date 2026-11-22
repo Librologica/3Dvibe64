@@ -1,6 +1,6 @@
-# External inputs — 1.20.0
+# External inputs — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
 
@@ -45,7 +45,7 @@ supply `examples/gameplay/<profile>.json`, `extensions/gameplay/common`,
 `extensions/gameplay/billboards` and `extensions/gameplay/profiles/<profile>`
 for every profile in its inheritance chain. It supplies scene/UI/assets,
 material bindings, build script, camera and application logic. The SDK does not
-invent any of these. Update the preset `engineVersion` to 1.20.0 and qualify its
+invent any of these. Update the preset `engineVersion` to 1.20.1 and qualify its
 checkpoint hash again. Use [GAMEPLAY](GAMEPLAY.en.md) for the full13-profile ABI.
 
 ## Regression inputs

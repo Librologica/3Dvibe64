@@ -1,13 +1,13 @@
-# BB-02 / ENT-01 — configured entity, 1.20.0
+# BB-02 / ENT-01 — configured entity, 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
-
-
-
-Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.1. [Qualification](../../../QUALIFICATION-1.20.1.en.md).
 
 
-Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source SDK 1.20.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.1 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `interactive-billboard` inherits mixed-surfaces. `assets/gameplay-scene.json`
@@ -57,7 +57,7 @@ Native evidence covers 17 state/input/collision/sliding/animation cases, every
 frame against pixel oracles, an alternate asset with three frames every five
 ticks, UI integrity and full-route FPS. No compiled programs ship in the release.
 
-[Italiano](DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)
+[Italiano](DEV.it.md) · [Release notes](https://github.com/Librologica/3Dvibe64/releases/tag/v1.12.0)
 
 ## Complete single-instance data shape
 

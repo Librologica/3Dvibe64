@@ -34,12 +34,38 @@ def plan(s):
  changes=[('gr32-mode7-private-edge-bias',old,new)]
  zero_old='gr15_dda_small_done:\n jmp m7_dda_remainder\n'
  zero_new='gr15_dda_small_done:\n jmp lp11_dda_sign\n'
- divide_old='m7_dda_divide:\n cmp m7_den\n bcc m7_dda_remainder\n sec\n'
- divide_new=divide_old.replace(' sec\n','gr32_dda_known_subtract:\n sec\n')
+ divide_old='m7_dda_divide:\n cmp m7_den\n bcc m7_dda_remainder\n sec\n sbc m7_den\n inc m7_q\n jmp m7_dda_divide\n'
+ divide_new='''m7_dda_divide:
+gr32_dda_known_subtract:
+ sec
+ ; The selector admits at most seven successful subtractions.
+gr32_dda_subtract_loop:
+ sbc m7_den
+ bcc gr32_dda_restore_remainder
+ inc m7_q
+ bne gr32_dda_subtract_loop
+gr32_dda_restore_remainder:
+ ; The final failed subtraction leaves carry clear. Undo it exactly.
+ adc m7_den
+ cmp m7_den
+'''
  jump_old=' lda m7_r\n jmp m7_dda_divide\n'
  jump_new=' lda m7_r\n jmp gr32_dda_known_subtract\n'
  if s.count(zero_old)==s.count(divide_old)==s.count(jump_old)==1:
-  changes.extend([('gr32-dda-zero-no-redundant-store',zero_old,zero_new),('gr32-dda-known-subtract-label',divide_old,divide_new),('gr32-dda-known-positive-quotient',jump_old,jump_new)])
+  changes.extend([('gr32-dda-zero-no-redundant-store',zero_old,zero_new),('gr32-dda-small-quotient-carry-loop',divide_old,divide_new),('gr32-dda-known-positive-quotient',jump_old,jump_new)])
+  delta_load=' sec\n lda m7_delta\n sbc m7_start\n'
+  if s.count(delta_load)==1:
+   changes.append(('gr32-dda-use-endpoint-register',delta_load,' sec\n txa\n sbc m7_start\n'))
+   if len(re.findall(r'\bm7_delta\b',s))==3:
+    changes.append(('mode7-dda-omit-private-endpoint-store',' stx m7_delta\n',' ; The end coordinate is already in X.\n'))
+  dispatch=' cmp #2\n beq lp11_dda_power2\n jmp gr15_dda_choose\n'
+  selector='gr15_dda_choose:\n lda m7_r\n ; Quotient zero keeps the exact old single comparison path.\n cmp m7_den\n bcc gr15_dda_small_done\n'
+  if s.count(dispatch)==s.count(selector)==1 and len(re.findall(r'\bgr15_dda_small_done\b',s))==2:
+   # Preserve the specialised 0/1/2 divisor returns, including carry.
+   early=dispatch.replace(' jmp gr15_dda_choose\n',' lda m7_r\n cmp m7_den\n bcc lp11_dda_sign\n jmp gr15_dda_choose\n')
+   changes.extend([('mode7-dda-early-zero-quotient',dispatch,early),
+                   ('mode7-dda-positive-quotient-selector',selector,'gr15_dda_choose:\n'),
+                   ('mode7-dda-remove-unused-zero-branch',zero_new,'; The small quotient is handled before dispatch.\n')])
  compact=False
  if s.count(PAL_OLD)==1 and s.count(' jsr gr17_prepare_sampler\n')==s.count(' jsr lp8_patch_uv_constants\n')==1:
   changes.append(('gr32-compact-stable-palettes',PAL_OLD,PAL_NEW));compact=True

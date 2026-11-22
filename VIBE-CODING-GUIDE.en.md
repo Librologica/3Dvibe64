@@ -1,6 +1,6 @@
-# Practical Manual for Creating Demos and PRGs with 3Dvibe64 Using Codex — 1.20.0
+# Practical Manual for Creating Demos and PRGs with 3Dvibe64 Using Codex — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
 
@@ -14,15 +14,15 @@ there. They reject `-OutputDirectory`. Q8, Normalized16 and Mode8 instead accept
 below are generated files, never precompiled files included in this SDK.
 
 
-## Stable source release 1.20.0
+## Development SDK 1.20.1
 
-`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [current qualification](QUALIFICATION-1.20.0.json). This development source SDK is unpublished. External scenes/assets only.
-
-
-Stable source release 1.20.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+`-Precision legacy-plus` now supports Mode1–7 with Q4 geometry and finer camera rotation, including Mode7 affine/perspective textures. It requires walkLite, normal160×100, high-basic-v2 and -NoFpsOverlay; near8 polygon/screen clipping. Default legacy and explicit Q8 retain their contracts. See [legacy-plus](LEGACY-PLUS.en.md) and [current qualification](QUALIFICATION-1.20.1.json). This development source SDK is unpublished. External scenes/assets only.
 
 
-Current 1.20.0 source contract. This manual describes the ordinary exporter unless
+Stable source SDK 1.20.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.1 source contract. This manual describes the ordinary exporter unless
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
@@ -32,7 +32,7 @@ This stable source distribution contains sources only. No demos or examples are 
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.14.0.en.md).
+and [qualification](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).
 
 ## Precision profiles / Profili di precisione — 1.10.0
 
@@ -2554,4 +2554,4 @@ Assembly naturally remains at the heart of execution on the Commodore 64, but it
 
 A well-organized demo is not merely a PRG that starts. It is a project whose JSON source, assets, builder, command, hashes, tests, and exact rebuilding procedure are all known.
 
-External gameplay adapters require explicit `--project-source` and a preset with `engineVersion: "1.20.0"`; these inputs are not bundled. See [external inputs](EXTERNAL-INPUTS.en.md).
+External gameplay adapters require explicit `--project-source` and a preset with `engineVersion: "1.20.1"`; these inputs are not bundled. See [external inputs](EXTERNAL-INPUTS.en.md).

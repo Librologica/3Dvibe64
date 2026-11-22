@@ -1,13 +1,13 @@
-# VIS-01 — conservative sector/portal visibility, 1.20.0
+# VIS-01 — conservative sector/portal visibility, 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](../../../QUALIFICATION-1.20.0.en.md).
-
-
-
-Stable source release 1.20.0: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+> Stable source SDK 1.20.1. [Qualification](../../../QUALIFICATION-1.20.1.en.md).
 
 
-Current 1.20.0 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
+
+Stable source SDK 1.20.1: [current optimizations](../../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+
+
+Current 1.20.1 distribution ships the reusable module only. New demo projects/assets are excluded. Source captures, checkpoint numbers and native measurements below describe historical external proofs. Native project builds require explicit `--project-source`; see the [integration guide](../../../GAMEPLAY.en.md).
 
 
 `sector-visibility` extends static-light. The host builds potentially visible
@@ -53,6 +53,6 @@ other portions retain pitch. Both timing controls use that same route.
 Native FPS is measured, never inferred from eliminated-face counts. General
 level integration and angular portal reduction remain future work.
 
-[Italiano](VISIBILITY-DEV.it.md) · [Release notes](../../../RELEASE-NOTES-1.12.0.en.md)
+[Italiano](VISIBILITY-DEV.it.md) · [Release notes](https://github.com/Librologica/3Dvibe64/releases/tag/v1.12.0)
 
 Native correctness and performance checks of a gameplay project require external tools and inputs with matching PRG/symbols; that driver is not included. See [testing](../../../TESTING.en.md).

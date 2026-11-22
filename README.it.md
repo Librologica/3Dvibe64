@@ -1,12 +1,12 @@
-# 3Dvibe64 1.20.0
+# 3Dvibe64 1.20.1
 
-SDK sorgente stabile con renderer aggiornato, API opzionali e guida completa alla progettazione delle scene. Pubblicato su GitHub.
+SDK sorgente stabile. Le Mode 1 e 2 riducono il lavoro negli span wire poco inclinati, nella cache dei materiali e nella proiezione vicino al piano di clipping. La Mode 8 accelera la percorrenza dei raggi e le routine interne dei backend monolivello e multilivello. [3Dvibe64 1.20.1](RELEASE-NOTES-1.20.1.it.md) · [Qualification](QUALIFICATION-1.20.1.it.md).
 
 Rendering nelle modalità 1–8, ottimizzazioni esatte ereditate, Distance Fade opzionale, AnimatedMesh, RuntimeScene e moduli applicativi delimitati. I profili indicati come sperimentali conservano i propri limiti; la promozione non estende le combinazioni supportate.
 
 Distance Fade è disattivato per default. La guida descrive distanze, coordinate, memoria e [tipi di scena favorevoli e sfavorevoli](DISTANCE-FADE.it.md#quando-conviene-usare-distance-fade), distinti per modalità e budget CPU. Il LOD texture Mode7 resta indipendente.
 
-[Guida rapida](QUICKSTART.it.md) · [Indice completo](DOCS.md) · [Note di release](RELEASE-NOTES-1.20.0.it.md) · [Qualifica e limiti](QUALIFICATION-1.20.0.it.md) · [Verifiche](TESTING.it.md)
+[Guida rapida](QUICKSTART.it.md) · [Indice completo](DOCS.md) · [Note di release](RELEASE-NOTES-1.20.1.it.md) · [Qualifica e limiti](QUALIFICATION-1.20.1.it.md) · [Verifiche](TESTING.it.md)
 
 Restano i default legacy, qualità texture standard, linee precise, LOD off e presentazione safe. Le opzioni esatte Mode4 conservano i propri contratti; `all` esclude wire, stream e frozen-lighting. [Opzioni](EXACT-RENDER.it.md) · [Rendering riutilizzabile](REUSABLE-RENDER.it.md) · [Sfere](CIRCLE-SPHERES.it.md).
 

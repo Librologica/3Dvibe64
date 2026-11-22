@@ -506,7 +506,6 @@ negative=$88
 fill_start=$90
 fill_end=$91
 fill_color=$92
-fill_value=$93
 fill_limit=$94
 fill_even=$95
 fill_odd=$96
@@ -956,6 +955,8 @@ unit_value=$3277
 unit_sign=$327b
 pixel_base=$327c
 saved_path=$327d
+fine_sample_index=$327f
+MODE8_FINE_ZERO_FAST = 1
 fine_path=$32a0
 
 compose_screen:
@@ -989,6 +990,7 @@ reset_slots:
  pla
  dex
  bpl reset_slots
+ jsr prepare_profile_angles
 geometry_begin:
  jsr ray_prepare
 coarse_next:
@@ -1075,6 +1077,7 @@ fine_next:
  lda pixel_base
  clc
  adc fine_lane
+ sta fine_sample_index
  tax
  lda fine_offsets_lo,x
  sta r_angle
@@ -1115,12 +1118,10 @@ trace_counted:
  lda r_angle
  adc pose_angle
  sta r_angle
+ tay
  pla
  adc pose_angle+1
  and #1
- tax
- ldy r_angle
- cpx #0
  bne trace_high
  lda dir_dx_lo,y
  sta r_dx
@@ -1212,19 +1213,26 @@ trace_y_not_axis:
  asl
  asl
  ora pose_x+1
- sta r_index
+ tay
+ ; The quadrant selects two boundary maps. Set their current pages once.
+ lda r_index+1
+ clc
+dda_x_base:
+ adc #$44
+ sta dda_read+2
+ lda r_index+1
+ clc
+dda_y_base:
+ adc #$4c
+ sta dda_read_y+2
  lda #0
  sta path_count
- sta r_steps
+ ; Keep the step budget in X while walking empty cells.
+ ldx #65
 trace_advance:
- inc frame_steps
- bne trace_step_counted
- inc frame_steps+1
-trace_step_counted:
- inc r_steps
- lda r_steps
- cmp #65
- bcc trace_in_bounds
+ dex
+ bne trace_in_bounds
+ stx r_steps
  inc faults
  jmp trace_done
 trace_in_bounds:
@@ -1251,22 +1259,24 @@ trace_x_added:
 dda_x_dispatch:
  jmp dda_x_plus
 dda_x_minus:
- lda r_index
+ cpy #0
  bne dda_x_dec
  dec r_index+1
+ dec dda_read+2
+ dec dda_read_y+2
 dda_x_dec:
- dec r_index
+ dey
  jmp dda_x_read
 dda_x_plus:
- inc r_index
+ iny
  bne dda_x_read
  inc r_index+1
+ inc dda_read+2
+ inc dda_read_y+2
 dda_x_read:
- lda r_index+1
- clc
-dda_x_base:
- adc #$44
- jmp dda_set_page
+dda_read:
+ lda $4400,y
+ jmp dda_test_event
 trace_cross_y:
  clc
  lda r_sy
@@ -1284,30 +1294,30 @@ dda_y_dispatch:
  jmp dda_y_plus
 dda_y_minus:
  sec
- lda r_index
+ tya
  sbc #32
- sta r_index
+ tay
  bcs dda_y_read
  dec r_index+1
+ dec dda_read+2
+ dec dda_read_y+2
  jmp dda_y_read
 dda_y_plus:
  clc
- lda r_index
+ tya
  adc #32
- sta r_index
+ tay
  bcc dda_y_read
  inc r_index+1
+ inc dda_read+2
+ inc dda_read_y+2
 dda_y_read:
- lda r_index+1
- clc
-dda_y_base:
- adc #$4c
-dda_set_page:
- sta dda_read+2
- ldy r_index
-dda_read:
- lda $4400,y
+dda_read_y:
+ lda $4c00,y
+dda_test_event:
  beq trace_advance
+ sty r_index
+ stx r_steps
  tax
  ldy path_count
  sta (path_out),y
@@ -1318,16 +1328,20 @@ dda_read:
 trace_event_counted:
  lda event_flags,x
  and #1
- bne trace_done
+ bne trace_done_event
  lda path_count
  cmp #15
- bcc trace_advance
+ bcs trace_full
+ ldy r_index
+ ldx r_steps
+ jmp trace_advance
+trace_full:
  inc faults
+ jmp trace_done_event
 trace_done:
- ldy path_count
- lda #0
- sta (path_out),y
- rts
+ sty r_index
+trace_done_event:
+ jmp trace_close_path
 
 render_path:
  lda saved_path
@@ -1713,81 +1727,6 @@ init_fine_column:
  lda #144
  sta clip_b
  rts
-scalar_fill:
- sta fill_value
- ldy fill_start
- cpy fill_end
- bcs scalar_done
- lda fill_end
- sec
- sbc fill_start
- cmp #8
- bcc scalar_tail_start
- lda fill_end
- sec
- sbc #7
- sta fill_limit
-scalar_bulk:
- lda $5400,y
-shared_mask_0:
- and #$ff
- ora fill_value
- sta $5400,y
- lda $5401,y
-shared_mask_1:
- and #$ff
- ora fill_value
- sta $5401,y
- lda $5402,y
-shared_mask_2:
- and #$ff
- ora fill_value
- sta $5402,y
- lda $5403,y
-shared_mask_3:
- and #$ff
- ora fill_value
- sta $5403,y
- lda $5404,y
-shared_mask_4:
- and #$ff
- ora fill_value
- sta $5404,y
- lda $5405,y
-shared_mask_5:
- and #$ff
- ora fill_value
- sta $5405,y
- lda $5406,y
-shared_mask_6:
- and #$ff
- ora fill_value
- sta $5406,y
- lda $5407,y
-shared_mask_7:
- and #$ff
- ora fill_value
- sta $5407,y
- tya
- clc
- adc #8
- tay
- cpy fill_limit
- bcc scalar_bulk
-scalar_tail_start:
- cpy fill_end
- bcs scalar_done
-scalar_tail:
- lda $5400,y
-shared_tail_mask:
- and #$ff
- ora fill_value
- sta $5400,y
- iny
- cpy fill_end
- bcc scalar_tail
-scalar_done:
- rts
 
 compose_fine:
  lda col
@@ -2003,11 +1942,21 @@ fine_closed:
  rts
 
 get_fine_sample:
+.if MODE8_FINE_ZERO_FAST
+ ; The zero sentinel refers to a fully clipped all-zero profile.
+ ; Fine sampling needs only its clamped value and does not expose p_out.
+ tax
+ lda cache_map,x
+ cmp #$fe
+ bne fine_sample_profile
+ lda clip_t
+ jmp fine_clamp_bottom
+fine_sample_profile:
+ jsr get_profile_mapped
+.else
  jsr get_profile
- lda pixel_base
- clc
- adc fine_lane
- tay
+.endif
+ ldy fine_sample_index
  lda (p_out),y
  cmp clip_t
  bcs fine_clamp_bottom
@@ -2274,35 +2223,32 @@ cache_copy:
  bne cache_copy
  rts
 get_profile:
- sta p_key
  tax
  lda cache_map,x
- cmp #$ff
- beq cache_miss
  cmp #$fe
- bne gr26_regular_profile
- jmp gr26_zero_pointer
+get_profile_mapped:
+ bcs gr26_profile_sentinel
 gr26_regular_profile:
  tay
  and #31
  tax
  lda #1
  sta gr25_profile_used,x
- tya
- bmi cache_complete
- stx lazy_slot
  lda cache_lo,x
  sta p_out
  lda cache_hi,x
  sta p_out+1
+ cpy #$80
+ bcs cache_complete
+ stx lazy_slot
  jmp lazy_samples
 cache_complete:
- lda cache_lo,x
- sta p_out
- lda cache_hi,x
- sta p_out+1
+ clc
  rts
+gr26_profile_sentinel:
+ beq gr26_cached_zero
 cache_miss:
+ stx p_key
  inc cache_misses
  bne cache_miss_counted
  inc cache_misses+1
@@ -2354,32 +2300,27 @@ cache_slot_ready:
  lda #0
  sta lazy_mode
 cache_read:
- lda p_key
- jmp get_profile
+ ; Projection already owns p_out, and the chosen slot is marked used.
+ ldx p_key
+ lda cache_map,x
+ cmp #$fe
+ beq gr26_cached_zero
+ bmi cache_complete
+ jmp lazy_samples
+gr26_cached_zero:
+ jmp gr26_zero_pointer
 
 project_profile:
  ldx p_key
  lda key_plane,x
  and #64
  bne plane_y
- sec
- lda pose_angle
- sbc #128
- sta p_angle
- lda pose_angle+1
- sbc #0
- and #1
- sta p_angle+1
  lda pose_x
  sta p_den
  lda pose_x+1
  sta p_den+1
  jmp plane_ready
 plane_y:
- lda pose_angle
- sta p_angle
- lda pose_angle+1
- sta p_angle+1
  lda pose_y
  sta p_den
  lda pose_y+1
@@ -2460,36 +2401,34 @@ save_unit:
 plane_cached_unit:
  jsr fh_ratio
 profile_coefficients:
- lda p_angle
- ldx p_angle+1
- jsr p_lookup_g
- lda p_multiplier
+ ; Every surface on an axis shares its two projection coefficients.
+ ldx p_key
+ lda key_plane,x
+ and #64
+ beq profile_angle_x
+ ldx #4
+ bne profile_angle_ready
+profile_angle_x:
+ ldx #0
+profile_angle_ready:
+ lda profile_angles,x
  sta p_gl
- lda p_multiplier+1
+ lda profile_angles+1,x
  sta p_gl+1
- sec
- lda #0
- sbc p_angle
- tay
- lda #0
- sbc p_angle+1
- and #1
- tax
- tya
- jsr p_lookup_g
- lda p_multiplier
+ lda profile_angles+2,x
  sta p_gr
- lda p_multiplier+1
+ lda profile_angles+3,x
  sta p_gr+1
  lda #0
  sta p_pass
-p_endpoint:
+ ; Neither endpoint multiplication nor ramp correction writes p_value.
  ldx #3
 p_restore_ratio:
  lda p_ratio,x
  sta p_value,x
  dex
  bpl p_restore_ratio
+p_endpoint:
  ldx p_pass
  lda p_gl,x
  sta p_multiplier
@@ -3281,6 +3220,7 @@ lazy_store:
  bne lazy_column
  rts
 p_mul32x16:
+ ; Each pair of byte products shares the same quarter-square table bases.
  lda #0
  sta p_product+0
  sta p_product+1
@@ -3290,9 +3230,13 @@ p_mul32x16:
  sta p_product+5
  lda p_value+0
  beq mul_row_0_done
+ sta p_qsumlo+1
+ sta p_qsumhi+1
+ eor #$ff
+ sta p_qdifflo+1
+ sta p_qdiffhi+1
  ldy p_multiplier+0
  beq mul_0_0_done
- lda p_value+0
  jsr p_mul8
  clc
  lda p_product+0
@@ -3312,7 +3256,6 @@ p_mul32x16:
 mul_0_0_done:
  ldy p_multiplier+1
  beq mul_0_1_done
- lda p_value+0
  jsr p_mul8
  clc
  lda p_product+1
@@ -3331,9 +3274,13 @@ mul_0_1_done:
 mul_row_0_done:
  lda p_value+1
  beq mul_row_1_done
+ sta p_qsumlo+1
+ sta p_qsumhi+1
+ eor #$ff
+ sta p_qdifflo+1
+ sta p_qdiffhi+1
  ldy p_multiplier+0
  beq mul_1_0_done
- lda p_value+1
  jsr p_mul8
  clc
  lda p_product+1
@@ -3351,7 +3298,6 @@ mul_row_0_done:
 mul_1_0_done:
  ldy p_multiplier+1
  beq mul_1_1_done
- lda p_value+1
  jsr p_mul8
  clc
  lda p_product+2
@@ -3368,9 +3314,13 @@ mul_1_1_done:
 mul_row_1_done:
  lda p_value+2
  beq mul_row_2_done
+ sta p_qsumlo+1
+ sta p_qsumhi+1
+ eor #$ff
+ sta p_qdifflo+1
+ sta p_qdiffhi+1
  ldy p_multiplier+0
  beq mul_2_0_done
- lda p_value+2
  jsr p_mul8
  clc
  lda p_product+2
@@ -3386,7 +3336,6 @@ mul_row_1_done:
 mul_2_0_done:
  ldy p_multiplier+1
  beq mul_2_1_done
- lda p_value+2
  jsr p_mul8
  clc
  lda p_product+3
@@ -3401,9 +3350,13 @@ mul_2_1_done:
 mul_row_2_done:
  lda p_value+3
  beq mul_row_3_done
+ sta p_qsumlo+1
+ sta p_qsumhi+1
+ eor #$ff
+ sta p_qdifflo+1
+ sta p_qdiffhi+1
  ldy p_multiplier+0
  beq mul_3_0_done
- lda p_value+3
  jsr p_mul8
  clc
  lda p_product+3
@@ -3417,7 +3370,6 @@ mul_row_2_done:
 mul_3_0_done:
  ldy p_multiplier+1
  beq mul_3_1_done
- lda p_value+3
  jsr p_mul8
  clc
  lda p_product+4
@@ -3429,53 +3381,7 @@ mul_3_0_done:
 mul_3_1_done:
 mul_row_3_done:
  rts
-p_div32x16:
- lda #0
- sta p_rem
- sta p_rem+1
- lda #0
- sta p_num+0
- lda #159
- sta p_num+1
- lda #237
- sta p_num+2
- lda #6
- sta p_num+3
- ldx #32
-p_div_bit:
- asl p_num
- rol p_num+1
- rol p_num+2
- rol p_num+3
- rol p_rem
- rol p_rem+1
- bcs p_div_sub
- lda p_rem+1
- cmp p_den+1
- bcc p_div_next
- bne p_div_sub
- lda p_rem
- cmp p_den
- bcc p_div_next
-p_div_sub:
- sec
- lda p_rem
- sbc p_den
- sta p_rem
- lda p_rem+1
- sbc p_den+1
- sta p_rem+1
- inc p_num
-p_div_next:
- dex
- bne p_div_bit
- rts
 p_mul8:
- sta p_qsumlo+1
- sta p_qsumhi+1
- eor #$ff
- sta p_qdifflo+1
- sta p_qdiffhi+1
  sec
 p_qsumlo:
  lda qs_sum_lo,y
@@ -5901,6 +5807,200 @@ fine_initial_columns:
  .byte $55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55
  .byte $55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55
  .byte $55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55,$55
+
+; The helper code uses the space after the fine backdrop.
+; This preserves the low-code margin of the public auto build.
+m8_fine_helpers:
+scalar_fill:
+ ldy fill_start
+ cpy fill_end
+ bcs scalar_done
+ ; Each row uses the same shade. Repatch only when it changes.
+ cmp scalar_color_0+1
+ beq scalar_color_ready
+ sta scalar_color_0+1
+ sta scalar_color_1+1
+ sta scalar_color_2+1
+ sta scalar_color_3+1
+ sta scalar_color_4+1
+ sta scalar_color_5+1
+ sta scalar_color_6+1
+ sta scalar_color_7+1
+ sta scalar_color_tail+1
+scalar_color_ready:
+ lda fill_end
+ sec
+ sbc fill_start
+ cmp #8
+ bcc scalar_tail_start
+ lda fill_end
+ sec
+ sbc #7
+ sta fill_limit
+scalar_bulk:
+ lda $5400,y
+shared_mask_0:
+ and #$ff
+scalar_color_0:
+ ora #0
+ sta $5400,y
+ lda $5401,y
+shared_mask_1:
+ and #$ff
+scalar_color_1:
+ ora #0
+ sta $5401,y
+ lda $5402,y
+shared_mask_2:
+ and #$ff
+scalar_color_2:
+ ora #0
+ sta $5402,y
+ lda $5403,y
+shared_mask_3:
+ and #$ff
+scalar_color_3:
+ ora #0
+ sta $5403,y
+ lda $5404,y
+shared_mask_4:
+ and #$ff
+scalar_color_4:
+ ora #0
+ sta $5404,y
+ lda $5405,y
+shared_mask_5:
+ and #$ff
+scalar_color_5:
+ ora #0
+ sta $5405,y
+ lda $5406,y
+shared_mask_6:
+ and #$ff
+scalar_color_6:
+ ora #0
+ sta $5406,y
+ lda $5407,y
+shared_mask_7:
+ and #$ff
+scalar_color_7:
+ ora #0
+ sta $5407,y
+ tya
+ clc
+ adc #8
+ tay
+ cpy fill_limit
+ bcc scalar_bulk
+scalar_tail_start:
+ cpy fill_end
+ bcs scalar_done
+scalar_tail:
+ lda $5400,y
+shared_tail_mask:
+ and #$ff
+scalar_color_tail:
+ ora #0
+ sta $5400,y
+ iny
+ cpy fill_end
+ bcc scalar_tail
+scalar_done:
+ rts
+p_div32x16:
+ ; The dividend is fixed at $06ed9f00. Seed a prefix smaller than the
+ ; divisor, so the omitted rounds would only shift in zero quotient bits.
+ lda p_den+1
+ cmp #7
+ bcs p_div_prefix16
+ ora p_den
+ beq p_div_original
+ lda p_den+1
+ bne p_div_prefix8
+ lda p_den
+ cmp #7
+ bcs p_div_prefix8
+ lda #0
+ sta p_rem
+ sta p_rem+1
+ sta p_num
+ lda #$e0
+ sta p_num+1
+ lda #$b3
+ sta p_num+2
+ lda #$dd
+ sta p_num+3
+ ldx #27
+ bne p_div_bit
+p_div_prefix8:
+ lda #0
+ sta p_rem+1
+ sta p_num
+ sta p_num+1
+ lda #6
+ sta p_rem
+ lda #$9f
+ sta p_num+2
+ lda #$ed
+ sta p_num+3
+ ldx #24
+ bne p_div_bit
+p_div_prefix16:
+ lda #0
+ sta p_num
+ sta p_num+1
+ sta p_num+2
+ lda #$ed
+ sta p_rem
+ lda #6
+ sta p_rem+1
+ lda #$9f
+ sta p_num+3
+ ldx #16
+ bne p_div_bit
+p_div_original:
+ lda #0
+ sta p_rem
+ sta p_rem+1
+ lda #0
+ sta p_num+0
+ lda #159
+ sta p_num+1
+ lda #237
+ sta p_num+2
+ lda #6
+ sta p_num+3
+ ldx #32
+p_div_bit:
+ asl p_num
+ rol p_num+1
+ rol p_num+2
+ rol p_num+3
+ rol p_rem
+ rol p_rem+1
+ bcs p_div_sub
+ lda p_rem+1
+ cmp p_den+1
+ bcc p_div_next
+ bne p_div_sub
+ lda p_rem
+ cmp p_den
+ bcc p_div_next
+p_div_sub:
+ sec
+ lda p_rem
+ sbc p_den
+ sta p_rem
+ lda p_rem+1
+ sbc p_den+1
+ sta p_rem+1
+ inc p_num
+p_div_next:
+ dex
+ bne p_div_bit
+ rts
+m8_fine_helpers_end:
+.cerror m8_fine_helpers_end>slot_keys,"Fine helpers overlap profile cache keys"
 *=$a800
 event_floor:
  .byte $00,$00,$02,$04,$06,$08,$00,$0b,$02,$0e,$10,$12,$14,$16,$16,$19
@@ -6023,6 +6123,61 @@ key_alt:
  .byte $00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00,$00
 *=$b000
  .fill 2449,0
+; Precompute the signed coefficients from the latched heading once per view.
+prepare_profile_angles:
+ lda pose_angle
+ ldx pose_angle+1
+ jsr profile_angle_pair
+ ldx #3
+profile_copy_angle_y:
+ lda p_gl,x
+ sta profile_angles+4,x
+ dex
+ bpl profile_copy_angle_y
+ sec
+ lda pose_angle
+ sbc #128
+ tay
+ lda pose_angle+1
+ sbc #0
+ and #1
+ tax
+ tya
+ jsr profile_angle_pair
+ ldx #3
+profile_copy_angle_x:
+ lda p_gl,x
+ sta profile_angles,x
+ dex
+ bpl profile_copy_angle_x
+ rts
+profile_angle_pair:
+ sta p_angle
+ stx p_angle+1
+ jsr p_lookup_g
+ lda p_multiplier
+ sta p_gl
+ lda p_multiplier+1
+ sta p_gl+1
+ sec
+ lda #0
+ sbc p_angle
+ tay
+ lda #0
+ sbc p_angle+1
+ and #1
+ tax
+ tya
+ jsr p_lookup_g
+ lda p_multiplier
+ sta p_gr
+ lda p_multiplier+1
+ sta p_gr+1
+ rts
+profile_angles:
+ .fill 8,0
+
+.cerror * > $ba00,"Heading coefficients overlap direction tables"
 *=$ba00
 dir_dx_lo:
  .byte $ff,$7d,$bf,$2b,$61,$4f,$98,$a8,$34,$13,$2b,$6e,$d1,$4c,$d9,$77
@@ -6316,5 +6471,22 @@ gr26_zero_samples:
  .fill 128,0
 gr26_zero_samples_end:
  .cerror gr26_zero_samples_end-gr26_zero_samples != 128,"Zero profile must have128 samples"
+trace_close_path:
+ ; The foreground ray counter is committed after the path is closed.
+ sec
+ lda #65
+ sbc r_steps
+ sta r_steps
+ clc
+ adc frame_steps
+ sta frame_steps
+ bcc trace_steps_committed
+ inc frame_steps+1
+trace_steps_committed:
+ ldy path_count
+ lda #0
+ sta (path_out),y
+ rts
+
 layout_support_end:
 .cerror layout_support_end>$cb00,"Layout overlaps screen"

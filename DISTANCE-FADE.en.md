@@ -1,6 +1,6 @@
-# Distance fade — 1.20.0
+# Distance fade — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 Optional screen-door visibility for GraphicsMode 1–8. Disabled by default. No demo or scene assets are distributed.
 
@@ -114,12 +114,12 @@ Higher CPU speed does not by itself make fade beneficial. Compare the intended s
 
 Partial visibility still needs geometry and often texture sampling. Masking adds foreground work; fewer visible dots do **not** imply proportionally fewer calculations or higher FPS. Full object exclusion can save substantial work. Mode8 partial band drawing and the mono background reset can also cost more than the original renderer. Measure the intended scene, target and distance distribution; the option remains off by default.
 
-The current validation and native measurements are recorded in [Release notes](RELEASE-NOTES-1.20.0.en.md) and [qualification](QUALIFICATION-1.20.0.json). Native FPS count complete presented views in PAL Turbo6510 time after warm-up, never CPU replay or host/warp time. The compiled arithmetic/store test is correctness-only: `python -B scripts/test_distance_fade.py` (development dependencies: 64tass and py65). Source distributions contain no test scenes, demos, music, PRGs or captures; all native evidence stays external.
+The current validation and native measurements are recorded in [Release notes](RELEASE-NOTES-1.20.1.en.md) and [qualification](QUALIFICATION-1.20.1.json). Native FPS count complete presented views in PAL Turbo6510 time after warm-up, never CPU replay or host/warp time. The compiled arithmetic/store test is correctness-only: `python -B scripts/test_distance_fade.py` (development dependencies: 64tass and py65). Source distributions contain no test scenes, demos, music, PRGs or captures; all native evidence stays external.
 
 ## Writer and mask dispatch
 
-Writer dispatch/mask selection moves to private level updates, with a compact Mode7 variant to preserve RAM. Mode8 clears the identical viewport in contiguous character-row slices and limits partial sampling to the conservative top/bottom union. No metric, sampling, visible pixel or public configuration changes. The [current notes](QUALIFICATION-1.20.0.en.md) describe proof, native measurements and limits.
+Writer dispatch/mask selection moves to private level updates, with a compact Mode7 variant to preserve RAM. Mode8 clears the identical viewport in contiguous character-row slices and limits partial sampling to the conservative top/bottom union. No metric, sampling, visible pixel or public configuration changes. The [current notes](QUALIFICATION-1.20.1.en.md) describe proof, native measurements and limits.
 
 ## Per-view work reuse
 
-The method/API/output is retained. Per-view multilevel plane-level reuse, cheaper wrapper and four-phase scalar fills remove repeated work; polygon range rejection/squares remain exact. Explicit wire ranges no longer overwrite polygon owners. Multi payload920/2449, mono766/2449, original guards unchanged. See [implementation and measurement scope](QUALIFICATION-1.20.0.en.md).
+The method/API/output is retained. Per-view multilevel plane-level reuse, cheaper wrapper and four-phase scalar fills remove repeated work; polygon range rejection/squares remain exact. Explicit wire ranges no longer overwrite polygon owners. Multi payload920/2449, mono766/2449, original guards unchanged. See [implementation and measurement scope](QUALIFICATION-1.20.1.en.md).

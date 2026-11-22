@@ -1,6 +1,6 @@
-# Precision / Precisione — 1.20.0
+# Precision / Precisione — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
 
@@ -14,7 +14,7 @@ Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither
 |normalized16|1–7|Profilo sperimentale separato|Affini|
 |Mode8|8|Renderer dedicato|Contratto proprio|
 
-Profilo stabile SDK pubblico; build di riferimento legacy/Q8 identiche nei byte. Attivare texture prospettiche non trasforma plus in Q8. Vincoli e ABI camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md), FPS/stabilità nella [qualifica](QUALIFICATION-1.14.0.it.md). Le sezioni seguenti conservano il contratto Q8 e non estendono plus a fixed/walkFull, viewport small, Ground o roll.
+Profilo stabile SDK pubblico; build di riferimento legacy/Q8 identiche nei byte. Attivare texture prospettiche non trasforma plus in Q8. Vincoli e ABI camera sono in [LEGACY-PLUS](LEGACY-PLUS.it.md), FPS/stabilità nella [qualifica](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0). Le sezioni seguenti conservano il contratto Q8 e non estendono plus a fixed/walkFull, viewport small, Ground o roll.
 
 ## Default e raccomandazione
 
@@ -105,9 +105,9 @@ Il checkpoint delle famiglie copre 280 pose numeriche, 4.480 vertici, 3.840 facc
 clippate, 112 viste CPU primarie e 22 coppie di frame nativi. I test release
 aggiungono il confronto fra build pubbliche silenziose e ricompilazioni silenziose
 di quella sorgente congelata, default/rifiuti e nuove verifiche runtime.
-Vedere [test](TESTING.md) e [note di release](RELEASE-NOTES-1.5.0.md).
+Vedere [test](TESTING.md) e [note di release](https://github.com/Librologica/3Dvibe64/releases/tag/v1.5.0).
 Il paragrafo sopra descrive la qualificazione Q8 storica. La release 1.10.0 aggiunge la
-[qualificazione di scalabilità](Q8-QUALIFICATION.md) e le [note di versione](RELEASE-NOTES-1.10.0.md).
+[qualificazione di scalabilità](Q8-QUALIFICATION.md) e le [note di versione](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.0).
 Gli hash PRG legacy restano invariati. Nessun test hardware o garanzia FPS universale dichiarata.
 
 ## Ottimizzazioni e API della1.15.0
@@ -117,3 +117,8 @@ Il selettore `-LegacyPlusOptimizations` è distinto da EngineExperiments,dal ras
 [Opzioni e profilo](EXACT-RENDER.it.md) · [ABI,materiali,memoria e ripieghi](REUSABLE-RENDER.it.md) · [Stato e supporto](RELEASE-STATUS.it.md). Alcune combinazioni non entrano nei64KB e vengono rifiutate.
 
 Per una vista stazionaria precisa scegliere Q8 con `-Q8Camera stationary`, non `-CameraMode fixed`: fixed è un percorso legacy distinto e può quantizzare le profondità lontane.
+
+
+## Divisione Q8
+
+Il divisore a 48/24 bit dei wireframe e dei poligoni Q8 non prospettici inizializza il resto dai 24 bit alti quando questi sono minori del divisore. Salta i primi 24 passi con bit di quoziente zero. Quoziente, resto, domini e gestione del divisore zero restano esatti. [Perimetro](RELEASE-NOTES-1.20.1.it.md).

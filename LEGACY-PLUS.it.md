@@ -1,12 +1,12 @@
-# Legacy-plus — 1.20.0
+# Legacy-plus — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 Dissolvenza a distanza opzionale nelle modalità1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Il LOD texture Mode7 resta indipendente. Vedere il [contratto completo](DISTANCE-FADE.it.md).
 
 
 
-`-Precision legacy-plus` è il renderer intermedio esplicito per Mode1–7: matrici oggetto legacy Q6, geometria camera Q4, coefficienti camera Q10 e4096 fasi yaw/pitch. Legacy resta il default. Il selettore compatibile `-LegacyStability rotation` rimane solo Mode2. Mode8 e Normalized16 mantengono contratti separati. Questo pacchetto stabile è pubblicato su GitHub; i metadati correnti sono in PACKAGE-MANIFEST.json.
+`-Precision legacy-plus` è il renderer intermedio esplicito per Mode1–7: matrici oggetto legacy Q6, geometria camera Q4, coefficienti camera Q10 e4096 fasi yaw/pitch. Legacy resta il default. Il selettore compatibile `-LegacyStability rotation` rimane solo Mode2. Mode8 e Normalized16 mantengono contratti separati. Questo SDK sorgente stabile è non pubblicato; i metadati correnti sono in PACKAGE-MANIFEST.json.
 
 ## Build e configurazione
 
@@ -47,4 +47,4 @@ La profondità lungo la camera deve restare **8–256WU inclusi** dopo il near. 
 
 ## Qualifica
 
-[Confronto nativo e limiti](QUALIFICATION-1.14.0.it.md) · [dati strutturati](QUALIFICATION-1.14.0.json) · [verifiche](TESTING.md). Le build finali devono coincidere con gli hash PRG misurati per riusarne gli FPS. PAL Turbo6510×64, safe, silenzioso; percorsi completi dopo warm-up. Nessuna nuova qualifica NTSC o hardware fisico. Il rapporto Mode2 della1.13.0 resta [storico](QUALIFICATION-1.13.0.it.md), non misura scene diverse.
+[Confronto nativo e limiti](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0) · [dati strutturati](QUALIFICATION-1.14.0.json) · [verifiche](TESTING.md). Le build finali devono coincidere con gli hash PRG misurati per riusarne gli FPS. PAL Turbo6510×64, safe, silenzioso; percorsi completi dopo warm-up. Nessuna nuova qualifica NTSC o hardware fisico. Il rapporto Mode2 della1.13.0 resta [storico](https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0), non misura scene diverse.

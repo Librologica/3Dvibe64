@@ -1,6 +1,6 @@
-# Input esterni — 1.20.0
+# Input esterni — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 
 
@@ -45,7 +45,7 @@ fornire `examples/gameplay/<profile>.json`, `extensions/gameplay/common`,
 `extensions/gameplay/billboards` ed `extensions/gameplay/profiles/<profile>`
 per tutti i profili nella catena di ereditarietà. Fornisce scena/UI/asset,
 binding dei materiali, script di build, camera e logica applicativa. L'SDK
-non genera questi input. Aggiornare `engineVersion` del preset a 1.20.0 e
+non genera questi input. Aggiornare `engineVersion` del preset a 1.20.1 e
 riqualificare l'hash. [GAMEPLAY](GAMEPLAY.it.md) descrive l'ABI dei13 profili.
 
 ## Input di regressione

@@ -15,7 +15,7 @@ def finish_wire(out,sdk,spec,cmd,result,music,motion,camera_mobile=False,camera_
         if errors!=['High-basic-v2 middle segment overlaps video buffer A']:
             raise RuntimeError(result.stdout+result.stderr)
     lab={m[1]:int(m[2],16) for m in re.finditer(r'^(\w+) = \$([0-9a-fA-F]+)',source,re.M)}
-    parts=wire_pieces(pieces(lab,music,motion),lab)
+    parts=wire_pieces(pieces(lab,music,motion,division_prefix=True),lab)
     source=prepare_wire(source,music,motion,lab['GRAPHICS_MODE'])
     if line_raster=='hybrid':
         from hybrid import apply

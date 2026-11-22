@@ -1,29 +1,15 @@
-# Changelog — 1.20.0
+# Changelog — 1.20.1
 
-## 1.20.0
+## 1.20.1
 
-Optional Distance Fade for modes 1–8; exact shading, texture and multilevel-map work reuse; AnimatedMesh and RuntimeScene APIs within their documented profiles. Updated English/Italian scene-design, memory, API and build guidance. Source-only package, without demos or benchmarks. [English notes](RELEASE-NOTES-1.20.0.en.md) · [Note italiane](RELEASE-NOTES-1.20.0.it.md).
+- Modes 1 and 2 reduce wire-span setup, dirty-row addressing and near-plane projection work. Polygon paths reuse cached material ranges.
+- Gouraud shading, polygon outlines and affine texture mapping reuse intermediate results and reduce work inside raster loops.
+- Mode 8 improves ray traversal, profile caching, fine raster fills and projection arithmetic in compatible monolayer and multilayer renderers.
+- Existing renderer defaults, Distance Fade, texture LOD and API limits remain in effect.
 
-Distance Fade opzionale nelle modalità 1–8; riuso esatto del lavoro su shading, texture e mappe multilivello; API AnimatedMesh e RuntimeScene nei profili documentati. Guide italiane e inglesi aggiornate per scene, memoria, API e compilazione. Pacchetto sorgente senza demo o benchmark.
+- Le Mode 1 e 2 riducono il lavoro negli span wire, nell’indirizzamento delle righe da ripulire e nella proiezione vicino al piano di clipping. I percorsi poligonali riusano gli intervalli di materiale in cache.
+- Lo shading Gouraud, i contorni poligonali e il texture mapping affine riusano risultati intermedi e riducono il lavoro nei cicli del raster.
+- La Mode 8 accelera la percorrenza dei raggi, la cache dei profili, i riempimenti fini e l’aritmetica di proiezione nei renderer compatibili monolivello e multilivello.
+- Restano validi i default del renderer, Distance Fade, il LOD texture e i limiti delle API.
 
-### Documentation revision / Revisione documentale
-
-Public documentation uses release versions and feature descriptions. Original runtime identities, measurement anchors and verification records are preserved. No rendering or performance changes.
-
-La documentazione pubblica usa versioni di release e descrizioni delle funzioni. Identità del runtime, riferimenti delle misure e registri di verifica originali restano conservati. Nessuna modifica al rendering o alle prestazioni.
-
-## 1.15.1
-
-Exact renderer optimizations and optional circle/sphere API, with consolidated IT/EN contracts and source-only distribution. / Ottimizzazioni esatte del renderer e API cerchi/sfere opzionale, con contratti IT/EN consolidati e distribuzione sorgente.
-
-[English notes](RELEASE-NOTES-1.15.1.en.md) · [Note italiane](RELEASE-NOTES-1.15.1.it.md).
-
-## 1.15.0
-
-Optional exact Mode4 kernels, bounded wire/stream interfaces and frozen-lighting support. / Kernel Mode4 esatti opzionali, interfacce wire/stream delimitate e illuminazione congelata.
-
-[English notes](RELEASE-NOTES-1.15.0.en.md) · [Note italiane](RELEASE-NOTES-1.15.0.it.md).
-
-## Archived history / Storico archiviato
-
-The [complete archived change log](CHANGELOG-HISTORY.md) and numbered qualification records preserve original development provenance. Earlier release notes retain their original scope. / Il [changelog completo archiviato](CHANGELOG-HISTORY.md) e i registri di qualifica conservano la provenienza tecnica originale. Le note delle release precedenti mantengono il proprio perimetro.
+[Previous official releases / Release ufficiali precedenti](https://github.com/Librologica/3Dvibe64/releases)

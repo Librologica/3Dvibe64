@@ -1,6 +1,6 @@
-# Testing — 1.20.0
+# Testing — 1.20.1
 
-Stable SDK published on GitHub. Correctness tests are included; demos, benchmark suites and drivers are not distributed. Install Python 3, PowerShell 7, 64tass and `requirements-tests.txt` dependencies externally. Run from a clean extraction with Python assertions enabled:
+Unpublished development SDK. Correctness tests are included; demos, benchmark suites and drivers are not distributed. Install Python 3, PowerShell 7, 64tass and `requirements-tests.txt` dependencies externally. Run from a clean extraction with Python assertions enabled:
 
 ```powershell
 $env:TASS64_EXE='C:/tools/64tass.exe'
@@ -27,4 +27,4 @@ The performance suite remains external. Use VICE Turbo6510 PAL, active SID, no R
 
 Original measurements can be inherited for documentation/distribution changes only after exact runtime, program, complete numeric-symbol and condition identity. Promotion records zero new FPS runs and preserves existing blocks. Renderer changes require fresh native timing. Do not adjust frozen scenes, anchors, weights or quality to improve the index. No new NTSC or hardware qualification.
 
-[Qualification / Qualifica](QUALIFICATION-1.20.0.json) · [Docs](DOCS.md)
+[Qualification / Qualifica](QUALIFICATION-1.20.1.json) · [Docs](DOCS.md)

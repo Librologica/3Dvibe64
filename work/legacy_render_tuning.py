@@ -83,6 +83,404 @@ if not MATERIAL_KEEP_POINTERS:
  ldy #0
  rts
 '''
+
+MATERIAL_CACHE_DIGESTS = ('71754ea300e1a52ee1fd26c4d3ff36812cbc513e6a9998a67e539add1bec42cd',)
+
+MATERIAL_CACHE_CALLERS = {
+    'dcb36e9635328e38f6698fef37e8fb30810ccff65f4f35907b75fe745721d862',
+    'f2cb4625de9393b09bfbb9fcdded9637eb873872008f0b3158fec054b7941b94',
+}
+
+
+def material_range_plan(source, *, inline_material=False):
+    """Extend cached ranges in registers and prepare the row pointers once."""
+    first = source.find('apply_material_span_a:\n')
+    last = source.find('\nauto_cycle_mesh:', first)
+    if first < 0 or last < 0:
+        return None
+    before = source[first:last]
+    cache_start = before.find('maybe_apply_material_span_a:\n')
+    if cache_start < 0:
+        return None
+    if set(call_contexts(source, 'maybe_apply_material_span_[ab]')) - MATERIAL_CACHE_CALLERS:
+        return None
+    cache = before[cache_start:]
+    if hashlib.sha256(cache.encode('ascii')).hexdigest() not in MATERIAL_CACHE_DIGESTS:
+        return None
+    if len(re.findall(r'\bmaterial_span_orig_(?:start|end)\b', source)) != (
+        len(re.findall(r'\bmaterial_span_orig_(?:start|end)\b', before)) + 2
+    ):
+        return None
+    writer = before[:before.index('.if MATERIAL_CELL_SPAN_CACHE != 0\n')]
+    for bank in 'ab':
+        header = f'apply_material_span_{bank}:\n ldx yrow\n'
+        if writer.count(header) != 1:
+            return None
+        writer = writer.replace(header, (
+            f'apply_material_span_{bank}:\n ldy startbyte\n ldx endbyte\n'
+            f'gr35_material_{bank}:\n stx gr35_material_limit+1\n ldx yrow\n'))
+    expected = 'apply_material_span_common:\n ldy startbyte\n'
+    if writer.count(expected) != 1 or len(call_contexts(source, 'apply_material_span_common')) != 1:
+        return None
+    writer = writer.replace(expected, 'apply_material_span_common:\n')
+    writer = writer.replace(' cpy endbyte\n', 'gr35_material_limit:\n cpy #0\n')
+    writer = writer.replace('ams_done:\n ldx endbyte\n', 'ams_done:\n ldx gr35_material_limit+1\n')
+    def entry(bank):
+        new_cell = f'gr42_{bank}_new_cell:\n' if inline_material else ''
+        return f"""maybe_apply_material_span_{bank}:
+.if ENGINE_MODE3_MATERIAL_CELL_TRANSITION != 0
+ lda yrow
+ and #$fc
+.else
+ lda yrow
+ lsr
+ lsr
+.endif
+ cmp material_last_cellrow
+ beq gr35_{bank}_same_cell
+{new_cell} sta material_last_cellrow
+ ldy startbyte
+ sty material_cell_min
+ ldx endbyte
+ stx material_cell_max
+ jmp gr35_material_{bank}
+gr35_{bank}_same_cell:
+ lda startbyte
+ cmp material_cell_min
+ bcc gr35_{bank}_extend_left
+ lda material_cell_max
+ cmp endbyte
+ bcc gr35_{bank}_extend_right
+ rts
+gr35_{bank}_extend_left:
+ tay
+ ldx material_cell_min
+ dex
+ sty material_cell_min
+ jsr gr35_material_{bank}
+ lda material_cell_max
+ cmp endbyte
+ bcc gr35_{bank}_extend_right
+ rts
+gr35_{bank}_extend_right:
+ tay
+ iny
+ ldx endbyte
+ stx material_cell_max
+ jmp gr35_material_{bank}
+"""
+    after = writer + '.if MATERIAL_CELL_SPAN_CACHE != 0\n' + ''.join(entry(bank) for bank in 'ab') + '.endif\n'
+    return before, after
+
+
+
+
+def inline_material_checks(source):
+    """Keep the no-write cache hit in the span writer's own loop."""
+    calls = list(re.finditer(r'(?m)^ jsr maybe_apply_material_span_([ab])$', source))
+    if len(calls) != 6:
+        return []
+    lines = source.splitlines(keepends=True)
+    result = []
+    for ordinal, call in enumerate(calls):
+        index = source.count('\n', 0, call.start())
+        start, end = index - 3, index + 4
+        before = ''.join(lines[start:end])
+        # Include a routine label when both banks share the same context.
+        while start > 0 and source.count(before) != 1:
+            start -= 1
+            before = ''.join(lines[start:end])
+            if len(before) > 1600:
+                return []
+        target = call.group()+'\n'
+        if source.count(before) != 1 or before.count(target) != 1:
+            return []
+        bank = call[1]
+        name = f'gr42_material_{ordinal}'
+        inline = f""".if ENGINE_MODE3_MATERIAL_CELL_TRANSITION != 0
+ lda yrow
+ and #$fc
+.else
+ lda yrow
+ lsr
+ lsr
+.endif
+ cmp material_last_cellrow
+ bne {name}_new
+ lda startbyte
+ cmp material_cell_min
+ bcc {name}_left
+ lda material_cell_max
+ cmp endbyte
+ bcs {name}_done
+ jsr gr35_{bank}_extend_right
+ jmp {name}_done
+{name}_left:
+ jsr gr35_{bank}_extend_left
+ jmp {name}_done
+{name}_new:
+ jsr gr42_{bank}_new_cell
+{name}_done:
+"""
+        result.append((name, before, before.replace(target, inline, 1)))
+    return result
+
+
+
+def rounded_q6_multiply(source):
+    """Shorten the qualified signed quarter-square routine."""
+    entry = 'mul_s6:\n'
+    terminal = 'ms6_done:\n rts\n'
+    if source.count(entry) != 1:
+        return None
+    begin = source.index(entry)
+    end = source.find(terminal, begin)
+    if end < 0:
+        return None
+    old = source[begin:end+len(terminal)]
+    if hashlib.sha256(old.encode('ascii')).hexdigest() != '89e84bae2779eccb5be212b73bdde6ed18e0a33d92f525a122060c348029c8a6':
+        return None
+    split = old.index(' tax\n lda sqlo,x')
+    code = """mul_s6:
+ sta mula
+ stx mulb
+ ; The old sign result is the XOR of the two input sign bits.
+ eor mulb
+ and #$80
+ sta mulsign
+ txa
+ bpl ms6_b_ok
+ eor #$ff
+ clc
+ adc #$01
+ sta mulb
+ms6_b_ok:
+ lda mula
+ bpl ms6_a_ok
+ eor #$ff
+ clc
+ adc #$01
+ sta mula
+ms6_a_ok:
+ clc
+ adc mulb
+""" + old[split:]
+    code = code.replace(' bcs ms6_diff_ok\n eor #$ff\n clc\n adc #$01',
+                        ' bcs ms6_diff_ok\n eor #$ff\n adc #$01')
+    code = code.replace(' lsr\n'*6 + ' sta multmp\n', """ ; Three rotates put bits 7 and 6 into bits 1 and 0.
+ rol
+ rol
+ rol
+ and #3
+ sta multmp
+""")
+    code = code.replace('legacy_q6_negate:\n eor #$ff\n clc\n adc #$01',
+                        'legacy_q6_negate:\n eor #$ff\n adc #$01')
+    return old, code
+
+
+def outline_register_rows(source):
+    """Compute each whole outline row once and address short runs by offset."""
+    first = 'gr23o_quotient:\n'
+    last = 'gr23os_masked:\n ldy #0\n'
+    if source.count(first) != 1 or source.count(last) != 1:
+        return None
+    start = source.index(first)
+    end = source.index(last, start) + len(last)
+    old = source[start:end]
+    code = '''gr23o_quotient:
+ sta errhi
+ sta gr41_outline_restore_q+1
+ lda dxabs
+ sta gr41_outline_restore_r+1
+ lda sxstep
+ bmi gr41_outline_descending
+ lda #<leftval
+ sta gr41_outline_current+1
+ sta gr41_outline_compare+1
+ lda #<rightval
+ sta gr41_outline_next+1
+ lda #0
+ sec
+ sbc dyval
+ sta errlo
+ jmp gr41_outline_row
+gr41_outline_descending:
+ lda #<rightval
+ sta gr41_outline_current+1
+ sta gr41_outline_compare+1
+ lda #<leftval
+ sta gr41_outline_next+1
+ lda #255
+ sta errlo
+ ; ceil(-k*d/D) = floor((D-1-k*d)/D). Use one signed quotient
+ ; and a positive remainder so both directions share the row loop.
+ lda dxabs
+ beq gr41_outline_integer
+ lda dyval
+ sec
+ sbc dxabs
+ sta dxabs
+ lda errhi
+ eor #255
+ bne gr41_outline_signed_ready
+gr41_outline_integer:
+ lda #0
+ sec
+ sbc errhi
+gr41_outline_signed_ready:
+ sta errhi
+gr41_outline_row:
+ lda xcur
+gr41_outline_current:
+ sta leftval
+ clc
+ lda errlo
+ adc dxabs
+ bcc gr41_outline_no_correction
+ sbc dyval
+ sec
+gr41_outline_no_correction:
+ sta errlo
+ lda xcur
+ adc errhi
+ sta xcur
+gr41_outline_next:
+ sta rightval
+gr41_outline_compare:
+ eor leftval
+ and #$fc
+ bne gr41_outline_wide
+ ; Same-byte rows use the exact masked stores directly in the line loop.
+ ldy ycur
+ ldx leftval
+ lda row0lo_a,y
+ clc
+ adc xofflo,x
+ sta ptr0lo
+ lda row0hi_a,y
+ adc xoffhi,x
+gr41_outline_bank:
+ eor #0
+ sta ptr0hi
+ lda startmask,x
+ ldx rightval
+ and endmask,x
+ eor #255
+ sta maskv
+ ldy #0
+ lda (ptr0lo),y
+ and maskv
+ sta (ptr0lo),y
+ iny
+ lda (ptr0lo),y
+ and maskv
+ sta (ptr0lo),y
+gr41_outline_advance:
+ inc ycur
+ lda ycur
+ cmp spanw
+ bcc gr41_outline_row
+ jmp gr36_outline_terminal
+gr41_outline_wide:
+ jsr gr23_outline_span
+ jmp gr41_outline_advance
+gr36_outline_terminal:
+gr41_outline_restore_q:
+ lda #0
+ sta errhi
+gr41_outline_restore_r:
+ lda #0
+ sta dxabs
+ ; The exact final remainder E is zero after D steps.
+ lda #0
+ sta errlo
+ lda xcur
+ sta leftval
+ sta rightval
+ jmp gr23_outline_span
+'''
+    code += old[old.index('gr23o_vertical:\n'):]
+    old_mask = (' ldx rightval\n lda endmask,x\n ldx leftval\n and startmask,x\n'
+                ' eor #255\n sta maskv\n jmp gr23os_masked\n')
+    new_mask = (' lda startmask,x\n ldx rightval\n and endmask,x\n'
+                ' eor #255\n sta maskv\n jmp gr23os_masked\n')
+    loop = ' jsr gr23os_masked\ngr23os_next:\n'
+    if code.count(old_mask) != 1 or code.count(loop) != 1:
+        return None
+    code = code.replace(old_mask, new_mask)
+    code = code.replace(loop, ''' jsr gr23os_masked
+ lda endbyte
+ sec
+ sbc startbyte
+ cmp #32
+ bcs gr23os_next
+ tax
+ ldy #8
+ dex
+ beq gr36_outline_indexed_last
+gr36_outline_indexed:
+ lda #0
+ sta (ptr0lo),y
+ iny
+ sta (ptr0lo),y
+ tya
+ clc
+ adc #7
+ tay
+ dex
+ bne gr36_outline_indexed
+gr36_outline_indexed_last:
+ ldx rightval
+ lda endmask,x
+ eor #255
+ sta maskv
+ jmp gr36_outline_masked_y
+gr23os_next:
+''')
+    return old, code + 'gr36_outline_masked_y:\n'
+
+
+
+def wire_point_damage(source):
+    """Track damage exactly in the bitmap row register for each wire point."""
+    if not re.search(r'(?m)^GRAPHICS_MODE = \$0[123]$', source):
+        return None
+    for setting in ('TRACK_DIRTY_SPANS = $01', 'ENGINE_WIRE_DIRTY_SAME_BYTE_SKIP = $01',
+                    'WORLD_GROUND_WIRE_OCCLUDE = $00', 'VIC_COLOR_POLICY_ENABLE = $00'):
+        if setting not in source:
+            return None
+    start = source.index('plot_wire_point:\n')
+    end = source.index('pwp_done:\n', start)
+    old = source[start:end]
+    cache_first = '.if ENGINE_WIRE_DIRTY_SAME_BYTE_SKIP != 0\n'
+    cache_last = ' ldx rightval\n lda drawbuf\n bne pwp_dirty_b\n'
+    if old.count(cache_first) != 1 or old.count(cache_last) != 1:
+        return None
+    outside = source[:start] + source[end:]
+    users = [line.strip() for line in outside.splitlines() if 'engine_wire_last_dirty_' in line]
+    if not users or any(not re.fullmatch(r'(?:sta engine_wire_last_dirty_(?:buf|y|x)|'
+                                        r'engine_wire_last_dirty_(?:buf|y|x): \.byte (?:0|255|\$ff))',
+                                        line, re.I) for line in users):
+        return None
+    tail = 'pwp_dirty_done:\n.endif\n ldy rightval\n ldx leftval\n'
+    if old.count(tail) != 1:
+        return None
+    first = old.index(cache_first)
+    last = old.index(tail)
+    damage = old[old.index(cache_last, first):last]
+    damage = damage.replace(' ldx rightval\n',' ldy rightval\n',1).replace(' txa\n',' tya\n')
+    for bank in 'ab':
+        for key in ('dirtymin', 'dirtymax'):
+            damage = damage.replace(f'{key}_{bank},x',f'{key}_{bank},y')
+        label = f'pwp_dirty_{bank}_min_ok:\n'
+        damage = damage.replace(label+' lda startbyte\n',label,1)
+    # Indexed bitmap addressing consumes the same X and Y. The optional
+    # early exit above the damage block still returns before writing.
+    new = old[:first] + damage + 'pwp_dirty_done:\n.endif\n' + old[last+len(tail):]
+    return old, new
+
+
 def call_contexts(s,targets):
     lines=s.splitlines();out=[]
     for i,line in enumerate(lines):
@@ -102,7 +500,7 @@ def original_source(s):
         assert s.count(r['new'])==1,('GR17_RESTORE',r['name'])
         s=s.replace(r['new'],r['old'],1)
     return s
-def patch(s):
+def patch(s, coordinate_lookup=False, inline_material=False):
     s=original_source(s);replacements=[];info=dict(applied=False,material=False,shadeEdges=False,outline=False,sampler=False,newRAMVariables=0,newRAMTables=0,extraPeakDataStackBytes=0)
     def replace(name,old,new):
         nonlocal s
@@ -117,9 +515,35 @@ def patch(s):
         row_templates=[]
         row_templates.append(('apply_material_span_a:\n ldx yrow\n lda screenrowlo_a,x\n clc\n adc startbyte\n sta ptr0lo\n lda screenrowhi_a,x\n adc #$00\n sta ptr0hi\n lda colorrowlo,x\n clc\n adc startbyte\n sta ptr1lo\n lda colorrowhi,x\n adc #$00\n sta ptr1hi\n','apply_material_span_a:\n ldx yrow\n lda screenrowlo_a,x\n sta ptr0lo\n lda screenrowhi_a,x\n sta ptr0hi\n lda colorrowlo,x\n sta ptr1lo\n lda colorrowhi,x\n sta ptr1hi\n ; Parent high-byte ADC #0 always clears V in the known screen/color banks.\n clv\n'))
         row_templates.append(('apply_material_span_b:\n ldx yrow\n lda screenrowlo_b,x\n clc\n adc startbyte\n sta ptr0lo\n lda screenrowhi_b,x\n adc #$00\n sta ptr0hi\n lda colorrowlo,x\n clc\n adc startbyte\n sta ptr1lo\n lda colorrowhi,x\n adc #$00\n sta ptr1hi\n','apply_material_span_b:\n ldx yrow\n lda screenrowlo_b,x\n sta ptr0lo\n lda screenrowhi_b,x\n sta ptr0hi\n lda colorrowlo,x\n sta ptr1lo\n lda colorrowhi,x\n sta ptr1hi\n ; Parent high-byte ADC #0 always clears V in the known screen/color banks.\n clv\n'))
-        row_consumer='apply_material_span_common:\n ldy startbyte\nams_loop:\n lda material_screen_cur\n sta (ptr0lo),y\n lda material_color_cur\n sta (ptr1lo),y\nams_skip_write:\n cpy endbyte\n beq ams_done\n iny\n jmp ams_loop\nams_done:\n ldx endbyte\n ldy #0\n rts\n'
+        row_consumer='''apply_material_span_common:
+ ldy startbyte
+ams_loop:
+ lda material_screen_cur
+ sta (ptr0lo),y
+ lda material_color_cur
+ sta (ptr1lo),y
+ams_skip_write:
+ ; INY preserves the unsigned comparison carry. Both bounds are inclusive.
+ cpy endbyte
+ iny
+ bcc ams_loop
+ams_done:
+ ldx endbyte
+ ldy #0
+ rts
+'''
         if all(s.count(old)==1 for old,new in row_templates) and s.count(MATERIAL_NEW)==1:
-            for i,(old,new) in enumerate(row_templates):replace('row-origin-material-'+str(i),old,new)
+            from legacy_wire_cursor import table
+            color_low = table(s, 'colorrowlo')
+            screen_a_low = table(s, 'screenrowlo_a')
+            screen_b_low = table(s, 'screenrowlo_b')
+            if re.search(r'(?m)^screenrowlo_b = screenrowlo_a$', s):
+                screen_b_low = screen_a_low
+            for bank, (old, new), screen_low in zip('ab', row_templates, (screen_a_low, screen_b_low)):
+                if color_low and screen_low == color_low:
+                    new = new.replace(' sta ptr0lo\n', ' sta ptr0lo\n sta ptr1lo\n', 1)
+                    new = new.replace(' lda colorrowlo,x\n sta ptr1lo\n', '', 1)
+                replace('row-origin-material-'+bank, old, new)
             replace('row-origin-material-writer',MATERIAL_NEW,row_consumer)
             info.update(materialRowOrigin=True,materialPointersPrivateVolatile=True,materialCellIndexInY=True)
     if SHADE_EDGES and re.search(r'(?m)^GRAPHICS_MODE = \$06$',s):
@@ -457,10 +881,10 @@ gr17_fill_entry_hi:
         if grouped:
             def cached_call(prefix,bank):
                 n=prefix+'_'+bank
-                return (' lda yrow\n and #$fc\n'+n+'_row:\n cmp #255\n beq '+n+'_same\n sta '+n+'_row+1\n jmp '+n+'_write\n'+n+'_same:\n lda startbyte\n'+n+'_min:\n cmp #0\n bcc '+n+'_left\n lda endbyte\n'+n+'_max:\n cmp #0\n bcc '+n+'_done\n beq '+n+'_done\n'
+                return (' lda yrow\n and #$fc\n'+n+'_row:\n cmp #255\n beq '+n+'_same\n sta '+n+'_row+1\n jmp '+n+'_write\n'+n+'_same:\n lda startbyte\n'+n+'_min:\n cmp #0\n bcc '+n+'_left\n'+n+'_max:\n lda #0\n cmp endbyte\n bcs '+n+'_done\n'
                 # Right-only extension; disjoint intervals reset instead of coloring a gap.
-                +' lda '+n+'_max+1\n clc\n adc #1\n cmp startbyte\n bcc '+n+'_write\n'
-                +' lda startbyte\n sta '+n+'_restore_start+1\n lda '+n+'_max+1\n clc\n adc #1\n sta startbyte\n lda endbyte\n sta '+n+'_max+1\n jsr apply_material_span_'+bank+'\n'+n+'_restore_start:\n lda #0\n sta startbyte\n jmp '+n+'_done\n'
+                +' adc #1\n cmp startbyte\n bcc '+n+'_write\n tax\n'
+                +' lda startbyte\n sta '+n+'_restore_start+1\n stx startbyte\n lda endbyte\n sta '+n+'_max+1\n jsr apply_material_span_'+bank+'\n'+n+'_restore_start:\n lda #0\n sta startbyte\n jmp '+n+'_done\n'
                 +n+'_left:\n lda endbyte\n cmp '+n+'_max+1\n bcc '+n+'_left_only\n beq '+n+'_left_only\n jmp '+n+'_write\n'
                 +n+'_left_only:\n clc\n adc #1\n cmp '+n+'_min+1\n bcc '+n+'_write\n'
                 +' lda endbyte\n sta '+n+'_restore_end+1\n lda '+n+'_min+1\n sec\n sbc #1\n sta endbyte\n lda startbyte\n sta '+n+'_min+1\n jsr apply_material_span_'+bank+'\n'+n+'_restore_end:\n lda #0\n sta endbyte\n jmp '+n+'_done\n'
@@ -506,6 +930,17 @@ gr17_fill_entry_hi:
             if hashlib.sha256(body.encode('ascii')).hexdigest() in {'695c8342b5e3a1807cab12fd5790b1bd80450f96bfead898059c10270af24c52', '2397ff16457bf78b1e1587224704745a8d278601c0601696d6a7c2f0ff22c57f'} and not (private & external_targets):
                 dispatch='trace_edge_convex:\n.if MODE5_POLYGON_OUTLINE != 0\n lda mode5_outline_trace_active\n bne gr23_parent_entry\n.endif\n.if WIRE_RENDER_ENABLE != 0\n lda wire_trace_active\n bne gr23_parent_entry\n.endif\n jmp gr23_bounds_entry\ngr23_parent_entry:\n'
                 kernel="gr23_bounds_entry:\n ; GR23: integer coverage only. Preserve diagonal's single-point rows.\n lda ey0\n cmp ey1\n bcc gr23_forward\n bne gr23_reverse\n jmp tec_horizontal\ngr23_reverse:\n lda ex1\n sta xcur\n lda ey1\n sta ycur\n lda ey0\n sta spanw\n sec\n sbc ey1\n sta dyval\n sec\n lda ex0\n sbc ex1\n jmp gr23_delta\ngr23_forward:\n lda ex0\n sta xcur\n lda ey0\n sta ycur\n lda ey1\n sta spanw\n sec\n sbc ey0\n sta dyval\n sec\n lda ex1\n sbc ex0\ngr23_delta:\n ldx #1\n bcs gr23_abs_ready\n eor #255\n clc\n adc #1\n ldx #255\ngr23_abs_ready:\n stx sxstep\n sta dxabs\n beq gr23_point_rows\n cmp dyval\n beq gr23_diagonal\n ldx dyval\n cpx #1\n bne gr23_divide_init\n tax\n lda #0\n beq gr23_divided\ngr23_divide_init:\n ldx #0\ngr23_divide:\n cmp dyval\n bcc gr23_divided\n sbc dyval\n inx\n bne gr23_divide\ngr23_divided:\n sta dxabs\n txa\n ldx sxstep\n bpl gr23_quotient\n eor #255\n clc\n adc #1\ngr23_quotient:\n sta errhi\n lda #0\n sta errlo\n lda sxstep\n bmi gr23_rows_negative\ngr23_rows_positive:\n ldx ycur\n lda xcur\n cmp leftb,x\n bcs gr23_positive_left\n sta leftb,x\ngr23_positive_left:\n lda ycur\n cmp spanw\n beq gr23_positive_right\n clc\n lda errlo\n adc dxabs\n bcs gr23_positive_correct\n cmp dyval\n bcc gr23_positive_no_correct\ngr23_positive_correct:\n sbc dyval\n sta errlo\n clc\n lda xcur\n adc errhi\n adc #1\n sta xcur\n jmp gr23_positive_right\ngr23_positive_no_correct:\n sta errlo\n clc\n lda xcur\n adc errhi\n sta xcur\ngr23_positive_right:\n lda xcur\n cmp rightb,x\n bcc gr23_positive_next\n sta rightb,x\ngr23_positive_next:\n lda ycur\n cmp spanw\n beq gr23_done\n inc ycur\n jmp gr23_rows_positive\ngr23_rows_negative:\n ldx ycur\n lda xcur\n cmp rightb,x\n bcc gr23_negative_right\n sta rightb,x\ngr23_negative_right:\n lda ycur\n cmp spanw\n beq gr23_negative_left\n clc\n lda errlo\n adc dxabs\n bcs gr23_negative_correct\n cmp dyval\n bcc gr23_negative_no_correct\ngr23_negative_correct:\n sbc dyval\n sta errlo\n clc\n lda xcur\n adc errhi\n sec\n sbc #1\n sta xcur\n jmp gr23_negative_left\ngr23_negative_no_correct:\n sta errlo\n clc\n lda xcur\n adc errhi\n sta xcur\ngr23_negative_left:\n lda xcur\n cmp leftb,x\n bcs gr23_negative_next\n sta leftb,x\ngr23_negative_next:\n lda ycur\n cmp spanw\n beq gr23_done\n inc ycur\n jmp gr23_rows_negative\ngr23_diagonal:\n ldx ycur\n lda xcur\n cmp leftb,x\n bcs gr23_diagonal_left\n sta leftb,x\ngr23_diagonal_left:\n cmp rightb,x\n bcc gr23_diagonal_right\n sta rightb,x\ngr23_diagonal_right:\n lda ycur\n cmp spanw\n beq gr23_done\n inc ycur\n clc\n lda xcur\n adc sxstep\n sta xcur\n jmp gr23_diagonal\ngr23_point_rows:\n ldx ycur\n lda xcur\n cmp leftb,x\n bcs gr23_point_left\n sta leftb,x\ngr23_point_left:\n cmp rightb,x\n bcc gr23_point_right\n sta rightb,x\ngr23_point_right:\n lda ycur\n cmp spanw\n beq gr23_done\n inc ycur\n jmp gr23_point_rows\ngr23_done:\n rts\n"
+                # Keep the scanline cursor in X for the complete integer edge.
+                # Each loop owns X, and leftb/rightb already use it as an index.
+                for entry in ('rows_positive', 'rows_negative', 'diagonal', 'point_rows'):
+                    label = f'gr23_{entry}'
+                    kernel = kernel.replace(f'{label}:\n ldx ycur\n',
+                                            f'{label}:\n ldx ycur\n{label}_loop:\n', 1)
+                    kernel = kernel.replace(f' jmp {label}\n', f' jmp {label}_loop\n', 1)
+                kernel = kernel.replace(' lda ycur\n cmp spanw\n', ' cpx spanw\n')
+                kernel = kernel.replace(' inc ycur\n', ' inx\n')
+                kernel = kernel.replace('gr23_done:\n rts\n',
+                                        'gr23_done:\n stx ycur\n txa\n cmp spanw\n rts\n', 1)
                 if 'WIRE_RENDER_ENABLE = $00' in s and 'MODE5_POLYGON_OUTLINE = $00' in s:
                     new=kernel.replace('gr23_bounds_entry:\n','trace_edge_convex:\n',1)
                 else:
@@ -526,9 +961,78 @@ gr17_fill_entry_hi:
                     mask_tables=[read_byte_table(s,n) for n in ['xbyte','startmask','endmask']]
                     if point_ok and mask_tables==[[x//4 for x in range(160)],[255>>(2*(x%4)) for x in range(160)],[(255<<(2*(3-x%4)))&255 for x in range(160)]]:
                         new='trace_edge_convex:\n lda mode5_outline_trace_active\n beq gr23_bounds_entry\n jmp gr23_outline_entry\n'+kernel+'; Exact connected integer outline, grouped by row. No material/dirty writes.\ngr23_outline_entry:\n lda ey0\n cmp ey1\n bcc gr23o_forward\n bne gr23o_reverse\n lda ex0\n cmp ex1\n bcc gr23o_horizontal_ordered\n lda ex1\n sta leftval\n lda ex0\n sta rightval\n jmp gr23o_horizontal_ready\ngr23o_horizontal_ordered:\n sta leftval\n lda ex1\n sta rightval\ngr23o_horizontal_ready:\n lda ey0\n sta ycur\n jmp gr23_outline_span\ngr23o_reverse:\n lda ex1\n sta xcur\n lda ey1\n sta ycur\n lda ey0\n sta spanw\n sec\n sbc ey1\n sta dyval\n sec\n lda ex0\n sbc ex1\n jmp gr23o_delta\ngr23o_forward:\n lda ex0\n sta xcur\n lda ey0\n sta ycur\n lda ey1\n sta spanw\n sec\n sbc ey0\n sta dyval\n sec\n lda ex1\n sbc ex0\ngr23o_delta:\n ldx #1\n bcs gr23o_abs\n eor #255\n clc\n adc #1\n ldx #255\ngr23o_abs:\n stx sxstep\n sta dxabs\n beq gr23o_vertical\n cmp dyval\n beq gr23o_point_rows\n ldx #0\ngr23o_divide:\n cmp dyval\n bcc gr23o_divided\n sbc dyval\n inx\n bne gr23o_divide\ngr23o_divided:\n sta dxabs\n txa\ngr23o_quotient:\n sta errhi\n lda #0\n sta errlo\n lda sxstep\n bmi gr23o_negative\ngr23o_positive:\n lda xcur\n sta leftval\n sta rightval\n lda ycur\n cmp spanw\n beq gr23o_positive_write\n clc\n lda errlo\n adc dxabs\n cmp dyval\n bcc gr23o_positive_no_correction\n sbc dyval\ngr23o_positive_no_correction:\n sta errlo\n lda xcur\n adc errhi\n sta xcur\n sta rightval\ngr23o_positive_write:\n jsr gr23_outline_span\n lda ycur\n cmp spanw\n beq gr23o_done\n inc ycur\n jmp gr23o_positive\ngr23o_negative:\n lda xcur\n sta leftval\n sta rightval\n lda ycur\n cmp spanw\n beq gr23o_negative_write\n clc\n lda errlo\n adc dxabs\n cmp dyval\n bcc gr23o_negative_no_correction\n sbc dyval\n sta errlo\n lda xcur\n clc\n sbc errhi\n jmp gr23o_negative_advanced\ngr23o_negative_no_correction:\n sta errlo\n lda xcur\n sec\n sbc errhi\ngr23o_negative_advanced:\n sta xcur\n sta leftval\ngr23o_negative_write:\n jsr gr23_outline_span\n lda ycur\n cmp spanw\n beq gr23o_done\n inc ycur\n jmp gr23o_negative\ngr23o_vertical:\n lda #0\n sta sxstep\ngr23o_point_rows:\n lda xcur\n sta leftval\n sta rightval\n jsr gr23_outline_span\n lda ycur\n cmp spanw\n beq gr23o_done\n inc ycur\n clc\n lda xcur\n adc sxstep\n sta xcur\n jmp gr23o_point_rows\ngr23o_done:\n rts\n\n; Inputs: leftval..rightval inclusive, ycur. Adjacent rows proven by tables.\ngr23_outline_span:\n ldx ycur\n lda drawbuf\n bne gr23os_buffer_b\n lda row0lo_a,x\n sta ptr0lo\n lda row0hi_a,x\n jmp gr23os_row\ngr23os_buffer_b:\n lda row0lo_b,x\n sta ptr0lo\n lda row0hi_b,x\ngr23os_row:\n sta ptr0hi\n ldx leftval\n lda ptr0lo\n clc\n adc xofflo,x\n sta ptr0lo\n lda ptr0hi\n adc xoffhi,x\n sta ptr0hi\n lda xbyte,x\n sta startbyte\n ldx rightval\n lda xbyte,x\n sta endbyte\n cmp startbyte\n bne gr23os_multi\n lda endmask,x\n ldx leftval\n and startmask,x\n eor #255\n sta maskv\n jmp gr23os_masked\ngr23os_multi:\n ldx leftval\n lda startmask,x\n eor #255\n sta maskv\n jsr gr23os_masked\ngr23os_next:\n clc\n lda ptr0lo\n adc #8\n sta ptr0lo\n bcc gr23os_pointer_ready\n inc ptr0hi\ngr23os_pointer_ready:\n inc startbyte\n lda startbyte\n cmp endbyte\n beq gr23os_last\n ldy #0\n lda #0\n sta (ptr0lo),y\n iny\n sta (ptr0lo),y\n jmp gr23os_next\ngr23os_last:\n ldx rightval\n lda endmask,x\n eor #255\n sta maskv\ngr23os_masked:\n ldy #0\n lda (ptr0lo),y\n and maskv\n sta (ptr0lo),y\n iny\n lda (ptr0lo),y\n and maskv\n sta (ptr0lo),y\n ; The parent point writer leaves Y=1. Trace callers treat it as scratch.\n rts\n'
+                        # The two bitmap rows have equal low bytes on some layouts.
+                        # Prove that every legal horizontal offset preserves one
+                        # high-byte XOR, including additions that cross a page.
+                        bitmap_rows = [read_byte_table(s, f'row0{part}_{bank}')
+                                       for bank in 'ab' for part in ('lo','hi')]
+                        offsets = [read_byte_table(s, name) for name in ('xofflo', 'xoffhi')]
+                        if all(bitmap_rows + offsets) and len({len(row) for row in bitmap_rows}) == 1 and len(offsets[0]) == len(offsets[1]):
+                            lo_a, hi_a, lo_b, hi_b = bitmap_rows
+                            x_offsets = {lo + 256*hi for lo,hi in zip(*offsets)}
+                            masks = {((lo + 256*a + x) ^ (lo + 256*b + x))
+                                     for lo,a,b in zip(lo_a,hi_a,hi_b) for x in x_offsets}
+                            if lo_a == lo_b and len(masks) == 1:
+                                mask = next(iter(masks))
+                                if mask & 255 == 0 and 0 <= mask <= 0xff00:
+                                    start = new.index('gr23_outline_span:\n')
+                                    end = new.index(' lda xbyte,x\n', start)
+                                    new = new[:start] + """gr23_outline_span:
+ ldy ycur
+ ldx leftval
+ lda row0lo_a,y
+ clc
+ adc xofflo,x
+ sta ptr0lo
+ lda row0hi_a,y
+ adc xoffhi,x
+gr23os_bank_mask:
+ eor #0
+ sta ptr0hi
+""" + new[end:]
+                                    # Draw buffer is constant across an edge.
+                                    entry = 'gr23_outline_entry:\n lda ey0\n'
+                                    setup = f'''gr23_outline_entry:
+ lda drawbuf
+ beq gr23o_set_bank
+ lda #{mask >> 8}
+gr23o_set_bank:
+ sta gr23os_bank_mask+1
+ lda ey0
+'''
+                                    assert new.count(entry)==1
+                                    new = new.replace(entry,setup,1)
+                                    # Only the multi-byte loop needs cell indices.
+                                    start = new.index(' lda xbyte,x\n', new.index('gr23os_bank_mask:\n'))
+                                    end = new.index('gr23os_multi:\n', start)
+                                    new = new[:start] + ''' lda rightval
+ eor leftval
+ and #$fc
+ bne gr23os_distinct_bytes
+ ldx rightval
+ lda endmask,x
+ ldx leftval
+ and startmask,x
+ eor #255
+ sta maskv
+ jmp gr23os_masked
+gr23os_distinct_bytes:
+ lda xbyte,x
+ sta startbyte
+ ldx rightval
+ lda xbyte,x
+ sta endbyte
+''' + new[end:]
+                                    info['outlineSharedRowPointer'] = True
                         outline_selected=True
                         info.update(outlineSpanGrouping=True,outlineCoverageExact=True,outlineWritesBitmapOnly=True,extraPeakDataStackBytes=max(2,info['extraPeakDataStackBytes']))
                 if replace('quotient-integer-bounds-dispatch',body,new):info.update(integerBoundsExpanded=True,wireParentFallback=True,outlineParentFallback=not outline_selected,rawQ2BoundsUnchanged=True)
+    if info.get('outlineSharedRowPointer'):
+        outline_rows = outline_register_rows(s)
+        bank = ' sta gr23os_bank_mask+1\n'
+        if outline_rows and s.count(bank) == 1 and replace('gr36-outline-biased-rows', *outline_rows):
+            assert replace('gr41-outline-bank', bank, bank + ' sta gr41_outline_bank+1\n')
+            info.update(outlineBiasedRows=True, outlineIndexedShortSpans=True, outlineInlineRows=True)
     if 'gr28_span_core:\n' in s and '; GR16_BIASED_UV ' in s and info.get('sampler'):
         scopes=[('raster','gr28_span_core:\n','; Texture is page aligned.'),
                 ('advance','m7_sample:\n','m7_prepare_span:\n'),
@@ -586,6 +1090,16 @@ gr17_fill_entry_hi:
             assert replace('gr29-q-zero-quotient',old,new)
             assert replace('gr29-untrimmed-span-denominator',den_old,den_new)
             info.update(exactQZeroQuotientSetup=True,originalUntrimmedDenominatorReused=True)
+    if (info.get('materialRowOrigin') and 'MATERIAL_CELL_SPAN_CACHE = $01' in s
+            and re.search(r'(?m)^GRAPHICS_MODE = \$0[345]$', s)
+            and not re.search(r'(?mi)^(?:rs|rscn|dyn)_', s)):
+        material_range = material_range_plan(s, inline_material=inline_material)
+        if material_range and replace('gr35-register-material-ranges', *material_range):
+            info.update(registerMaterialRanges=True, materialRangesKeepOriginalBounds=True)
+            checks=inline_material_checks(s) if inline_material else []
+            for name,before,after in checks:
+                assert replace(name,before,after)
+            info['inlineMaterialChecks']=len(checks)
     from legacy_gouraud_zp import plan
     changes,block,details=plan(s)
     for name,old,new in changes:assert replace(name,old,new)
@@ -595,9 +1109,24 @@ gr17_fill_entry_hi:
     for name,old,new in new_changes:assert replace(name,old,new)
     s+=new_block;info.update(new_info)
     from legacy_mode7_table import plan as table_plan
-    table_changes,table_block,table_info=table_plan(s)
+    table_changes,table_block,table_info=table_plan(s, coordinate_lookup=coordinate_lookup)
     for name,old,new in table_changes:assert replace(name,old,new)
     s+=table_block;info.update(table_info)
+    from legacy_wire_cursor import indexed_writers, shallow_wire_spans, wire_span_row_index
+    for name, before, after in indexed_writers(s):
+        assert replace(name,before,after)
+    if any(r['name']=='wire-bitmap-indexed-pwp' for r in replacements):
+        damage = wire_point_damage(s)
+        if damage and replace('gr37-wire-point-direct-damage', *damage):
+            info.update(wirePointDirectDamage=True, wirePointSharesBitmapRowRegister=True)
+    if re.search(r'(?m)^GRAPHICS_MODE = \$0[12]$', s) and 'WIRE_RENDER_ENABLE = $01' in s:
+        for name, before, after in shallow_wire_spans(s) + wire_span_row_index(s):
+            if replace(name, before, after):
+                info[name] = True
+    if re.search(r'(?m)^GRAPHICS_MODE = \$0[1234567]$', s):
+        q6 = rounded_q6_multiply(s)
+        if q6 and replace('gr43-rounded-q6-multiply', *q6):
+            info.update(roundedQ6FasterMultiply=True)
     if replacements:
         raw=json.dumps(replacements,sort_keys=True,separators=(',',':')).encode('ascii');s+='; GR17_RENDER_TUNING '+hashlib.sha256(raw).hexdigest()+' '+base64.b64encode(zlib.compress(raw,9)).decode('ascii')+'\n';info['applied']=True
     return s,info

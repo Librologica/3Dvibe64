@@ -152,7 +152,42 @@ def wide_origins_vertices():
     code+=' inc hp_idx\n lda hp_idx\n cmp #VERT_COUNT\n bne hc_vertex_loop\n rts\n'
     return code
 
-def pieces(lab,music=True,motion=False):
+def seed_division_prefix(source):
+    """Skip 24 restoring steps whose quotient bits are all zero."""
+    entry = ' ldy #48\nhc_div_loop:\n'
+    assert source.count(entry) == 1
+    # For numerator H*2**24 + L with H < divisor, the skipped steps
+    # leave remainder H and shift L into the high half of hc_num.
+    prefix = ''' lda hc_num+5
+ cmp hc_divisor+2
+ bcc hc_div_seed_prefix
+ bne hc_div_full
+ lda hc_num+4
+ cmp hc_divisor+1
+ bcc hc_div_seed_prefix
+ bne hc_div_full
+ lda hc_num+3
+ cmp hc_divisor
+ bcs hc_div_full
+hc_div_seed_prefix:
+ ldx #2
+hc_div_copy_prefix:
+ lda hc_num+3,x
+ sta hc_remainder,x
+ lda hc_num,x
+ sta hc_num+3,x
+ lda #0
+ sta hc_num,x
+ dex
+ bpl hc_div_copy_prefix
+ ldy #24
+ bne hc_div_loop
+hc_div_full:
+'''
+    return source.replace(entry, prefix + entry)
+
+
+def pieces(lab,music=True,motion=False,*,division_prefix=False):
     p=bounded_chunks(lab)
     template=Path(__file__).with_name('kernel.asm').read_text()
     # Keep exact approved Q8 trig/products; replace bounded origins/projection.
@@ -186,6 +221,8 @@ hp_unreachable:
 '''+arithmetic
     p['vertices']=wide_origins_vertices()
     p['projection']=Path(__file__).with_name('wide.asm').read_text()
+    if division_prefix:
+        p['projection'] = seed_division_prefix(p['projection'])
     from screen import arithmetic as screen_arithmetic
     p['screen_precision']=screen_arithmetic()
     p['clip']=Path(__file__).with_name('clip.asm').read_text()

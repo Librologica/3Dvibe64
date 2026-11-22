@@ -1,6 +1,6 @@
-# Dynamics — 1.20.0
+# Dynamics — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 [Italiano](DYNAMICS.it.md).
 [RuntimeScene](RUNTIME-SCENE.en.md) emits optional native helpers. Host references

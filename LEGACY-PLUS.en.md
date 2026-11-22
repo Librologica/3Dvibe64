@@ -1,12 +1,12 @@
-# Legacy-plus — 1.20.0
+# Legacy-plus — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
 
 
 
-`-Precision legacy-plus` is the explicit intermediate renderer for Mode1–7. It combines the legacy Q6 object matrix with Q4 camera geometry, Q10 camera coefficients and 4096 yaw/pitch phases. Legacy stays default. The compatibility `-LegacyStability rotation` remains Mode2 only. Mode8 and Normalized16 keep separate contracts. This stable source package is published on GitHub; RELEASE.json records its identity.
+`-Precision legacy-plus` is the explicit intermediate renderer for Mode1–7. It combines the legacy Q6 object matrix with Q4 camera geometry, Q10 camera coefficients and 4096 yaw/pitch phases. Legacy stays default. The compatibility `-LegacyStability rotation` remains Mode2 only. Mode8 and Normalized16 keep separate contracts. This development source package is unpublished; RELEASE.json records its identity.
 
 ## Build and configuration
 
@@ -47,4 +47,4 @@ Camera-forward depth must stay **8–256WU inclusive** after near clipping. `ps_
 
 ## Qualification
 
-[Native comparison and limitations](QUALIFICATION-1.14.0.en.md) · [machine-readable evidence](QUALIFICATION-1.14.0.json) · [testing](TESTING.md). The final delivered builds must match the measured PRG hashes before reusing their FPS. PAL Turbo6510×64, safe, silent; complete routes after warm-up. No new NTSC or physical-hardware claim. The original1.13.0 Mode2 report remains [historical](QUALIFICATION-1.13.0.en.md), not a measurement of other scenes.
+[Native comparison and limitations](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0) · [machine-readable evidence](QUALIFICATION-1.14.0.json) · [testing](TESTING.md). The final delivered builds must match the measured PRG hashes before reusing their FPS. PAL Turbo6510×64, safe, silent; complete routes after warm-up. No new NTSC or physical-hardware claim. The original1.13.0 Mode2 report remains [historical](https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0), not a measurement of other scenes.

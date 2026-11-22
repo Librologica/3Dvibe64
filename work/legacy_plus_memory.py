@@ -156,6 +156,14 @@ def allocate(source,assembler,directory):
         gr17_choices=[]
         for projection,raster_name,variant,details,info in choices:
             tuned,gr17_info=gr17.patch(variant)
+            if gr17_info.get('mode7Tables'):
+                fast,fast_info=gr17.patch(variant, coordinate_lookup=True)
+                if fast_info.get('coordinateLookup'):
+                    gr17_choices.append((projection,raster_name+'-gr34',fast,details,dict(info,renderTuning=fast_info)))
+            if gr17_info.get('registerMaterialRanges'):
+                inline,inline_info=gr17.patch(variant, inline_material=True)
+                if inline_info.get('inlineMaterialChecks'):
+                    gr17_choices.append((projection,raster_name+'-gr42',inline,details,dict(info,renderTuning=inline_info)))
             if gr17_info['applied']:gr17_choices.append((projection,raster_name+'-gr17',tuned,details,dict(info,renderTuning=gr17_info)))
         choices=gr17_choices+choices
         for projection,raster_name,variant,details,info in choices:

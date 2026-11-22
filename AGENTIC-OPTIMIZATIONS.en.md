@@ -1,6 +1,6 @@
-# Renderer optimizations and performance — 1.20.0
+# Renderer optimizations and performance — 1.20.1
 
-Stable source SDK published on GitHub. [Release notes](RELEASE-NOTES-1.20.0.en.md) · [Qualification](QUALIFICATION-1.20.0.en.md).
+Unpublished development SDK. [Release notes](RELEASE-NOTES-1.20.1.en.md) · [Qualification](QUALIFICATION-1.20.1.en.md).
 
 ## Optimized paths
 
@@ -20,7 +20,7 @@ Precision, clipping, palette, resolution and quality are not reduced to improve 
 
 ## Reading performance results
 
-The general score is not an FPS average. The historical series retains 1.15.0=100; 1.20.0 retains 137.505630 as an inherited reconstructed estimate, with canonical historical calculation still blocked. The extended series remains separate, with its frozen reference identified in the [ledger](QUALIFICATION-1.20.0.json). Anchors, weights and workloads are unchanged.
+The general score is not an FPS average. The historical series retains 1.15.0=100; 1.20.0 retains 137.505630 as an inherited reconstructed estimate, with canonical historical calculation still blocked. The extended series remains separate, with its frozen reference identified in the [ledger](QUALIFICATION-1.20.1.json). Anchors, weights and workloads are unchanged.
 
 Cost depends on the scene: line length/clipping for wire; spans, cells and overdraw for solid/flat; perimeter work for outlines; edge/shade interpolation for Gouraud; covered pixels and UV/light transitions for textures; surface profiles/events for multilevel maps. These guide authoring choices; measure each project with its own PRG and route. For fade, see [scene types and CPU budgets](DISTANCE-FADE.en.md#when-distance-fade-helps).
 

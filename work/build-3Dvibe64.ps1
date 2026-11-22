@@ -38777,10 +38777,10 @@ if ($GroundFixedDiv16uOwnerFlag -ne 0) {
  $asm = Remove-Div16uRoutineContainingLabel $asm 'gpfdiv_loop' $false
 }
 
-if ($Mode6GouraudFlag -ne 0) {
+if ($Mode6GouraudFlag -ne 0 -or $GraphicsModeNumber -eq 4) {
  # Gate 4: keep the original div16u body as the exact general fallback.
  # Only the one-byte-divisor / one-byte-quotient domain takes eight rounds.
- # Apply after Ground chooses the single owner. Other modes are untouched.
+ # Apply after Ground chooses the single owner. Only Modes 4 and 6 use this path.
  $gate4DivPrefix = @'
 div16u:
  lda p1hi

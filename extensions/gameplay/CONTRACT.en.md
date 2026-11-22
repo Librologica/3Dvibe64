@@ -1,10 +1,10 @@
-# Bounded billboard source contract — 1.20.0
+# Bounded billboard source contract — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](../../QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](../../QUALIFICATION-1.20.1.en.md).
 
 
 
-Stable source release 1.20.0: [current optimizations](../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Stable source SDK 1.20.1: [current optimizations](../../RENDER-OPTIMIZATIONS.en.md), [external inputs](../../EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 The distribution retains `billboards/masked.py`, `outlined.py`, `scene.py`

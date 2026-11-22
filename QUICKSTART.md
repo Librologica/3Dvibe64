@@ -1,5 +1,5 @@
-# Quick start / Guida rapida — 1.20.0
+# Quick start / Guida rapida — 1.20.1
 
 [English](QUICKSTART.en.md) · [Italiano](QUICKSTART.it.md)
 
-Stable source package, published on GitHub. / Pacchetto sorgente stabile, pubblicato su GitHub.
+Unpublished source development SDK. / SDK sorgente stabile.

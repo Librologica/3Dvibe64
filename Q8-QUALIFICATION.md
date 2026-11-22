@@ -6,10 +6,10 @@ Evidenza storica/versionata: misure, hash e fasi seguenti mantengono l’ambito
 originale; non sono nuove acquisizioni o promesse di funzioni1.11.0.
 Current contracts / Contratti correnti: [EN](README.en.md), [IT](README.it.md);
 [gameplay EN](GAMEPLAY.en.md), [gameplay IT](GAMEPLAY.it.md);
-[qualification EN](QUALIFICATION-1.11.0.en.md), [qualificazione IT](QUALIFICATION-1.11.0.it.md).
+[qualification EN](https://github.com/Librologica/3Dvibe64/releases/tag/v1.11.0), [qualificazione IT](https://github.com/Librologica/3Dvibe64/releases/tag/v1.11.0).
 
 <!-- maintenance-1.10.1 -->
-Current 1.10.1-rc1 matched native matrix and memory changes: [English](QUALIFICATION-1.10.1-rc1.en.md), [Italiano](QUALIFICATION-1.10.1-rc1.it.md). Matrice nativa e costi memoria correnti nei documenti bilingui; il rapporto seguente resta storico.
+Current 1.10.1-rc1 matched native matrix and memory changes: [English](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.1), [Italiano](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.1). Matrice nativa e costi memoria correnti nei documenti bilingui; il rapporto seguente resta storico.
 
 Official promotion preserves the qualified RC engine, scenes and all 23 measured
 PRG hashes. No new native benchmark is needed for documentation/package identity

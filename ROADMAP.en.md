@@ -1,6 +1,6 @@
-# Roadmap — 1.20.0
+# Roadmap — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
 Implemented: native AnimatedMesh v1, packed pose clips, independent instance phases, source-pose caching and optional frozen reference Gouraud. [Contract](ANIMATED-MESH.en.md).
@@ -10,9 +10,9 @@ Included: exact opt-in renderer flags, MAT-01 packed spans, conservative wall ad
 
 Future work: general scene integration, arbitrary intersections/transparency, general occlusion, angular portals, dynamic textured shadows, persistent disk saves, a combined WORLD lifetime allocator and broader backend qualification. A helper is not a complete implementation of these integrations. No new demos will be bundled.
 
-[Contracts](RENDER-OPTIMIZATIONS.en.md) · [Support](ADAPTER-SUPPORT.en.md) · [Qualification](QUALIFICATION-1.14.0.en.md)
+[Contracts](RENDER-OPTIMIZATIONS.en.md) · [Support](ADAPTER-SUPPORT.en.md) · [Qualification](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0)
 
 
 ## 1.15.0 application boundary
 
-Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](RELEASE-NOTES-1.14.0.en.md#distribution-and-private-application-boundary).
+Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).

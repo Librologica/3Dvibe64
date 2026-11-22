@@ -1,10 +1,10 @@
-# Exact rendering optimizations — 1.20.0
+# Exact rendering optimizations — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
 
-The optional Mode4 features introduced in1.15.0 retain their API contract. The current stable source release is 1.20.0, published on GitHub. Legacy/Q8 and ordinary plus builds without this selector retain their previous contracts. No demos, scenes, programs, media or native captures are packaged.
+The optional Mode4 features introduced in1.15.0 retain their API contract. This contract also applies to unpublished 1.20.1. Legacy/Q8 and ordinary plus builds without this selector retain their previous contracts. No demos, scenes, programs, media or native captures are packaged.
 
 ## Selection and scope
 
@@ -38,7 +38,7 @@ Use the ordinary argument spelling `-GraphicsMode 4` when composing scripts. Opt
 
 ## Verification and promotion
 
-[Qualification](QUALIFICATION-1.15.1.en.md) separates retained native FPS from mathematical/callback checks and inherited defaults. Use identical inputs, target, warm-up and route for before/after comparisons. Test complete images and material cells, clipping/near, shared vertices, degenerate/self-crossing panels, signed rounding, wide divisors, byte carries and page crossings. Prefer arithmetic first on CPU-bound scenes; PAL can cap complete visible views near50.125/s. Stable promotion and GitHub publication are complete.
+[Qualification](https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1) separates retained native FPS from mathematical/callback checks and inherited defaults. Use identical inputs, target, warm-up and route for before/after comparisons. Test complete images and material cells, clipping/near, shared vertices, degenerate/self-crossing panels, signed rounding, wide divisors, byte carries and page crossings. Prefer arithmetic first on CPU-bound scenes; PAL can cap complete visible views near50.125/s. Stable promotion and GitHub publication are complete.
 
 Automatic clipped-fan merging additionally requires a single active material/reflectivity palette, no fixed face-color table and no VIC cell-ownership policy. Mixed-palette faces keep the original fan; the explicit pair-bounds API remains available under its caller contract. The material interval cache forgets disconnected cell intervals instead of filling or caching their gaps.
 

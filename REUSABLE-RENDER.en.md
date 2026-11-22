@@ -1,6 +1,6 @@
-# Reusable rendering and data — 1.20.0
+# Reusable rendering and data — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
 
@@ -47,4 +47,4 @@ This optional data module does not promise higher FPS. Application interpolation
 
 Model-specific component order, hidden shuttle faces, camera and dynamics, sparser grid, FOV, procedural course and alternate scanlines are not moved into the renderer core. These change content, behavior or graphics and remain in the demo project. Rigid model rotation requires separate qualification before becoming a new object-transform API.
 
-[Current qualification](QUALIFICATION-1.15.1.en.md) separates native FPS, pixel identity and CPU callbacks. Wire benchmark results are not attributed to the shuttle or to the stream module alone.
+[Current qualification](https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1) separates native FPS, pixel identity and CPU callbacks. Wire benchmark results are not attributed to the shuttle or to the stream module alone.

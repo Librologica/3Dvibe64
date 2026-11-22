@@ -114,9 +114,16 @@ for family in FAMILIES:
                     r1=build(scene,Path(t)/'a',mode);r2=build(scene,Path(t)/'b',mode)
                     assert r1['prgSHA256']==r2['prgSHA256']
                     if not suffix:
-                        refs=manifest['mode8']['referenceBuilds']
-                        expected=next(r['sha256'] for r in refs if r['family']==family and r['run']==mode)
-                        assert r1['prgSHA256']==expected
+                        mode8=manifest['mode8']
+                        development=mode8.get('releaseReferenceBuilds')
+                        if development:
+                            assert development['version']==(ROOT/'VERSION').read_text(encoding='utf-8-sig').strip()
+                            refs=[r for r in development['builds'] if r['distanceFade']=='off']
+                        else:
+                            refs=mode8['referenceBuilds']
+                        expected=next(r for r in refs if r['family']==family and r['run']==mode)
+                        assert hashlib.sha256(scene.read_bytes()).hexdigest()==expected['fixtureSHA256'].lower()
+                        assert r1['prgSHA256'].lower()==expected['sha256'].lower()
             add('reproducible '+family+suffix+' '+mode,reproducible)
 
 def public_command(extra,ok):

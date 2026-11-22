@@ -2248,6 +2248,11 @@ ray_y_nonparallel:
  pla
  jmp ray_hit
 dda_dispatch:
+ ; Keep the cell offset in Y and the map page in the pointer.
+ ; Restoring the full pointer keeps hit and portal handling unchanged.
+ ldy map_ptr
+ lda #0
+ sta map_ptr
  lda dir_sign
  cmp #1
  beq dda_q1
@@ -2266,7 +2271,7 @@ dda_q0_begin:
  bpl dda_q0_valid
  lda #64
  sta steps
- jmp ray_miss
+ jmp dda_ray_miss
 dda_q0_valid:
  lda side_y+1
  cmp side_x+1
@@ -2276,11 +2281,10 @@ dda_q0_valid:
  cmp side_x
  bcc dda_q0_y
 dda_q0_x:
- inc map_ptr
+ iny
  bne dda_q0_xr
  inc map_ptr+1
 dda_q0_xr:
- ldy #0
  lda (map_ptr),y
  bne dda_q0_hit_x
  clc
@@ -2292,14 +2296,13 @@ dda_q0_xr:
  sta side_x+1
  jmp dda_q0_begin
 dda_q0_y:
+ tya
  clc
- lda map_ptr
  adc #32
- sta map_ptr
+ tay
  bcc dda_q0_yr
  inc map_ptr+1
 dda_q0_yr:
- ldy #0
  lda (map_ptr),y
  bne dda_q0_hit_y
  clc
@@ -2324,7 +2327,7 @@ dda_q0_hit_x:
  adc #65
  sta steps
  lda hit_mat
- jmp ray_hit
+ jmp dda_ray_hit
 dda_q0_hit_y:
  sta hit_mat
  lda #1
@@ -2339,7 +2342,7 @@ dda_q0_hit_y:
  adc #65
  sta steps
  lda hit_mat
- jmp ray_hit
+ jmp dda_ray_hit
 dda_q1:
  lda #64
  sec
@@ -2350,7 +2353,7 @@ dda_q1_begin:
  bpl dda_q1_valid
  lda #64
  sta steps
- jmp ray_miss
+ jmp dda_ray_miss
 dda_q1_valid:
  lda side_y+1
  cmp side_x+1
@@ -2360,12 +2363,11 @@ dda_q1_valid:
  cmp side_x
  bcc dda_q1_y
 dda_q1_x:
- lda map_ptr
+ cpy #0
  bne dda_q1_xd
  dec map_ptr+1
 dda_q1_xd:
- dec map_ptr
- ldy #0
+ dey
  lda (map_ptr),y
  bne dda_q1_hit_x
  clc
@@ -2377,14 +2379,13 @@ dda_q1_xd:
  sta side_x+1
  jmp dda_q1_begin
 dda_q1_y:
+ tya
  clc
- lda map_ptr
  adc #32
- sta map_ptr
+ tay
  bcc dda_q1_yr
  inc map_ptr+1
 dda_q1_yr:
- ldy #0
  lda (map_ptr),y
  bne dda_q1_hit_y
  clc
@@ -2409,7 +2410,7 @@ dda_q1_hit_x:
  adc #65
  sta steps
  lda hit_mat
- jmp ray_hit
+ jmp dda_ray_hit
 dda_q1_hit_y:
  sta hit_mat
  lda #1
@@ -2424,7 +2425,7 @@ dda_q1_hit_y:
  adc #65
  sta steps
  lda hit_mat
- jmp ray_hit
+ jmp dda_ray_hit
 dda_q2:
  lda #64
  sec
@@ -2435,7 +2436,7 @@ dda_q2_begin:
  bpl dda_q2_valid
  lda #64
  sta steps
- jmp ray_miss
+ jmp dda_ray_miss
 dda_q2_valid:
  lda side_y+1
  cmp side_x+1
@@ -2445,11 +2446,10 @@ dda_q2_valid:
  cmp side_x
  bcc dda_q2_y
 dda_q2_x:
- inc map_ptr
+ iny
  bne dda_q2_xr
  inc map_ptr+1
 dda_q2_xr:
- ldy #0
  lda (map_ptr),y
  bne dda_q2_hit_x
  clc
@@ -2461,14 +2461,13 @@ dda_q2_xr:
  sta side_x+1
  jmp dda_q2_begin
 dda_q2_y:
+ tya
  sec
- lda map_ptr
  sbc #32
- sta map_ptr
+ tay
  bcs dda_q2_yr
  dec map_ptr+1
 dda_q2_yr:
- ldy #0
  lda (map_ptr),y
  bne dda_q2_hit_y
  clc
@@ -2493,7 +2492,7 @@ dda_q2_hit_x:
  adc #65
  sta steps
  lda hit_mat
- jmp ray_hit
+ jmp dda_ray_hit
 dda_q2_hit_y:
  sta hit_mat
  lda #1
@@ -2508,7 +2507,7 @@ dda_q2_hit_y:
  adc #65
  sta steps
  lda hit_mat
- jmp ray_hit
+ jmp dda_ray_hit
 dda_q3:
  lda #64
  sec
@@ -2519,7 +2518,7 @@ dda_q3_begin:
  bpl dda_q3_valid
  lda #64
  sta steps
- jmp ray_miss
+ jmp dda_ray_miss
 dda_q3_valid:
  lda side_y+1
  cmp side_x+1
@@ -2529,12 +2528,11 @@ dda_q3_valid:
  cmp side_x
  bcc dda_q3_y
 dda_q3_x:
- lda map_ptr
+ cpy #0
  bne dda_q3_xd
  dec map_ptr+1
 dda_q3_xd:
- dec map_ptr
- ldy #0
+ dey
  lda (map_ptr),y
  bne dda_q3_hit_x
  clc
@@ -2546,14 +2544,13 @@ dda_q3_xd:
  sta side_x+1
  jmp dda_q3_begin
 dda_q3_y:
+ tya
  sec
- lda map_ptr
  sbc #32
- sta map_ptr
+ tay
  bcs dda_q3_yr
  dec map_ptr+1
 dda_q3_yr:
- ldy #0
  lda (map_ptr),y
  bne dda_q3_hit_y
  clc
@@ -2578,7 +2575,7 @@ dda_q3_hit_x:
  adc #65
  sta steps
  lda hit_mat
- jmp ray_hit
+ jmp dda_ray_hit
 dda_q3_hit_y:
  sta hit_mat
  lda #1
@@ -2593,7 +2590,7 @@ dda_q3_hit_y:
  adc #65
  sta steps
  lda hit_mat
- jmp ray_hit
+ jmp dda_ray_hit
 ray_miss:
  lda #0
  sta hit_mat
@@ -2604,6 +2601,13 @@ ray_miss:
  sta mul_r
  sta mul_r+1
  jmp ray_store
+dda_ray_miss:
+ sty map_ptr
+ ldy #0
+ jmp ray_miss
+dda_ray_hit:
+ sty map_ptr
+ ldy #0
 ray_hit:
  sta hit_mat
  lda #0

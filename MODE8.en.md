@@ -1,6 +1,6 @@
-# GraphicsMode 8 — 2.5D — 1.20.0
+# GraphicsMode 8 — 2.5D — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
 
@@ -9,7 +9,7 @@ Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFade
 
 The multi backend retains the 485-byte plane-unit cache and 85-byte helper before the font at $5800. Its 32 profile slots use second-chance replacement; exact zero profiles share 128 immutable bytes plus 24 helper bytes inside the original layout_support. Total coefficient/state data is 608 bytes. Canonical multi low-code margins are 3 bytes in automatic mode and 1207 in interactive mode, with all assembler bounds enforced. The 192-byte fixed-height helper remains at $5500. [Memory](MODE8-MEMORY.en.md).
 
-The qualification ledger identifies automatic builds measured on PAL Turbo6510 at 1×, 20× and 64×. Interactive templates share verified kernels and are assembled, without implying new native timing for every combination. Earlier stock PAL/NTSC reports describe historical programs; hardware and NTSC are not newly qualified. [Current ledger](QUALIFICATION-1.20.0.json).
+The qualification ledger identifies automatic builds measured on PAL Turbo6510 at 1×, 20× and 64×. Interactive templates share verified kernels and are assembled, without implying new native timing for every combination. Earlier stock PAL/NTSC reports describe historical programs; hardware and NTSC are not newly qualified. [Current ledger](QUALIFICATION-1.20.1.json).
 
 Stable reference 1.15.1: [historical optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
@@ -18,14 +18,14 @@ Base API contract inherited from1.15.1. This manual describes the ordinary expor
 explicitly stated otherwise; bounded gameplay/configuration/roll/group APIs
 are documented in [GAMEPLAY](GAMEPLAY.en.md). [Documentation index](DOCS.md).
 
-Inherited 1.10.2 backend in 1.12.0: only the qualified bitmap path remains. EngineExperiments omission/none is accepted; all and retired Mode 8 flags/combinations are rejected. See [release notes](RELEASE-NOTES-1.13.0.en.md).
+Inherited 1.10.2 backend in 1.12.0: only the qualified bitmap path remains. EngineExperiments omission/none is accepted; all and retired Mode 8 flags/combinations are rejected. See [release notes](https://github.com/Librologica/3Dvibe64/releases/tag/v1.13.0).
 <!-- maintenance-1.10.1 -->
-Official 1.10.1 requires capture acquisition provenance for native reuse and retains mandatory input checks under optimized Python. Coincident heading is 64. The adaptive renderer can miss interior discontinuities: see [diagnostic, measured cost and known limit](QUALIFICATION-1.10.1-rc1.en.md). Runtime sampling is unchanged.
+Official 1.10.1 requires capture acquisition provenance for native reuse and retains mandatory input checks under optimized Python. Coincident heading is 64. The adaptive renderer can miss interior discontinuities: see [diagnostic, measured cost and known limit](https://github.com/Librologica/3Dvibe64/releases/tag/v1.10.1). Runtime sampling is unchanged.
 
 In 1.5.5, mono-portals clears exit state and includes front-plane identity in
 adaptive refinement. The map subset and build API below are unchanged; this
 does not add procedural worlds or arbitrary multiple lintels per ray.
-See [release notes](RELEASE-NOTES-1.5.5.md).
+See [release notes](https://github.com/Librologica/3Dvibe64/releases/tag/v1.5.5).
 
 3Dvibe64 1.4.0 adds an independent map renderer to the source SDK. For making environments, start with [Building Mode 8 maps](MAPS-2.5D.en.md). The supported subset is intentionally conservative: three complete templates, property validation, fixed camera starts and restricted ramps/apertures. No mesh conversion or simultaneous polygon/2.5D composition is provided.
 
@@ -95,7 +95,7 @@ Interactive: W/S movement, A/D rotation. Automatic: the complete validated cycli
 
 Static apertures only; fixed supported ramp formulas; no room-over-room, arbitrary steps, PVS, advanced portal traversal, wall UV texture mapping, floor textures, dynamic lighting or 3D sprites. Modes 1–7 remain distinct polygon-renderer builds.
 
-[TESTING.en.md](TESTING.en.md) separates host gates, compiler checks, correctness oracles and native timing. [Current qualification](QUALIFICATION-1.20.0.json) records the exact qualified programs and FPS/p95/worst at1×,20× and64×. Unchanged programs reuse native evidence only after exact cold PRG/numeric-label and protocol identity; the changed multi stress build also has new matched native repetitions. [The1.4.0 report](RELEASE-NOTES-1.4.0.md) is historical stock PAL/NTSC evidence. CPU replay is not FPS. Hardware and stock NTSC are not newly qualified.
+[TESTING.en.md](TESTING.en.md) separates host gates, compiler checks, correctness oracles and native timing. [Current qualification](QUALIFICATION-1.20.1.json) records the exact qualified programs and FPS/p95/worst at1×,20× and64×. Unchanged programs reuse native evidence only after exact cold PRG/numeric-label and protocol identity; the changed multi stress build also has new matched native repetitions. [The1.4.0 report](https://github.com/Librologica/3Dvibe64/releases/tag/v1.4.0) is historical stock PAL/NTSC evidence. CPU replay is not FPS. Hardware and stock NTSC are not newly qualified.
 
 For a hardware check: transfer the appropriate interactive PRG to a stock PAL/NTSC C64, load/run it, traverse the scene including both ramp joins, inspect split stability and buffer presentation, then run its automatic counterpart for a full loop. Record machine model, video standard, loader and observed faults. Do not claim a hardware PASS without performing and recording this test.
 
@@ -107,4 +107,4 @@ Historical note: the research began with a low-resolution character-based compos
 
 The multi profile cache retains 32 slots and 4096 bytes with second-chance replacement. Its 32 extra state bytes occupy $ca00..$ca1f in the existing layout_support window; the 485-byte plane-unit cache is separate. The shared zero profile uses 128 bytes and a 24-byte helper at $ca20..$cab7; total coefficient/state data is 608 bytes, without new aliases. Automatic and interactive templates share this algorithm. Guards, geometry, lazy sampling, input and presentation retain their respective contracts.
 
-The [current ledger](QUALIFICATION-1.20.0.json) retains build identities and the conditions required to reuse native measurements.
+The [current ledger](QUALIFICATION-1.20.1.json) retains build identities and the conditions required to reuse native measurements.

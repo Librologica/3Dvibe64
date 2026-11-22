@@ -1,6 +1,6 @@
-# Rendering e dati riutilizzabili — 1.20.0
+# Rendering e dati riutilizzabili — 1.20.1
 
-> SDK sorgente stabile 1.20.0. Pubblicato su GitHub. [Qualifica](QUALIFICATION-1.20.0.it.md).
+> SDK sorgente stabile 1.20.1. [Qualifica](QUALIFICATION-1.20.1.it.md).
 
 
 
@@ -47,4 +47,4 @@ Il file JSON adiacente riporta campioni, bit, fattore, minimo e byte dei dati. I
 
 L'ordine dei componenti della navetta, le facce nascoste rimosse dal suo modello, camera e dinamica specifiche, griglia più rada, FOV, generatore del percorso e linee alternate non sono trasferiti al nucleo. La riduzione di copie e i kernel sono riutilizzabili; questi altri interventi cambiano contenuto, comportamento o grafica e restano nel progetto della demo. Le rotazioni rigide del modello richiedono una qualifica distinta prima di diventare una nuova API di trasformazione degli oggetti.
 
-La [qualifica corrente](QUALIFICATION-1.20.0.json) distingue FPS nativi, equivalenza delle immagini e callback CPU. Nessun risultato del benchmark wire viene attribuito alla navetta o al solo modulo stream.
+La [qualifica corrente](QUALIFICATION-1.20.1.json) distingue FPS nativi, equivalenza delle immagini e callback CPU. Nessun risultato del benchmark wire viene attribuito alla navetta o al solo modulo stream.

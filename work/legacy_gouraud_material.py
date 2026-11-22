@@ -7,7 +7,52 @@ RESET_OLD='gouraud_fill_bounds:\n'
 RESET_NEW='gouraud_fill_bounds:\n ; GR14_MATERIAL_CACHE_RESET\n lda #$ff\n sta material_last_cellrow\n'
 BLOCK=re.compile(r'\n; Plus allocation block gouraud_material_cache\n(?:\* = \$[0-9a-f]+|\.virtual \$4000)\nlpa_block_gouraud_material_cache_begin:\n.*?lpa_block_gouraud_material_cache_end:\n(?:\.cerror[^\n]+\n|\.endvirtual\n)',re.S)
 
-CODE='gr14_material_a:\n jsr gr14_material_guard\n jmp maybe_apply_material_span_a\ngr14_material_b:\n jsr gr14_material_guard\n jmp maybe_apply_material_span_b\ngr14_material_guard:\n ; Existing cache tracks a connected union. Reset it when the new span is\n ; disjoint: this never colors a gap and never claims an unwritten cell.\n lda endbyte\n cmp material_cell_min\n bcs gr14_material_check_right\n adc #1\n cmp material_cell_min\n bcc gr14_material_reset\ngr14_material_check_right:\n lda material_cell_max\n cmp startbyte\n bcs gr14_material_connected\n adc #1\n cmp startbyte\n bcs gr14_material_connected\ngr14_material_reset:\n lda #$ff\n sta material_last_cellrow\ngr14_material_connected:\n rts\n'
+CODE = """gr14_material_a:
+ jsr gr14_material_check
+ bcs gr14_material_done
+ jmp maybe_apply_material_span_a
+gr14_material_b:
+ jsr gr14_material_check
+ bcs gr14_material_done
+ jmp maybe_apply_material_span_b
+gr14_material_done:
+ rts
+gr14_material_check:
+ lda yrow
+ lsr
+ lsr
+ cmp material_last_cellrow
+ bne gr14_material_continue
+ ; Only a same-row extension needs the connected-union guard.
+ lda startbyte
+ cmp material_cell_min
+ bcc gr14_material_guard
+ lda material_cell_max
+ cmp endbyte
+ bcc gr14_material_guard
+ rts
+gr14_material_guard:
+ lda endbyte
+ cmp material_cell_min
+ bcs gr14_material_check_right
+ adc #1
+ cmp material_cell_min
+ bcc gr14_material_reset
+gr14_material_check_right:
+ lda material_cell_max
+ cmp startbyte
+ bcs gr14_material_continue
+ adc #1
+ cmp startbyte
+ bcs gr14_material_continue
+gr14_material_reset:
+ lda #$ff
+ sta material_last_cellrow
+gr14_material_continue:
+ clc
+ rts
+"""
+
 
 def region(s):
     a=s.index('gouraud_fill_bounds:\n');b=s.index('gfb_rows_ready:\n',a)
@@ -31,7 +76,10 @@ def row_group_proven(s):
         if not m:return None
         return [int(v[1:],16) if v.startswith('$') else int(v) for v in re.findall(r'\$[0-9a-fA-F]+|\b\d+\b',m[1])]
     for low,high in [('screenrowlo_a','screenrowhi_a'),('screenrowlo_b','screenrowhi_b'),('colorrowlo','colorrowhi')]:
-        lo,hi=table(low),table(high)
+        lo=table(low)
+        if low=='screenrowlo_b' and 'screenrowlo_b = screenrowlo_a\n' in s:
+            lo=table('screenrowlo_a')
+        hi=table(high)
         if not lo or not hi or len(lo)!=len(hi):return False
         pointers=[a+256*b for a,b in zip(lo,hi)]
         if any(value!=pointers[(i//4)*4] for i,value in enumerate(pointers)):return False
@@ -42,6 +90,8 @@ def patch(s):
     if not re.search(r'(?m)^GRAPHICS_MODE = \$0[67]$',s):return s,dict(applied=False,reason='Mode6/7 only')
     if 'MATERIAL_CELL_SPAN_CACHE = $01' not in s or 'VIC_COLOR_POLICY_ENABLE = $00' not in s:
         return s,dict(applied=False,reason='Existing enabled cache and idempotent color policy required')
+    if 'ENGINE_MODE3_MATERIAL_CELL_TRANSITION = $00' not in s:
+        return s,dict(applied=False,reason='Ordinary four-scanline cell indexing required')
     if RESET_OLD not in s or 'gfb_rows_ready:\n' not in s:return s,dict(applied=False,reason='Other raster retained')
     if not row_group_proven(s):return s,dict(applied=False,reason='Physical material row grouping not proven')
     a,b,chunk=region(s)

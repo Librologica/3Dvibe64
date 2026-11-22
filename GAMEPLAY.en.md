@@ -1,12 +1,12 @@
-# Gameplay source modules — 1.20.0
+# Gameplay source modules — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 Optional distance fade in Modes1–8: `-DistanceFade off/dither`, `-DistanceFadeStart`, `-DistanceFadeEnd`; default off. Mode7 texture LOD stays independent. See [complete contract](DISTANCE-FADE.en.md).
 
 
 
-Stable release 1.20.0: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
+Development SDK 1.20.1: [current optimizations](RENDER-OPTIMIZATIONS.en.md), [external inputs](EXTERNAL-INPUTS.en.md). All demonstration projects and raw native evidence remain external to the source distribution.
 
 
 ## Source-only release
@@ -15,7 +15,7 @@ This stable source distribution contains sources only. No demos or examples are 
 preexisting ones. Supply your own scenes/assets and explicit external project
 inputs. The renderer and reusable gameplay modules remain included. See
 [external inputs](EXTERNAL-INPUTS.en.md), [optimizations](RENDER-OPTIMIZATIONS.en.md)
-and [qualification](QUALIFICATION-1.14.0.en.md).
+and [qualification](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).
 
 | ID | Module | Contract |
 |---|---|---|
@@ -45,7 +45,7 @@ root. Its layout is `examples/gameplay/<profile>.json` for the preset and
 `extensions/gameplay/common`, `extensions/gameplay/profiles/<profile>` and
 `extensions/gameplay/billboards/<implementation>.py` for caller-owned glue.
 These paths belong to the external project, not this SDK. Presets contain
-`profile`, `engineVersion` (1.20.0), optional `extends`, `buildName`,
+`profile`, `engineVersion` (1.20.1), optional `extends`, `buildName`,
 `billboardImplementation`, `distributionPRG`, `textureQuality`, `textureLOD`,
 `viewportLogical`, `expectedCheckpointPRGSHA256` and optional `scope`.
 The driver overlays the inherited project profiles, copies the current SDK
@@ -130,7 +130,7 @@ Optional --flat-span-cache / -FlatSpanCache selects exact MAT-01 flat spans. Req
 
 ## 1.15.0 application boundary
 
-Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](RELEASE-NOTES-1.14.0.en.md#distribution-and-private-application-boundary).
+Legacy-plus Mode1–7 and Mode7 affine/perspective are stable within the [public plus profile](LEGACY-PLUS.en.md). The private Underworld port uses a different viewport, loader/RAM layout, culling and material/LOD/sampler optimizations; these are not public defaults or a new generic gameplay ABI. The reusable gameplay adapters retain their existing precision/profile restrictions. See [stable promotion scope](https://github.com/Librologica/3Dvibe64/releases/tag/v1.14.0).
 
 ## Separate RuntimeScene APIs
 

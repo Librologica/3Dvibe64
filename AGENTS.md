@@ -1,12 +1,5 @@
-# 3Dvibe64 1.20.0 source SDK
+# 3Dvibe64 1.20.1 source SDK
 
-This is the published stable source release 1.20.0. Release: https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0. Preserve this official source snapshot and all historical tags/releases. New engine work belongs in a separate development directory.
+Preserve this stable source snapshot. Use a separate workspace for development, builds and native measurements.
 
-Engine code, defaults and bounded API contracts match the qualified runtime recorded in QUALIFICATION-1.20.0.json. Work in a separate directory. Keep demos, application assets and benchmark suites outside the source package. Correctness tests are included; see TESTING.md. Do not spawn subagents for this SDK unless the user explicitly requests them.
-
-After rendering changes, measure actual new complete views on the native target after warm-up for at least 20 emulated seconds, preserving raw data, commands, PRG and matching symbols, mean FPS and available p95/worst intervals. CPU replay and host/warp time are not native FPS. Documentation or packaging changes can inherit native measurements only with unchanged runtime and exact measured PRG/all-numeric-label identities and conditions. Report inherited measurements as inherited, not new runs.
-
-Keep the historical general index anchored at 1.15.0=100. Include base/new values and percent change in optimization reports and label reconstructed estimates. The independent extended index stays anchored at the original frozen extended reference set at100. Do not change weights, workloads or blocked-case policies to improve a score.
-
-
-Public release notes and current user documentation identify public release versions and concrete features. Do not expose numbered internal development labels in that prose. Preserve exact development identities, original index anchors, hashes and evidence in provenance records and historical archives.
+Use the public API contracts and qualification records in [DOCS.md](DOCS.md). Keep generated programs, user inputs, raw emulator data and build logs outside the source distribution. Run the correctness checks in [TESTING.md](TESTING.md).

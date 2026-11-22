@@ -1,6 +1,6 @@
-# Contributing / Contribuire — 1.20.0
+# Contributing / Contribuire — 1.20.1
 
-> Stable source SDK 1.20.0. Published on GitHub. [Qualification](QUALIFICATION-1.20.0.en.md).
+> Stable source SDK 1.20.1. [Qualification](QUALIFICATION-1.20.1.en.md).
 
 
 

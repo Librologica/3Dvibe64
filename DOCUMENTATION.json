@@ -1,5 +1,5 @@
 {
-  "version": "1.20.0",
+  "version": "1.20.1",
   "locales": [
     "en",
     "it"
@@ -256,14 +256,14 @@
       "it": "DYNAMICS.it.md"
     },
     {
-      "id": "RELEASE-NOTES",
-      "en": "RELEASE-NOTES-1.20.0.en.md",
-      "it": "RELEASE-NOTES-1.20.0.it.md"
+      "id": "DEVELOPMENT",
+      "en": "RELEASE-NOTES-1.20.1.en.md",
+      "it": "RELEASE-NOTES-1.20.1.it.md"
     },
     {
       "id": "QUALIFICATION",
-      "en": "QUALIFICATION-1.20.0.en.md",
-      "it": "QUALIFICATION-1.20.0.it.md"
+      "en": "QUALIFICATION-1.20.1.en.md",
+      "it": "QUALIFICATION-1.20.1.it.md"
     }
   ],
   "currentBilingual": [
@@ -277,80 +277,15 @@
     "SECURITY.md",
     "TESTING.md",
     "WORLD-METRICS.md",
-    "CHANGELOG.md",
-    "RELEASE-NOTES-1.20.0.md"
+    "CHANGELOG.md"
   ],
   "historicalReports": [
-    "AGENTIC-DEV.md",
-    "AGENTIC33.en.md",
-    "AGENTIC33.it.md",
-    "AGENTIC35.en.md",
-    "AGENTIC35.it.md",
-    "AGENTIC36.en.md",
-    "AGENTIC36.it.md",
-    "DEVELOPMENT-1.14.0-dev1.en.md",
-    "DEVELOPMENT-1.14.0-dev1.it.md",
     "GOURAUD-MODE6-REPORT.md",
     "MODE8-MEMORY.md",
-    "MODE8-QUALIFICATION.md",
-    "NORMALIZED16-QUALIFICATION.md",
     "Q8-QUALIFICATION.md",
-    "QUALIFICATION-1.10.1-rc1.en.md",
-    "QUALIFICATION-1.10.1-rc1.it.md",
-    "QUALIFICATION-1.11.0.en.md",
-    "QUALIFICATION-1.11.0.it.md",
-    "QUALIFICATION-1.12.0.en.md",
-    "QUALIFICATION-1.12.0.it.md",
-    "QUALIFICATION-1.13.0.en.md",
-    "QUALIFICATION-1.13.0.it.md",
-    "QUALIFICATION-1.14.0-dev1.en.md",
-    "QUALIFICATION-1.14.0-dev1.it.md",
-    "QUALIFICATION-1.14.0.en.md",
-    "QUALIFICATION-1.14.0.it.md",
-    "QUALIFICATION-1.15.0-dev1.en.md",
-    "QUALIFICATION-1.15.0-dev1.it.md",
-    "QUALIFICATION-1.15.0-dev2.en.md",
-    "QUALIFICATION-1.15.0-dev2.it.md",
-    "QUALIFICATION-1.15.0.en.md",
-    "QUALIFICATION-1.15.0.it.md",
-    "QUALIFICATION-1.15.1.en.md",
-    "QUALIFICATION-1.15.1.it.md",
-    "RELEASE-NOTES-1.10.0-rc1.md",
-    "RELEASE-NOTES-1.10.0.md",
-    "RELEASE-NOTES-1.10.1-rc1.md",
-    "RELEASE-NOTES-1.10.1.md",
-    "RELEASE-NOTES-1.10.2.en.md",
-    "RELEASE-NOTES-1.10.2.it.md",
-    "RELEASE-NOTES-1.10.2.md",
-    "RELEASE-NOTES-1.11.0.en.md",
-    "RELEASE-NOTES-1.11.0.it.md",
-    "RELEASE-NOTES-1.11.0.md",
-    "RELEASE-NOTES-1.12.0.en.md",
-    "RELEASE-NOTES-1.12.0.it.md",
-    "RELEASE-NOTES-1.12.0.md",
-    "RELEASE-NOTES-1.13.0.en.md",
-    "RELEASE-NOTES-1.13.0.it.md",
-    "RELEASE-NOTES-1.13.0.md",
-    "RELEASE-NOTES-1.14.0.en.md",
-    "RELEASE-NOTES-1.14.0.it.md",
-    "RELEASE-NOTES-1.14.0.md",
-    "RELEASE-NOTES-1.15.0.en.md",
-    "RELEASE-NOTES-1.15.0.it.md",
-    "RELEASE-NOTES-1.15.0.md",
-    "RELEASE-NOTES-1.15.1.en.md",
-    "RELEASE-NOTES-1.15.1.it.md",
-    "RELEASE-NOTES-1.15.1.md",
-    "RELEASE-NOTES-1.4.0.md",
-    "RELEASE-NOTES-1.5.0.md",
-    "RELEASE-NOTES-1.5.5.md",
-    "RELEASE-NOTES-1.6.0.md",
-    "RELEASE-NOTES-1.6.1.md",
-    "RELEASE-NOTES-1.7.0.md",
-    "RELEASE-NOTES-1.8.0.md",
-    "RELEASE-NOTES-1.9.0.md",
-    "CHANGELOG-HISTORY.md"
+    "QUALIFICATION-1.14.0.json"
   ],
-  "historyPolicy": "Preserve versioned measurements and archived release notes; current paired contracts take precedence.",
+  "historyPolicy": "Earlier official releases remain available on GitHub.",
   "gameplayProfiles": [
     "animated-textures",
     "camera-roll",
@@ -379,7 +314,7 @@
     "--flat-span-cache"
   ],
   "sourceOnly": true,
-  "publication": "stable source release published on GitHub",
+  "publication": "stable source SDK",
   "newDemosIncluded": false,
   "gameplayRequiredOptions": [
     "--profile",
@@ -391,18 +326,11 @@
   "repositoryURL": "https://github.com/Librologica/3Dvibe64",
   "releasePageCreated": true,
   "developmentPairs": [],
-  "baseContractVersion": "1.15.1",
-  "inheritedStablePublication": {
-    "publication": "GitHub stable source release",
-    "GitHubPublished": true,
-    "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.15.1",
-    "releasePageCreated": true
-  },
-  "updated": "2026-11-10",
+  "baseContractVersion": "1.20.0",
   "developmentIndex": "DOCS.md",
   "quickStart": "QUICKSTART.md",
   "testing": "TESTING.md",
-  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.0",
+  "releaseURL": "https://github.com/Librologica/3Dvibe64/releases/tag/v1.20.1",
   "distanceFadeOptions": [
     "DistanceFade",
     "DistanceFadeStart",
@@ -411,13 +339,6 @@
   "distanceFadeContract": {
     "en": "DISTANCE-FADE.en.md",
     "it": "DISTANCE-FADE.it.md"
-  },
-  "documentationRevision": {
-    "id": "public-docs-r1",
-    "date": "2026-11-10",
-    "scope": "public release terminology and current bilingual documentation only; runtime and measurement anchors unchanged",
-    "runtimeTag": "v1.20.0",
-    "provenancePolicy": "Exact development identities remain in original machine-readable ledgers and historical archives."
   },
   "distanceFadeSceneGuidance": {
     "en": "DISTANCE-FADE.en.md#when-distance-fade-helps",
@@ -434,5 +355,6 @@
     "scope": "current Markdown contracts and release-page prose",
     "publicVersionsOnly": true,
     "internalProvenancePreserved": true
-  }
+  },
+  "contentVersion": "1.20.1"
 }

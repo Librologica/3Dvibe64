@@ -1,6 +1,6 @@
-# Verifiche — 1.20.0
+# Verifiche — 1.20.1
 
-SDK stabile pubblicato su GitHub. I test di correttezza sono inclusi; demo, suite e driver di benchmark non sono distribuiti. Python 3, PowerShell 7 e 64tass vanno installati esternamente. Servono le dipendenze di `requirements-tests.txt`. Eseguire da un’estrazione pulita con le asserzioni Python attive:
+SDK sorgente stabile non pubblicato. I test di correttezza sono inclusi; demo, suite e driver di benchmark non sono distribuiti. Python 3, PowerShell 7 e 64tass vanno installati esternamente. Servono le dipendenze di `requirements-tests.txt`. Eseguire da un’estrazione pulita con le asserzioni Python attive:
 
 ```powershell
 $env:TASS64_EXE='C:/tools/64tass.exe'
@@ -27,4 +27,4 @@ La suite prestazionale rimane esterna. Usare il target VICE Turbo6510 PAL, SID a
 
 Le misure originali possono essere ereditate per modifiche documentali/distributive solo dopo identità esatta di runtime, programma, tutti i simboli numerici e condizioni. La promozione registra zero nuove esecuzioni FPS e conserva i blocchi preesistenti. Una modifica renderer richiede nuove misure native. Scene, ancoraggi, pesi e qualità congelati non vanno adattati per migliorare l’indice. Nessuna nuova qualifica NTSC o hardware.
 
-[Qualification / Qualifica](QUALIFICATION-1.20.0.json) · [Docs](DOCS.md)
+[Qualification / Qualifica](QUALIFICATION-1.20.1.json) · [Docs](DOCS.md)
